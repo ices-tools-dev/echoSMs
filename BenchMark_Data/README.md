@@ -25,6 +25,23 @@ The column names and descriptions are:</br>
 | Cylinder_WeaklyScattering | Benchmark values for the weakly-scattering cylinder. |
 
 # Benchmark TS(&theta;) @ 38 kHz
-Benchmark target strength (TS, db re m<sup>2</sup>) as a function of insonifying angle of incidence (&theta;) for the prolate spheroid and cylinder shapes. The data file [Benchmark_Angle_TS.csv]() is a text file with comma-separated variable format (.csv). TS values are given to 2-decimal-place precision (i.e., 0.01 dB). 90-degree &theta; is broadside incidence and 0-degree is end-on incidence. 
+Benchmark target strength (TS, db re m<sup>2</sup>) as a function of insonifying angle of incidence (&theta;) for the prolate spheroid and cylinder shapes. The data file [Benchmark_Angle_TS.csv](https://github.com/ices-tools-dev/echoSMs/blob/main/BenchMark_Data/Benchmark_Angle_TS.csv) is a text file with comma-separated variable format (.csv). TS values are given to 2-decimal-place precision (i.e., 0.01 dB). 90-degree &theta; is broadside incidence and 0-degree is end-on incidence. 
+
+The column names and descriptions are:</br>
+| Column Name/Variable | Description |
+|----------------------|-------------|
+| Angle_deg | Angle of incidence. TS values are given at 2-degree increments from 0 to 90 degrees. |
+| ProlateSpheroid_Rigid | Benchmark values for the rigid prolate spheroid. |
+| ProlateSpheroid_PressureRelease | Benchmark values for the pressure-release prolate spheroid. |
+| ProlateSpheroid_Gas | Benchmark values for the gas-filled prolate spheroid. |
+| ProlateSpheroid_WeaklyScattering | Benchmark values for the weakly-scattering prolate spheroid. |
+| Cylinder_Rigid | Benchmark values for the rigid cylinder. TS values for end-on (0 degree) incidence were not computed.|
+| Cylinder_PressureRelease | Benchmark values for the pressure-release cylinder. TS values for end-on (0 degree) incidence were not computed. |
+| Cylinder_Gas | Benchmark values for the gas-filled cylinder. TS values for end-on (0 degree) incidence were not computed. |
+| Cylinder_WeaklyScattering | Benchmark values for the weakly-scattering cylinder. TS values for end-on (0 degree) incidence were not computed. |
+
+
+
+
 
 
