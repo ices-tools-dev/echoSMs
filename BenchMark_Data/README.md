@@ -1,6 +1,7 @@
 # Benchmark Data
 Benchmark data for the acoustic scattering models in [Jech et al., 2015](https://doi.org/10.1121/1.4937607).
 
+<br></br>
 # Benchmark TS(f)
 Benchmark target strength (TS, db re m<sup>2</sup>) as a function of acoustic frequency. The data file [Benchmark_Frequency_TS.csv](https://github.com/ices-tools-dev/echoSMs/blob/main/BenchMark_Data/Benchmark_Frequency_TS.csv) is a text file with comma-separated variable format (.csv). TS values are given to 2-decimal-place precision (i.e., 0.01 dB)
 
@@ -24,6 +25,7 @@ The column names and descriptions are:</br>
 | Cylinder_Gas | Benchmark values for the gas-filled cylinder. |
 | Cylinder_WeaklyScattering | Benchmark values for the weakly-scattering cylinder. |
 
+<br></br>
 # Benchmark TS(&theta;) @ 38 kHz
 Benchmark target strength (TS, db re m<sup>2</sup>) as a function of insonifying angle of incidence (&theta;) for the prolate spheroid and cylinder shapes. The data file [Benchmark_Angle_TS.csv](https://github.com/ices-tools-dev/echoSMs/blob/main/BenchMark_Data/Benchmark_Angle_TS.csv) is a text file with comma-separated variable format (.csv). TS values are given to 2-decimal-place precision (i.e., 0.01 dB). 90-degree &theta; is broadside incidence and 0-degree is end-on incidence. 
 
