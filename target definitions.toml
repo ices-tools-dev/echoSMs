@@ -1,15 +1,21 @@
-# This file contains model parameters for the models used in the paper:
-# XXXXXXXXXXXXX
-# XXXXXXXXXXXXX
+# This file contains parameters for acoustic scattering models of relevance to fisheries acoustics.
+#
+# The initial set of model and parameters are those given in Jech et al, (2015). 
+#
+# Jech, J. M., Horne, J. K., Chu, D., Demer, D. A., Francis, D. T. I., Gorska, N., Jones, B., et al. 2015.
+# Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
+# Journal of the Acoustical Society of America, 138: 3742–3764.
 
-[units] # All values in this file must use the units given below.
-density = "kg/m3"
+# All values in this file must use the units given below. Add more as needed, using the conventions prescribed
+# by the CF metadata convention (https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#units).
+[units] 
+density = "kg/m^3"
 sound_speed = "m/s"
 radius = "m"
 length = "m"
 thickness = "m"
 
-[parameters]
+[parameters] # Model parameters (add more as needed).
 medium_sound_speed = 1477.4
 medium_density = 1026.8
 target_gas_density = 1.24
@@ -33,6 +39,12 @@ finite_cylinder_length = 0.07
 sphere_shell_thickness = 0.001
 
 # For each reference target, include a [[target]] section below.
+#
+# Where sensible, use names from the parameter section above for specifying 
+# target parameters (e.g., the sound speed, density, size, etc). Substitution of the
+# parameter names with their values from the parameters section should be done in the 
+# code that reads this file.
+
 [[target]]
 name = "fixed rigid sphere"
 shape = "sphere"
