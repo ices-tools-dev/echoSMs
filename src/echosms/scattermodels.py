@@ -53,27 +53,33 @@ class MSSModel(ScatterModelBaseClass):
 
         Parameters
         ----------
-        water_c : float
-            Sound speed in the water surrounding the object [m/s].
-        water_rho: float
-            Density of the water surrounding the object [kg/m3].
+        medium_c : float
+            Sound speed in the fluid medium surrounding the target [m/s].
+        medium_rho : float
+            Density of the fluid medium surrounding the target [kg/m3].
         a : float
-            Radius of the object [m].
-        angle: float or array of float
-            Angle(s) to calculate the scattering at [rad].
-        freq: float or array of float
+            Radius of the spherical target [m].
+        angles : float or array of float
+            Angle(s) to calculate the scattering at [degrees].
+        freqs : float or array of float
             Frequencies to calculate the scattering at [Hz].
-        model_type: str
-            The boundary condition on the sphere surface.
+        model_type : str
+            The model type. Supported model types are given in the model_types class variable.
+        target_c : float, optional
+            Sound speed in the fluid inside the sphere [m/s].
+            Only required for `model_type` of ``fluid filled``
+        target_rho : float, optional
+            Density of the fluid inside the sphere [kg/m^3].
+            Only required for `model_type` of ``fluid filled``
 
         Returns
         -------
-        sigma : array of float with dimensions of (len(freq), len(angle))
-            The scatter from the object [m2].
+        ts : array of float with dimensions of (len(freq), len(angle))
+            The scatter from the object [dB re 1 m2].
         freq : array of float
-            The frequencies that apply to sigma [Hz].
+            The frequencies that apply to TS [Hz].
         angle : array of float
-            The angles that apply to sigma [rad].
+            The angles that apply to TS [degrees].
 
         Notes
         -----
