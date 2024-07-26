@@ -17,13 +17,13 @@ An objective of echoSMs is to provide scattering models in a form that is easy t
 
 ## Coordinate systems
 
-A consistent coordinate systems should be used for all models in echoSMs. The intention is to facilitate comparison of results between different models and to reduce barriers to using a variety of models on a single dataset.
+A single coordinate system should be used for all models provided by echoSMs. The aim is to ease the comparison of results between different models and reduce effort when using a variety of models on a single dataset.
 
-The right-handed spherical coordinate system as defined in ISO 80000-2[1] is used with organisms oriented such that θ corresponds to pitch and ɸ to roll, as illustrated below, where the organism lies along the z-axis and the positive x-axis extends above the organism:
+The right-handed spherical coordinate system as defined by ISO 80000-2[1] is to be used, where organisms are oriented such that θ corresponds to pitch and ɸ to roll, as illustrated below, where the organism lies along the z-axis and the positive x-axis extends above the organism:
 
 ![coordinate system](coordinate_system.jpg)
 
-The definitions are such that θ values of 0°, 90°, and 180° correspond to organism pitches of head on, dorsal, and tail on, respectively, and positive values of ɸ indicate a roll to starboard. All model code should accept angles and produce results in this coordinate system. If the model uses a different coordinate system, the code should convert between the two.
+The definitions are such that θ values of 0°, 90°, and 180° correspond to organism pitches of head on, dorsal, and tail on, respectively, and positive values of ɸ indicate a roll to starboard. All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above the the version used in the code.
 
 ## Code style
 Contributions of code should follow standardised or community-agreed styles and be provided in (or added to) a structure suitable for packaging and uploading to package libraries. For Python this includes `pip` and/or `conda`, for R this would be `CRAN`, for Matlab this would be a toolbox on the MATLAB File Exchange, etc.
