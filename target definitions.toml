@@ -20,6 +20,7 @@ thickness = "m"
 # Model parameter names must end in one of the labels in the units section above as this provides the linkage
 # between a parameter value and its' unit.
 [parameters]
+# These values are from Jech at al, 2015.
 medium_sound_speed = 1477.4
 medium_density = 1026.8
 target_gas_density = 1.24
@@ -41,6 +42,12 @@ prolate_spheroid_minor_axis_radius = 0.01
 finite_cylinder_radius = 0.01
 finite_cylinder_length = 0.07
 sphere_shell_thickness = 0.001
+
+# These values are for testing of how to specify ranges or distributions of values
+example1_medium_sound_speed_dist = {type="normal", mean=1490, std=40, num=100} # normal distribution
+# Which of these two to support? Both? 
+example2_medium_sound_speed_dist = {type="linspace", start=1490, stop=1500, num=100} # 
+example3_medium_sound_speed_dist = {type="arange", start=1490, stop=1500, step=1} # stop is not guaranteed to be in the output
 
 # For each reference target, include a [[target]] section below.
 #
