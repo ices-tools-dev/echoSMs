@@ -24,8 +24,6 @@ class ScatterModelBaseClass:
         self.shapes = []  # the target shapes that this model can simulate
         self.max_frequency = np.NaN  # [Hz]
         self.min_frequency = np.NaN  # [Hz]
-        self.backscatter = False
-        self.scatter = False
 
 
 class MSSModel(ScatterModelBaseClass):
@@ -44,9 +42,8 @@ class MSSModel(ScatterModelBaseClass):
         self.shapes = ['sphere']
         self.max_frequency = 400.0e3  # [Hz]
         self.min_frequency = 1.0  # [Hz]
-        self.backscatter = True
 
-    def calculate_ts(self, medium_c, medium_rho, a, angles, freqs, model_type,
+    def calculate_ts(self, medium_c, medium_rho, a, theta, freqs, model_type,
                      target_c=None, target_rho=None, **kwargs):
         """
         Calculate the scatter using the mss model.
@@ -59,8 +56,9 @@ class MSSModel(ScatterModelBaseClass):
             Density of the fluid medium surrounding the target [kg/m3].
         a : float
             Radius of the spherical target [m].
-        angles : float or array of float
-            Angle(s) to calculate the scattering at [degrees].
+        theta : float or array of float
+            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+            90 is dorsal, and 180 is tail on.
         freqs : float or array of float
             Frequencies to calculate the scattering at [Hz].
         model_type : str
@@ -74,12 +72,12 @@ class MSSModel(ScatterModelBaseClass):
 
         Returns
         -------
-        ts : array of float with dimensions of (len(freq), len(angle))
+        ts : array of float with dimensions of (len(freq), len(angles)
             The scatter from the object [dB re 1 m2].
         freq : array of float
             The frequencies that apply to TS [Hz].
-        angle : array of float
-            The angles that apply to TS [degrees].
+        angles : array of float
+            The pitch angles that apply to TS [degrees].
 
         Notes
         -----
@@ -94,15 +92,18 @@ class MSSModel(ScatterModelBaseClass):
                 raise ValueError(f'Model type "{model_type}" has not yet been implemented '
                                  f'for the {self.long_name} model.')
             case 'fluid filled':
-                (freqs, np.pi, ts) = self.__fluid_filled_ts(medium_c, medium_rho, a, angles, freqs,
-                                                            target_c, target_rho)
+                (freqs, theta, ts) = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, freqs,
+                                                               target_c, target_rho)
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
-        return (freqs, np.pi, ts)
+        return (freqs, theta, ts)
 
-    def __fluid_filled_ts(self, medium_c, medium_rho, a, angles, freqs, target_c, target_rho):
-        """Fluid filled sphere model."""
+    def __fluid_filled_ts_bs(self, medium_c, medium_rho, a, freqs, target_c, target_rho):
+        """Fluid filled sphere model.
+
+        This implementation only calculates the backscatter (theta=90deg).
+        """
         # Fixed model parameters
         # maximum order. Can be changed to improve precision
         order_max = 20
@@ -146,12 +147,12 @@ class MSSModel(ScatterModelBaseClass):
             refl.append((2/ka_water) * np.sqrt(real**2+imag**2))
 
         # convert to numpy arrays
-        refl = np.array(refl, dtype=float)
+        refl = np.array(refl, dtype=float, ndmin=2).T
 
         # convert to target strength (TS re 1 m^2 [dB])
         ts = 10*np.log10((refl*a)**2 / 4.)
 
-        return (freqs, np.pi, ts)
+        return (freqs, np.array([90.0]), ts)
 
 
 class PSMSModel(ScatterModelBaseClass):
@@ -166,11 +167,18 @@ class PSMSModel(ScatterModelBaseClass):
         self.shapes = ['prolate spheroid']
         self.max_frequency = 200.0e3  # [Hz]
         self.min_frequency = 1.0  # [Hz]
-        self.backscatter = True
-        self.scatter = True
 
-    def calculate_ts(self, medium_c, medium_rho, a, b, angles, freqs, model_type,
-                     target_c=None, target_rho=None):
+    def calculate_ts(self, medium_c, medium_rho, a, b, theta, freqs, model_type,
+                     target_c=None, target_rho=None, **kwargs):
+        """Manage the calling of the single frequency, single angle version of the PSMS code."""
+        theta = theta[0] * np.pi/180.
+        for f in freqs:
+            f_all = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta, f, model_type,
+                                            target_c, target_rho)
+        return f_all
+
+    def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
+                           target_c=None, target_rho=None):
         """Prolate spheroid modal series (PSMS) solution model.
 
         Parameters
@@ -238,7 +246,7 @@ class PSMSModel(ScatterModelBaseClass):
             rh = target_rho / medium_rho
 
         # The wavenumber for the surrounding fluid
-        k0 = 2*np.pi*freqs/medium_c
+        k0 = 2*np.pi*freq/medium_c
         # The semi-focal length of the prolate spheroid (same as for an ellipse)
         q = np.sqrt(a*a - b*b)
         # An alternative to ka is kq, the wavenumber multiplied by the focal length
@@ -288,6 +296,7 @@ class PSMSModel(ScatterModelBaseClass):
                     case 'fluid filled':
                         # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
                         # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)
+                        print(m,n,h0,xi0,flush=True)
                         r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
                         r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
                         r_type1B, dr_type1B, _, _ = pro_rad1(m, n, h0/hc, xi0)
