@@ -25,7 +25,7 @@ print(f'The {mss.short_name} model supports boundary types of {mss.model_types}.
 
 m = rm.get_model_parameters('weakly scattering sphere')
 
-f, theta, TS = mss.calculate_ts(**m, theta=theta, freqs=bmf['Frequency_kHz']*1e3)
+ts, f, theta = mss.calculate_ts(**m, theta=theta, freqs=bmf['Frequency_kHz']*1e3)
 
 plt.plot(f/1e3, TS, label='New code')
 plt.plot(bmf['Frequency_kHz'], bmf['Sphere_WeaklyScattering'], label='Benchmark')
@@ -49,4 +49,4 @@ print(f'This model supports boundary types of {psms.model_types}.')
 m = rm.get_model_parameters('weakly scattering prolate spheroid')
 theta = np.array([90.0])
 
-f, theta, TS = psms.calculate_ts(**m, theta=theta, freqs=[10e3])
+TS, f, theta = psms.calculate_ts(**m, theta=theta, freqs=[10e3])
