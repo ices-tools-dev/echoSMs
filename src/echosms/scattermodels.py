@@ -170,60 +170,45 @@ class PSMSModel(ScatterModelBaseClass):
 
     def calculate_ts(self, medium_c, medium_rho, a, b, theta, freqs, model_type,
                      target_c=None, target_rho=None, **kwargs):
-        """Manage the calling of the single frequency, single angle version of the PSMS code."""
-        theta = theta[0] * np.pi/180.
-        for f in freqs:
-            f_all = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta, f, model_type,
-                                            target_c, target_rho)
-        return f_all
-
-    def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
-                           target_c=None, target_rho=None):
-        """Prolate spheroid modal series (PSMS) solution model.
+        """Manage the calling of the single frequency, single angle version of the PSMS code.
 
         Parameters
         ----------
-        If target_c and target_rho are given, the backscatter from a fluid-filled prolate
-        spheroid is returned, other the backscatter from a pressure release
-        prolate spheroid is returned.
-
-        freq is the acoustic frequency [Hz].
-
-        water_c is the acoustic sound speed [m/s] in the medium surrounding the prolate
-        spheroid.
-
-        a is the prolate spheroid major axis radius [m].
-
-        b is the prolate spheroid minor axis radius [m].
-
-        theta is the incident wave angle [rad] in the fore/aft direction
-        and corresponds to pitch. A value of 0 is end on (to the 'front' of the
-        prolate spheroid) and a value of 90 is the normal direction (dorsal),
-        while a value of 180 is end on (to the 'rear' of the prolate spheroid).
-
-        target_c is the acoustic sound speed [m/s] in the prolate sphereoid
-
-        target_rho is the density in the prolate spheroid
-
-        Refer to Figure 1 in Furusawa (1988) for further enlightnment.
+        medium_c : float
+            Sound speed in the fluid medium surrounding the target [m/s].
+        medium_rho : float
+            Density of the fluid medium surrounding the target [kg/m3].
+        a : float
+            Prolate spheroid major axis radius [m].
+        b : float
+            Prolate spheroid minor axis radius [m].
+        theta : float or array of float
+            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+            90 is dorsal, and 180 is tail on.
+        freqs : float or array of float
+            Frequencies to calculate the scattering at [Hz].
+        model_type : str
+            The model type. Supported model types are given in the model_types class variable.
+        target_c : float, optional
+            Sound speed in the fluid inside the target [m/s].
+            Only required for `model_type` of ``fluid filled``
+        target_rho : float, optional
+            Density of the fluid inside the target [kg/m^3].
+            Only required for `model_type` of ``fluid filled``
 
         Returns
         -------
-        The F/2a at the bottom of page 15 in Furusawa (1988) is returned. To get
-        TS from that, multiply by 2a and take 20*log10().
-
-        Calculating F/2a is a interative process - all intermediate values are
-        also returned so that you can check for convergence. The last element in
-        the returned vector is the best estimate.
+        ts : array of float with dimensions of (len(freq), len(angles)
+            The scatter from the object [dB re 1 m2].
+        freq : array of float
+            The frequencies that apply to TS [Hz].
+        angles : array of float
+            The pitch angles that apply to TS [degrees].
 
         Notes
         -----
         The backscattered target strength of a pressure release or fluid-filled prolate spheroid
         is calculated using the PSMS method of Furusawa [1] and corrections [2].
-
-        The modifications to calculate the fluid-filled option were kindly
-        provided by Halvor Hobæk, then of University of Bergen, Norway.
-
 
         .. [1] Furusawa, M. (1988). "Prolate spheroidal models for predicting general
             trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
@@ -231,6 +216,19 @@ class PSMSModel(ScatterModelBaseClass):
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261–265.
         """
+
+        theta_rad = theta[0] * np.pi/180.
+        ts_f = []
+        for f in freqs:
+            ts = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta_rad, f, model_type,
+                                         target_c, target_rho)
+            ts_f.append(ts)
+
+        return np.array(ts_f, theta, ndmin=2)
+
+    def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
+                           target_c=None, target_rho=None):
+        """Prolate spheroid modal series (PSMS) solution model."""
         match model_type:
             case 'pressure release' | 'fluid filled':
                 pass
@@ -352,7 +350,7 @@ class PSMSModel(ScatterModelBaseClass):
                 if (20*np.log10(f_all[-1]) - 20*np.log10(f_all[-2])) < 0.01:
                     break
 
-        return np.numpy(f_all)
+        return np.numpy(20*np.log10(2*a*f_all))
 
         def aswfa2(self, eta, m, n, h0):
             """Need eta argument to be first for use in quad()."""
