@@ -5,7 +5,7 @@ nav:
     - Contributing: contributing.md
     - API Reference: api_reference.md
 
-theme: readthedocs
+theme: mkdocs # readthedocs 
 
 plugins:
     - search
@@ -15,5 +15,6 @@ plugins:
                 options:
                     docstring_style: numpy
                     show_submodules: true
-                    show_bases: false
+                    show_symbol_type_heading: true
+                    show_bases: true
                     filters: ["!^__"] # exclude private Python class members
