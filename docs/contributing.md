@@ -6,12 +6,13 @@ An objective of echoSMs is to provide scattering models in a form that is easy t
 
 ## Units
 We use SI units for the model parameters and do not use SI prefixes for model inputs and outputs. The two exceptions to this are the use of degrees rather than radians for angles and the use of deciBels for target strength. 
+
 | Parameter | Units | Notes |
 |-----------|-------|--|
 |length, diameter, radius, thickness, etc|m||
 |density|kg/m³||
 |sound speed|m/s||
-|angle|°|See below for angle conventions|
+|angle|°|See below for coordinate conventions|
 |frequency|Hz||
 |target strength|dB|reference value is 1 m²|
 

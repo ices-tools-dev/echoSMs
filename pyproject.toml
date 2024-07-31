@@ -22,6 +22,7 @@ dependencies = [
 	"scipy",
 	"matplotlib",
 	"pandas",
+	"mkdocstrings[python]",
 ]
 
 classifiers = [
