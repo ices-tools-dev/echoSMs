@@ -22,8 +22,8 @@ class ScatterModelBaseClass:
         self.analytical_type = ''  # 'exact', 'approximate'
         self.model_types = []  # 'fixed rigid', 'pressure release', 'fluid filled'
         self.shapes = []  # the target shapes that this model can simulate
-        self.max_frequency = np.NaN  # [Hz]
-        self.min_frequency = np.NaN  # [Hz]
+        self.max_frequency = np.nan  # [Hz]
+        self.min_frequency = np.nan  # [Hz]
 
 
 class MSSModel(ScatterModelBaseClass):
@@ -97,7 +97,7 @@ class MSSModel(ScatterModelBaseClass):
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
-        return (freqs, theta, ts)
+        return (ts, freqs, theta)
 
     def __fluid_filled_ts_bs(self, medium_c, medium_rho, a, freqs, target_c, target_rho):
         """Fluid filled sphere model.
@@ -216,7 +216,6 @@ class PSMSModel(ScatterModelBaseClass):
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261–265.
         """
-
         theta_rad = theta[0] * np.pi/180.
         ts_f = []
         for f in freqs:
@@ -294,7 +293,7 @@ class PSMSModel(ScatterModelBaseClass):
                     case 'fluid filled':
                         # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
                         # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)
-                        print(m,n,h0,xi0,flush=True)
+                        # print(m,n,h0,xi0,flush=True)
                         r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
                         r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
                         r_type1B, dr_type1B, _, _ = pro_rad1(m, n, h0/hc, xi0)
