@@ -1,0 +1,244 @@
+# This file contains parameters for acoustic scattering models of relevance to fisheries acoustics.
+#
+# The initial set of model and parameters are those given in Jech et al, (2015). 
+#
+# Jech, J. M., Horne, J. K., Chu, D., Demer, D. A., Francis, D. T. I., Gorska, N., Jones, B., et al. 2015.
+# Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
+# Journal of the Acoustical Society of America, 138: 3742–3764, https://doi.org/10.1121/1.4937607
+
+# All values in this file must use the units given below. Add more as needed, using the conventions prescribed
+# by the CF metadata convention (https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#units).
+[units] 
+density = "kg/m^3"
+sound_speed = "m/s"
+radius = "m"
+length = "m"
+thickness = "m"
+
+# Model parameters (add more as needed).
+#
+# Model parameter names must end in one of the labels in the units section above as this provides the linkage
+# between a parameter value and its' unit.
+[parameters]
+# These values are from Jech at al, 2015.
+medium_sound_speed = 1477.4
+medium_density = 1026.8
+target_gas_density = 1.24
+target_gas_sound_speed = 345.0
+target_shell_gas_filled_density = 1070.0
+target_shell_gas_filled_sound_speed = 1570.0
+target_shell_pressure_release_density = 1028.9
+target_shell_pressure_release_sound_speed = 1480.3
+target_shell_weakly_density = 1028.9
+target_shell_weakly_sound_speed = 1480.3
+target_interior_weakly_density = 1031.0
+target_interior_weakly_sound_speed = 1483.3
+target_weakly_density = 1028.9
+target_weakly_sound_speed = 1480.3
+
+sphere_radius = 0.01
+prolate_spheroid_major_axis_radius = 0.07
+prolate_spheroid_minor_axis_radius = 0.01
+finite_cylinder_radius = 0.01
+finite_cylinder_length = 0.07
+sphere_shell_thickness = 0.001
+
+# These values are for testing of how to specify ranges or distributions of values
+example1_medium_sound_speed_dist = {type="normal", mean=1490, std=40, num=100} # normal distribution
+# Which of these two to support? Both? 
+example2_medium_sound_speed_dist = {type="linspace", start=1490, stop=1500, num=100} # 
+example3_medium_sound_speed_dist = {type="arange", start=1490, stop=1500, step=1} # stop is not guaranteed to be in the output
+
+# For each reference target, include a [[target]] section below.
+#
+# Where sensible, use names from the parameter section above for specifying 
+# target parameters (e.g., the sound speed, density, size, etc). Substitution of the
+# parameter names with their values from the parameters section should be done in the 
+# code that reads this file.
+#
+# The source item in each section should be used to identify the source of the model configuration.
+# It is expected that most model configurations will come from existing reports and/or papers, so use
+# a DOI or URL if avaiable, otherwise use a sufficiently detailed description of the source.
+
+[[target]]
+name = "fixed rigid sphere"
+shape = "sphere"
+model_type = "fixed rigid"
+description = "A fixed rigid sphere"
+a = "sphere_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "pressure release sphere"
+shape = "sphere"
+model_type = "pressure release"
+description = "A sphere with a pressure release surface"
+a = "sphere_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "gas filled sphere"
+shape = "sphere"
+model_type = "fluid filled"
+description = "A sphere with a fluid-filled interior with properties representative of air"
+a = "sphere_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "target_gas_density"
+target_c = "target_gas_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "weakly scattering sphere"
+shape = "sphere"
+model_type = "fluid filled"
+description = "A sphere with a fluid-filled interior with similar density and sound speed to the surrounding medium"
+a = "sphere_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "target_weakly_density"
+target_c = "target_weakly_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "spherical fluid shell with pressure release interior"
+shape = "sphere"
+model_type = "pressure release"
+description = "A fluid spherical shell with pressure release surface"
+a = "sphere_radius"
+t = "sphere_shell_thickness"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+shell_rho = "target_shell_pressure_release_density"
+shell_c = "target_shell_pressure_release_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "spherical fluid shell with gas interior"
+shape = "sphere"
+model_type = "fluid filled"
+description = "A fluid spherical shell with gas interior"
+a = "sphere_radius"
+t = "sphere_shell_thickness"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+shell_rho = "target_shell_pressure_release_density"
+shell_c = "target_shell_pressure_release_sound_speed"
+target_rho = "target_shell_gas_filled_density"
+target_c = "target_shell_gas_filled_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "spherical fluid shell with weakly scattering interior"
+shape = "sphere"
+model_type = "fluid filled"
+description = "A fluid spherical shell with a weakly scattering shell and interior"
+a = "sphere_radius"
+t = "sphere_shell_thickness"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+shell_rho = "target_shell_weakly_density"
+shell_c = "target_shell_weakly_sound_speed"
+target_rho = "target_interior_weakly_density"
+target_c = "target_interior_weakly_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "fixed rigid prolate spheroid"
+shape = "prolate spheroid"
+model_type = "fixed rigid"
+description = "A fixed rigid prolate spheroid"
+a = "prolate_spheroid_major_axis_radius"
+b = "prolate_spheroid_minor_axis_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "pressure release prolate spheroid"
+shape = "prolate spheroid"
+model_type = "pressure release"
+description = "A prolate spheroid with a pressure release surface"
+a = "prolate_spheroid_major_axis_radius"
+b = "prolate_spheroid_minor_axis_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "gas filled prolate spheroid"
+shape = "prolate spheroid"
+model_type = "fluid filled"
+description = "A prolate spheroid with a fluid-filled interior with properties representative of air"
+a = "prolate_spheroid_major_axis_radius"
+b = "prolate_spheroid_minor_axis_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "target_gas_density"
+target_c = "target_gas_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "weakly scattering prolate spheroid"
+shape = "prolate spheroid"
+model_type = "fluid filled"
+description = "A prolate spheroid with a fluid-filled interior with similar properties to the surrounding medium"
+a = "prolate_spheroid_major_axis_radius"
+b = "prolate_spheroid_minor_axis_radius"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "target_weakly_density"
+target_c = "target_weakly_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "fixed rigid finite cylinder"
+shape = "finite cylinder"
+model_type = "fixed rigid"
+description = "A fixed rigid finite cylinder"
+a = "finite_cylinder_radius"
+b = "finite_cylinder_length"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "pressure release finite cylinder"
+shape = "finite cylinder"
+model_type = "pressure release"
+description = "A finite cylinder with a pressure release surface"
+a = "finite_cylinder_radius"
+b = "finite_cylinder_length"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "gas filled finite cylinder"
+shape = "finite cylinder"
+model_type = "fluid filled"
+description = "A finite cylinder with fluid-filled interior with properties representative of air"
+a = "finite_cylinder_radius"
+b = "finite_cylinder_length"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "target_gas_density"
+target_c = "target_gas_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "weakly scattering finite cylinder"
+shape = "finite cylinder"
+model_type = "weakly scattering"
+description = "A finite cylinder with fluid-filled interior with properties similar to the surrounding medium"
+a = "finite_cylinder_radius"
+b = "finite_cylinder_length"
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "target_weakly_density"
+target_c = "target_weakly_sound_speed"
+source = "https://doi.org/10.1121/1.4937607"
