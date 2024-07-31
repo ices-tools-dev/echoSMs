@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>API Reference - echoSMs</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "API Reference";
+        var mkdocs_page_input_path = "api_reference.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> echoSMs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../benchmark_data/">Benchmarks</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">API Reference</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#echosms">echosms</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#echosms.benchmarkdata">benchmarkdata</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#echosms.benchmarkdata.BenchMarkData">BenchMarkData</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.benchmarkdata.BenchMarkData.dataset_angle">dataset_angle</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.benchmarkdata.BenchMarkData.dataset_freq">dataset_freq</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#echosms.referencemodels">referencemodels</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels">ReferenceModels</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels.get_model_parameters">get_model_parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels.model_names">model_names</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels.models">models</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#echosms.scattermodels">scattermodels</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#echosms.scattermodels.MSSModel">MSSModel</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.scattermodels.MSSModel.calculate_ts">calculate_ts</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#echosms.scattermodels.PSMSModel">PSMSModel</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.scattermodels.PSMSModel.calculate_ts">calculate_ts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#echosms.scattermodels.PSMSModel.calculate_ts_one_f">calculate_ts_one_f</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#echosms.scattermodels.ScatterModelBaseClass">ScatterModelBaseClass</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">echoSMs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="api-reference">API reference</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="echosms"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="echosms.benchmarkdata" class="doc doc-heading">
+            <code>benchmarkdata</code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Provide ready access to the benchmark data.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="echosms.benchmarkdata.BenchMarkData" class="doc doc-heading">
+            <code>BenchMarkData</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+      <p>Convenient interface to the benchmark dataset.</p>
+<p>This dataset contains the TS values from Jech et al., 2015.</p>
+<p>Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
+Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
+Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
+Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/10.1121/1.4937607</p>
+
+              <details class="quote">
+                <summary>Source code in <code>echosms\benchmarkdata.py</code></summary>
+                <pre class="highlight"><code class="language-python">class BenchMarkData:
+    """Convenient interface to the benchmark dataset.
+
+    This dataset contains the TS values from Jech et al., 2015.
+
+    Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
+    Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
+    Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
+    Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/10.1121/1.4937607
+    """
+
+    def __init__(self):
+
+        data_directory = Path(__file__).parent/Path('resources')/Path('BenchMark_Data')
+
+        angle_data_file = data_directory/'Benchmark_Angle_TS.csv'
+        freq_data_file = data_directory/'Benchmark_Frequency_TS.csv'
+
+        self.angle_data = pd.read_csv(angle_data_file)
+        self.freq_data = pd.read_csv(freq_data_file)
+
+    def dataset_angle(self):
+        """Return a Pandas dataframe containing the TS as a function of incidence angle dataset."""
+        return self.angle_data
+
+    def dataset_freq(self):
+        """Return a Pandas dataframe containing the TS as a function of frequency dataset."""
+        return self.freq_data</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.benchmarkdata.BenchMarkData.dataset_angle" class="doc doc-heading">
+            <code class="highlight language-python">dataset_angle()</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Return a Pandas dataframe containing the TS as a function of incidence angle dataset.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>echosms\benchmarkdata.py</code></summary>
+              <pre class="highlight"><code class="language-python">def dataset_angle(self):
+    """Return a Pandas dataframe containing the TS as a function of incidence angle dataset."""
+    return self.angle_data</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.benchmarkdata.BenchMarkData.dataset_freq" class="doc doc-heading">
+            <code class="highlight language-python">dataset_freq()</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Return a Pandas dataframe containing the TS as a function of frequency dataset.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>echosms\benchmarkdata.py</code></summary>
+              <pre class="highlight"><code class="language-python">def dataset_freq(self):
+    """Return a Pandas dataframe containing the TS as a function of frequency dataset."""
+    return self.freq_data</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="echosms.referencemodels" class="doc doc-heading">
+            <code>referencemodels</code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Reference model parameters.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="echosms.referencemodels.ReferenceModels" class="doc doc-heading">
+            <code>ReferenceModels</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+      <p>Provide access to reference scattering model parameters.</p>
+
+              <details class="quote">
+                <summary>Source code in <code>echosms\referencemodels.py</code></summary>
+                <pre class="highlight"><code class="language-python">class ReferenceModels:
+    """Provide access to reference scattering model parameters."""
+
+    def __init__(self):
+        self.defsFilename = Path(__file__).parent/Path('resources')/Path('target definitions.toml')
+
+        with open(self.defsFilename, 'rb') as f:
+            self.defs = tomllib.load(f)
+
+        # check that the names parameter is unique across all models
+
+        # Substitute parameters names in the target section by the values of those
+        # parameters.
+        for t in self.defs['target']:
+            for k, v in t.items():
+                try:
+                    t[k] = self.defs['parameters'][v]
+                except (KeyError, TypeError):
+                    pass
+
+    def models(self):
+        """Return the full set of model definitions."""
+        return self.defs
+
+    def model_names(self):
+        """Return the names of all model definitions."""
+        return [n['name'] for n in self.defs['target']]
+
+    def get_model_parameters(self, name):
+        """Get the model defintions for a particular model."""
+        models = pd.DataFrame(self.defs['target'])
+        m = models.query('name == @name')
+        if len(m) == 1:
+            m.dropna(axis=1, how='all', inplace=True)
+            return m.iloc[0].to_dict()
+        else:
+            return None</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.referencemodels.ReferenceModels.get_model_parameters" class="doc doc-heading">
+            <code class="highlight language-python">get_model_parameters(name)</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Get the model defintions for a particular model.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>echosms\referencemodels.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_model_parameters(self, name):
+    """Get the model defintions for a particular model."""
+    models = pd.DataFrame(self.defs['target'])
+    m = models.query('name == @name')
+    if len(m) == 1:
+        m.dropna(axis=1, how='all', inplace=True)
+        return m.iloc[0].to_dict()
+    else:
+        return None</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.referencemodels.ReferenceModels.model_names" class="doc doc-heading">
+            <code class="highlight language-python">model_names()</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Return the names of all model definitions.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>echosms\referencemodels.py</code></summary>
+              <pre class="highlight"><code class="language-python">def model_names(self):
+    """Return the names of all model definitions."""
+    return [n['name'] for n in self.defs['target']]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.referencemodels.ReferenceModels.models" class="doc doc-heading">
+            <code class="highlight language-python">models()</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Return the full set of model definitions.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>echosms\referencemodels.py</code></summary>
+              <pre class="highlight"><code class="language-python">def models(self):
+    """Return the full set of model definitions."""
+    return self.defs</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="echosms.scattermodels" class="doc doc-heading">
+            <code>scattermodels</code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Classes that provide acoustic scattering models.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="echosms.scattermodels.MSSModel" class="doc doc-heading">
+            <code>MSSModel</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+      <p>Modal series solution (MSS) scattering model.</p>
+<p>This class contains methods to calculate acoustic scatter from spheres and shells with various
+boundary conditions.</p>
+
+              <details class="quote">
+                <summary>Source code in <code>echosms\scattermodels.py</code></summary>
+                <pre class="highlight"><code class="language-python">class MSSModel(ScatterModelBaseClass):
+    """Modal series solution (MSS) scattering model.
+
+    This class contains methods to calculate acoustic scatter from spheres and shells with various
+    boundary conditions.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.long_name = 'modal series solution'
+        self.short_name = 'mss'
+        self.analytical_type = 'exact'
+        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
+        self.shapes = ['sphere']
+        self.max_frequency = 400.0e3  # [Hz]
+        self.min_frequency = 1.0  # [Hz]
+
+    def calculate_ts(self, medium_c, medium_rho, a, theta, freqs, model_type,
+                     target_c=None, target_rho=None, **kwargs):
+        """
+        Calculate the scatter using the mss model.
+
+        Parameters
+        ----------
+        medium_c : float
+            Sound speed in the fluid medium surrounding the target [m/s].
+        medium_rho : float
+            Density of the fluid medium surrounding the target [kg/m3].
+        a : float
+            Radius of the spherical target [m].
+        theta : float or array of float
+            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+            90 is dorsal, and 180 is tail on.
+        freqs : float or array of float
+            Frequencies to calculate the scattering at [Hz].
+        model_type : str
+            The model type. Supported model types are given in the model_types class variable.
+        target_c : float, optional
+            Sound speed in the fluid inside the sphere [m/s].
+            Only required for `model_type` of ``fluid filled``
+        target_rho : float, optional
+            Density of the fluid inside the sphere [kg/m^3].
+            Only required for `model_type` of ``fluid filled``
+
+        Returns
+        -------
+        ts : array of float with dimensions of (len(freq), len(angles)
+            The scatter from the object [dB re 1 m2].
+        freq : array of float
+            The frequencies that apply to TS [Hz].
+        angles : array of float
+            The pitch angles that apply to TS [degrees].
+
+        Notes
+        -----
+        The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.
+        The Journal of the Acoustical Society of America, 22: 426–431.
+        (https://doi.org/10.1121/1.1906621)
+        """
+        # pylint: disable=too-many-locals
+
+        match model_type:
+            case 'fixed rigid' | 'pressure release':
+                raise ValueError(f'Model type "{model_type}" has not yet been implemented '
+                                 f'for the {self.long_name} model.')
+            case 'fluid filled':
+                (freqs, theta, ts) = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, freqs,
+                                                               target_c, target_rho)
+            case _:
+                raise ValueError(f'The {self.long_name} model does not support '
+                                 f'a model type of "{model_type}".')
+        return (ts, freqs, theta)
+
+    def __fluid_filled_ts_bs(self, medium_c, medium_rho, a, freqs, target_c, target_rho):
+        """Fluid filled sphere model.
+
+        This implementation only calculates the backscatter (theta=90deg).
+        """
+        # Fixed model parameters
+        # maximum order. Can be changed to improve precision
+        order_max = 20
+
+        # reflectivity coefficient
+        refl = []
+
+        # sound speed (h) and density (g) contrasts
+        g = target_rho/medium_rho
+        h = target_c/medium_c
+
+        ###
+        # reflectivity coefficient
+        # Bessel functions from SciPy
+        # spherical Bessel function of the 2nd kind is the Neumann function
+        # Anderson uses Neumann function notation
+        for f in freqs:
+            real = 0.0  # real component
+            imag = 0.0  # imaginary component
+
+            ka_sphere = (2*np.pi*f/target_c)*a
+            ka_water = (2*np.pi*f/medium_c)*a
+            for m in range(order_max):
+                sphjkas = m/ka_sphere * spherical_jn(m, ka_sphere) - \
+                    spherical_jn(m+1, ka_sphere)
+                sphjkaw = m/ka_water * spherical_jn(m, ka_water) - \
+                    spherical_jn(m+1, ka_water)
+                sphykaw = m/ka_water * spherical_yn(m, ka_water) - \
+                    spherical_yn(m+1, ka_water)
+
+                numer = sphjkas/sphjkaw * \
+                    spherical_yn(m, ka_water) / spherical_jn(m, ka_sphere) - \
+                    sphykaw/sphjkaw * g*h
+                denom = sphjkas/sphjkaw * \
+                    spherical_jn(m, ka_water) / spherical_jn(m, ka_sphere) - g*h
+
+                cscat = numer/denom
+                real += ((-1.)**m) * (2.*m+1) / (1.+cscat**2)
+                imag += ((-1.)**m) * (2.*m+1) * cscat/(1.+cscat**2)
+
+            refl.append((2/ka_water) * np.sqrt(real**2+imag**2))
+
+        # convert to numpy arrays
+        refl = np.array(refl, dtype=float, ndmin=2).T
+
+        # convert to target strength (TS re 1 m^2 [dB])
+        ts = 10*np.log10((refl*a)**2 / 4.)
+
+        return (freqs, np.array([90.0]), ts)</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.scattermodels.MSSModel.calculate_ts" class="doc doc-heading">
+            <code class="highlight language-python">calculate_ts(medium_c, medium_rho, a, theta, freqs, model_type, target_c=None, target_rho=None, **kwargs)</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Calculate the scatter using the mss model.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>medium_c</code></b>
+                  (<code>float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Sound speed in the fluid medium surrounding the target [m/s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>medium_rho</code></b>
+                  (<code>float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Density of the fluid medium surrounding the target [kg/m3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>a</code></b>
+                  (<code>float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical target [m].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>theta</code></b>
+                  (<code>float or array of float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+90 is dorsal, and 180 is tail on.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>freqs</code></b>
+                  (<code>float or array of float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Frequencies to calculate the scattering at [Hz].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>model_type</code></b>
+                  (<code>str</code>)
+              –
+              <div class="doc-md-description">
+                <p>The model type. Supported model types are given in the model_types class variable.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>target_c</code></b>
+                  (<code>float</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Sound speed in the fluid inside the sphere [m/s].
+Only required for <code>model_type</code> of <code>fluid filled</code></p>
+              </div>
+            </li>
+            <li>
+              <b><code>target_rho</code></b>
+                  (<code>float</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Density of the fluid inside the sphere [kg/m^3].
+Only required for <code>model_type</code> of <code>fluid filled</code></p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>ts</code></b>(                  <code>array of float with dimensions of (len(freq), len(angles)</code>
+)              –
+              <div class="doc-md-description">
+                <p>The scatter from the object [dB re 1 m2].</p>
+              </div>
+            </li>
+            <li>
+<b><code>freq</code></b>(                  <code>array of float</code>
+)              –
+              <div class="doc-md-description">
+                <p>The frequencies that apply to TS [Hz].</p>
+              </div>
+            </li>
+            <li>
+<b><code>angles</code></b>(                  <code>array of float</code>
+)              –
+              <div class="doc-md-description">
+                <p>The pitch angles that apply to TS [degrees].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.
+The Journal of the Acoustical Society of America, 22: 426–431.
+(https://doi.org/10.1121/1.1906621)</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>echosms\scattermodels.py</code></summary>
+              <pre class="highlight"><code class="language-python">def calculate_ts(self, medium_c, medium_rho, a, theta, freqs, model_type,
+                 target_c=None, target_rho=None, **kwargs):
+    """
+    Calculate the scatter using the mss model.
+
+    Parameters
+    ----------
+    medium_c : float
+        Sound speed in the fluid medium surrounding the target [m/s].
+    medium_rho : float
+        Density of the fluid medium surrounding the target [kg/m3].
+    a : float
+        Radius of the spherical target [m].
+    theta : float or array of float
+        Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+        90 is dorsal, and 180 is tail on.
+    freqs : float or array of float
+        Frequencies to calculate the scattering at [Hz].
+    model_type : str
+        The model type. Supported model types are given in the model_types class variable.
+    target_c : float, optional
+        Sound speed in the fluid inside the sphere [m/s].
+        Only required for `model_type` of ``fluid filled``
+    target_rho : float, optional
+        Density of the fluid inside the sphere [kg/m^3].
+        Only required for `model_type` of ``fluid filled``
+
+    Returns
+    -------
+    ts : array of float with dimensions of (len(freq), len(angles)
+        The scatter from the object [dB re 1 m2].
+    freq : array of float
+        The frequencies that apply to TS [Hz].
+    angles : array of float
+        The pitch angles that apply to TS [degrees].
+
+    Notes
+    -----
+    The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.
+    The Journal of the Acoustical Society of America, 22: 426–431.
+    (https://doi.org/10.1121/1.1906621)
+    """
+    # pylint: disable=too-many-locals
+
+    match model_type:
+        case 'fixed rigid' | 'pressure release':
+            raise ValueError(f'Model type "{model_type}" has not yet been implemented '
+                             f'for the {self.long_name} model.')
+        case 'fluid filled':
+            (freqs, theta, ts) = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, freqs,
+                                                           target_c, target_rho)
+        case _:
+            raise ValueError(f'The {self.long_name} model does not support '
+                             f'a model type of "{model_type}".')
+    return (ts, freqs, theta)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="echosms.scattermodels.PSMSModel" class="doc doc-heading">
+            <code>PSMSModel</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+      <p>Prolate spheroidal modal series (PSMS) scattering model.</p>
+
+              <details class="quote">
+                <summary>Source code in <code>echosms\scattermodels.py</code></summary>
+                <pre class="highlight"><code class="language-python">class PSMSModel(ScatterModelBaseClass):
+    """Prolate spheroidal modal series (PSMS) scattering model."""
+
+    def __init__(self):
+        super().__init__()
+        self.long_name = 'prolate spheroidal modal series'
+        self.short_name = 'psms'
+        self.analytical_type = 'exact'
+        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
+        self.shapes = ['prolate spheroid']
+        self.max_frequency = 200.0e3  # [Hz]
+        self.min_frequency = 1.0  # [Hz]
+
+    def calculate_ts(self, medium_c, medium_rho, a, b, theta, freqs, model_type,
+                     target_c=None, target_rho=None, **kwargs):
+        """Manage the calling of the single frequency, single angle version of the PSMS code.
+
+        Parameters
+        ----------
+        medium_c : float
+            Sound speed in the fluid medium surrounding the target [m/s].
+        medium_rho : float
+            Density of the fluid medium surrounding the target [kg/m3].
+        a : float
+            Prolate spheroid major axis radius [m].
+        b : float
+            Prolate spheroid minor axis radius [m].
+        theta : float or array of float
+            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+            90 is dorsal, and 180 is tail on.
+        freqs : float or array of float
+            Frequencies to calculate the scattering at [Hz].
+        model_type : str
+            The model type. Supported model types are given in the model_types class variable.
+        target_c : float, optional
+            Sound speed in the fluid inside the target [m/s].
+            Only required for `model_type` of ``fluid filled``
+        target_rho : float, optional
+            Density of the fluid inside the target [kg/m^3].
+            Only required for `model_type` of ``fluid filled``
+
+        Returns
+        -------
+        ts : array of float with dimensions of (len(freq), len(angles)
+            The scatter from the object [dB re 1 m2].
+        freq : array of float
+            The frequencies that apply to TS [Hz].
+        angles : array of float
+            The pitch angles that apply to TS [degrees].
+
+        Notes
+        -----
+        The backscattered target strength of a pressure release or fluid-filled prolate spheroid
+        is calculated using the PSMS method of Furusawa [1] and corrections [2].
+
+        .. [1] Furusawa, M. (1988). "Prolate spheroidal models for predicting general
+            trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
+        .. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
+            “Prediction of krill target strength by liquid prolate spheroid
+            model,” Fish. Sci., 60, 261–265.
+        """
+
+        theta_rad = theta[0] * np.pi/180.
+        ts_f = []
+        for f in freqs:
+            ts = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta_rad, f, model_type,
+                                         target_c, target_rho)
+            ts_f.append(ts)
+
+        return np.array(ts_f, theta, ndmin=2)
+
+    def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
+                           target_c=None, target_rho=None):
+        """Prolate spheroid modal series (PSMS) solution model."""
+        match model_type:
+            case 'pressure release' | 'fluid filled':
+                pass
+            case 'fixed rigid':
+                raise ValueError(f'Model type "{model_type}" has not yet been implemented '
+                                 f'for the {self.long_name} model.')
+            case _:
+                raise ValueError(f'The {self.long_name} model does not support '
+                                 f'a model type of "{model_type}".')
+
+        if model_type == 'fluid filled':
+            hc = target_c / medium_c
+            rh = target_rho / medium_rho
+
+        # The wavenumber for the surrounding fluid
+        k0 = 2*np.pi*freq/medium_c
+        # The semi-focal length of the prolate spheroid (same as for an ellipse)
+        q = np.sqrt(a*a - b*b)
+        # An alternative to ka is kq, the wavenumber multiplied by the focal length
+        h0 = k0 * q
+        # Epsilon is a characteristic of the spheroid, whereby a = xi0 * q,
+        # hence converting this to use a and b gives:
+        xi0 = (1.0 - (b/a)**2)**(-.5)
+        # Phi, the port/starboard angle is fixed for this code
+        phi_inc = np.pi  # radians, incident direction
+        phi_bs = 0  # radians, backscattered direction
+
+        # Approximate limits on the summations
+        m_max = int(np.ceil(2*k0*b))
+        n_max = int(m_max + np.ceil(h0/2))
+
+        # Terms in the summation smaller than this will cause the iteration to
+        # stop. Even and odd values of (m-n) are treated separately.
+        # The value is quite low as some of the summations start out low then rise
+        # quite a lot. This value will get rid of the summations that don't add
+        # much.
+        tol = -50  # [dB]
+        check_after = 20  # iterations
+
+        f = 0.0
+        f_all = []
+        idx = 1
+        for m in range(m_max+1):
+            # epsilon is the Neumann factor, a rather obtuse way of saying this:
+            epsilon = 1 if m == 0 else 2
+
+            # reset the tolerance flags for the new m
+            even_reached_tol = False
+            odd_reached_tol = False
+
+            for n in range(m, n_max+1):
+                even = True if (m-n) % 2 == 0 else False
+
+                if (even and even_reached_tol) or (not even and odd_reached_tol):
+                    continue
+
+                # s_bs = aswfb(m, n, h0, cos(theta), 1)
+                # s_inc = aswfb(m, n, h0, cos(pi - theta), 1)
+                s_bs = pro_ang1(m, n, h0, np.cos(theta))
+                s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))
+
+                match model_type:
+                    case 'fluid filled':
+                        # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
+                        # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)
+                        print(m,n,h0,xi0,flush=True)
+                        r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
+                        r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
+                        r_type1B, dr_type1B, _, _ = pro_rad1(m, n, h0/hc, xi0)
+
+                        eeA = r_type1A - rh*r_type1B/dr_type1B*dr_type1A
+                        eeB = eeA + 1j*(r_type2A - rh*r_type1B/dr_type1B*dr_type2A)
+                        aa = -eeA/eeB  # Furusawa (1988) Eq. 5 p 15
+                    case 'pressure release':
+                        # r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)
+                        r_type1, _ = pro_rad1(m, n, h0, xi0)
+                        r_type2, _ = pro_rad2(m, n, h0, xi0)
+                        aa = -r_type1/(r_type1 + 1j*r_type2)
+                    case 'fixed rigid':
+                        pass  # see eqn of (3) of Furusawa, 1988
+
+                # This definition of the norm of S is in Yeh (1967), and is equation
+                # 21.7.11 in Abramowitz &amp; Stegun (10th printing) as the
+                # Meixner-Schãfke normalisation scheme. Note that the RHS of
+                # 21.7.11 doesn't give correct results compared to doing the actual
+                # integration. Note also that the plain Matlab quad() function
+                # fails to give correct answers also in some cases, so the quadgk()
+                # function is used.
+                #
+                # Yeh, C. (1967). "Scattering of Acoustic Waves by a Penetrable
+                #   Prolate Spheroid I Liquid Prolate Spheroid," J. Acoust. Soc.
+                #   Am. 42, 518-521.
+                #
+                # Abramowitz, M., and Stegun, I. A. (1964). Handbook of
+                #   Mathematical Functions with Formulas, Graphs, and Mathematical
+                #   Tables (Dover, New York), 10th ed.
+
+                # Matlab code uses quadgk as plain quad didn't work....
+                n_mn = quad(self.aswfa2, -1, 1, args=(m, n, h0), epsrel=1e-5)
+
+                x = epsilon / n_mn * s_inc * aa * s_bs * np.cos(m*(phi_bs - phi_inc))
+                f += x
+
+                tsx = 20*np.log10(abs(2/(1j*k0)*x) / (2*a))
+
+                if n &gt; (m+check_after):
+                    if even and (tsx &lt; tol):
+                        even_reached_tol = True
+                    elif not even and (tsx &lt; tol):
+                        odd_reached_tol = True
+
+                # Apply the final factor and normalise to make it independent of
+                # the physical size of the spheroid
+                f_all.append(abs(2.0 / (1j*k0) * f) / (2.0*a))
+                idx = idx + 1
+
+            # end the iterations if the overall TS change is small
+            if idx &gt;= check_after:
+                if (20*np.log10(f_all[-1]) - 20*np.log10(f_all[-2])) &lt; 0.01:
+                    break
+
+        return np.numpy(20*np.log10(2*a*f_all))
+
+        def aswfa2(self, eta, m, n, h0):
+            """Need eta argument to be first for use in quad()."""
+            # Calculates the square of S_mn for the given values of eta.
+            return pro_ang1(m, n, h0, eta)[0]**2</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.scattermodels.PSMSModel.calculate_ts" class="doc doc-heading">
+            <code class="highlight language-python">calculate_ts(medium_c, medium_rho, a, b, theta, freqs, model_type, target_c=None, target_rho=None, **kwargs)</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Manage the calling of the single frequency, single angle version of the PSMS code.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>medium_c</code></b>
+                  (<code>float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Sound speed in the fluid medium surrounding the target [m/s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>medium_rho</code></b>
+                  (<code>float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Density of the fluid medium surrounding the target [kg/m3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>a</code></b>
+                  (<code>float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Prolate spheroid major axis radius [m].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b</code></b>
+                  (<code>float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Prolate spheroid minor axis radius [m].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>theta</code></b>
+                  (<code>float or array of float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+90 is dorsal, and 180 is tail on.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>freqs</code></b>
+                  (<code>float or array of float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Frequencies to calculate the scattering at [Hz].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>model_type</code></b>
+                  (<code>str</code>)
+              –
+              <div class="doc-md-description">
+                <p>The model type. Supported model types are given in the model_types class variable.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>target_c</code></b>
+                  (<code>float</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Sound speed in the fluid inside the target [m/s].
+Only required for <code>model_type</code> of <code>fluid filled</code></p>
+              </div>
+            </li>
+            <li>
+              <b><code>target_rho</code></b>
+                  (<code>float</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Density of the fluid inside the target [kg/m^3].
+Only required for <code>model_type</code> of <code>fluid filled</code></p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>ts</code></b>(                  <code>array of float with dimensions of (len(freq), len(angles)</code>
+)              –
+              <div class="doc-md-description">
+                <p>The scatter from the object [dB re 1 m2].</p>
+              </div>
+            </li>
+            <li>
+<b><code>freq</code></b>(                  <code>array of float</code>
+)              –
+              <div class="doc-md-description">
+                <p>The frequencies that apply to TS [Hz].</p>
+              </div>
+            </li>
+            <li>
+<b><code>angles</code></b>(                  <code>array of float</code>
+)              –
+              <div class="doc-md-description">
+                <p>The pitch angles that apply to TS [degrees].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The backscattered target strength of a pressure release or fluid-filled prolate spheroid
+is calculated using the PSMS method of Furusawa [1] and corrections [2].</p>
+<p>.. [1] Furusawa, M. (1988). "Prolate spheroidal models for predicting general
+    trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
+.. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
+    “Prediction of krill target strength by liquid prolate spheroid
+    model,” Fish. Sci., 60, 261–265.</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>echosms\scattermodels.py</code></summary>
+              <pre class="highlight"><code class="language-python">def calculate_ts(self, medium_c, medium_rho, a, b, theta, freqs, model_type,
+                 target_c=None, target_rho=None, **kwargs):
+    """Manage the calling of the single frequency, single angle version of the PSMS code.
+
+    Parameters
+    ----------
+    medium_c : float
+        Sound speed in the fluid medium surrounding the target [m/s].
+    medium_rho : float
+        Density of the fluid medium surrounding the target [kg/m3].
+    a : float
+        Prolate spheroid major axis radius [m].
+    b : float
+        Prolate spheroid minor axis radius [m].
+    theta : float or array of float
+        Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+        90 is dorsal, and 180 is tail on.
+    freqs : float or array of float
+        Frequencies to calculate the scattering at [Hz].
+    model_type : str
+        The model type. Supported model types are given in the model_types class variable.
+    target_c : float, optional
+        Sound speed in the fluid inside the target [m/s].
+        Only required for `model_type` of ``fluid filled``
+    target_rho : float, optional
+        Density of the fluid inside the target [kg/m^3].
+        Only required for `model_type` of ``fluid filled``
+
+    Returns
+    -------
+    ts : array of float with dimensions of (len(freq), len(angles)
+        The scatter from the object [dB re 1 m2].
+    freq : array of float
+        The frequencies that apply to TS [Hz].
+    angles : array of float
+        The pitch angles that apply to TS [degrees].
+
+    Notes
+    -----
+    The backscattered target strength of a pressure release or fluid-filled prolate spheroid
+    is calculated using the PSMS method of Furusawa [1] and corrections [2].
+
+    .. [1] Furusawa, M. (1988). "Prolate spheroidal models for predicting general
+        trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
+    .. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
+        “Prediction of krill target strength by liquid prolate spheroid
+        model,” Fish. Sci., 60, 261–265.
+    """
+
+    theta_rad = theta[0] * np.pi/180.
+    ts_f = []
+    for f in freqs:
+        ts = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta_rad, f, model_type,
+                                     target_c, target_rho)
+        ts_f.append(ts)
+
+    return np.array(ts_f, theta, ndmin=2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="echosms.scattermodels.PSMSModel.calculate_ts_one_f" class="doc doc-heading">
+            <code class="highlight language-python">calculate_ts_one_f(medium_c, medium_rho, a, b, theta, freq, model_type, target_c=None, target_rho=None)</code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Prolate spheroid modal series (PSMS) solution model.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>echosms\scattermodels.py</code></summary>
+              <pre class="highlight"><code class="language-python">def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
+                       target_c=None, target_rho=None):
+    """Prolate spheroid modal series (PSMS) solution model."""
+    match model_type:
+        case 'pressure release' | 'fluid filled':
+            pass
+        case 'fixed rigid':
+            raise ValueError(f'Model type "{model_type}" has not yet been implemented '
+                             f'for the {self.long_name} model.')
+        case _:
+            raise ValueError(f'The {self.long_name} model does not support '
+                             f'a model type of "{model_type}".')
+
+    if model_type == 'fluid filled':
+        hc = target_c / medium_c
+        rh = target_rho / medium_rho
+
+    # The wavenumber for the surrounding fluid
+    k0 = 2*np.pi*freq/medium_c
+    # The semi-focal length of the prolate spheroid (same as for an ellipse)
+    q = np.sqrt(a*a - b*b)
+    # An alternative to ka is kq, the wavenumber multiplied by the focal length
+    h0 = k0 * q
+    # Epsilon is a characteristic of the spheroid, whereby a = xi0 * q,
+    # hence converting this to use a and b gives:
+    xi0 = (1.0 - (b/a)**2)**(-.5)
+    # Phi, the port/starboard angle is fixed for this code
+    phi_inc = np.pi  # radians, incident direction
+    phi_bs = 0  # radians, backscattered direction
+
+    # Approximate limits on the summations
+    m_max = int(np.ceil(2*k0*b))
+    n_max = int(m_max + np.ceil(h0/2))
+
+    # Terms in the summation smaller than this will cause the iteration to
+    # stop. Even and odd values of (m-n) are treated separately.
+    # The value is quite low as some of the summations start out low then rise
+    # quite a lot. This value will get rid of the summations that don't add
+    # much.
+    tol = -50  # [dB]
+    check_after = 20  # iterations
+
+    f = 0.0
+    f_all = []
+    idx = 1
+    for m in range(m_max+1):
+        # epsilon is the Neumann factor, a rather obtuse way of saying this:
+        epsilon = 1 if m == 0 else 2
+
+        # reset the tolerance flags for the new m
+        even_reached_tol = False
+        odd_reached_tol = False
+
+        for n in range(m, n_max+1):
+            even = True if (m-n) % 2 == 0 else False
+
+            if (even and even_reached_tol) or (not even and odd_reached_tol):
+                continue
+
+            # s_bs = aswfb(m, n, h0, cos(theta), 1)
+            # s_inc = aswfb(m, n, h0, cos(pi - theta), 1)
+            s_bs = pro_ang1(m, n, h0, np.cos(theta))
+            s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))
+
+            match model_type:
+                case 'fluid filled':
+                    # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
+                    # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)
+                    print(m,n,h0,xi0,flush=True)
+                    r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
+                    r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
+                    r_type1B, dr_type1B, _, _ = pro_rad1(m, n, h0/hc, xi0)
+
+                    eeA = r_type1A - rh*r_type1B/dr_type1B*dr_type1A
+                    eeB = eeA + 1j*(r_type2A - rh*r_type1B/dr_type1B*dr_type2A)
+                    aa = -eeA/eeB  # Furusawa (1988) Eq. 5 p 15
+                case 'pressure release':
+                    # r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)
+                    r_type1, _ = pro_rad1(m, n, h0, xi0)
+                    r_type2, _ = pro_rad2(m, n, h0, xi0)
+                    aa = -r_type1/(r_type1 + 1j*r_type2)
+                case 'fixed rigid':
+                    pass  # see eqn of (3) of Furusawa, 1988
+
+            # This definition of the norm of S is in Yeh (1967), and is equation
+            # 21.7.11 in Abramowitz &amp; Stegun (10th printing) as the
+            # Meixner-Schãfke normalisation scheme. Note that the RHS of
+            # 21.7.11 doesn't give correct results compared to doing the actual
+            # integration. Note also that the plain Matlab quad() function
+            # fails to give correct answers also in some cases, so the quadgk()
+            # function is used.
+            #
+            # Yeh, C. (1967). "Scattering of Acoustic Waves by a Penetrable
+            #   Prolate Spheroid I Liquid Prolate Spheroid," J. Acoust. Soc.
+            #   Am. 42, 518-521.
+            #
+            # Abramowitz, M., and Stegun, I. A. (1964). Handbook of
+            #   Mathematical Functions with Formulas, Graphs, and Mathematical
+            #   Tables (Dover, New York), 10th ed.
+
+            # Matlab code uses quadgk as plain quad didn't work....
+            n_mn = quad(self.aswfa2, -1, 1, args=(m, n, h0), epsrel=1e-5)
+
+            x = epsilon / n_mn * s_inc * aa * s_bs * np.cos(m*(phi_bs - phi_inc))
+            f += x
+
+            tsx = 20*np.log10(abs(2/(1j*k0)*x) / (2*a))
+
+            if n &gt; (m+check_after):
+                if even and (tsx &lt; tol):
+                    even_reached_tol = True
+                elif not even and (tsx &lt; tol):
+                    odd_reached_tol = True
+
+            # Apply the final factor and normalise to make it independent of
+            # the physical size of the spheroid
+            f_all.append(abs(2.0 / (1j*k0) * f) / (2.0*a))
+            idx = idx + 1
+
+        # end the iterations if the overall TS change is small
+        if idx &gt;= check_after:
+            if (20*np.log10(f_all[-1]) - 20*np.log10(f_all[-2])) &lt; 0.01:
+                break
+
+    return np.numpy(20*np.log10(2*a*f_all))
+
+    def aswfa2(self, eta, m, n, h0):
+        """Need eta argument to be first for use in quad()."""
+        # Calculates the square of S_mn for the given values of eta.
+        return pro_ang1(m, n, h0, eta)[0]**2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="echosms.scattermodels.ScatterModelBaseClass" class="doc doc-heading">
+            <code>ScatterModelBaseClass</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+      <p>Base class for a class that provides a scattering model.</p>
+<p>All scattering models should inherit from this class and have a name that
+ends with 'Model'.</p>
+
+              <details class="quote">
+                <summary>Source code in <code>echosms\scattermodels.py</code></summary>
+                <pre class="highlight"><code class="language-python">class ScatterModelBaseClass:
+    """Base class for a class that provides a scattering model.
+
+    All scattering models should inherit from this class and have a name that
+    ends with 'Model'.
+    """
+
+    # pylint: disable=too-many-instance-attributes
+
+    def __init__(self):
+        self.long_name = ''  # the name in words
+        self.short_name = ''  # an abbreviation
+        self.analytical_type = ''  # 'exact', 'approximate'
+        self.model_types = []  # 'fixed rigid', 'pressure release', 'fluid filled'
+        self.shapes = []  # the target shapes that this model can simulate
+        self.max_frequency = np.nan  # [Hz]
+        self.min_frequency = np.nan  # [Hz]</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../contributing/" class="btn btn-neutral float-left" title="Contributing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../contributing/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
