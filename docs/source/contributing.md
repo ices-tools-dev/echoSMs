@@ -5,7 +5,7 @@ We welcome all contributions to echoSMs, be it code, test cases, bug reports, di
 An objective of echoSMs is to provide scattering models in a form that is easy to access, use, and compare to other models. To help with that, we specify model parameter units, angle conventions, and required model outputs that code contributions should support. We also suggest coding conventions that should be followed. 
 
 ## Units
-
+We use SI units for the model parameters and do not use SI prefixes for model inputs and outputs. The two exceptions to this are the use of degrees rather than radians for angles and the use of deciBels for target strength. 
 | Parameter | Units | Notes |
 |-----------|-------|--|
 |length, diameter, radius, thickness, etc|m||
