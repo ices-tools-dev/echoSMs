@@ -10,7 +10,7 @@ class ReferenceModels:
     """Provide access to reference scattering model parameters."""
 
     def __init__(self):
-        self.defsFilename = Path(r'target definitions.toml')
+        self.defsFilename = Path(__file__).parent/Path('resources')/Path('target definitions.toml')
 
         with open(self.defsFilename, 'rb') as f:
             self.defs = tomllib.load(f)
