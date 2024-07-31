@@ -9,18 +9,19 @@ packages = ["src/echosms"]
 name = 'echosms'
 version = '0.0.1'
 license = {file = "LICENSE"}
-keywords = ["acoustic", "scatter", "model"]
+keywords = ["acoustic", "backscatter", "model"]
 authors = [
   { name="Mike Jech"},
   { name="Gavin Macaulay"}
 ]
-description = 'Acoustic scattering models relevant to fisheries acoustics'
+description = 'Acoustic backscattering models used in aquatic ecosystem research'
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
 	"numpy",
 	"scipy",
 	"matplotlib",
+	"pandas",
 ]
 
 classifiers = [
