@@ -87,6 +87,7 @@ class MSSModel(ScatterModelBaseClass):
         """
         # pylint: disable=too-many-locals
 
+        # Call the appropriate function based on the model type.
         match model_type:
             case 'fixed rigid' | 'pressure release':
                 raise ValueError(f'Model type "{model_type}" has not yet been implemented '
