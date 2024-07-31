@@ -1,135 +1,114 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>API Reference - echoSMs</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
-    
-      <script>
-        // Current page data
-        var mkdocs_page_name = "API Reference";
-        var mkdocs_page_input_path = "api_reference.md";
-        var mkdocs_page_url = null;
-      </script>
-    
-    <!--[if lt IE 9]>
-      <script src="../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-</head>
-
-<body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> echoSMs
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
-
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../benchmark_data/">Benchmarks</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
-                </li>
-              </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">API Reference</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#echosms">echosms</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#echosms.benchmarkdata">benchmarkdata</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#echosms.benchmarkdata.BenchMarkData">BenchMarkData</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.benchmarkdata.BenchMarkData.dataset_angle">dataset_angle</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.benchmarkdata.BenchMarkData.dataset_freq">dataset_freq</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#echosms.referencemodels">referencemodels</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels">ReferenceModels</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels.get_model_parameters">get_model_parameters</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels.model_names">model_names</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.referencemodels.ReferenceModels.models">models</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#echosms.scattermodels">scattermodels</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#echosms.scattermodels.MSSModel">MSSModel</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.scattermodels.MSSModel.calculate_ts">calculate_ts</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#echosms.scattermodels.PSMSModel">PSMSModel</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.scattermodels.PSMSModel.calculate_ts">calculate_ts</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#echosms.scattermodels.PSMSModel.calculate_ts_one_f">calculate_ts_one_f</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#echosms.scattermodels.ScatterModelBaseClass">ScatterModelBaseClass</a>
-    </li>
-        </ul>
-    </li>
-    </ul>
-                </li>
-              </ul>
-      </div>
-    </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">echoSMs</a>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-      </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">API Reference</li>
-    <li class="wy-breadcrumbs-aside">
-    </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
-              
-                <h1 id="api-reference">API reference</h1>
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>API Reference - echoSMs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">echoSMs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Introduction</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../benchmark_data/" class="nav-link">Benchmarks</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../contributing/" class="nav-link">Contributing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">API Reference</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../contributing/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#api-reference" class="nav-link">API reference</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#echosms" class="nav-link">echosms</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#echosms.benchmarkdata" class="nav-link">benchmarkdata</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#echosms.referencemodels" class="nav-link">referencemodels</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#echosms.scattermodels" class="nav-link">scattermodels</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="api-reference">API reference</h1>
 
 
 <div class="doc doc-object doc-module">
@@ -157,7 +136,7 @@
 
 
 <h2 id="echosms.benchmarkdata" class="doc doc-heading">
-            <code>benchmarkdata</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <code>benchmarkdata</code>
 
 
 </h2>
@@ -182,7 +161,7 @@
 
 
 <h3 id="echosms.benchmarkdata.BenchMarkData" class="doc doc-heading">
-            <code>BenchMarkData</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>BenchMarkData</code>
 
 
 </h3>
@@ -200,34 +179,62 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
               <details class="quote">
                 <summary>Source code in <code>echosms\benchmarkdata.py</code></summary>
-                <pre class="highlight"><code class="language-python">class BenchMarkData:
-    """Convenient interface to the benchmark dataset.
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BenchMarkData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenient interface to the benchmark dataset.</span>
 
-    This dataset contains the TS values from Jech et al., 2015.
+<span class="sd">    This dataset contains the TS values from Jech et al., 2015.</span>
 
-    Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
-    Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
-    Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
-    Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/10.1121/1.4937607
-    """
+<span class="sd">    Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,</span>
+<span class="sd">    Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.</span>
+<span class="sd">    Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.</span>
+<span class="sd">    Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/10.1121/1.4937607</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    def __init__(self):
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        data_directory = Path(__file__).parent/Path('resources')/Path('BenchMark_Data')
+        <span class="n">data_directory</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">/</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">)</span><span class="o">/</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;BenchMark_Data&#39;</span><span class="p">)</span>
 
-        angle_data_file = data_directory/'Benchmark_Angle_TS.csv'
-        freq_data_file = data_directory/'Benchmark_Frequency_TS.csv'
+        <span class="n">angle_data_file</span> <span class="o">=</span> <span class="n">data_directory</span><span class="o">/</span><span class="s1">&#39;Benchmark_Angle_TS.csv&#39;</span>
+        <span class="n">freq_data_file</span> <span class="o">=</span> <span class="n">data_directory</span><span class="o">/</span><span class="s1">&#39;Benchmark_Frequency_TS.csv&#39;</span>
 
-        self.angle_data = pd.read_csv(angle_data_file)
-        self.freq_data = pd.read_csv(freq_data_file)
+        <span class="bp">self</span><span class="o">.</span><span class="n">angle_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">angle_data_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">freq_data_file</span><span class="p">)</span>
 
-    def dataset_angle(self):
-        """Return a Pandas dataframe containing the TS as a function of incidence angle dataset."""
-        return self.angle_data
+    <span class="k">def</span> <span class="nf">dataset_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a Pandas dataframe containing the TS as a function of incidence angle dataset.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle_data</span>
 
-    def dataset_freq(self):
-        """Return a Pandas dataframe containing the TS as a function of frequency dataset."""
-        return self.freq_data</code></pre>
+    <span class="k">def</span> <span class="nf">dataset_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a Pandas dataframe containing the TS as a function of frequency dataset.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_data</span>
+</code></pre></div></td></tr></table></div>
               </details>
 
 
@@ -246,7 +253,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h4 id="echosms.benchmarkdata.BenchMarkData.dataset_angle" class="doc doc-heading">
-            <code class="highlight language-python">dataset_angle()</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">dataset_angle</span><span class="p">()</span></code>
 
 </h4>
 
@@ -257,9 +264,12 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
             <details class="quote">
               <summary>Source code in <code>echosms\benchmarkdata.py</code></summary>
-              <pre class="highlight"><code class="language-python">def dataset_angle(self):
-    """Return a Pandas dataframe containing the TS as a function of incidence angle dataset."""
-    return self.angle_data</code></pre>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">dataset_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a Pandas dataframe containing the TS as a function of incidence angle dataset.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle_data</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -269,7 +279,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h4 id="echosms.benchmarkdata.BenchMarkData.dataset_freq" class="doc doc-heading">
-            <code class="highlight language-python">dataset_freq()</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">dataset_freq</span><span class="p">()</span></code>
 
 </h4>
 
@@ -280,9 +290,12 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
             <details class="quote">
               <summary>Source code in <code>echosms\benchmarkdata.py</code></summary>
-              <pre class="highlight"><code class="language-python">def dataset_freq(self):
-    """Return a Pandas dataframe containing the TS as a function of frequency dataset."""
-    return self.freq_data</code></pre>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">dataset_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a Pandas dataframe containing the TS as a function of frequency dataset.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_data</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -310,7 +323,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h2 id="echosms.referencemodels" class="doc doc-heading">
-            <code>referencemodels</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <code>referencemodels</code>
 
 
 </h2>
@@ -335,7 +348,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h3 id="echosms.referencemodels.ReferenceModels" class="doc doc-heading">
-            <code>ReferenceModels</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>ReferenceModels</code>
 
 
 </h3>
@@ -348,43 +361,80 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
               <details class="quote">
                 <summary>Source code in <code>echosms\referencemodels.py</code></summary>
-                <pre class="highlight"><code class="language-python">class ReferenceModels:
-    """Provide access to reference scattering model parameters."""
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceModels</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide access to reference scattering model parameters.&quot;&quot;&quot;</span>
 
-    def __init__(self):
-        self.defsFilename = Path(__file__).parent/Path('resources')/Path('target definitions.toml')
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defsFilename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">/</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">)</span><span class="o">/</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;target definitions.toml&#39;</span><span class="p">)</span>
 
-        with open(self.defsFilename, 'rb') as f:
-            self.defs = tomllib.load(f)
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">defsFilename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">defs</span> <span class="o">=</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-        # check that the names parameter is unique across all models
+        <span class="c1"># check that the names parameter is unique across all models</span>
 
-        # Substitute parameters names in the target section by the values of those
-        # parameters.
-        for t in self.defs['target']:
-            for k, v in t.items():
-                try:
-                    t[k] = self.defs['parameters'][v]
-                except (KeyError, TypeError):
-                    pass
+        <span class="c1"># Substitute parameters names in the target section by the values of those</span>
+        <span class="c1"># parameters.</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defs</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">t</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defs</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                    <span class="k">pass</span>
 
-    def models(self):
-        """Return the full set of model definitions."""
-        return self.defs
+    <span class="k">def</span> <span class="nf">models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the full set of model definitions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">defs</span>
 
-    def model_names(self):
-        """Return the names of all model definitions."""
-        return [n['name'] for n in self.defs['target']]
+    <span class="k">def</span> <span class="nf">model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the names of all model definitions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defs</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]]</span>
 
-    def get_model_parameters(self, name):
-        """Get the model defintions for a particular model."""
-        models = pd.DataFrame(self.defs['target'])
-        m = models.query('name == @name')
-        if len(m) == 1:
-            m.dropna(axis=1, how='all', inplace=True)
-            return m.iloc[0].to_dict()
-        else:
-            return None</code></pre>
+    <span class="k">def</span> <span class="nf">get_model_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the model defintions for a particular model.&quot;&quot;&quot;</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">defs</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;name == @name&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
               </details>
 
 
@@ -403,7 +453,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h4 id="echosms.referencemodels.ReferenceModels.get_model_parameters" class="doc doc-heading">
-            <code class="highlight language-python">get_model_parameters(name)</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_model_parameters</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
 
 </h4>
 
@@ -414,15 +464,24 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
             <details class="quote">
               <summary>Source code in <code>echosms\referencemodels.py</code></summary>
-              <pre class="highlight"><code class="language-python">def get_model_parameters(self, name):
-    """Get the model defintions for a particular model."""
-    models = pd.DataFrame(self.defs['target'])
-    m = models.query('name == @name')
-    if len(m) == 1:
-        m.dropna(axis=1, how='all', inplace=True)
-        return m.iloc[0].to_dict()
-    else:
-        return None</code></pre>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the model defintions for a particular model.&quot;&quot;&quot;</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">defs</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;name == @name&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -432,7 +491,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h4 id="echosms.referencemodels.ReferenceModels.model_names" class="doc doc-heading">
-            <code class="highlight language-python">model_names()</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">model_names</span><span class="p">()</span></code>
 
 </h4>
 
@@ -443,9 +502,12 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
             <details class="quote">
               <summary>Source code in <code>echosms\referencemodels.py</code></summary>
-              <pre class="highlight"><code class="language-python">def model_names(self):
-    """Return the names of all model definitions."""
-    return [n['name'] for n in self.defs['target']]</code></pre>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the names of all model definitions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defs</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]]</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -455,7 +517,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h4 id="echosms.referencemodels.ReferenceModels.models" class="doc doc-heading">
-            <code class="highlight language-python">models()</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">models</span><span class="p">()</span></code>
 
 </h4>
 
@@ -466,9 +528,12 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
             <details class="quote">
               <summary>Source code in <code>echosms\referencemodels.py</code></summary>
-              <pre class="highlight"><code class="language-python">def models(self):
-    """Return the full set of model definitions."""
-    return self.defs</code></pre>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the full set of model definitions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">defs</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -496,7 +561,7 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h2 id="echosms.scattermodels" class="doc doc-heading">
-            <code>scattermodels</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <code>scattermodels</code>
 
 
 </h2>
@@ -521,13 +586,15 @@ Journal of the Acoustical Society of America 138, 3742–3764. https://doi.org/1
 
 
 <h3 id="echosms.scattermodels.MSSModel" class="doc doc-heading">
-            <code>MSSModel</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>MSSModel</code>
 
 
 </h3>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="echosms.scattermodels.ScatterModelBaseClass" href="#echosms.scattermodels.ScatterModelBaseClass">ScatterModelBaseClass</a></code></p>
 
 
       <p>Modal series solution (MSS) scattering model.</p>
@@ -536,133 +603,260 @@ boundary conditions.</p>
 
               <details class="quote">
                 <summary>Source code in <code>echosms\scattermodels.py</code></summary>
-                <pre class="highlight"><code class="language-python">class MSSModel(ScatterModelBaseClass):
-    """Modal series solution (MSS) scattering model.
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MSSModel</span><span class="p">(</span><span class="n">ScatterModelBaseClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Modal series solution (MSS) scattering model.</span>
 
-    This class contains methods to calculate acoustic scatter from spheres and shells with various
-    boundary conditions.
-    """
+<span class="sd">    This class contains methods to calculate acoustic scatter from spheres and shells with various</span>
+<span class="sd">    boundary conditions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    def __init__(self):
-        super().__init__()
-        self.long_name = 'modal series solution'
-        self.short_name = 'mss'
-        self.analytical_type = 'exact'
-        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
-        self.shapes = ['sphere']
-        self.max_frequency = 400.0e3  # [Hz]
-        self.min_frequency = 1.0  # [Hz]
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;modal series solution&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_name</span> <span class="o">=</span> <span class="s1">&#39;mss&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analytical_type</span> <span class="o">=</span> <span class="s1">&#39;exact&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fixed rigid&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure release&#39;</span><span class="p">,</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sphere&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_frequency</span> <span class="o">=</span> <span class="mf">400.0e3</span>  <span class="c1"># [Hz]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_frequency</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># [Hz]</span>
 
-    def calculate_ts(self, medium_c, medium_rho, a, theta, freqs, model_type,
-                     target_c=None, target_rho=None, **kwargs):
-        """
-        Calculate the scatter using the mss model.
+    <span class="k">def</span> <span class="nf">calculate_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                     <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the scatter using the mss model.</span>
 
-        Parameters
-        ----------
-        medium_c : float
-            Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
-            Density of the fluid medium surrounding the target [kg/m3].
-        a : float
-            Radius of the spherical target [m].
-        theta : float or array of float
-            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
-            90 is dorsal, and 180 is tail on.
-        freqs : float or array of float
-            Frequencies to calculate the scattering at [Hz].
-        model_type : str
-            The model type. Supported model types are given in the model_types class variable.
-        target_c : float, optional
-            Sound speed in the fluid inside the sphere [m/s].
-            Only required for `model_type` of ``fluid filled``
-        target_rho : float, optional
-            Density of the fluid inside the sphere [kg/m^3].
-            Only required for `model_type` of ``fluid filled``
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        medium_c : float</span>
+<span class="sd">            Sound speed in the fluid medium surrounding the target [m/s].</span>
+<span class="sd">        medium_rho : float</span>
+<span class="sd">            Density of the fluid medium surrounding the target [kg/m3].</span>
+<span class="sd">        a : float</span>
+<span class="sd">            Radius of the spherical target [m].</span>
+<span class="sd">        theta : float or array of float</span>
+<span class="sd">            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,</span>
+<span class="sd">            90 is dorsal, and 180 is tail on.</span>
+<span class="sd">        freqs : float or array of float</span>
+<span class="sd">            Frequencies to calculate the scattering at [Hz].</span>
+<span class="sd">        model_type : str</span>
+<span class="sd">            The model type. Supported model types are given in the model_types class variable.</span>
+<span class="sd">        target_c : float, optional</span>
+<span class="sd">            Sound speed in the fluid inside the sphere [m/s].</span>
+<span class="sd">            Only required for `model_type` of ``fluid filled``</span>
+<span class="sd">        target_rho : float, optional</span>
+<span class="sd">            Density of the fluid inside the sphere [kg/m^3].</span>
+<span class="sd">            Only required for `model_type` of ``fluid filled``</span>
 
-        Returns
-        -------
-        ts : array of float with dimensions of (len(freq), len(angles)
-            The scatter from the object [dB re 1 m2].
-        freq : array of float
-            The frequencies that apply to TS [Hz].
-        angles : array of float
-            The pitch angles that apply to TS [degrees].
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ts : array of float with dimensions of (len(freq), len(angles)</span>
+<span class="sd">            The scatter from the object [dB re 1 m2].</span>
+<span class="sd">        freq : array of float</span>
+<span class="sd">            The frequencies that apply to TS [Hz].</span>
+<span class="sd">        angles : array of float</span>
+<span class="sd">            The pitch angles that apply to TS [degrees].</span>
 
-        Notes
-        -----
-        The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.
-        The Journal of the Acoustical Society of America, 22: 426–431.
-        (https://doi.org/10.1121/1.1906621)
-        """
-        # pylint: disable=too-many-locals
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.</span>
+<span class="sd">        The Journal of the Acoustical Society of America, 22: 426–431.</span>
+<span class="sd">        (https://doi.org/10.1121/1.1906621)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=too-many-locals</span>
 
-        match model_type:
-            case 'fixed rigid' | 'pressure release':
-                raise ValueError(f'Model type "{model_type}" has not yet been implemented '
-                                 f'for the {self.long_name} model.')
-            case 'fluid filled':
-                (freqs, theta, ts) = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, freqs,
-                                                               target_c, target_rho)
-            case _:
-                raise ValueError(f'The {self.long_name} model does not support '
-                                 f'a model type of "{model_type}".')
-        return (ts, freqs, theta)
+        <span class="k">match</span> <span class="n">model_type</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s1">&#39;fixed rigid&#39;</span> <span class="o">|</span> <span class="s1">&#39;pressure release&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model type &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot; has not yet been implemented &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model.&#39;</span><span class="p">)</span>
+            <span class="k">case</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fluid_filled_ts_bs</span><span class="p">(</span><span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span>
+                                                               <span class="n">target_c</span><span class="p">,</span> <span class="n">target_rho</span><span class="p">)</span>
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model does not support &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;a model type of &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
 
-    def __fluid_filled_ts_bs(self, medium_c, medium_rho, a, freqs, target_c, target_rho):
-        """Fluid filled sphere model.
+    <span class="k">def</span> <span class="nf">__fluid_filled_ts_bs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">target_c</span><span class="p">,</span> <span class="n">target_rho</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fluid filled sphere model.</span>
 
-        This implementation only calculates the backscatter (theta=90deg).
-        """
-        # Fixed model parameters
-        # maximum order. Can be changed to improve precision
-        order_max = 20
+<span class="sd">        This implementation only calculates the backscatter (theta=90deg).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Fixed model parameters</span>
+        <span class="c1"># maximum order. Can be changed to improve precision</span>
+        <span class="n">order_max</span> <span class="o">=</span> <span class="mi">20</span>
 
-        # reflectivity coefficient
-        refl = []
+        <span class="c1"># reflectivity coefficient</span>
+        <span class="n">refl</span> <span class="o">=</span> <span class="p">[]</span>
 
-        # sound speed (h) and density (g) contrasts
-        g = target_rho/medium_rho
-        h = target_c/medium_c
+        <span class="c1"># sound speed (h) and density (g) contrasts</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">target_rho</span><span class="o">/</span><span class="n">medium_rho</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">target_c</span><span class="o">/</span><span class="n">medium_c</span>
 
-        ###
-        # reflectivity coefficient
-        # Bessel functions from SciPy
-        # spherical Bessel function of the 2nd kind is the Neumann function
-        # Anderson uses Neumann function notation
-        for f in freqs:
-            real = 0.0  # real component
-            imag = 0.0  # imaginary component
+        <span class="c1">###</span>
+        <span class="c1"># reflectivity coefficient</span>
+        <span class="c1"># Bessel functions from SciPy</span>
+        <span class="c1"># spherical Bessel function of the 2nd kind is the Neumann function</span>
+        <span class="c1"># Anderson uses Neumann function notation</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">freqs</span><span class="p">:</span>
+            <span class="n">real</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># real component</span>
+            <span class="n">imag</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># imaginary component</span>
 
-            ka_sphere = (2*np.pi*f/target_c)*a
-            ka_water = (2*np.pi*f/medium_c)*a
-            for m in range(order_max):
-                sphjkas = m/ka_sphere * spherical_jn(m, ka_sphere) - \
-                    spherical_jn(m+1, ka_sphere)
-                sphjkaw = m/ka_water * spherical_jn(m, ka_water) - \
-                    spherical_jn(m+1, ka_water)
-                sphykaw = m/ka_water * spherical_yn(m, ka_water) - \
-                    spherical_yn(m+1, ka_water)
+            <span class="n">ka_sphere</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="o">/</span><span class="n">target_c</span><span class="p">)</span><span class="o">*</span><span class="n">a</span>
+            <span class="n">ka_water</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="o">/</span><span class="n">medium_c</span><span class="p">)</span><span class="o">*</span><span class="n">a</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order_max</span><span class="p">):</span>
+                <span class="n">sphjkas</span> <span class="o">=</span> <span class="n">m</span><span class="o">/</span><span class="n">ka_sphere</span> <span class="o">*</span> <span class="n">spherical_jn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ka_sphere</span><span class="p">)</span> <span class="o">-</span> \
+                    <span class="n">spherical_jn</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ka_sphere</span><span class="p">)</span>
+                <span class="n">sphjkaw</span> <span class="o">=</span> <span class="n">m</span><span class="o">/</span><span class="n">ka_water</span> <span class="o">*</span> <span class="n">spherical_jn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ka_water</span><span class="p">)</span> <span class="o">-</span> \
+                    <span class="n">spherical_jn</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ka_water</span><span class="p">)</span>
+                <span class="n">sphykaw</span> <span class="o">=</span> <span class="n">m</span><span class="o">/</span><span class="n">ka_water</span> <span class="o">*</span> <span class="n">spherical_yn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ka_water</span><span class="p">)</span> <span class="o">-</span> \
+                    <span class="n">spherical_yn</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ka_water</span><span class="p">)</span>
 
-                numer = sphjkas/sphjkaw * \
-                    spherical_yn(m, ka_water) / spherical_jn(m, ka_sphere) - \
-                    sphykaw/sphjkaw * g*h
-                denom = sphjkas/sphjkaw * \
-                    spherical_jn(m, ka_water) / spherical_jn(m, ka_sphere) - g*h
+                <span class="n">numer</span> <span class="o">=</span> <span class="n">sphjkas</span><span class="o">/</span><span class="n">sphjkaw</span> <span class="o">*</span> \
+                    <span class="n">spherical_yn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ka_water</span><span class="p">)</span> <span class="o">/</span> <span class="n">spherical_jn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ka_sphere</span><span class="p">)</span> <span class="o">-</span> \
+                    <span class="n">sphykaw</span><span class="o">/</span><span class="n">sphjkaw</span> <span class="o">*</span> <span class="n">g</span><span class="o">*</span><span class="n">h</span>
+                <span class="n">denom</span> <span class="o">=</span> <span class="n">sphjkas</span><span class="o">/</span><span class="n">sphjkaw</span> <span class="o">*</span> \
+                    <span class="n">spherical_jn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ka_water</span><span class="p">)</span> <span class="o">/</span> <span class="n">spherical_jn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ka_sphere</span><span class="p">)</span> <span class="o">-</span> <span class="n">g</span><span class="o">*</span><span class="n">h</span>
 
-                cscat = numer/denom
-                real += ((-1.)**m) * (2.*m+1) / (1.+cscat**2)
-                imag += ((-1.)**m) * (2.*m+1) * cscat/(1.+cscat**2)
+                <span class="n">cscat</span> <span class="o">=</span> <span class="n">numer</span><span class="o">/</span><span class="n">denom</span>
+                <span class="n">real</span> <span class="o">+=</span> <span class="p">((</span><span class="o">-</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">cscat</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">imag</span> <span class="o">+=</span> <span class="p">((</span><span class="o">-</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cscat</span><span class="o">/</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">cscat</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
-            refl.append((2/ka_water) * np.sqrt(real**2+imag**2))
+            <span class="n">refl</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">2</span><span class="o">/</span><span class="n">ka_water</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 
-        # convert to numpy arrays
-        refl = np.array(refl, dtype=float, ndmin=2).T
+        <span class="c1"># convert to numpy arrays</span>
+        <span class="n">refl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">refl</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
-        # convert to target strength (TS re 1 m^2 [dB])
-        ts = 10*np.log10((refl*a)**2 / 4.)
+        <span class="c1"># convert to target strength (TS re 1 m^2 [dB])</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">refl</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mf">4.</span><span class="p">)</span>
 
-        return (freqs, np.array([90.0]), ts)</code></pre>
+        <span class="k">return</span> <span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.0</span><span class="p">]),</span> <span class="n">ts</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
               </details>
 
 
@@ -681,7 +875,7 @@ boundary conditions.</p>
 
 
 <h4 id="echosms.scattermodels.MSSModel.calculate_ts" class="doc doc-heading">
-            <code class="highlight language-python">calculate_ts(medium_c, medium_rho, a, theta, freqs, model_type, target_c=None, target_rho=None, **kwargs)</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">calculate_ts</span><span class="p">(</span><span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 </h4>
 
@@ -691,129 +885,178 @@ boundary conditions.</p>
       <p>Calculate the scatter using the mss model.</p>
 
 
-<table class="field-list">
-  <colgroup>
-    <col class="field-name" />
-    <col class="field-body" />
-  </colgroup>
-  <tbody valign="top">
-    <tr class="field">
-      <th class="field-name">Parameters:</th>
-      <td class="field-body">
-        <ul class="first simple">
-            <li>
-              <b><code>medium_c</code></b>
-                  (<code>float</code>)
-              –
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>medium_c</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Sound speed in the fluid medium surrounding the target [m/s].</p>
               </div>
-            </li>
-            <li>
-              <b><code>medium_rho</code></b>
-                  (<code>float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>medium_rho</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Density of the fluid medium surrounding the target [kg/m3].</p>
               </div>
-            </li>
-            <li>
-              <b><code>a</code></b>
-                  (<code>float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>a</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Radius of the spherical target [m].</p>
               </div>
-            </li>
-            <li>
-              <b><code>theta</code></b>
-                  (<code>float or array of float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>theta</code></td>
+            <td>
+                  <code>float or array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
 90 is dorsal, and 180 is tail on.</p>
               </div>
-            </li>
-            <li>
-              <b><code>freqs</code></b>
-                  (<code>float or array of float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>freqs</code></td>
+            <td>
+                  <code>float or array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Frequencies to calculate the scattering at [Hz].</p>
               </div>
-            </li>
-            <li>
-              <b><code>model_type</code></b>
-                  (<code>str</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>model_type</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The model type. Supported model types are given in the model_types class variable.</p>
               </div>
-            </li>
-            <li>
-              <b><code>target_c</code></b>
-                  (<code>float</code>, default:
-                      <code>None</code>
-)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>target_c</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Sound speed in the fluid inside the sphere [m/s].
 Only required for <code>model_type</code> of <code>fluid filled</code></p>
               </div>
-            </li>
-            <li>
-              <b><code>target_rho</code></b>
-                  (<code>float</code>, default:
-                      <code>None</code>
-)
-              –
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>target_rho</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Density of the fluid inside the sphere [kg/m^3].
 Only required for <code>model_type</code> of <code>fluid filled</code></p>
               </div>
-            </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-<table class="field-list">
-  <colgroup>
-    <col class="field-name" />
-    <col class="field-body" />
-  </colgroup>
-  <tbody valign="top">
-    <tr class="field">
-      <th class="field-name">Returns:</th>
-      <td class="field-body">
-        <ul class="first simple">
-            <li>
-<b><code>ts</code></b>(                  <code>array of float with dimensions of (len(freq), len(angles)</code>
-)              –
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>ts</code></td>            <td>
+                  <code>array of float with dimensions of (len(freq), len(angles)</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The scatter from the object [dB re 1 m2].</p>
               </div>
-            </li>
-            <li>
-<b><code>freq</code></b>(                  <code>array of float</code>
-)              –
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>freq</code></td>            <td>
+                  <code>array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The frequencies that apply to TS [Hz].</p>
               </div>
-            </li>
-            <li>
-<b><code>angles</code></b>(                  <code>array of float</code>
-)              –
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>angles</code></td>            <td>
+                  <code>array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The pitch angles that apply to TS [degrees].</p>
               </div>
-            </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
 
 <details class="note" open>
   <summary>Notes</summary>
@@ -823,61 +1066,116 @@ The Journal of the Acoustical Society of America, 22: 426–431.
 </details>
             <details class="quote">
               <summary>Source code in <code>echosms\scattermodels.py</code></summary>
-              <pre class="highlight"><code class="language-python">def calculate_ts(self, medium_c, medium_rho, a, theta, freqs, model_type,
-                 target_c=None, target_rho=None, **kwargs):
-    """
-    Calculate the scatter using the mss model.
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                 <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the scatter using the mss model.</span>
 
-    Parameters
-    ----------
-    medium_c : float
-        Sound speed in the fluid medium surrounding the target [m/s].
-    medium_rho : float
-        Density of the fluid medium surrounding the target [kg/m3].
-    a : float
-        Radius of the spherical target [m].
-    theta : float or array of float
-        Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
-        90 is dorsal, and 180 is tail on.
-    freqs : float or array of float
-        Frequencies to calculate the scattering at [Hz].
-    model_type : str
-        The model type. Supported model types are given in the model_types class variable.
-    target_c : float, optional
-        Sound speed in the fluid inside the sphere [m/s].
-        Only required for `model_type` of ``fluid filled``
-    target_rho : float, optional
-        Density of the fluid inside the sphere [kg/m^3].
-        Only required for `model_type` of ``fluid filled``
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    medium_c : float</span>
+<span class="sd">        Sound speed in the fluid medium surrounding the target [m/s].</span>
+<span class="sd">    medium_rho : float</span>
+<span class="sd">        Density of the fluid medium surrounding the target [kg/m3].</span>
+<span class="sd">    a : float</span>
+<span class="sd">        Radius of the spherical target [m].</span>
+<span class="sd">    theta : float or array of float</span>
+<span class="sd">        Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,</span>
+<span class="sd">        90 is dorsal, and 180 is tail on.</span>
+<span class="sd">    freqs : float or array of float</span>
+<span class="sd">        Frequencies to calculate the scattering at [Hz].</span>
+<span class="sd">    model_type : str</span>
+<span class="sd">        The model type. Supported model types are given in the model_types class variable.</span>
+<span class="sd">    target_c : float, optional</span>
+<span class="sd">        Sound speed in the fluid inside the sphere [m/s].</span>
+<span class="sd">        Only required for `model_type` of ``fluid filled``</span>
+<span class="sd">    target_rho : float, optional</span>
+<span class="sd">        Density of the fluid inside the sphere [kg/m^3].</span>
+<span class="sd">        Only required for `model_type` of ``fluid filled``</span>
 
-    Returns
-    -------
-    ts : array of float with dimensions of (len(freq), len(angles)
-        The scatter from the object [dB re 1 m2].
-    freq : array of float
-        The frequencies that apply to TS [Hz].
-    angles : array of float
-        The pitch angles that apply to TS [degrees].
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ts : array of float with dimensions of (len(freq), len(angles)</span>
+<span class="sd">        The scatter from the object [dB re 1 m2].</span>
+<span class="sd">    freq : array of float</span>
+<span class="sd">        The frequencies that apply to TS [Hz].</span>
+<span class="sd">    angles : array of float</span>
+<span class="sd">        The pitch angles that apply to TS [degrees].</span>
 
-    Notes
-    -----
-    The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.
-    The Journal of the Acoustical Society of America, 22: 426–431.
-    (https://doi.org/10.1121/1.1906621)
-    """
-    # pylint: disable=too-many-locals
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.</span>
+<span class="sd">    The Journal of the Acoustical Society of America, 22: 426–431.</span>
+<span class="sd">    (https://doi.org/10.1121/1.1906621)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-locals</span>
 
-    match model_type:
-        case 'fixed rigid' | 'pressure release':
-            raise ValueError(f'Model type "{model_type}" has not yet been implemented '
-                             f'for the {self.long_name} model.')
-        case 'fluid filled':
-            (freqs, theta, ts) = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, freqs,
-                                                           target_c, target_rho)
-        case _:
-            raise ValueError(f'The {self.long_name} model does not support '
-                             f'a model type of "{model_type}".')
-    return (ts, freqs, theta)</code></pre>
+    <span class="k">match</span> <span class="n">model_type</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s1">&#39;fixed rigid&#39;</span> <span class="o">|</span> <span class="s1">&#39;pressure release&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model type &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot; has not yet been implemented &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model.&#39;</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fluid_filled_ts_bs</span><span class="p">(</span><span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span>
+                                                           <span class="n">target_c</span><span class="p">,</span> <span class="n">target_rho</span><span class="p">)</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model does not support &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;a model type of &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -896,220 +1194,423 @@ The Journal of the Acoustical Society of America, 22: 426–431.
 
 
 <h3 id="echosms.scattermodels.PSMSModel" class="doc doc-heading">
-            <code>PSMSModel</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>PSMSModel</code>
 
 
 </h3>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="echosms.scattermodels.ScatterModelBaseClass" href="#echosms.scattermodels.ScatterModelBaseClass">ScatterModelBaseClass</a></code></p>
 
 
       <p>Prolate spheroidal modal series (PSMS) scattering model.</p>
 
               <details class="quote">
                 <summary>Source code in <code>echosms\scattermodels.py</code></summary>
-                <pre class="highlight"><code class="language-python">class PSMSModel(ScatterModelBaseClass):
-    """Prolate spheroidal modal series (PSMS) scattering model."""
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PSMSModel</span><span class="p">(</span><span class="n">ScatterModelBaseClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prolate spheroidal modal series (PSMS) scattering model.&quot;&quot;&quot;</span>
 
-    def __init__(self):
-        super().__init__()
-        self.long_name = 'prolate spheroidal modal series'
-        self.short_name = 'psms'
-        self.analytical_type = 'exact'
-        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
-        self.shapes = ['prolate spheroid']
-        self.max_frequency = 200.0e3  # [Hz]
-        self.min_frequency = 1.0  # [Hz]
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;prolate spheroidal modal series&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_name</span> <span class="o">=</span> <span class="s1">&#39;psms&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analytical_type</span> <span class="o">=</span> <span class="s1">&#39;exact&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fixed rigid&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure release&#39;</span><span class="p">,</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;prolate spheroid&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_frequency</span> <span class="o">=</span> <span class="mf">200.0e3</span>  <span class="c1"># [Hz]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_frequency</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># [Hz]</span>
 
-    def calculate_ts(self, medium_c, medium_rho, a, b, theta, freqs, model_type,
-                     target_c=None, target_rho=None, **kwargs):
-        """Manage the calling of the single frequency, single angle version of the PSMS code.
+    <span class="k">def</span> <span class="nf">calculate_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                     <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Manage the calling of the single frequency, single angle version of the PSMS code.</span>
 
-        Parameters
-        ----------
-        medium_c : float
-            Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
-            Density of the fluid medium surrounding the target [kg/m3].
-        a : float
-            Prolate spheroid major axis radius [m].
-        b : float
-            Prolate spheroid minor axis radius [m].
-        theta : float or array of float
-            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
-            90 is dorsal, and 180 is tail on.
-        freqs : float or array of float
-            Frequencies to calculate the scattering at [Hz].
-        model_type : str
-            The model type. Supported model types are given in the model_types class variable.
-        target_c : float, optional
-            Sound speed in the fluid inside the target [m/s].
-            Only required for `model_type` of ``fluid filled``
-        target_rho : float, optional
-            Density of the fluid inside the target [kg/m^3].
-            Only required for `model_type` of ``fluid filled``
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        medium_c : float</span>
+<span class="sd">            Sound speed in the fluid medium surrounding the target [m/s].</span>
+<span class="sd">        medium_rho : float</span>
+<span class="sd">            Density of the fluid medium surrounding the target [kg/m3].</span>
+<span class="sd">        a : float</span>
+<span class="sd">            Prolate spheroid major axis radius [m].</span>
+<span class="sd">        b : float</span>
+<span class="sd">            Prolate spheroid minor axis radius [m].</span>
+<span class="sd">        theta : float or array of float</span>
+<span class="sd">            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,</span>
+<span class="sd">            90 is dorsal, and 180 is tail on.</span>
+<span class="sd">        freqs : float or array of float</span>
+<span class="sd">            Frequencies to calculate the scattering at [Hz].</span>
+<span class="sd">        model_type : str</span>
+<span class="sd">            The model type. Supported model types are given in the model_types class variable.</span>
+<span class="sd">        target_c : float, optional</span>
+<span class="sd">            Sound speed in the fluid inside the target [m/s].</span>
+<span class="sd">            Only required for `model_type` of ``fluid filled``</span>
+<span class="sd">        target_rho : float, optional</span>
+<span class="sd">            Density of the fluid inside the target [kg/m^3].</span>
+<span class="sd">            Only required for `model_type` of ``fluid filled``</span>
 
-        Returns
-        -------
-        ts : array of float with dimensions of (len(freq), len(angles)
-            The scatter from the object [dB re 1 m2].
-        freq : array of float
-            The frequencies that apply to TS [Hz].
-        angles : array of float
-            The pitch angles that apply to TS [degrees].
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ts : array of float with dimensions of (len(freq), len(angles)</span>
+<span class="sd">            The scatter from the object [dB re 1 m2].</span>
+<span class="sd">        freq : array of float</span>
+<span class="sd">            The frequencies that apply to TS [Hz].</span>
+<span class="sd">        angles : array of float</span>
+<span class="sd">            The pitch angles that apply to TS [degrees].</span>
 
-        Notes
-        -----
-        The backscattered target strength of a pressure release or fluid-filled prolate spheroid
-        is calculated using the PSMS method of Furusawa [1] and corrections [2].
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The backscattered target strength of a pressure release or fluid-filled prolate spheroid</span>
+<span class="sd">        is calculated using the PSMS method of Furusawa [1] and corrections [2].</span>
 
-        .. [1] Furusawa, M. (1988). "Prolate spheroidal models for predicting general
-            trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
-        .. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
-            “Prediction of krill target strength by liquid prolate spheroid
-            model,” Fish. Sci., 60, 261–265.
-        """
+<span class="sd">        .. [1] Furusawa, M. (1988). &quot;Prolate spheroidal models for predicting general</span>
+<span class="sd">            trends of fish target strength,&quot; J. Acoust. Soc. Jpn. 9, 13-24.</span>
+<span class="sd">        .. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).</span>
+<span class="sd">            “Prediction of krill target strength by liquid prolate spheroid</span>
+<span class="sd">            model,” Fish. Sci., 60, 261–265.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        theta_rad = theta[0] * np.pi/180.
-        ts_f = []
-        for f in freqs:
-            ts = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta_rad, f, model_type,
-                                         target_c, target_rho)
-            ts_f.append(ts)
+        <span class="n">theta_rad</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span>
+        <span class="n">ts_f</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">freqs</span><span class="p">:</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ts_one_f</span><span class="p">(</span><span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta_rad</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                                         <span class="n">target_c</span><span class="p">,</span> <span class="n">target_rho</span><span class="p">)</span>
+            <span class="n">ts_f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
 
-        return np.array(ts_f, theta, ndmin=2)
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts_f</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-    def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
-                           target_c=None, target_rho=None):
-        """Prolate spheroid modal series (PSMS) solution model."""
-        match model_type:
-            case 'pressure release' | 'fluid filled':
-                pass
-            case 'fixed rigid':
-                raise ValueError(f'Model type "{model_type}" has not yet been implemented '
-                                 f'for the {self.long_name} model.')
-            case _:
-                raise ValueError(f'The {self.long_name} model does not support '
-                                 f'a model type of "{model_type}".')
+    <span class="k">def</span> <span class="nf">calculate_ts_one_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                           <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prolate spheroid modal series (PSMS) solution model.&quot;&quot;&quot;</span>
+        <span class="k">match</span> <span class="n">model_type</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s1">&#39;pressure release&#39;</span> <span class="o">|</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">case</span> <span class="s1">&#39;fixed rigid&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model type &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot; has not yet been implemented &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model.&#39;</span><span class="p">)</span>
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model does not support &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;a model type of &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
 
-        if model_type == 'fluid filled':
-            hc = target_c / medium_c
-            rh = target_rho / medium_rho
+        <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+            <span class="n">hc</span> <span class="o">=</span> <span class="n">target_c</span> <span class="o">/</span> <span class="n">medium_c</span>
+            <span class="n">rh</span> <span class="o">=</span> <span class="n">target_rho</span> <span class="o">/</span> <span class="n">medium_rho</span>
 
-        # The wavenumber for the surrounding fluid
-        k0 = 2*np.pi*freq/medium_c
-        # The semi-focal length of the prolate spheroid (same as for an ellipse)
-        q = np.sqrt(a*a - b*b)
-        # An alternative to ka is kq, the wavenumber multiplied by the focal length
-        h0 = k0 * q
-        # Epsilon is a characteristic of the spheroid, whereby a = xi0 * q,
-        # hence converting this to use a and b gives:
-        xi0 = (1.0 - (b/a)**2)**(-.5)
-        # Phi, the port/starboard angle is fixed for this code
-        phi_inc = np.pi  # radians, incident direction
-        phi_bs = 0  # radians, backscattered direction
+        <span class="c1"># The wavenumber for the surrounding fluid</span>
+        <span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">freq</span><span class="o">/</span><span class="n">medium_c</span>
+        <span class="c1"># The semi-focal length of the prolate spheroid (same as for an ellipse)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">)</span>
+        <span class="c1"># An alternative to ka is kq, the wavenumber multiplied by the focal length</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">k0</span> <span class="o">*</span> <span class="n">q</span>
+        <span class="c1"># Epsilon is a characteristic of the spheroid, whereby a = xi0 * q,</span>
+        <span class="c1"># hence converting this to use a and b gives:</span>
+        <span class="n">xi0</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">)</span>
+        <span class="c1"># Phi, the port/starboard angle is fixed for this code</span>
+        <span class="n">phi_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># radians, incident direction</span>
+        <span class="n">phi_bs</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># radians, backscattered direction</span>
 
-        # Approximate limits on the summations
-        m_max = int(np.ceil(2*k0*b))
-        n_max = int(m_max + np.ceil(h0/2))
+        <span class="c1"># Approximate limits on the summations</span>
+        <span class="n">m_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k0</span><span class="o">*</span><span class="n">b</span><span class="p">))</span>
+        <span class="n">n_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m_max</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">h0</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
 
-        # Terms in the summation smaller than this will cause the iteration to
-        # stop. Even and odd values of (m-n) are treated separately.
-        # The value is quite low as some of the summations start out low then rise
-        # quite a lot. This value will get rid of the summations that don't add
-        # much.
-        tol = -50  # [dB]
-        check_after = 20  # iterations
+        <span class="c1"># Terms in the summation smaller than this will cause the iteration to</span>
+        <span class="c1"># stop. Even and odd values of (m-n) are treated separately.</span>
+        <span class="c1"># The value is quite low as some of the summations start out low then rise</span>
+        <span class="c1"># quite a lot. This value will get rid of the summations that don&#39;t add</span>
+        <span class="c1"># much.</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span>  <span class="c1"># [dB]</span>
+        <span class="n">check_after</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># iterations</span>
 
-        f = 0.0
-        f_all = []
-        idx = 1
-        for m in range(m_max+1):
-            # epsilon is the Neumann factor, a rather obtuse way of saying this:
-            epsilon = 1 if m == 0 else 2
+        <span class="n">f</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">f_all</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m_max</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># epsilon is the Neumann factor, a rather obtuse way of saying this:</span>
+            <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">2</span>
 
-            # reset the tolerance flags for the new m
-            even_reached_tol = False
-            odd_reached_tol = False
+            <span class="c1"># reset the tolerance flags for the new m</span>
+            <span class="n">even_reached_tol</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">odd_reached_tol</span> <span class="o">=</span> <span class="kc">False</span>
 
-            for n in range(m, n_max+1):
-                even = True if (m-n) % 2 == 0 else False
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n_max</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">even</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="n">n</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
 
-                if (even and even_reached_tol) or (not even and odd_reached_tol):
-                    continue
+                <span class="k">if</span> <span class="p">(</span><span class="n">even</span> <span class="ow">and</span> <span class="n">even_reached_tol</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">even</span> <span class="ow">and</span> <span class="n">odd_reached_tol</span><span class="p">):</span>
+                    <span class="k">continue</span>
 
-                # s_bs = aswfb(m, n, h0, cos(theta), 1)
-                # s_inc = aswfb(m, n, h0, cos(pi - theta), 1)
-                s_bs = pro_ang1(m, n, h0, np.cos(theta))
-                s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))
+                <span class="c1"># s_bs = aswfb(m, n, h0, cos(theta), 1)</span>
+                <span class="c1"># s_inc = aswfb(m, n, h0, cos(pi - theta), 1)</span>
+                <span class="n">s_bs</span> <span class="o">=</span> <span class="n">pro_ang1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+                <span class="n">s_inc</span> <span class="o">=</span> <span class="n">pro_ang1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">theta</span><span class="p">))</span>
 
-                match model_type:
-                    case 'fluid filled':
-                        # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
-                        # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)
-                        print(m,n,h0,xi0,flush=True)
-                        r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
-                        r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
-                        r_type1B, dr_type1B, _, _ = pro_rad1(m, n, h0/hc, xi0)
+                <span class="k">match</span> <span class="n">model_type</span><span class="p">:</span>
+                    <span class="k">case</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+                        <span class="c1"># r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)</span>
+                        <span class="c1"># r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">h0</span><span class="p">,</span><span class="n">xi0</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">r_type1A</span><span class="p">,</span> <span class="n">dr_type1A</span> <span class="o">=</span> <span class="n">pro_rad1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                        <span class="n">r_type2A</span><span class="p">,</span> <span class="n">dr_type2A</span> <span class="o">=</span> <span class="n">pro_rad2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                        <span class="n">r_type1B</span><span class="p">,</span> <span class="n">dr_type1B</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pro_rad1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="o">/</span><span class="n">hc</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
 
-                        eeA = r_type1A - rh*r_type1B/dr_type1B*dr_type1A
-                        eeB = eeA + 1j*(r_type2A - rh*r_type1B/dr_type1B*dr_type2A)
-                        aa = -eeA/eeB  # Furusawa (1988) Eq. 5 p 15
-                    case 'pressure release':
-                        # r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)
-                        r_type1, _ = pro_rad1(m, n, h0, xi0)
-                        r_type2, _ = pro_rad2(m, n, h0, xi0)
-                        aa = -r_type1/(r_type1 + 1j*r_type2)
-                    case 'fixed rigid':
-                        pass  # see eqn of (3) of Furusawa, 1988
+                        <span class="n">eeA</span> <span class="o">=</span> <span class="n">r_type1A</span> <span class="o">-</span> <span class="n">rh</span><span class="o">*</span><span class="n">r_type1B</span><span class="o">/</span><span class="n">dr_type1B</span><span class="o">*</span><span class="n">dr_type1A</span>
+                        <span class="n">eeB</span> <span class="o">=</span> <span class="n">eeA</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="n">r_type2A</span> <span class="o">-</span> <span class="n">rh</span><span class="o">*</span><span class="n">r_type1B</span><span class="o">/</span><span class="n">dr_type1B</span><span class="o">*</span><span class="n">dr_type2A</span><span class="p">)</span>
+                        <span class="n">aa</span> <span class="o">=</span> <span class="o">-</span><span class="n">eeA</span><span class="o">/</span><span class="n">eeB</span>  <span class="c1"># Furusawa (1988) Eq. 5 p 15</span>
+                    <span class="k">case</span> <span class="s1">&#39;pressure release&#39;</span><span class="p">:</span>
+                        <span class="c1"># r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)</span>
+                        <span class="n">r_type1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pro_rad1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                        <span class="n">r_type2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pro_rad2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                        <span class="n">aa</span> <span class="o">=</span> <span class="o">-</span><span class="n">r_type1</span><span class="o">/</span><span class="p">(</span><span class="n">r_type1</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">r_type2</span><span class="p">)</span>
+                    <span class="k">case</span> <span class="s1">&#39;fixed rigid&#39;</span><span class="p">:</span>
+                        <span class="k">pass</span>  <span class="c1"># see eqn of (3) of Furusawa, 1988</span>
 
-                # This definition of the norm of S is in Yeh (1967), and is equation
-                # 21.7.11 in Abramowitz &amp; Stegun (10th printing) as the
-                # Meixner-Schãfke normalisation scheme. Note that the RHS of
-                # 21.7.11 doesn't give correct results compared to doing the actual
-                # integration. Note also that the plain Matlab quad() function
-                # fails to give correct answers also in some cases, so the quadgk()
-                # function is used.
-                #
-                # Yeh, C. (1967). "Scattering of Acoustic Waves by a Penetrable
-                #   Prolate Spheroid I Liquid Prolate Spheroid," J. Acoust. Soc.
-                #   Am. 42, 518-521.
-                #
-                # Abramowitz, M., and Stegun, I. A. (1964). Handbook of
-                #   Mathematical Functions with Formulas, Graphs, and Mathematical
-                #   Tables (Dover, New York), 10th ed.
+                <span class="c1"># This definition of the norm of S is in Yeh (1967), and is equation</span>
+                <span class="c1"># 21.7.11 in Abramowitz &amp; Stegun (10th printing) as the</span>
+                <span class="c1"># Meixner-Schãfke normalisation scheme. Note that the RHS of</span>
+                <span class="c1"># 21.7.11 doesn&#39;t give correct results compared to doing the actual</span>
+                <span class="c1"># integration. Note also that the plain Matlab quad() function</span>
+                <span class="c1"># fails to give correct answers also in some cases, so the quadgk()</span>
+                <span class="c1"># function is used.</span>
+                <span class="c1">#</span>
+                <span class="c1"># Yeh, C. (1967). &quot;Scattering of Acoustic Waves by a Penetrable</span>
+                <span class="c1">#   Prolate Spheroid I Liquid Prolate Spheroid,&quot; J. Acoust. Soc.</span>
+                <span class="c1">#   Am. 42, 518-521.</span>
+                <span class="c1">#</span>
+                <span class="c1"># Abramowitz, M., and Stegun, I. A. (1964). Handbook of</span>
+                <span class="c1">#   Mathematical Functions with Formulas, Graphs, and Mathematical</span>
+                <span class="c1">#   Tables (Dover, New York), 10th ed.</span>
 
-                # Matlab code uses quadgk as plain quad didn't work....
-                n_mn = quad(self.aswfa2, -1, 1, args=(m, n, h0), epsrel=1e-5)
+                <span class="c1"># Matlab code uses quadgk as plain quad didn&#39;t work....</span>
+                <span class="n">n_mn</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aswfa2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">),</span> <span class="n">epsrel</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
 
-                x = epsilon / n_mn * s_inc * aa * s_bs * np.cos(m*(phi_bs - phi_inc))
-                f += x
+                <span class="n">x</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">/</span> <span class="n">n_mn</span> <span class="o">*</span> <span class="n">s_inc</span> <span class="o">*</span> <span class="n">aa</span> <span class="o">*</span> <span class="n">s_bs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="n">phi_bs</span> <span class="o">-</span> <span class="n">phi_inc</span><span class="p">))</span>
+                <span class="n">f</span> <span class="o">+=</span> <span class="n">x</span>
 
-                tsx = 20*np.log10(abs(2/(1j*k0)*x) / (2*a))
+                <span class="n">tsx</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">k0</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
 
-                if n &gt; (m+check_after):
-                    if even and (tsx &lt; tol):
-                        even_reached_tol = True
-                    elif not even and (tsx &lt; tol):
-                        odd_reached_tol = True
+                <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">check_after</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">even</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tsx</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">):</span>
+                        <span class="n">even_reached_tol</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="ow">not</span> <span class="n">even</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tsx</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">):</span>
+                        <span class="n">odd_reached_tol</span> <span class="o">=</span> <span class="kc">True</span>
 
-                # Apply the final factor and normalise to make it independent of
-                # the physical size of the spheroid
-                f_all.append(abs(2.0 / (1j*k0) * f) / (2.0*a))
-                idx = idx + 1
+                <span class="c1"># Apply the final factor and normalise to make it independent of</span>
+                <span class="c1"># the physical size of the spheroid</span>
+                <span class="n">f_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">k0</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span>
 
-            # end the iterations if the overall TS change is small
-            if idx &gt;= check_after:
-                if (20*np.log10(f_all[-1]) - 20*np.log10(f_all[-2])) &lt; 0.01:
-                    break
+            <span class="c1"># end the iterations if the overall TS change is small</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="n">check_after</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_all</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_all</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+                    <span class="k">break</span>
 
-        return np.numpy(20*np.log10(2*a*f_all))
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">f_all</span><span class="p">))</span>
 
-        def aswfa2(self, eta, m, n, h0):
-            """Need eta argument to be first for use in quad()."""
-            # Calculates the square of S_mn for the given values of eta.
-            return pro_ang1(m, n, h0, eta)[0]**2</code></pre>
+        <span class="k">def</span> <span class="nf">aswfa2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Need eta argument to be first for use in quad().&quot;&quot;&quot;</span>
+            <span class="c1"># Calculates the square of S_mn for the given values of eta.</span>
+            <span class="k">return</span> <span class="n">pro_ang1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+</code></pre></div></td></tr></table></div>
               </details>
 
 
@@ -1128,7 +1629,7 @@ The Journal of the Acoustical Society of America, 22: 426–431.
 
 
 <h4 id="echosms.scattermodels.PSMSModel.calculate_ts" class="doc doc-heading">
-            <code class="highlight language-python">calculate_ts(medium_c, medium_rho, a, b, theta, freqs, model_type, target_c=None, target_rho=None, **kwargs)</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">calculate_ts</span><span class="p">(</span><span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 </h4>
 
@@ -1138,137 +1639,192 @@ The Journal of the Acoustical Society of America, 22: 426–431.
       <p>Manage the calling of the single frequency, single angle version of the PSMS code.</p>
 
 
-<table class="field-list">
-  <colgroup>
-    <col class="field-name" />
-    <col class="field-body" />
-  </colgroup>
-  <tbody valign="top">
-    <tr class="field">
-      <th class="field-name">Parameters:</th>
-      <td class="field-body">
-        <ul class="first simple">
-            <li>
-              <b><code>medium_c</code></b>
-                  (<code>float</code>)
-              –
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>medium_c</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Sound speed in the fluid medium surrounding the target [m/s].</p>
               </div>
-            </li>
-            <li>
-              <b><code>medium_rho</code></b>
-                  (<code>float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>medium_rho</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Density of the fluid medium surrounding the target [kg/m3].</p>
               </div>
-            </li>
-            <li>
-              <b><code>a</code></b>
-                  (<code>float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>a</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Prolate spheroid major axis radius [m].</p>
               </div>
-            </li>
-            <li>
-              <b><code>b</code></b>
-                  (<code>float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>b</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Prolate spheroid minor axis radius [m].</p>
               </div>
-            </li>
-            <li>
-              <b><code>theta</code></b>
-                  (<code>float or array of float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>theta</code></td>
+            <td>
+                  <code>float or array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
 90 is dorsal, and 180 is tail on.</p>
               </div>
-            </li>
-            <li>
-              <b><code>freqs</code></b>
-                  (<code>float or array of float</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>freqs</code></td>
+            <td>
+                  <code>float or array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Frequencies to calculate the scattering at [Hz].</p>
               </div>
-            </li>
-            <li>
-              <b><code>model_type</code></b>
-                  (<code>str</code>)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>model_type</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The model type. Supported model types are given in the model_types class variable.</p>
               </div>
-            </li>
-            <li>
-              <b><code>target_c</code></b>
-                  (<code>float</code>, default:
-                      <code>None</code>
-)
-              –
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>target_c</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Sound speed in the fluid inside the target [m/s].
 Only required for <code>model_type</code> of <code>fluid filled</code></p>
               </div>
-            </li>
-            <li>
-              <b><code>target_rho</code></b>
-                  (<code>float</code>, default:
-                      <code>None</code>
-)
-              –
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>target_rho</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>Density of the fluid inside the target [kg/m^3].
 Only required for <code>model_type</code> of <code>fluid filled</code></p>
               </div>
-            </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-<table class="field-list">
-  <colgroup>
-    <col class="field-name" />
-    <col class="field-body" />
-  </colgroup>
-  <tbody valign="top">
-    <tr class="field">
-      <th class="field-name">Returns:</th>
-      <td class="field-body">
-        <ul class="first simple">
-            <li>
-<b><code>ts</code></b>(                  <code>array of float with dimensions of (len(freq), len(angles)</code>
-)              –
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>ts</code></td>            <td>
+                  <code>array of float with dimensions of (len(freq), len(angles)</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The scatter from the object [dB re 1 m2].</p>
               </div>
-            </li>
-            <li>
-<b><code>freq</code></b>(                  <code>array of float</code>
-)              –
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>freq</code></td>            <td>
+                  <code>array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The frequencies that apply to TS [Hz].</p>
               </div>
-            </li>
-            <li>
-<b><code>angles</code></b>(                  <code>array of float</code>
-)              –
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>angles</code></td>            <td>
+                  <code>array of float</code>
+            </td>
+            <td>
               <div class="doc-md-description">
                 <p>The pitch angles that apply to TS [degrees].</p>
               </div>
-            </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
 
 <details class="note" open>
   <summary>Notes</summary>
@@ -1282,63 +1838,120 @@ is calculated using the PSMS method of Furusawa [1] and corrections [2].</p>
 </details>
             <details class="quote">
               <summary>Source code in <code>echosms\scattermodels.py</code></summary>
-              <pre class="highlight"><code class="language-python">def calculate_ts(self, medium_c, medium_rho, a, b, theta, freqs, model_type,
-                 target_c=None, target_rho=None, **kwargs):
-    """Manage the calling of the single frequency, single angle version of the PSMS code.
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                 <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manage the calling of the single frequency, single angle version of the PSMS code.</span>
 
-    Parameters
-    ----------
-    medium_c : float
-        Sound speed in the fluid medium surrounding the target [m/s].
-    medium_rho : float
-        Density of the fluid medium surrounding the target [kg/m3].
-    a : float
-        Prolate spheroid major axis radius [m].
-    b : float
-        Prolate spheroid minor axis radius [m].
-    theta : float or array of float
-        Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
-        90 is dorsal, and 180 is tail on.
-    freqs : float or array of float
-        Frequencies to calculate the scattering at [Hz].
-    model_type : str
-        The model type. Supported model types are given in the model_types class variable.
-    target_c : float, optional
-        Sound speed in the fluid inside the target [m/s].
-        Only required for `model_type` of ``fluid filled``
-    target_rho : float, optional
-        Density of the fluid inside the target [kg/m^3].
-        Only required for `model_type` of ``fluid filled``
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    medium_c : float</span>
+<span class="sd">        Sound speed in the fluid medium surrounding the target [m/s].</span>
+<span class="sd">    medium_rho : float</span>
+<span class="sd">        Density of the fluid medium surrounding the target [kg/m3].</span>
+<span class="sd">    a : float</span>
+<span class="sd">        Prolate spheroid major axis radius [m].</span>
+<span class="sd">    b : float</span>
+<span class="sd">        Prolate spheroid minor axis radius [m].</span>
+<span class="sd">    theta : float or array of float</span>
+<span class="sd">        Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,</span>
+<span class="sd">        90 is dorsal, and 180 is tail on.</span>
+<span class="sd">    freqs : float or array of float</span>
+<span class="sd">        Frequencies to calculate the scattering at [Hz].</span>
+<span class="sd">    model_type : str</span>
+<span class="sd">        The model type. Supported model types are given in the model_types class variable.</span>
+<span class="sd">    target_c : float, optional</span>
+<span class="sd">        Sound speed in the fluid inside the target [m/s].</span>
+<span class="sd">        Only required for `model_type` of ``fluid filled``</span>
+<span class="sd">    target_rho : float, optional</span>
+<span class="sd">        Density of the fluid inside the target [kg/m^3].</span>
+<span class="sd">        Only required for `model_type` of ``fluid filled``</span>
 
-    Returns
-    -------
-    ts : array of float with dimensions of (len(freq), len(angles)
-        The scatter from the object [dB re 1 m2].
-    freq : array of float
-        The frequencies that apply to TS [Hz].
-    angles : array of float
-        The pitch angles that apply to TS [degrees].
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ts : array of float with dimensions of (len(freq), len(angles)</span>
+<span class="sd">        The scatter from the object [dB re 1 m2].</span>
+<span class="sd">    freq : array of float</span>
+<span class="sd">        The frequencies that apply to TS [Hz].</span>
+<span class="sd">    angles : array of float</span>
+<span class="sd">        The pitch angles that apply to TS [degrees].</span>
 
-    Notes
-    -----
-    The backscattered target strength of a pressure release or fluid-filled prolate spheroid
-    is calculated using the PSMS method of Furusawa [1] and corrections [2].
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The backscattered target strength of a pressure release or fluid-filled prolate spheroid</span>
+<span class="sd">    is calculated using the PSMS method of Furusawa [1] and corrections [2].</span>
 
-    .. [1] Furusawa, M. (1988). "Prolate spheroidal models for predicting general
-        trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
-    .. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
-        “Prediction of krill target strength by liquid prolate spheroid
-        model,” Fish. Sci., 60, 261–265.
-    """
+<span class="sd">    .. [1] Furusawa, M. (1988). &quot;Prolate spheroidal models for predicting general</span>
+<span class="sd">        trends of fish target strength,&quot; J. Acoust. Soc. Jpn. 9, 13-24.</span>
+<span class="sd">    .. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).</span>
+<span class="sd">        “Prediction of krill target strength by liquid prolate spheroid</span>
+<span class="sd">        model,” Fish. Sci., 60, 261–265.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    theta_rad = theta[0] * np.pi/180.
-    ts_f = []
-    for f in freqs:
-        ts = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta_rad, f, model_type,
-                                     target_c, target_rho)
-        ts_f.append(ts)
+    <span class="n">theta_rad</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span>
+    <span class="n">ts_f</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">freqs</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ts_one_f</span><span class="p">(</span><span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta_rad</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                                     <span class="n">target_c</span><span class="p">,</span> <span class="n">target_rho</span><span class="p">)</span>
+        <span class="n">ts_f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
 
-    return np.array(ts_f, theta, ndmin=2)</code></pre>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts_f</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -1348,7 +1961,7 @@ is calculated using the PSMS method of Furusawa [1] and corrections [2].</p>
 
 
 <h4 id="echosms.scattermodels.PSMSModel.calculate_ts_one_f" class="doc doc-heading">
-            <code class="highlight language-python">calculate_ts_one_f(medium_c, medium_rho, a, b, theta, freq, model_type, target_c=None, target_rho=None)</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">calculate_ts_one_f</span><span class="p">(</span><span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 </h4>
 
@@ -1359,136 +1972,266 @@ is calculated using the PSMS method of Furusawa [1] and corrections [2].</p>
 
             <details class="quote">
               <summary>Source code in <code>echosms\scattermodels.py</code></summary>
-              <pre class="highlight"><code class="language-python">def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
-                       target_c=None, target_rho=None):
-    """Prolate spheroid modal series (PSMS) solution model."""
-    match model_type:
-        case 'pressure release' | 'fluid filled':
-            pass
-        case 'fixed rigid':
-            raise ValueError(f'Model type "{model_type}" has not yet been implemented '
-                             f'for the {self.long_name} model.')
-        case _:
-            raise ValueError(f'The {self.long_name} model does not support '
-                             f'a model type of "{model_type}".')
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_ts_one_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medium_c</span><span class="p">,</span> <span class="n">medium_rho</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span>
+                       <span class="n">target_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_rho</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prolate spheroid modal series (PSMS) solution model.&quot;&quot;&quot;</span>
+    <span class="k">match</span> <span class="n">model_type</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s1">&#39;pressure release&#39;</span> <span class="o">|</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">case</span> <span class="s1">&#39;fixed rigid&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model type &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot; has not yet been implemented &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model.&#39;</span><span class="p">)</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">long_name</span><span class="si">}</span><span class="s1"> model does not support &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;a model type of &quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
 
-    if model_type == 'fluid filled':
-        hc = target_c / medium_c
-        rh = target_rho / medium_rho
+    <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+        <span class="n">hc</span> <span class="o">=</span> <span class="n">target_c</span> <span class="o">/</span> <span class="n">medium_c</span>
+        <span class="n">rh</span> <span class="o">=</span> <span class="n">target_rho</span> <span class="o">/</span> <span class="n">medium_rho</span>
 
-    # The wavenumber for the surrounding fluid
-    k0 = 2*np.pi*freq/medium_c
-    # The semi-focal length of the prolate spheroid (same as for an ellipse)
-    q = np.sqrt(a*a - b*b)
-    # An alternative to ka is kq, the wavenumber multiplied by the focal length
-    h0 = k0 * q
-    # Epsilon is a characteristic of the spheroid, whereby a = xi0 * q,
-    # hence converting this to use a and b gives:
-    xi0 = (1.0 - (b/a)**2)**(-.5)
-    # Phi, the port/starboard angle is fixed for this code
-    phi_inc = np.pi  # radians, incident direction
-    phi_bs = 0  # radians, backscattered direction
+    <span class="c1"># The wavenumber for the surrounding fluid</span>
+    <span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">freq</span><span class="o">/</span><span class="n">medium_c</span>
+    <span class="c1"># The semi-focal length of the prolate spheroid (same as for an ellipse)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">)</span>
+    <span class="c1"># An alternative to ka is kq, the wavenumber multiplied by the focal length</span>
+    <span class="n">h0</span> <span class="o">=</span> <span class="n">k0</span> <span class="o">*</span> <span class="n">q</span>
+    <span class="c1"># Epsilon is a characteristic of the spheroid, whereby a = xi0 * q,</span>
+    <span class="c1"># hence converting this to use a and b gives:</span>
+    <span class="n">xi0</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">)</span>
+    <span class="c1"># Phi, the port/starboard angle is fixed for this code</span>
+    <span class="n">phi_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># radians, incident direction</span>
+    <span class="n">phi_bs</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># radians, backscattered direction</span>
 
-    # Approximate limits on the summations
-    m_max = int(np.ceil(2*k0*b))
-    n_max = int(m_max + np.ceil(h0/2))
+    <span class="c1"># Approximate limits on the summations</span>
+    <span class="n">m_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k0</span><span class="o">*</span><span class="n">b</span><span class="p">))</span>
+    <span class="n">n_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m_max</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">h0</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
 
-    # Terms in the summation smaller than this will cause the iteration to
-    # stop. Even and odd values of (m-n) are treated separately.
-    # The value is quite low as some of the summations start out low then rise
-    # quite a lot. This value will get rid of the summations that don't add
-    # much.
-    tol = -50  # [dB]
-    check_after = 20  # iterations
+    <span class="c1"># Terms in the summation smaller than this will cause the iteration to</span>
+    <span class="c1"># stop. Even and odd values of (m-n) are treated separately.</span>
+    <span class="c1"># The value is quite low as some of the summations start out low then rise</span>
+    <span class="c1"># quite a lot. This value will get rid of the summations that don&#39;t add</span>
+    <span class="c1"># much.</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span>  <span class="c1"># [dB]</span>
+    <span class="n">check_after</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># iterations</span>
 
-    f = 0.0
-    f_all = []
-    idx = 1
-    for m in range(m_max+1):
-        # epsilon is the Neumann factor, a rather obtuse way of saying this:
-        epsilon = 1 if m == 0 else 2
+    <span class="n">f</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">f_all</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m_max</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># epsilon is the Neumann factor, a rather obtuse way of saying this:</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">2</span>
 
-        # reset the tolerance flags for the new m
-        even_reached_tol = False
-        odd_reached_tol = False
+        <span class="c1"># reset the tolerance flags for the new m</span>
+        <span class="n">even_reached_tol</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">odd_reached_tol</span> <span class="o">=</span> <span class="kc">False</span>
 
-        for n in range(m, n_max+1):
-            even = True if (m-n) % 2 == 0 else False
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n_max</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">even</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="n">n</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
 
-            if (even and even_reached_tol) or (not even and odd_reached_tol):
-                continue
+            <span class="k">if</span> <span class="p">(</span><span class="n">even</span> <span class="ow">and</span> <span class="n">even_reached_tol</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">even</span> <span class="ow">and</span> <span class="n">odd_reached_tol</span><span class="p">):</span>
+                <span class="k">continue</span>
 
-            # s_bs = aswfb(m, n, h0, cos(theta), 1)
-            # s_inc = aswfb(m, n, h0, cos(pi - theta), 1)
-            s_bs = pro_ang1(m, n, h0, np.cos(theta))
-            s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))
+            <span class="c1"># s_bs = aswfb(m, n, h0, cos(theta), 1)</span>
+            <span class="c1"># s_inc = aswfb(m, n, h0, cos(pi - theta), 1)</span>
+            <span class="n">s_bs</span> <span class="o">=</span> <span class="n">pro_ang1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+            <span class="n">s_inc</span> <span class="o">=</span> <span class="n">pro_ang1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">theta</span><span class="p">))</span>
 
-            match model_type:
-                case 'fluid filled':
-                    # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
-                    # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)
-                    print(m,n,h0,xi0,flush=True)
-                    r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
-                    r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
-                    r_type1B, dr_type1B, _, _ = pro_rad1(m, n, h0/hc, xi0)
+            <span class="k">match</span> <span class="n">model_type</span><span class="p">:</span>
+                <span class="k">case</span> <span class="s1">&#39;fluid filled&#39;</span><span class="p">:</span>
+                    <span class="c1"># r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)</span>
+                    <span class="c1"># r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">h0</span><span class="p">,</span><span class="n">xi0</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">r_type1A</span><span class="p">,</span> <span class="n">dr_type1A</span> <span class="o">=</span> <span class="n">pro_rad1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                    <span class="n">r_type2A</span><span class="p">,</span> <span class="n">dr_type2A</span> <span class="o">=</span> <span class="n">pro_rad2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                    <span class="n">r_type1B</span><span class="p">,</span> <span class="n">dr_type1B</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pro_rad1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="o">/</span><span class="n">hc</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
 
-                    eeA = r_type1A - rh*r_type1B/dr_type1B*dr_type1A
-                    eeB = eeA + 1j*(r_type2A - rh*r_type1B/dr_type1B*dr_type2A)
-                    aa = -eeA/eeB  # Furusawa (1988) Eq. 5 p 15
-                case 'pressure release':
-                    # r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)
-                    r_type1, _ = pro_rad1(m, n, h0, xi0)
-                    r_type2, _ = pro_rad2(m, n, h0, xi0)
-                    aa = -r_type1/(r_type1 + 1j*r_type2)
-                case 'fixed rigid':
-                    pass  # see eqn of (3) of Furusawa, 1988
+                    <span class="n">eeA</span> <span class="o">=</span> <span class="n">r_type1A</span> <span class="o">-</span> <span class="n">rh</span><span class="o">*</span><span class="n">r_type1B</span><span class="o">/</span><span class="n">dr_type1B</span><span class="o">*</span><span class="n">dr_type1A</span>
+                    <span class="n">eeB</span> <span class="o">=</span> <span class="n">eeA</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="n">r_type2A</span> <span class="o">-</span> <span class="n">rh</span><span class="o">*</span><span class="n">r_type1B</span><span class="o">/</span><span class="n">dr_type1B</span><span class="o">*</span><span class="n">dr_type2A</span><span class="p">)</span>
+                    <span class="n">aa</span> <span class="o">=</span> <span class="o">-</span><span class="n">eeA</span><span class="o">/</span><span class="n">eeB</span>  <span class="c1"># Furusawa (1988) Eq. 5 p 15</span>
+                <span class="k">case</span> <span class="s1">&#39;pressure release&#39;</span><span class="p">:</span>
+                    <span class="c1"># r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)</span>
+                    <span class="n">r_type1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pro_rad1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                    <span class="n">r_type2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pro_rad2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xi0</span><span class="p">)</span>
+                    <span class="n">aa</span> <span class="o">=</span> <span class="o">-</span><span class="n">r_type1</span><span class="o">/</span><span class="p">(</span><span class="n">r_type1</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">r_type2</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s1">&#39;fixed rigid&#39;</span><span class="p">:</span>
+                    <span class="k">pass</span>  <span class="c1"># see eqn of (3) of Furusawa, 1988</span>
 
-            # This definition of the norm of S is in Yeh (1967), and is equation
-            # 21.7.11 in Abramowitz &amp; Stegun (10th printing) as the
-            # Meixner-Schãfke normalisation scheme. Note that the RHS of
-            # 21.7.11 doesn't give correct results compared to doing the actual
-            # integration. Note also that the plain Matlab quad() function
-            # fails to give correct answers also in some cases, so the quadgk()
-            # function is used.
-            #
-            # Yeh, C. (1967). "Scattering of Acoustic Waves by a Penetrable
-            #   Prolate Spheroid I Liquid Prolate Spheroid," J. Acoust. Soc.
-            #   Am. 42, 518-521.
-            #
-            # Abramowitz, M., and Stegun, I. A. (1964). Handbook of
-            #   Mathematical Functions with Formulas, Graphs, and Mathematical
-            #   Tables (Dover, New York), 10th ed.
+            <span class="c1"># This definition of the norm of S is in Yeh (1967), and is equation</span>
+            <span class="c1"># 21.7.11 in Abramowitz &amp; Stegun (10th printing) as the</span>
+            <span class="c1"># Meixner-Schãfke normalisation scheme. Note that the RHS of</span>
+            <span class="c1"># 21.7.11 doesn&#39;t give correct results compared to doing the actual</span>
+            <span class="c1"># integration. Note also that the plain Matlab quad() function</span>
+            <span class="c1"># fails to give correct answers also in some cases, so the quadgk()</span>
+            <span class="c1"># function is used.</span>
+            <span class="c1">#</span>
+            <span class="c1"># Yeh, C. (1967). &quot;Scattering of Acoustic Waves by a Penetrable</span>
+            <span class="c1">#   Prolate Spheroid I Liquid Prolate Spheroid,&quot; J. Acoust. Soc.</span>
+            <span class="c1">#   Am. 42, 518-521.</span>
+            <span class="c1">#</span>
+            <span class="c1"># Abramowitz, M., and Stegun, I. A. (1964). Handbook of</span>
+            <span class="c1">#   Mathematical Functions with Formulas, Graphs, and Mathematical</span>
+            <span class="c1">#   Tables (Dover, New York), 10th ed.</span>
 
-            # Matlab code uses quadgk as plain quad didn't work....
-            n_mn = quad(self.aswfa2, -1, 1, args=(m, n, h0), epsrel=1e-5)
+            <span class="c1"># Matlab code uses quadgk as plain quad didn&#39;t work....</span>
+            <span class="n">n_mn</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aswfa2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">),</span> <span class="n">epsrel</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
 
-            x = epsilon / n_mn * s_inc * aa * s_bs * np.cos(m*(phi_bs - phi_inc))
-            f += x
+            <span class="n">x</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">/</span> <span class="n">n_mn</span> <span class="o">*</span> <span class="n">s_inc</span> <span class="o">*</span> <span class="n">aa</span> <span class="o">*</span> <span class="n">s_bs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="n">phi_bs</span> <span class="o">-</span> <span class="n">phi_inc</span><span class="p">))</span>
+            <span class="n">f</span> <span class="o">+=</span> <span class="n">x</span>
 
-            tsx = 20*np.log10(abs(2/(1j*k0)*x) / (2*a))
+            <span class="n">tsx</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">k0</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
 
-            if n &gt; (m+check_after):
-                if even and (tsx &lt; tol):
-                    even_reached_tol = True
-                elif not even and (tsx &lt; tol):
-                    odd_reached_tol = True
+            <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">check_after</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">even</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tsx</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">):</span>
+                    <span class="n">even_reached_tol</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">even</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tsx</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">):</span>
+                    <span class="n">odd_reached_tol</span> <span class="o">=</span> <span class="kc">True</span>
 
-            # Apply the final factor and normalise to make it independent of
-            # the physical size of the spheroid
-            f_all.append(abs(2.0 / (1j*k0) * f) / (2.0*a))
-            idx = idx + 1
+            <span class="c1"># Apply the final factor and normalise to make it independent of</span>
+            <span class="c1"># the physical size of the spheroid</span>
+            <span class="n">f_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">k0</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span>
 
-        # end the iterations if the overall TS change is small
-        if idx &gt;= check_after:
-            if (20*np.log10(f_all[-1]) - 20*np.log10(f_all[-2])) &lt; 0.01:
-                break
+        <span class="c1"># end the iterations if the overall TS change is small</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="n">check_after</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_all</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_all</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+                <span class="k">break</span>
 
-    return np.numpy(20*np.log10(2*a*f_all))
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">f_all</span><span class="p">))</span>
 
-    def aswfa2(self, eta, m, n, h0):
-        """Need eta argument to be first for use in quad()."""
-        # Calculates the square of S_mn for the given values of eta.
-        return pro_ang1(m, n, h0, eta)[0]**2</code></pre>
+    <span class="k">def</span> <span class="nf">aswfa2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Need eta argument to be first for use in quad().&quot;&quot;&quot;</span>
+        <span class="c1"># Calculates the square of S_mn for the given values of eta.</span>
+        <span class="k">return</span> <span class="n">pro_ang1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">eta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+</code></pre></div></td></tr></table></div>
             </details>
     </div>
 
@@ -1507,7 +2250,7 @@ is calculated using the PSMS method of Furusawa [1] and corrections [2].</p>
 
 
 <h3 id="echosms.scattermodels.ScatterModelBaseClass" class="doc doc-heading">
-            <code>ScatterModelBaseClass</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>ScatterModelBaseClass</code>
 
 
 </h3>
@@ -1522,23 +2265,40 @@ ends with 'Model'.</p>
 
               <details class="quote">
                 <summary>Source code in <code>echosms\scattermodels.py</code></summary>
-                <pre class="highlight"><code class="language-python">class ScatterModelBaseClass:
-    """Base class for a class that provides a scattering model.
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ScatterModelBaseClass</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for a class that provides a scattering model.</span>
 
-    All scattering models should inherit from this class and have a name that
-    ends with 'Model'.
-    """
+<span class="sd">    All scattering models should inherit from this class and have a name that</span>
+<span class="sd">    ends with &#39;Model&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    # pylint: disable=too-many-instance-attributes
+    <span class="c1"># pylint: disable=too-many-instance-attributes</span>
 
-    def __init__(self):
-        self.long_name = ''  # the name in words
-        self.short_name = ''  # an abbreviation
-        self.analytical_type = ''  # 'exact', 'approximate'
-        self.model_types = []  # 'fixed rigid', 'pressure release', 'fluid filled'
-        self.shapes = []  # the target shapes that this model can simulate
-        self.max_frequency = np.nan  # [Hz]
-        self.min_frequency = np.nan  # [Hz]</code></pre>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># the name in words</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># an abbreviation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analytical_type</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># &#39;exact&#39;, &#39;approximate&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_types</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># &#39;fixed rigid&#39;, &#39;pressure release&#39;, &#39;fluid filled&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># the target shapes that this model can simulate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_frequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># [Hz]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_frequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># [Hz]</span>
+</code></pre></div></td></tr></table></div>
               </details>
 
 
@@ -1575,49 +2335,82 @@ ends with 'Model'.</p>
 
     </div>
 
-</div>
-              
+</div></div>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../contributing/" class="btn btn-neutral float-left" title="Contributing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
-          
         </div>
-      </div>
 
-    </section>
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
 
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-    
-      <span><a href="../contributing/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-  </span>
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
 
-</body>
+    </body>
 </html>
