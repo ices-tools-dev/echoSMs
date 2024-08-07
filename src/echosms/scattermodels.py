@@ -33,6 +33,24 @@ class Utils:
         """Calculate the acoustic wavenumber."""
         return 2*np.pi*f/c
 
+    def h1(n, z, derivative=False):
+        """Spherical Hankel function of the first kind or its' derivative."""
+        if not derivative:
+            return np.sqrt(np.pi/(2*z)) * jv(n+0.5, z)\
+                + (np.sqrt(np.pi/(2*z)) * yv(n+0.5, z))*1j
+        else:
+            hn = (np.sqrt((np.pi) / (2*z))) * jv(n + 1/2, z)\
+                + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 1/2, z)
+
+            if n == 0:
+                hn_plus1 = (np.sqrt(np.pi / (2*z))) * jv(n + 3/2, z)\
+                    + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 3/2, z)
+                return ((n / z) * hn - hn_plus1)
+            elif n > 0:
+                hn_minus1 = (np.sqrt(np.pi / (2*z))) * jv(n - 1/2, z)\
+                    + 1j * (np.sqrt(np.pi / (2*z))) * yv(n - 1/2, z)
+                return (hn_minus1 - ((n + 1) / z) * hn)
+
 
 class ScatterModelBaseClass:
     """Base class for a class that provides a scattering model.
@@ -110,10 +128,10 @@ class MSSModel(ScatterModelBaseClass):
             Density of the fluid medium surrounding the target [kg/m3].
         a : float
             Radius of the spherical target [m].
-        theta : float or array of float
+        theta : float
             Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
             90 is dorsal, and 180 is tail on.
-        freqs : float or array of float
+        f : float
             Frequencies to calculate the scattering at [Hz].
         model_type : str
             The model type. Supported model types are given in the model_types class variable.
@@ -126,12 +144,7 @@ class MSSModel(ScatterModelBaseClass):
 
         Returns
         -------
-        ts : array of float with dimensions of (len(freq), len(angles)
-            The scatter from the object [dB re 1 m2].
-        freq : array of float
-            The frequencies that apply to TS [Hz].
-        angles : array of float
-            The pitch angles that apply to TS [degrees].
+        ts : the target strength of the object [dB re 1 m2].
 
         Notes
         -----
@@ -141,76 +154,35 @@ class MSSModel(ScatterModelBaseClass):
         """
         # pylint: disable=too-many-locals
 
-        # Call the appropriate function based on the model type.
+        k0 = Utils.k(medium_c, f)
+        ka = k0*a
+        n = np.arange(0, round(ka+20))
+
+        # Some code varies with model type.
         match model_type:
             case 'fixed rigid':
-                ts = self.__fixed_rigid_ts_bs(medium_c, medium_rho, a, f)
+                A = list(map(lambda x: -spherical_jn(x, ka, True) / Utils.h1(x, ka, True), n))
             case 'pressure release':
-                ts = self.__pressure_release_ts_bs(medium_c, medium_rho, a, f)
+                A = list(map(lambda x: -spherical_jn(x, ka) / Utils.h1(x, ka), n))
             case 'fluid filled':
-                ts = self.__fluid_filled_ts_bs2(medium_c, medium_rho, a, f, target_c, target_rho)
+                k1 = Utils.k(target_c, f)
+                k1a = k1*a
+
+                gh = target_rho/medium_rho * target_c/medium_c
+
+                def Cn(n):
+                    return\
+                        ((spherical_jn(n, k1a, True) * spherical_yn(n, ka))
+                            / (spherical_jn(n, k1a) * spherical_jn(n, ka, True))
+                            - gh * (spherical_yn(n, ka, True) / spherical_jn(n, ka, True)))\
+                        / ((spherical_jn(n, k1a, True) * spherical_jn(n, ka))
+                           / (spherical_jn(n, k1a) * spherical_jn(n, ka, True)) - gh)
+
+                A = -1/(1 + 1j*np.asarray(list(map(Cn, n)), dtype=complex))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
-        return ts
 
-    def __pressure_release_ts_bs(self, medium_c, medium_rho, a, f):
-        """Sphere with pressure release surface.
-
-        This implemention only calculates the backscatter (theta=90deg)
-        """
-        k0 = Utils.k(medium_c, f)
-        ka = k0*a
-
-        n = np.arange(0, round(ka+20, 0)).astype(int)
-
-        A = list(map(lambda x: -spherical_jn(x, ka) / self.__h1(x, ka), n))
-        fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
-        ts = 20*np.log10(np.abs(fbs))
-
-        return ts
-
-    def __fixed_rigid_ts_bs(self, medium_c, medium_rho, a, f):
-        """Sphere with rigid fixed surface.
-
-        This implementation only calculates the backscatter (theta=90deg)
-        """
-        k0 = Utils.k(medium_c, f)
-        ka = k0*a
-
-        n = np.arange(0, round(ka+20, 0)).astype(int)
-
-        A = list(map(lambda x: -spherical_jn(x, ka, True) / self.__h1dash(x, ka), n))
-        fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
-        ts = 20*np.log10(np.abs(fbs))
-
-        return ts
-
-    def fluid_filled_ts_bs2(self, medium_c, medium_rho, a, f, target_c, target_rho):
-        """Sphere with fluid filled iterior.
-
-        This implementation only calculates the backscatter (theta=90deg)
-        """
-        k0 = Utils.k(medium_c, f)
-        ka = k0*a
-
-        k1 = Utils.k(target_c, f)
-        k1a = k1*a
-
-        g = target_rho / medium_rho
-        h = target_c / medium_c
-
-        n = np.arange(0, round(ka+20, 0)).astype(int)
-
-        def Cn(n):
-            return\
-                ((spherical_jn(n, k1a, True) * spherical_yn(n, ka))
-                    / (spherical_jn(n, k1a) * spherical_jn(n, ka, True))
-                    - g*h * (spherical_yn(n, ka, True) / spherical_jn(n, ka, True)))\
-                / ((spherical_jn(n, k1a, True) * spherical_jn(n, ka))
-                   / (spherical_jn(n, k1a) * spherical_jn(n, ka, True)) - g*h)
-
-        A = -1/(1 + 1j * np.asarray(list(map(Cn, n)), dtype=complex))
         fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
         ts = 20*np.log10(np.abs(fbs))
 
@@ -221,7 +193,7 @@ class MSSModel(ScatterModelBaseClass):
 
         This implementation only calculates the backscatter (theta=90deg).
 
-        This code is directly derived from code written by M. Jech elsewhere in the
+        This code is directly derived from code written by M. Jech, available elsewhere in the
         echoSMs repository.
         """
         # Fixed model parameters
@@ -267,25 +239,6 @@ class MSSModel(ScatterModelBaseClass):
         ts = 10*np.log10((refl*a)**2 / 4.)
 
         return ts
-
-    def __h1(self, n, z):
-        """Spherical Hankel function of the first kind."""
-        return np.sqrt(np.pi/(2*z)) * jv(n+0.5, z)\
-            + (np.sqrt(np.pi/(2*z)) * yv(n+0.5, z))*1j
-
-    def __h1dash(self, n, z):
-        """Calculate the derivative of the spherical Hankel function of the first kind."""
-        hn = (np.sqrt((np.pi) / (2*z))) * jv(n + 1/2, z)\
-            + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 1/2, z)
-
-        if n == 0:
-            hn_plus1 = (np.sqrt(np.pi / (2*z))) * jv(n + 3/2, z)\
-                + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 3/2, z)
-            return ((n / z) * hn - hn_plus1)
-        elif n > 0:
-            hn_minus1 = (np.sqrt(np.pi / (2*z))) * jv(n - 1/2, z)\
-                + 1j * (np.sqrt(np.pi / (2*z))) * yv(n - 1/2, z)
-            return (hn_minus1 - ((n + 1) / z) * hn)
 
 
 class PSMSModel(ScatterModelBaseClass):
