@@ -36,7 +36,7 @@ ts = mss.calculate_ts_single(**m, theta=90.0, f=12000, model_type=s['model_type'
 m['f'] = bmf['Frequency_kHz']*1e3  # [Hz]
 m['theta'] = 90.0
 # and run these parameters
-ts = mss.calculate_ts(Utils.df_from_dict(m), model_type='fluid filled')
+ts = mss.calculate_ts(m, model_type='fluid filled')  # does model_type override the one in m?
 
 # Plot the mss model and benchmark results
 plt.plot(m['f']/1e3, ts, label='New code')
@@ -85,12 +85,9 @@ params = {'medium_rho': [1000, 1250, 1500],
           'target_rho': 1250}
 
 # Instead of converting those to a dataframe, an xarray can be used.
-params_xr = Utils.xr_from_dict(params)
-# which is easy to convert to a Pandas dataframe if desired
-# params_xr.to_dataframe('ts')
-
+params_xa = Utils.xa_from_dict(params)
 # and is called the same way as for the dataframe
-ts = mss.calculate_ts(params_xr, model_type='fluid filled')
+ts = mss.calculate_ts(params_xa, model_type='fluid filled')
 
 # %%
 ####################################################################################################

@@ -22,10 +22,14 @@ class Utils:
             np.meshgrid(*tuple(params.values()))).T.reshape(-1, len(params)),
             columns=params.keys())
 
-    def xr_from_dict(params):
+    def xa_from_dict(params):
         """Convert model parameters from dict form to a Xarray DataArray."""
-        # Get lengths of each parameter vector. Annoying that len() cannot be applied to a scalar...
-        sz = [(len(v) if hasattr(v, '__len__') else 1) for k, v in params.items()]
+        # Convert scalars to iterables for xarray to be happier later on
+        for k, v in params.items():
+            if not hasattr(v, '__iter__'):
+                params[k] = [v]
+        # Lengths of each parameter array
+        sz = [len(v) for k, v in params.items()]
         # Create the DataArray
         return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts')
 
@@ -97,12 +101,12 @@ class MSSModel(ScatterModelBaseClass):
 
         Parameters
         ----------
-        data: Pandas DataFrame or Xarray DataArray
+        data: Pandas DataFrame or Xarray DataArray or dictionary
             If a DataFrame, must contain columns names as per the function parameters in the
             calculate_ts_single() function in this class. Each row in the DataFrame will generate
             one TS output. If a DataArray, must contain coordinate names as per the function
             parameters in calculate_ts_single(). The TS will be calculated for all combinations of
-            the coordinate variables.
+            the coordinate variables. If dictionary, it will be converted to a DataFrame first.
 
         model_type: string
             The type of model boundary to apply. Valid values are given in the model_types class
@@ -110,30 +114,32 @@ class MSSModel(ScatterModelBaseClass):
 
         Returns
         -------
-        ts: iterable or DataArray
+        ts: array
             Returns the target strength calculated for all input parameters. Returns an iterable if
             the input data parameter was a DataFrame and a DataArray if the inuput was a DataArray.
 
-    """
-        if isinstance(data, pd.DataFrame):
-            multiprocess = True
-            if multiprocess:
-                # Using mapply:
-                ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
-                # Using swifter
-                # ts = df.swifter.apply(self.__ts_helper, args=(model_type,), axis=1)
-            else:  # this uses just one CPU
-                ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+        """
+        if isinstance(data, dict):
+            data = Utils.df_from_dict(data)
+        elif isinstance(data, pd.DataFrame):
+            pass
         elif isinstance(data, xr.DataArray):
-            raise ValueError('Use of Xarray DataArrays is not yet implemented.')
-            # perhaps use apply_gufunc()?
-            # or convert to pandas dataframe and call calculate_ts_df()?
-            # or do iteration over xr's coordinates manually, perhaps using groupby() too...
-            # not as straight-forward as for the dataframe version!
+            # For the moment just convert DataArrays into DataFrames
+            data = data.to_dataframe().reset_index()
         else:
             raise ValueError(f'Variable type of {type(data)} is not supported'
                              ' (only Pandas DataFrame and Xarray DataArray)')
-        return ts
+
+        multiprocess = True
+        if multiprocess:
+            # Using mapply:
+            ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
+            # Using swifter
+            # ts = df.swifter.apply(self.__ts_helper, args=(model_type,), axis=1)
+        else:  # this uses just one CPU
+            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+
+        return ts.to_numpy()
 
     def __ts_helper(self, *args):
         """Convert function arguments and call calculate_ts()."""
