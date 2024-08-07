@@ -92,7 +92,28 @@ class MSSModel(ScatterModelBaseClass):
         self.min_frequency = 1.0  # [Hz]
 
     def calculate_ts(self, data, model_type):
-        """Calculate the scatter using parameters from a Pandas DataFrame or Xarray DataArray."""
+        """Calculate the scatter using parameters from a Pandas DataFrame or Xarray DataArray.
+
+        Parameters
+        ----------
+        data: Pandas DataFrame or Xarray DataArray
+            If a DataFrame, must contain columns names as per the function parameters in the
+            calculate_ts_single() function in this class. Each row in the DataFrame will generate
+            one TS output. If a DataArray, must contain coordinate names as per the function
+            parameters in calculate_ts_single(). The TS will be calculated for all combinations of
+            the coordinate variables.
+
+        model_type: string
+            The type of model boundary to apply. Valid values are given in the model_types class
+            variable.
+
+        Returns
+        -------
+        ts: iterable or DataArray
+            Returns the target strength calculated for all input parameters. Returns an iterable if
+            the input data parameter was a DataFrame and a DataArray if the inuput was a DataArray.
+
+    """
         if isinstance(data, pd.DataFrame):
             multiprocess = True
             if multiprocess:
