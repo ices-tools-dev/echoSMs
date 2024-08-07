@@ -148,7 +148,7 @@ class MSSModel(ScatterModelBaseClass):
             case 'pressure release':
                 ts = self.__pressure_release_ts_bs(medium_c, medium_rho, a, f)
             case 'fluid filled':
-                ts = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, f, target_c, target_rho)
+                ts = self.__fluid_filled_ts_bs2(medium_c, medium_rho, a, f, target_c, target_rho)
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
@@ -180,7 +180,37 @@ class MSSModel(ScatterModelBaseClass):
 
         n = np.arange(0, round(ka+20, 0)).astype(int)
 
-        A = list(map(lambda x: -spherical_jn(x, ka, derivative=True) / self.__h1dash(x, ka), n))
+        A = list(map(lambda x: -spherical_jn(x, ka, True) / self.__h1dash(x, ka), n))
+        fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
+        ts = 20*np.log10(np.abs(fbs))
+
+        return ts
+
+    def fluid_filled_ts_bs2(self, medium_c, medium_rho, a, f, target_c, target_rho):
+        """Sphere with fluid filled iterior.
+
+        This implementation only calculates the backscatter (theta=90deg)
+        """
+        k0 = Utils.k(medium_c, f)
+        ka = k0*a
+
+        k1 = Utils.k(target_c, f)
+        k1a = k1*a
+
+        g = target_rho / medium_rho
+        h = target_c / medium_c
+
+        n = np.arange(0, round(ka+20, 0)).astype(int)
+
+        def Cn(n):
+            return\
+                ((spherical_jn(n, k1a, True) * spherical_yn(n, ka))
+                    / (spherical_jn(n, k1a) * spherical_jn(n, ka, True))
+                    - g*h * (spherical_yn(n, ka, True) / spherical_jn(n, ka, True)))\
+                / ((spherical_jn(n, k1a, True) * spherical_jn(n, ka))
+                   / (spherical_jn(n, k1a) * spherical_jn(n, ka, True)) - g*h)
+
+        A = -1/(1 + 1j * np.asarray(list(map(Cn, n)), dtype=complex))
         fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
         ts = 20*np.log10(np.abs(fbs))
 
@@ -190,6 +220,9 @@ class MSSModel(ScatterModelBaseClass):
         """Fluid filled sphere model.
 
         This implementation only calculates the backscatter (theta=90deg).
+
+        This code is directly derived from code written by M. Jech elsewhere in the
+        echoSMs repository.
         """
         # Fixed model parameters
         # maximum order. Can be changed to improve precision
