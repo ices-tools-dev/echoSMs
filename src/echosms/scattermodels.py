@@ -86,7 +86,8 @@ class MSSModel(ScatterModelBaseClass):
         self.long_name = 'modal series solution'
         self.short_name = 'mss'
         self.analytical_type = 'exact'
-        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
+        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled',
+                            'fluid shell fluid interior', 'fluid shell pressure release interior']
         self.shapes = ['sphere']
         self.max_frequency = 400.0e3  # [Hz]
         self.min_frequency = 1.0  # [Hz]
@@ -203,6 +204,8 @@ class MSSModel(ScatterModelBaseClass):
                            / (spherical_jn(n, k1a) * spherical_jn(n, ka, True)) - gh)
 
                 A = -1/(1 + 1j*np.asarray(list(map(Cn, n)), dtype=complex))
+            case 'fluid shell fluid interior' | 'fluid shell pressure release interior':
+                raise ValueError(f'Model type of {model_type} is not yet implemented.')
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
