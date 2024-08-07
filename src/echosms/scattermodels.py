@@ -35,6 +35,9 @@ class Utils:
 
     def h1(n, z, derivative=False):
         """Spherical Hankel function of the first kind or its' derivative."""
+        if n < 0:
+            raise ValueError('Negative n values are not valid for spherical Hankel functions.')
+
         if not derivative:
             return np.sqrt(np.pi/(2*z)) * jv(n+0.5, z)\
                 + (np.sqrt(np.pi/(2*z)) * yv(n+0.5, z))*1j
