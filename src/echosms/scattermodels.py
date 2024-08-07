@@ -1,10 +1,37 @@
 """Classes that provide acoustic scattering models."""
 
 import numpy as np
-from scipy.special import spherical_jn, spherical_yn, pro_ang1, pro_rad1, pro_rad2
+import pandas as pd
+import xarray as xr
+from mapply.mapply import mapply
+# import swifter
+from scipy.special import spherical_jn, spherical_yn, pro_ang1, pro_rad1, pro_rad2, jv, yv
 from scipy.integrate import quad
 
 # pylint: disable=too-many-arguments
+
+
+class Utils:
+    """Miscellaneous utility functions."""
+
+    def df_from_dict(params):
+        """Convert model parameters from dict form to a Pandas DataFrame."""
+        # Use meshgrid to do the Cartesian product, then reshape into a 2D array, then create a
+        # Pandas DataFrame() from that
+        return pd.DataFrame(np.array(
+            np.meshgrid(*tuple(params.values()))).T.reshape(-1, len(params)),
+            columns=params.keys())
+
+    def xr_from_dict(params):
+        """Convert model parameters from dict form to a Xarray DataArray."""
+        # Get lengths of each parameter vector. Annoying that len() cannot be applied to a scalar...
+        sz = [(len(v) if hasattr(v, '__len__') else 1) for k, v in params.items()]
+        # Create the DataArray
+        return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts')
+
+    def k(c, f):
+        """Calculate the acoustic wavenumber."""
+        return 2*np.pi*f/c
 
 
 class ScatterModelBaseClass:
@@ -43,10 +70,37 @@ class MSSModel(ScatterModelBaseClass):
         self.max_frequency = 400.0e3  # [Hz]
         self.min_frequency = 1.0  # [Hz]
 
-    def calculate_ts(self, medium_c, medium_rho, a, theta, freqs, model_type,
-                     target_c=None, target_rho=None, **kwargs):
+    def calculate_ts(self, data, model_type):
+        """Calculate the scatter using parameters from a Pandas DataFrame or Xarray DataArray."""
+        if isinstance(data, pd.DataFrame):
+            multiprocess = True
+            if multiprocess:
+                # Using mapply:
+                ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
+                # Using swifter
+                # ts = df.swifter.apply(self.__ts_helper, args=(model_type,), axis=1)
+            else:  # this uses just one CPU
+                ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+        elif isinstance(data, xr.DataArray):
+            raise ValueError('Use of Xarray DataArrays is not yet implemented.')
+            # perhaps use apply_gufunc()?
+            # or convert to pandas dataframe and call calculate_ts_df()?
+            # or do iteration over xr's coordinates manually, perhaps using groupby() too...
+            # not as straight-forward as for the dataframe version!
+        else:
+            raise ValueError(f'Variable type of {type(data)} is not supported'
+                             ' (only Pandas DataFrame and Xarray DataArray)')
+        return ts
+
+    def __ts_helper(self, *args):
+        """Convert function arguments and call calculate_ts()."""
+        p = args[0].to_dict()  # so we can use it for keyword arguments
+        return self.calculate_ts_single(**p, model_type=args[1])
+
+    def calculate_ts_single(self, medium_c, medium_rho, a, theta, f, model_type,
+                            target_c=None, target_rho=None, **kwargs):
         """
-        Calculate the scatter using the mss model.
+        Calculate the scatter using the mss model for one set of parameters.
 
         Parameters
         ----------
@@ -89,18 +143,50 @@ class MSSModel(ScatterModelBaseClass):
 
         # Call the appropriate function based on the model type.
         match model_type:
-            case 'fixed rigid' | 'pressure release':
-                raise ValueError(f'Model type "{model_type}" has not yet been implemented '
-                                 f'for the {self.long_name} model.')
+            case 'fixed rigid':
+                ts = self.__fixed_rigid_ts_bs(medium_c, medium_rho, a, f)
+            case 'pressure release':
+                ts = self.__pressure_release_ts_bs(medium_c, medium_rho, a, f)
             case 'fluid filled':
-                (freqs, theta, ts) = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, freqs,
-                                                               target_c, target_rho)
+                ts = self.__fluid_filled_ts_bs(medium_c, medium_rho, a, f, target_c, target_rho)
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
-        return (ts, freqs, theta)
+        return ts
 
-    def __fluid_filled_ts_bs(self, medium_c, medium_rho, a, freqs, target_c, target_rho):
+    def __pressure_release_ts_bs(self, medium_c, medium_rho, a, f):
+        """Sphere with pressure release surface.
+
+        This implemention only calculates the backscatter (theta=90deg)
+        """
+        k0 = Utils.k(medium_c, f)
+        ka = k0*a
+
+        n = np.arange(0, round(ka+20, 0)).astype(int)
+
+        A = list(map(lambda x: -spherical_jn(x, ka) / self.__h1(x, ka), n))
+        fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
+        ts = 20*np.log10(np.abs(fbs))
+
+        return ts
+
+    def __fixed_rigid_ts_bs(self, medium_c, medium_rho, a, f):
+        """Sphere with rigid fixed surface.
+
+        This implementation only calculates the backscatter (theta=90deg)
+        """
+        k0 = Utils.k(medium_c, f)
+        ka = k0*a
+
+        n = np.arange(0, round(ka+20, 0)).astype(int)
+
+        A = list(map(lambda x: -spherical_jn(x, ka, derivative=True) / self.__h1dash(x, ka), n))
+        fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
+        ts = 20*np.log10(np.abs(fbs))
+
+        return ts
+
+    def __fluid_filled_ts_bs(self, medium_c, medium_rho, a, f, target_c, target_rho):
         """Fluid filled sphere model.
 
         This implementation only calculates the backscatter (theta=90deg).
@@ -108,9 +194,6 @@ class MSSModel(ScatterModelBaseClass):
         # Fixed model parameters
         # maximum order. Can be changed to improve precision
         order_max = 20
-
-        # reflectivity coefficient
-        refl = []
 
         # sound speed (h) and density (g) contrasts
         g = target_rho/medium_rho
@@ -121,39 +204,55 @@ class MSSModel(ScatterModelBaseClass):
         # Bessel functions from SciPy
         # spherical Bessel function of the 2nd kind is the Neumann function
         # Anderson uses Neumann function notation
-        for f in freqs:
-            real = 0.0  # real component
-            imag = 0.0  # imaginary component
+        real = 0.0  # real component
+        imag = 0.0  # imaginary component
 
-            ka_sphere = (2*np.pi*f/target_c)*a
-            ka_water = (2*np.pi*f/medium_c)*a
-            for m in range(order_max):
-                sphjkas = m/ka_sphere * spherical_jn(m, ka_sphere) - \
-                    spherical_jn(m+1, ka_sphere)
-                sphjkaw = m/ka_water * spherical_jn(m, ka_water) - \
-                    spherical_jn(m+1, ka_water)
-                sphykaw = m/ka_water * spherical_yn(m, ka_water) - \
-                    spherical_yn(m+1, ka_water)
+        ka_sphere = (2*np.pi*f/target_c)*a
+        ka_water = (2*np.pi*f/medium_c)*a
+        for m in range(order_max):
+            sphjkas = m/ka_sphere * spherical_jn(m, ka_sphere) - \
+                spherical_jn(m+1, ka_sphere)
+            sphjkaw = m/ka_water * spherical_jn(m, ka_water) - \
+                spherical_jn(m+1, ka_water)
+            sphykaw = m/ka_water * spherical_yn(m, ka_water) - \
+                spherical_yn(m+1, ka_water)
 
-                numer = sphjkas/sphjkaw * \
-                    spherical_yn(m, ka_water) / spherical_jn(m, ka_sphere) - \
-                    sphykaw/sphjkaw * g*h
-                denom = sphjkas/sphjkaw * \
-                    spherical_jn(m, ka_water) / spherical_jn(m, ka_sphere) - g*h
+            numer = sphjkas/sphjkaw * \
+                spherical_yn(m, ka_water) / spherical_jn(m, ka_sphere) - \
+                sphykaw/sphjkaw * g*h
+            denom = sphjkas/sphjkaw * \
+                spherical_jn(m, ka_water) / spherical_jn(m, ka_sphere) - g*h
 
-                cscat = numer/denom
-                real += ((-1.)**m) * (2.*m+1) / (1.+cscat**2)
-                imag += ((-1.)**m) * (2.*m+1) * cscat/(1.+cscat**2)
+            cscat = numer/denom
+            real += ((-1.)**m) * (2.*m+1) / (1.+cscat**2)
+            imag += ((-1.)**m) * (2.*m+1) * cscat/(1.+cscat**2)
 
-            refl.append((2/ka_water) * np.sqrt(real**2+imag**2))
-
-        # convert to numpy arrays
-        refl = np.array(refl, dtype=float, ndmin=2).T
+        # reflectivity coefficient
+        refl = (2/ka_water) * np.sqrt(real**2+imag**2)
 
         # convert to target strength (TS re 1 m^2 [dB])
         ts = 10*np.log10((refl*a)**2 / 4.)
 
-        return (freqs, np.array([90.0]), ts)
+        return ts
+
+    def __h1(self, n, z):
+        """Spherical Hankel function of the first kind."""
+        return np.sqrt(np.pi/(2*z)) * jv(n+0.5, z)\
+            + (np.sqrt(np.pi/(2*z)) * yv(n+0.5, z))*1j
+
+    def __h1dash(self, n, z):
+        """Calculate the derivative of the spherical Hankel function of the first kind."""
+        hn = (np.sqrt((np.pi) / (2*z))) * jv(n + 1/2, z)\
+            + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 1/2, z)
+
+        if n == 0:
+            hn_plus1 = (np.sqrt(np.pi / (2*z))) * jv(n + 3/2, z)\
+                + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 3/2, z)
+            return ((n / z) * hn - hn_plus1)
+        elif n > 0:
+            hn_minus1 = (np.sqrt(np.pi / (2*z))) * jv(n - 1/2, z)\
+                + 1j * (np.sqrt(np.pi / (2*z))) * yv(n - 1/2, z)
+            return (hn_minus1 - ((n + 1) / z) * hn)
 
 
 class PSMSModel(ScatterModelBaseClass):
