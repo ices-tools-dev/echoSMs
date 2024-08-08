@@ -7,8 +7,10 @@ from mapply.mapply import mapply
 # import swifter
 from scipy.special import spherical_jn, spherical_yn, pro_ang1, pro_rad1, pro_rad2
 from scipy.integrate import quad
+from echosms import Utils
 
 # pylint: disable=too-many-arguments
+
 
 class ScatterModelBaseClass:
     """Base class for a class that provides a scattering model.
