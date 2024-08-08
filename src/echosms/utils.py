@@ -79,4 +79,4 @@ class Utils:
         if not derivative:
             return spherical_jn(n, z) + 1j*spherical_yn(n, z)
         else:
-            return Utils.h1(n+1, z) + (n/z)*Utils.h1(n, z)
+            return -Utils.h1(n+1, z) + (n/z)*Utils.h1(n, z)
