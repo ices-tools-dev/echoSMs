@@ -1,4 +1,4 @@
-"""A classes that provides the modal series solution scattering model."""
+"""A class that provides the modal series solution scattering model."""
 
 import numpy as np
 import pandas as pd
@@ -153,57 +153,5 @@ class MSSModel(ScatterModelBaseClass):
 
         fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
         ts = 20*np.log10(np.abs(fbs))
-
-        return ts
-
-    def __fluid_filled_ts_bs(self, medium_c, medium_rho, a, f, target_c, target_rho):
-        """Fluid filled sphere model.
-
-        This implementation only calculates the backscatter (theta=90deg).
-
-        This code is directly derived from code written by M. Jech, available elsewhere in the
-        echoSMs repository.
-        """
-        # Fixed model parameters
-        # maximum order. Can be changed to improve precision
-        order_max = 20
-
-        # sound speed (h) and density (g) contrasts
-        g = target_rho/medium_rho
-        h = target_c/medium_c
-
-        ###
-        # reflectivity coefficient
-        # Bessel functions from SciPy
-        # spherical Bessel function of the 2nd kind is the Neumann function
-        # Anderson uses Neumann function notation
-        real = 0.0  # real component
-        imag = 0.0  # imaginary component
-
-        ka_sphere = (2*np.pi*f/target_c)*a
-        ka_water = (2*np.pi*f/medium_c)*a
-        for m in range(order_max):
-            sphjkas = m/ka_sphere * spherical_jn(m, ka_sphere) - \
-                spherical_jn(m+1, ka_sphere)
-            sphjkaw = m/ka_water * spherical_jn(m, ka_water) - \
-                spherical_jn(m+1, ka_water)
-            sphykaw = m/ka_water * spherical_yn(m, ka_water) - \
-                spherical_yn(m+1, ka_water)
-
-            numer = sphjkas/sphjkaw * \
-                spherical_yn(m, ka_water) / spherical_jn(m, ka_sphere) - \
-                sphykaw/sphjkaw * g*h
-            denom = sphjkas/sphjkaw * \
-                spherical_jn(m, ka_water) / spherical_jn(m, ka_sphere) - g*h
-
-            cscat = numer/denom
-            real += ((-1.)**m) * (2.*m+1) / (1.+cscat**2)
-            imag += ((-1.)**m) * (2.*m+1) * cscat/(1.+cscat**2)
-
-        # reflectivity coefficient
-        refl = (2/ka_water) * np.sqrt(real**2+imag**2)
-
-        # convert to target strength (TS re 1 m^2 [dB])
-        ts = 10*np.log10((refl*a)**2 / 4.)
 
         return ts
