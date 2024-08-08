@@ -128,7 +128,7 @@ class MSSModel(ScatterModelBaseClass):
             data = data.to_dataframe().reset_index()
         else:
             raise ValueError(f'Variable type of {type(data)} is not supported'
-                             ' (only Pandas DataFrame and Xarray DataArray)')
+                             ' (only dictionaries, Pandas DataFrames and Xarray DataArrays are).')
 
         multiprocess = True
         if multiprocess:
@@ -198,7 +198,6 @@ class MSSModel(ScatterModelBaseClass):
             case 'fluid filled':
                 k1 = Utils.k(target_c, f)
                 k1a = k1*a
-
                 gh = target_rho/medium_rho * target_c/medium_c
 
                 def Cn(n):
