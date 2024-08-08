@@ -79,7 +79,9 @@ class MSSModel(ScatterModelBaseClass):
         return self.calculate_ts_single(**p, model_type=args[1])
 
     def calculate_ts_single(self, medium_c, medium_rho, a, theta, f, model_type,
-                            target_c=None, target_rho=None, **kwargs):
+                            target_c=None, target_rho=None,
+                            shell_c=None, shell_rho=None, shell_thickness=None,
+                            **kwargs):
         """
         Calculate the scatter using the mss model for one set of parameters.
 
@@ -104,6 +106,16 @@ class MSSModel(ScatterModelBaseClass):
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m^3].
             Only required for `model_type` of ``fluid filled``
+        shell_c: float, optional
+            Sound speed in the spherical shell [m/s].
+            Only required for `model_type`s that include a fluid shell.
+        shell_rho: float, optional
+            Density in the spherical shell [kg/m^3].
+            Only required for `model_type`s that include a fluid shell.
+        shell_thickness: float, optional
+            Thickness of the spherical shell [m]. This value is subtracted from ``a`` to give
+            the radius of the interior sphere.
+            Only required for `model_type`s that include a fluid shell.
 
         Returns
         -------
@@ -144,8 +156,39 @@ class MSSModel(ScatterModelBaseClass):
                            / (spherical_jn(n, k1a) * spherical_jn(n, ka, True)) - gh)
 
                 A = -1/(1 + 1j*np.asarray(list(map(Cn, n)), dtype=complex))
-            case 'fluid shell fluid interior' | 'fluid shell pressure release interior':
-                raise ValueError(f'Model type of {model_type} is not yet implemented.')
+            case 'fluid shell fluid interior':
+                b = a - shell_thickness
+                g21 = shell_rho / medium_rho
+                h21 = shell_c / medium_c
+                k1a = Utils.k(medium_c, f) * a
+                k2a = Utils.k(shell_c, f) * a
+                k2b = Utils.k(shell_c, f) * b
+                k3b = Utils.k(target_c, f) * b
+                h32 = target_c / shell_c
+                g32 = target_rho / shell_rho
+
+                def Cn(n):
+                    (b1, b2, a11, a21, a31, a12, a22, a32, a13, a23, a33) =\
+                        self.eqn9(n, k1a, g21, h21, k2a, k2b, k3b, h32, g32)
+                    return (b1*a22*a33 + 0 + a13*b2*a32 - 0 - a12*b2*a33 - b1*a23*a32)\
+                        / (a11*a22*a33 + a12*a23*a31 + a13*a21*a32
+                           - a13*a22*a31 - a12*a21*a33 - a11*a23*a32)
+
+                A = list(map(Cn, n))
+            case 'fluid shell pressure release interior':
+                b = a - shell_thickness
+                g21 = shell_rho / medium_rho
+                h21 = shell_c / medium_c
+                k1a = Utils.k(medium_c, f) * a
+                ksa = Utils.k(shell_c, f) * a  # ksa in the paper, but isn't that the same as k2a?
+                k2a = Utils.k(shell_c, f) * a
+                k2b = Utils.k(shell_c, f) * b
+
+                def Cn(n):
+                    (b1, b2, d1, d2, a11, a21) = self.eqn10(n, k1a, g21, h21, ksa, k2a, k2b)
+                    return (b1*d2 - d1*b2) / (a11*d2 - d1*a21)
+
+                A = list(map(Cn, n))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
@@ -154,3 +197,37 @@ class MSSModel(ScatterModelBaseClass):
         ts = 20*np.log10(np.abs(fbs))
 
         return ts
+
+    def eqn9(self, n, k1a, g21, h21, k2a, k2b, k3b, h32, g32):
+        """Variables in eqn 9 of Jech et al, 2015."""
+        (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
+        a31 = 0.0  # not sure if the paper is correct for this
+        a12 = spherical_jn(n, k2a)
+        a22 = spherical_jn(n, k2a, True)
+        a32 = spherical_jn(n, k2b) * spherical_jn(n, k3b, True)\
+            - g32*h32*spherical_jn(n, k2b, True) * spherical_jn(n, k3b)
+        a13 = spherical_yn(n, k2a)
+        a23 = spherical_yn(n, k2a, True)
+        a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, True)\
+            - g32*h32*spherical_yn(n, k2b, True)*spherical_jn(n, k3b)
+
+        return b1, b2, a11, a21, a31, a12, a22, a32, a13, a23, a33
+
+    def eqn10(self, n, k1a, g21, h21, ksa, k2a, k2b):
+        """Variables in eqn 10 of Jech et al, 2015."""
+        (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
+        d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b)\
+            - spherical_jn(n, k2b)*spherical_yn(n, k2a)
+        d2 = spherical_jn(n, ksa, True)*spherical_yn(n, k2b)\
+            - spherical_jn(n, k2b)*spherical_yn(n, k2a, True)
+
+        return b1, b2, d1, d2, a11, a21
+
+    def eqn9_10_common(self, n, k1a, g21, h21):
+        """Variables common to eqn 9 and 10 of Jech et al, 2015."""
+        b1 = spherical_jn(n, k1a)
+        b2 = g21*h21 * spherical_jn(n, k1a, True)
+        a11 = -Utils.h1(n, k1a)
+        a21 = -g21*h21 * Utils.h1(n, k1a, True)
+
+        return b1, b2, a11, a21
