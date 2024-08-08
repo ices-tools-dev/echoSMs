@@ -47,13 +47,13 @@ for model in models:
 
     # Plot the mss model and benchmark results
     fig, axs = plt.subplots(2, 1, sharex=True)
-    axs[0].plot(m['f']/1e3, ts, label='New code')
+    axs[0].plot(m['f']/1e3, ts, label='echoSMs')
     axs[0].plot(bmf['Frequency_kHz'], bmf[model[1]], label='Benchmark')
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
-    axs[0].legend()
+    axs[0].legend(frameon=False, fontsize=6)
 
     # Plot difference between benchmark values and newly calculated mss model values
-    axs[1].plot(m['f']*1e-3, ts-bmf[model[1]])
+    axs[1].plot(m['f']*1e-3, ts-bmf[model[1]], color='black')
     axs[1].set_xlabel('Frequency [kHz]')
     axs[1].set_ylabel(r'$\Delta$ TS [dB]')
 
