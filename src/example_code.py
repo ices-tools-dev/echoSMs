@@ -3,9 +3,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from echosms.scattermodels import MSSModel, PSMSModel, Utils
-from echosms.benchmarkdata import BenchMarkData
-from echosms.referencemodels import ReferenceModels
+from echosms import MSSModel, PSMSModel
+from echosms import BenchMarkData
+from echosms import ReferenceModels
+from echosms import Utils
 
 # Load the reference model defintiions
 rm = ReferenceModels()
