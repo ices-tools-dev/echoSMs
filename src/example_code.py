@@ -64,7 +64,7 @@ for model in models:
 
 # How to calculate a single TS using the MSS model
 m = rm.get_model_parameters('weakly scattering sphere')
-ts = mss.calculate_ts_single(**m, theta=90.0, f=12000, model_type=s['model_type'])
+mss.calculate_ts_single(**m, theta=90.0, f=12000, model_type=s['model_type'])
 
 # %% ###############################################################################################
 
