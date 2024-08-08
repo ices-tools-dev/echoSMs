@@ -24,7 +24,7 @@ class Utils:
 
     def xa_from_dict(params):
         """Convert model parameters from dict form to a Xarray DataArray."""
-        # Convert scalars to iterables for xarray to be happier later on
+        # Convert scalars to iterables so xarray is happier later on
         for k, v in params.items():
             if not hasattr(v, '__iter__'):
                 params[k] = [v]
@@ -126,12 +126,12 @@ class MSSModel(ScatterModelBaseClass):
         self.min_frequency = 1.0  # [Hz]
 
     def calculate_ts(self, data, model_type):
-        """Calculate the scatter using parameters from a Pandas DataFrame or Xarray DataArray.
+        """Calculate the scatter from a sphere.
 
         Parameters
         ----------
         data: Pandas DataFrame or Xarray DataArray or dictionary
-            If a DataFrame, must contain columns names as per the function parameters in the
+            If a DataFrame, must contain column names as per the function parameters in the
             calculate_ts_single() function in this class. Each row in the DataFrame will generate
             one TS output. If a DataArray, must contain coordinate names as per the function
             parameters in calculate_ts_single(). The TS will be calculated for all combinations of
@@ -143,9 +143,8 @@ class MSSModel(ScatterModelBaseClass):
 
         Returns
         -------
-        ts: array
-            Returns the target strength calculated for all input parameters. Returns an iterable if
-            the input data parameter was a DataFrame and a DataArray if the inuput was a DataArray.
+        ts: array_like
+            Returns the target strength calculated for all input parameters. Returns an iterable.
 
         """
         if isinstance(data, dict):
@@ -156,7 +155,7 @@ class MSSModel(ScatterModelBaseClass):
             # For the moment just convert DataArrays into DataFrames
             data = data.to_dataframe().reset_index()
         else:
-            raise ValueError(f'Variable type of {type(data)} is not supported'
+            raise ValueError(f'Data type of {type(data)} is not supported'
                              ' (only dictionaries, Pandas DataFrames and Xarray DataArrays are).')
 
         multiprocess = True
@@ -173,7 +172,7 @@ class MSSModel(ScatterModelBaseClass):
         return ts.to_numpy()
 
     def __ts_helper(self, *args):
-        """Convert function arguments and call calculate_ts()."""
+        """Convert function arguments and call calculate_ts_single()."""
         p = args[0].to_dict()  # so we can use it for keyword arguments
         return self.calculate_ts_single(**p, model_type=args[1])
 
@@ -206,16 +205,20 @@ class MSSModel(ScatterModelBaseClass):
 
         Returns
         -------
-        ts : the target strength of the object [dB re 1 m2].
+        ts : the target strength (re 1 m2) of the target [dB].
 
         Notes
         -----
-        The model implements the code in Anderson, 1950. Sound scattering from a fluid sphere.
-        The Journal of the Acoustical Society of America, 22: 426–431.
-        (https://doi.org/10.1121/1.1906621)
-        """
-        # pylint: disable=too-many-locals
+        The class implements the code in Section A.1 of [1].
 
+        References
+        ----------
+        ..[1] Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
+        Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
+        Comparisons among ten models of acoustic backscattering used in aquatic ecosystem
+        research. Journal of the Acoustical Society of America 138, 3742–3764.
+        https://doi.org/10.1121/1.4937607
+        """
         k0 = Utils.k(medium_c, f)
         ka = k0*a
         n = np.arange(0, round(ka+20))
@@ -227,8 +230,7 @@ class MSSModel(ScatterModelBaseClass):
             case 'pressure release':
                 A = list(map(lambda x: -spherical_jn(x, ka) / Utils.h1(x, ka), n))
             case 'fluid filled':
-                k1 = Utils.k(target_c, f)
-                k1a = k1*a
+                k1a = Utils.k(target_c, f)*a
                 gh = target_rho/medium_rho * target_c/medium_c
 
                 def Cn(n):
