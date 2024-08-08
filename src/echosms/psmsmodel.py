@@ -1,4 +1,4 @@
-"""A classes that provides the prolate spheroidal modal series scattering model."""
+"""A class that provides the prolate spheroidal modal series scattering model."""
 
 import numpy as np
 # import pandas as pd
