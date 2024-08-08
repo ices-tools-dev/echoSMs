@@ -19,13 +19,10 @@ bm = BenchMarkData()
 bmf = bm.dataset_freq()
 
 mss = MSSModel()
-
-# %% ###############################################################################################
-# Run the modal series solution model with different parameters.
-
 print(f'The {mss.short_name} model supports boundary types of {mss.model_types}.')
 
-# Run the mss model and compare to the benchmark values
+# %% ###############################################################################################
+# Run the modal series solution model and compare to the benchmark values
 
 # This is the mapping between model name from ReferenceModels and the appropriate column of data in
 # BenchMarkData.
@@ -37,10 +34,10 @@ for model in models:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
     # m is a dictionary that contains model parameters
     s = rm.get_model_specification(model[0])
-    m = rm.get_model_parameters(model[0])  # a subset of s
+    m = rm.get_model_parameters(model[0])  # the subset of s with string items removed
 
     # Add frequencies and angle to the model parameters
-    m['f'] = bmf['Frequency_kHz']*1e3  # [Hz]
+    m['f'] = bmf['Frequency_kHz']*1e3  # [Hz] Use f from the benchmark to me it easy to compare
     m['theta'] = 90.0
 
     # and run these
@@ -80,7 +77,7 @@ models_df = Utils.df_from_dict(m)
 
 print(f'Running {len(models_df)} models')
 # and run
-ts = mss.calculate_ts(models_df, model_type='fluid filled')
+ts = mss.calculate_ts(models_df, model_type='fluid filled', multiprocess=True)
 
 # And can then add the ts to the params dataframe for ease of selecting and plotting the results
 models_df['ts'] = ts
@@ -111,7 +108,7 @@ params_xa = Utils.xa_from_dict(params)
 print(f'Running {np.prod(params_xa.shape)} models!')
 
 # and is called the same way as for the dataframe
-ts = mss.calculate_ts(params_xa, model_type='fluid filled')
+ts = mss.calculate_ts(params_xa, model_type='fluid filled', multiprocess=True)
 
 # %% ###############################################################################################
 # Run the prolate spheroid modal series model.

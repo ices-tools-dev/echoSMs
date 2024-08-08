@@ -28,7 +28,7 @@ class MSSModel(ScatterModelBaseClass):
         self.max_frequency = 400.0e3  # [Hz]
         self.min_frequency = 1.0  # [Hz]
 
-    def calculate_ts(self, data, model_type):
+    def calculate_ts(self, data, model_type, multiprocess=False):
         """Calculate the scatter from a sphere.
 
         Parameters
@@ -61,7 +61,6 @@ class MSSModel(ScatterModelBaseClass):
             raise ValueError(f'Data type of {type(data)} is not supported'
                              ' (only dictionaries, Pandas DataFrames and Xarray DataArrays are).')
 
-        multiprocess = True
         if multiprocess:
             # Using mapply:
             ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
