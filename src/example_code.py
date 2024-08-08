@@ -28,11 +28,13 @@ print(f'The {mss.short_name} model supports boundary types of {mss.model_types}.
 # BenchMarkData.
 models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           ('fixed rigid sphere', 'Sphere_Rigid'),
-          ('pressure release sphere', 'Sphere_PressureRelease')]
+          ('pressure release sphere', 'Sphere_PressureRelease'),
+          ('spherical fluid shell with pressure release interior', 'ShellSphere_PressureRelease'),
+          ('spherical fluid shell with gas interior', 'ShellSphere_Gas'),
+          ('spherical fluid shell with weakly scattering interior', 'ShellSphere_WeaklyScattering')]
 
 for model in models:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
-    # m is a dictionary that contains model parameters
     s = rm.get_model_specification(model[0])
     m = rm.get_model_parameters(model[0])  # the subset of s with string items removed
 
