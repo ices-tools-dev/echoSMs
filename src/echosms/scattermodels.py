@@ -43,20 +43,9 @@ class Utils:
             raise ValueError('Negative n values are not valid for spherical Hankel functions.')
 
         if not derivative:
-            return np.sqrt(np.pi/(2*z)) * jv(n+0.5, z)\
-                + (np.sqrt(np.pi/(2*z)) * yv(n+0.5, z))*1j
+            return spherical_jn(n, z) + 1j*spherical_yn(n, z)
         else:
-            hn = (np.sqrt((np.pi) / (2*z))) * jv(n + 1/2, z)\
-                + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 1/2, z)
-
-            if n == 0:
-                hn_plus1 = (np.sqrt(np.pi / (2*z))) * jv(n + 3/2, z)\
-                    + 1j * (np.sqrt(np.pi / (2*z))) * yv(n + 3/2, z)
-                return ((n / z) * hn - hn_plus1)
-            elif n > 0:
-                hn_minus1 = (np.sqrt(np.pi / (2*z))) * jv(n - 1/2, z)\
-                    + 1j * (np.sqrt(np.pi / (2*z))) * yv(n - 1/2, z)
-                return (hn_minus1 - ((n + 1) / z) * hn)
+            return -Utils.h1(n+1, z) + (n/z)*Utils.h1(n, z)
 
 
 class ScatterModelBaseClass:
@@ -139,6 +128,8 @@ class MSSModel(ScatterModelBaseClass):
         else:  # this uses just one CPU
             ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
 
+        # Should convert this to match the input data form (e.g., array for dict, Series for
+        # DataFrame and DataArray for DataArray).
         return ts.to_numpy()
 
     def __ts_helper(self, *args):
