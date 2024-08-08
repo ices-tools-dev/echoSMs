@@ -5,7 +5,7 @@ import pandas as pd
 import xarray as xr
 from mapply.mapply import mapply
 # import swifter
-from scipy.special import spherical_jn, spherical_yn, pro_ang1, pro_rad1, pro_rad2, jv, yv
+from scipy.special import spherical_jn, spherical_yn, pro_ang1, pro_rad1, pro_rad2
 from scipy.integrate import quad
 
 # pylint: disable=too-many-arguments
@@ -34,13 +34,53 @@ class Utils:
         return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts')
 
     def k(c, f):
-        """Calculate the acoustic wavenumber."""
+        """Calculate the acoustic wavenumber.
+
+        Parameters
+        ----------
+        c[float]: array_like
+            Sound speed [m/s]
+
+        f: array_like (float)
+            Frequency [Hz]
+
+        Returns
+        -------
+        k: scalar or array_like
+            The acoustic wavenumber [m-1].
+        """
         return 2*np.pi*f/c
 
     def h1(n, z, derivative=False):
-        """Spherical Hankel function of the first kind or its' derivative."""
+        """Spherical Hankel function of the first kind or its' derivative.
+
+        Parameters
+        ----------
+        n: array_like (float)
+            Order (n >= 0).
+        z: array_like (float or complex)
+            Argument of the Hankel function.
+        derivative: bool, optional
+            if True, the value of the derivative (rather than the function itself) is returned.
+
+        Returns
+        -------
+        h: scalar or ndarray
+            Value of the spherical Hankel function
+
+        Notes
+        -----
+        The value of the Hankel function is calculated from spherical Bessel functions [1]_.
+
+        The derivative is computed from spherical Hankel functions [2]_.
+
+        References
+        ----------
+        ..[1] https://dlmf.nist.gov/10.47.E10
+        ..[2] https://dlmf.nist.gov/10.51.E2
+        """
         if n < 0:
-            raise ValueError('Negative n values are not valid for spherical Hankel functions.')
+            raise ValueError('Negative n values are not supported for spherical Hankel functions.')
 
         if not derivative:
             return spherical_jn(n, z) + 1j*spherical_yn(n, z)
