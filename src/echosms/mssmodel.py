@@ -46,8 +46,8 @@ class MSSModel(ScatterModelBaseClass):
 
         Returns
         -------
-        ts: array_like
-            Returns the target strength calculated for all input parameters. Returns an iterable.
+        ts: Numpy array
+            Returns the target strength calculated for all input parameters.
 
         """
         if isinstance(data, dict):
@@ -69,8 +69,6 @@ class MSSModel(ScatterModelBaseClass):
         else:  # this uses just one CPU
             ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
 
-        # Should convert this to match the input data form (e.g., array for dict, Series for
-        # DataFrame and DataArray for DataArray).
         return ts.to_numpy()
 
     def __ts_helper(self, *args):
@@ -203,7 +201,7 @@ class MSSModel(ScatterModelBaseClass):
     def eqn9(self, n, k1a, g21, h21, k2a, k2b, k3b, h32, g32):
         """Variables in eqn 9 of Jech et al, 2015.
 
-        Applies to a fluid interior.
+        Applies to a fluid interior shell.
         """
         (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
         # a31 = 0.0
@@ -221,7 +219,7 @@ class MSSModel(ScatterModelBaseClass):
     def eqn10(self, n, k1a, g21, h21, ksa, k2a, k2b):
         """Variables in eqn 10 of Jech et al, 2015.
 
-        Applies to a pressure release interior.
+        Applies to a pressure release interior shell.
         """
         (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
         d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b)\
