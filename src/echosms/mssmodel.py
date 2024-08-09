@@ -158,34 +158,36 @@ class MSSModel(ScatterModelBaseClass):
                 A = -1/(1 + 1j*np.asarray(list(map(Cn, n)), dtype=complex))
             case 'fluid shell fluid interior':
                 b = a - shell_thickness
+
                 g21 = shell_rho / medium_rho
                 h21 = shell_c / medium_c
-                k1a = Utils.k(medium_c, f) * a
-                k2a = Utils.k(shell_c, f) * a
-                k2b = Utils.k(shell_c, f) * b
-                k3b = Utils.k(target_c, f) * b
-                h32 = target_c / shell_c
                 g32 = target_rho / shell_rho
+                h32 = target_c / shell_c
+
+                k1a = Utils.k(medium_c, f) * a
+                k2 = Utils.k(shell_c, f)
+                k3b = Utils.k(target_c, f) * b
 
                 def Cn(n):
-                    (b1, b2, a11, a21, a31, a12, a22, a32, a13, a23, a33) =\
-                        self.eqn9(n, k1a, g21, h21, k2a, k2b, k3b, h32, g32)
-                    return (b1*a22*a33 + 0 + a13*b2*a32 - 0 - a12*b2*a33 - b1*a23*a32)\
-                        / (a11*a22*a33 + a12*a23*a31 + a13*a21*a32
-                           - a13*a22*a31 - a12*a21*a33 - a11*a23*a32)
+                    (b1, b2, a11, a21, a12, a22, a32, a13, a23, a33) =\
+                        self.eqn9(n, k1a, g21, h21, k2*a, k2*b, k3b, h32, g32)
+                    return (b1*a22*a33 + a13*b2*a32 - a12*b2*a33 - b1*a23*a32)\
+                        / (a11*a22*a33 + a13*a21*a32
+                           - a12*a21*a33 - a11*a23*a32)
 
                 A = list(map(Cn, n))
             case 'fluid shell pressure release interior':
                 b = a - shell_thickness
+
                 g21 = shell_rho / medium_rho
                 h21 = shell_c / medium_c
+
                 k1a = Utils.k(medium_c, f) * a
-                ksa = Utils.k(shell_c, f) * a  # ksa in the paper, but isn't that the same as k2a?
-                k2a = Utils.k(shell_c, f) * a
-                k2b = Utils.k(shell_c, f) * b
+                k2 = Utils.k(shell_c, f)
+                ksa = k2 * a  # ksa is used in the paper, but isn't that the same as k2a?
 
                 def Cn(n):
-                    (b1, b2, d1, d2, a11, a21) = self.eqn10(n, k1a, g21, h21, ksa, k2a, k2b)
+                    (b1, b2, d1, d2, a11, a21) = self.eqn10(n, k1a, g21, h21, ksa, k2*a, k2*b)
                     return (b1*d2 - d1*b2) / (a11*d2 - d1*a21)
 
                 A = list(map(Cn, n))
@@ -199,9 +201,12 @@ class MSSModel(ScatterModelBaseClass):
         return ts
 
     def eqn9(self, n, k1a, g21, h21, k2a, k2b, k3b, h32, g32):
-        """Variables in eqn 9 of Jech et al, 2015."""
+        """Variables in eqn 9 of Jech et al, 2015.
+
+        Applies to a fluid interior.
+        """
         (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
-        a31 = 0.0  # not sure if the paper is correct for this
+        # a31 = 0.0
         a12 = spherical_jn(n, k2a)
         a22 = spherical_jn(n, k2a, True)
         a32 = spherical_jn(n, k2b) * spherical_jn(n, k3b, True)\
@@ -211,10 +216,13 @@ class MSSModel(ScatterModelBaseClass):
         a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, True)\
             - g32*h32*spherical_yn(n, k2b, True)*spherical_jn(n, k3b)
 
-        return b1, b2, a11, a21, a31, a12, a22, a32, a13, a23, a33
+        return b1, b2, a11, a21, a12, a22, a32, a13, a23, a33
 
     def eqn10(self, n, k1a, g21, h21, ksa, k2a, k2b):
-        """Variables in eqn 10 of Jech et al, 2015."""
+        """Variables in eqn 10 of Jech et al, 2015.
+
+        Applies to a pressure release interior.
+        """
         (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
         d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b)\
             - spherical_jn(n, k2b)*spherical_yn(n, k2a)
