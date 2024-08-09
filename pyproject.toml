@@ -23,7 +23,6 @@ dependencies = [
 	"matplotlib",
 	"pandas",
 	"mkdocstrings[python]",
-  "mapply",
   "xarray",
 ]
 
