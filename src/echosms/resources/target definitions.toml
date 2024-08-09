@@ -41,7 +41,7 @@ prolate_spheroid_major_axis_radius = 0.07
 prolate_spheroid_minor_axis_radius = 0.01
 finite_cylinder_radius = 0.01
 finite_cylinder_length = 0.07
-sphere_shell_thickness = 0.001
+target_shell_thickness = 0.001
 
 # These values are for testing of how to specify ranges or distributions of values
 example1_medium_sound_speed_dist = {type="normal", mean=1490, std=40, num=100} # normal distribution
@@ -107,10 +107,10 @@ source = "https://doi.org/10.1121/1.4937607"
 [[target]]
 name = "spherical fluid shell with pressure release interior"
 shape = "sphere"
-model_type = "pressure release"
+model_type = "fluid shell pressure release interior"
 description = "A fluid spherical shell with pressure release surface"
 a = "sphere_radius"
-t = "sphere_shell_thickness"
+shell_thickness = "target_shell_thickness"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 shell_rho = "target_shell_pressure_release_density"
@@ -120,25 +120,25 @@ source = "https://doi.org/10.1121/1.4937607"
 [[target]]
 name = "spherical fluid shell with gas interior"
 shape = "sphere"
-model_type = "fluid filled"
+model_type = "fluid shell fluid interior"
 description = "A fluid spherical shell with gas interior"
 a = "sphere_radius"
-t = "sphere_shell_thickness"
+shell_thickness = "target_shell_thickness"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
-shell_rho = "target_shell_pressure_release_density"
-shell_c = "target_shell_pressure_release_sound_speed"
-target_rho = "target_shell_gas_filled_density"
-target_c = "target_shell_gas_filled_sound_speed"
+shell_rho = "target_shell_gas_filled_density"
+shell_c = "target_shell_gas_filled_sound_speed"
+target_rho = "target_gas_density"
+target_c = "target_gas_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
 
 [[target]]
 name = "spherical fluid shell with weakly scattering interior"
 shape = "sphere"
-model_type = "fluid filled"
+model_type = "fluid shell fluid interior"
 description = "A fluid spherical shell with a weakly scattering shell and interior"
 a = "sphere_radius"
-t = "sphere_shell_thickness"
+shell_thickness = "target_shell_thickness"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 shell_rho = "target_shell_weakly_density"

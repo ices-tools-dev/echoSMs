@@ -34,7 +34,7 @@ class ReferenceModels:
         """Return the names of all model definitions."""
         return [n['name'] for n in self.defs['target']]
 
-    def get_model_parameters(self, name):
+    def get_model_specification(self, name):
         """Get the model defintions for a particular model."""
         models = pd.DataFrame(self.defs['target'])
         m = models.query('name == @name')
@@ -43,3 +43,19 @@ class ReferenceModels:
             return m.iloc[0].to_dict()
         else:
             return None
+
+    def get_model_parameters(self, name):
+        """Get the model parameters for a particular model.
+
+        Model parameters are a subset of the model specification where the non-numerical
+        items have been removed.
+        """
+        s = self.get_model_specification(name)
+        # Remove the entries that are not parameters
+        p = s
+        del p['name']
+        del p['shape']
+        del p['description']
+        del p['model_type']
+        del p['source']
+        return p
