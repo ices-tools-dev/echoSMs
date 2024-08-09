@@ -29,6 +29,7 @@ print(f'The {mss.short_name} model supports boundary types of {mss.model_types}.
 models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           ('fixed rigid sphere', 'Sphere_Rigid'),
           ('pressure release sphere', 'Sphere_PressureRelease'),
+          ('gas filled sphere', 'Sphere_Gas'),
           ('spherical fluid shell with pressure release interior', 'ShellSphere_PressureRelease'),
           ('spherical fluid shell with gas interior', 'ShellSphere_Gas'),
           ('spherical fluid shell with weakly scattering interior', 'ShellSphere_WeaklyScattering')]
