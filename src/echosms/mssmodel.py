@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import xarray as xr
-from mapply.mapply import mapply
+# from mapply.mapply import mapply
 # import swifter
 from scipy.special import spherical_jn, spherical_yn
 from echosms import Utils
@@ -63,9 +63,10 @@ class MSSModel(ScatterModelBaseClass):
 
         if multiprocess:
             # Using mapply:
-            ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
+            # ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
             # Using swifter
             # ts = df.swifter.apply(self.__ts_helper, args=(model_type,), axis=1)
+            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
         else:  # this uses just one CPU
             ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
 
