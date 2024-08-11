@@ -54,7 +54,8 @@ for model, names in models.items():
     else:
         pass
 
-    print(f'The {model} model supports boundary types of {mod.model_types}.')
+    print(f'The {mod.short_name.upper()} ({mod.long_name}) model supports boundary '
+          f'types of {mod.model_types}.')
 
     for name in names:
         # Get the model parameters used in Jech et al. (2015) for a particular model.
@@ -68,6 +69,8 @@ for model, names in models.items():
         # and run these
         ts = mod.calculate_ts(m, model_type=s['model_type'])
 
+        jech_index = np.mean(np.abs(ts - bmf[name[1]]))
+
         # Plot the mss model and benchmark results
         fig, axs = plt.subplots(2, 1, sharex=True)
         axs[0].plot(m['f']/1e3, ts, label='echoSMs')
@@ -79,7 +82,8 @@ for model, names in models.items():
         axs[1].plot(m['f']*1e-3, ts-bmf[name[1]], color='black')
         axs[1].set_xlabel('Frequency [kHz]')
         axs[1].set_ylabel(r'$\Delta$ TS [dB]')
-
+        axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
+                        backgroundcolor=[.8, .8, .8])
         plt.suptitle(name[0])
 
 # %% ###############################################################################################
