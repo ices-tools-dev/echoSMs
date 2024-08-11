@@ -1,11 +1,12 @@
 """A class that provides the prolate spheroidal modal series scattering model."""
 
 import numpy as np
-# import pandas as pd
-# import xarray as xr
+import pandas as pd
+import xarray as xr
 # from mapply.mapply import mapply
 # import swifter
 from scipy.special import pro_ang1, pro_rad1, pro_rad2
+from echosms import Utils
 from scipy.integrate import quad
 from .scattermodelbase import ScatterModelBaseClass
 
@@ -23,9 +24,58 @@ class PSMSModel(ScatterModelBaseClass):
         self.max_frequency = 200.0e3  # [Hz]
         self.min_frequency = 1.0  # [Hz]
 
-    def calculate_ts(self, medium_c, medium_rho, a, b, theta, freqs, model_type,
-                     target_c=None, target_rho=None, **kwargs):
-        """Manage the calling of the single frequency, single angle version of the PSMS code.
+    def calculate_ts(self, data, model_type, multiprocess=False):
+        """Calculate the scatter from a prolate spheroid.
+
+        Parameters
+        ----------
+        data: Pandas DataFrame or Xarray DataArray or dictionary
+            If a DataFrame, must contain column names as per the function parameters in the
+            calculate_ts_single() function in this class. Each row in the DataFrame will generate
+            one TS output. If a DataArray, must contain coordinate names as per the function
+            parameters in calculate_ts_single(). The TS will be calculated for all combinations of
+            the coordinate variables. If dictionary, it will be converted to a DataFrame first.
+
+        model_type: string
+            The type of model boundary to apply. Valid values are given in the model_types class
+            variable.
+
+        Returns
+        -------
+        ts: Numpy array
+            Returns the target strength calculated for all input parameters.
+
+        """
+        if isinstance(data, dict):
+            data = Utils.df_from_dict(data)
+        elif isinstance(data, pd.DataFrame):
+            pass
+        elif isinstance(data, xr.DataArray):
+            # For the moment just convert DataArrays into DataFrames
+            data = data.to_dataframe().reset_index()
+        else:
+            raise ValueError(f'Data type of {type(data)} is not supported'
+                             ' (only dictionaries, Pandas DataFrames and Xarray DataArrays are).')
+
+        if multiprocess:
+            # Using mapply:
+            # ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
+            # Using swifter
+            # ts = df.swifter.apply(self.__ts_helper, args=(model_type,), axis=1)
+            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+        else:  # this uses just one CPU
+            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+
+        return ts.to_numpy()
+
+    def __ts_helper(self, *args):
+        """Convert function arguments and call calculate_ts_single()."""
+        p = args[0].to_dict()  # so we can use it for keyword arguments
+        return self.calculate_ts_single(**p, model_type=args[1])
+
+    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, freq, model_type,
+                            target_c=None, target_rho=None):
+        """Prolate spheroid modal series (PSMS) solution model.
 
         Parameters
         ----------
@@ -53,12 +103,7 @@ class PSMSModel(ScatterModelBaseClass):
 
         Returns
         -------
-        ts : array of float with dimensions of (len(freq), len(angles)
-            The scatter from the object [dB re 1 m2].
-        freq : array of float
-            The frequencies that apply to TS [Hz].
-        angles : array of float
-            The pitch angles that apply to TS [degrees].
+        ts : the target strength (re 1 m2) of the target [dB].
 
         Notes
         -----
@@ -71,18 +116,6 @@ class PSMSModel(ScatterModelBaseClass):
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261–265.
         """
-        theta_rad = theta[0] * np.pi/180.
-        ts_f = []
-        for f in freqs:
-            ts = self.calculate_ts_one_f(medium_c, medium_rho, a, b, theta_rad, f, model_type,
-                                         target_c, target_rho)
-            ts_f.append(ts)
-
-        return np.array(ts_f, theta, ndmin=2)
-
-    def calculate_ts_one_f(self, medium_c, medium_rho, a, b, theta, freq, model_type,
-                           target_c=None, target_rho=None):
-        """Prolate spheroid modal series (PSMS) solution model."""
         match model_type:
             case 'pressure release' | 'fluid filled':
                 pass
