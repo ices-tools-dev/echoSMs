@@ -73,7 +73,7 @@ class PSMSModel(ScatterModelBaseClass):
         p = args[0].to_dict()  # so we can use it for keyword arguments
         return self.calculate_ts_single(**p, model_type=args[1])
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, freq, model_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, model_type,
                             target_c=None, target_rho=None):
         """Prolate spheroid modal series (PSMS) solution model.
 
@@ -90,7 +90,7 @@ class PSMSModel(ScatterModelBaseClass):
         theta : float or array of float
             Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
             90 is dorsal, and 180 is tail on.
-        freqs : float or array of float
+        f : float or array of float
             Frequencies to calculate the scattering at [Hz].
         model_type : str
             The model type. Supported model types are given in the model_types class variable.
@@ -131,7 +131,7 @@ class PSMSModel(ScatterModelBaseClass):
             rh = target_rho / medium_rho
 
         # The wavenumber for the surrounding fluid
-        k0 = 2*np.pi*freq/medium_c
+        k0 = 2*np.pi*f/medium_c
         # The semi-focal length of the prolate spheroid (same as for an ellipse)
         q = np.sqrt(a*a - b*b)
         # An alternative to ka is kq, the wavenumber multiplied by the focal length
