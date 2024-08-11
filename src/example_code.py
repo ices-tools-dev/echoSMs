@@ -3,7 +3,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from echosms import MSSModel, PSMSModel
+from echosms import MSSModel, PSMSModel, DCMModel
 from echosms import BenchMarkData
 from echosms import ReferenceModels
 from echosms import Utils
@@ -22,51 +22,70 @@ mss = MSSModel()
 print(f'The {mss.short_name} model supports boundary types of {mss.model_types}.')
 
 # %% ###############################################################################################
-# Run the modal series solution model and compare to the benchmark values
+# Run the benchmark models and compare to existing benchmark results.
 
 # This is the mapping between model name from ReferenceModels and the appropriate column of data in
-# BenchMarkData.
-models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
-          ('fixed rigid sphere', 'Sphere_Rigid'),
-          ('pressure release sphere', 'Sphere_PressureRelease'),
-          ('gas filled sphere', 'Sphere_Gas'),
-          ('spherical fluid shell with pressure release interior', 'ShellSphere_PressureRelease'),
-          ('spherical fluid shell with gas interior', 'ShellSphere_Gas'),
-          ('spherical fluid shell with weakly scattering interior', 'ShellSphere_WeaklyScattering')]
+# BenchMarkData and which model to use.
+models = {'mss': [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
+                  ('fixed rigid sphere', 'Sphere_Rigid'),
+                  ('pressure release sphere', 'Sphere_PressureRelease'),
+                  ('gas filled sphere', 'Sphere_Gas'),
+                  ('spherical fluid shell with pressure release interior',
+                   'ShellSphere_PressureRelease'),
+                  ('spherical fluid shell with gas interior', 'ShellSphere_Gas'),
+                  ('spherical fluid shell with weakly scattering interior',
+                   'ShellSphere_WeaklyScattering')],
+          'psms': [('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
+                   ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+                   ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+                   ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')],
+          'dcm': [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
+                  ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
+                  ('gas filled finite cylinder', 'Cylinder_Gas'),
+                  ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering')]}
 
-for model in models:
-    # Get the model parameters used in Jech et al. (2015) for a particular model.
-    s = rm.get_model_specification(model[0])
-    m = rm.get_model_parameters(model[0])  # the subset of s with string items removed
+for model, names in models.items():
+    if model == 'mss':
+        mod = MSSModel()
+    elif model == 'psms':
+        mod = PSMSModel()
+    elif model == 'dcm':
+        mod = DCMModel()
+    else:
+        pass
 
-    # Add frequencies and angle to the model parameters
-    m['f'] = bmf['Frequency_kHz']*1e3  # [Hz] Use f from the benchmark to make it easy to compare
-    m['theta'] = 90.0
+    print(f'The {model} model supports boundary types of {mod.model_types}.')
 
-    # and run these
-    ts = mss.calculate_ts(m, model_type=s['model_type'])
+    for name in names:
+        # Get the model parameters used in Jech et al. (2015) for a particular model.
+        s = rm.get_model_specification(name[0])
+        m = rm.get_model_parameters(name[0])  # the subset of s with string items removed
 
-    # Plot the mss model and benchmark results
-    fig, axs = plt.subplots(2, 1, sharex=True)
-    axs[0].plot(m['f']/1e3, ts, label='echoSMs')
-    axs[0].plot(bmf['Frequency_kHz'], bmf[model[1]], label='Benchmark')
-    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
-    axs[0].legend(frameon=False, fontsize=6)
+        # Add frequencies and angle to the model parameters
+        m['f'] = bmf['Frequency_kHz']*1e3  # [Hz]
+        m['theta'] = 90.0
 
-    # Plot difference between benchmark values and newly calculated mss model values
-    axs[1].plot(m['f']*1e-3, ts-bmf[model[1]], color='black')
-    axs[1].set_xlabel('Frequency [kHz]')
-    axs[1].set_ylabel(r'$\Delta$ TS [dB]')
+        # and run these
+        ts = mod.calculate_ts(m, model_type=s['model_type'])
 
-    plt.suptitle(model[0])
+        # Plot the mss model and benchmark results
+        fig, axs = plt.subplots(2, 1, sharex=True)
+        axs[0].plot(m['f']/1e3, ts, label='echoSMs')
+        axs[0].plot(bmf['Frequency_kHz'], bmf[name[1]], label='Benchmark')
+        axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
+        axs[0].legend(frameon=False, fontsize=6)
+
+        # Plot difference between benchmark values and newly calculated mss model values
+        axs[1].plot(m['f']*1e-3, ts-bmf[name[1]], color='black')
+        axs[1].set_xlabel('Frequency [kHz]')
+        axs[1].set_ylabel(r'$\Delta$ TS [dB]')
+
+        plt.suptitle(name[0])
 
 # %% ###############################################################################################
+# Some other ways to run models.
 
-# How to calculate a single TS using the MSS model
-m = rm.get_model_parameters('weakly scattering sphere')
-mss.calculate_ts_single(**m, theta=90.0, f=12000, model_type='fluid filled')
-
-# %% ###############################################################################################
+mss = MSSModel()
 
 # Can add more variations to the model parameters
 m = rm.get_model_parameters('weakly scattering sphere')
@@ -112,44 +131,3 @@ print(f'Running {np.prod(params_xa.shape)} models!')
 
 # and is called the same way as for the dataframe
 ts = mss.calculate_ts(params_xa, model_type='fluid filled', multiprocess=True)
-
-# %% ###############################################################################################
-# Run the prolate spheroid modal series model.
-
-psms = PSMSModel()
-print(f'This model supports boundary types of {psms.model_types}.')
-
-models_ps = [('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-             ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
-             ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
-             ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')]
-
-# Notes:
-# - There are no benchmark results for ProlateSpheroid_Gas as the model did not converge.
-# - ProlateSpheroid_PressureRelease and _Rigid benchmark results are only available up to 80 kHz
-
-for model in models_ps:
-    # Get the model parameters used in Jech et al. (2015) for a particular model.
-    s = rm.get_model_specification(model[0])
-    m = rm.get_model_parameters(model[0])  # the subset of s with string items removed
-
-    # Add frequencies and angle to the model parameters
-    m['f'] = bmf['Frequency_kHz']*1e3  # [Hz] Use f from the benchmark to make it easy to compare
-    m['theta'] = 90.0
-
-    # and run these
-    ts = psms.calculate_ts(m, model_type=s['model_type'])
-
-    # Plot the mss model and benchmark results
-    fig, axs = plt.subplots(2, 1, sharex=True)
-    # axs[0].plot(m['f']/1e3, ts, label='echoSMs')
-    axs[0].plot(bmf['Frequency_kHz'], bmf[model[1]], label='Benchmark')
-    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
-    # axs[0].legend(frameon=False, fontsize=6)
-
-    # Plot difference between benchmark values and newly calculated mss model values
-    # axs[1].plot(m['f']*1e-3, ts-bmf[model[1]], color='black')
-    # axs[1].set_xlabel('Frequency [kHz]')
-    # axs[1].set_ylabel(r'$\Delta$ TS [dB]')
-
-    plt.suptitle(model[0])
