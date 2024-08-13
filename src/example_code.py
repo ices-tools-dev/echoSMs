@@ -17,12 +17,13 @@ for n in rm.model_names():
 # Load the benchmark data (from Jech et al., 2015)
 bm = BenchMarkData()
 bmf = bm.dataset_freq()
+bm_theta = bm.dataset_angle()
 
 mss = MSSModel()
 print(f'The {mss.short_name} model supports boundary types of {mss.model_types}.')
 
 # %% ###############################################################################################
-# Run the benchmark models and compare to existing benchmark results.
+# Run the benchmark models and compare to the frequency-varying benchmark results.
 
 # This is the mapping between model name from ReferenceModels and the appropriate column of data in
 # BenchMarkData and which model to use.
@@ -35,14 +36,15 @@ models = {'mss': [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
                   ('spherical fluid shell with gas interior', 'ShellSphere_Gas'),
                   ('spherical fluid shell with weakly scattering interior',
                    'ShellSphere_WeaklyScattering')],
-          'psms': [('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-                   ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
-                   ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
-                   ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')],
           'dcm': [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
                   ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
                   ('gas filled finite cylinder', 'Cylinder_Gas'),
-                  ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering')]}
+                  ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering')],
+          'psms': [('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
+                   ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+                   ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+                   ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')]
+          }
 
 for model, names in models.items():
     if model == 'mss':
@@ -85,6 +87,54 @@ for model, names in models.items():
         axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
                         backgroundcolor=[.8, .8, .8])
         plt.suptitle(name[0])
+
+# %% ###############################################################################################
+# Run the benchmark models and compare to the angle-varying benchmark results.
+models = {'dcm': [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
+                  ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
+                  ('gas filled finite cylinder', 'Cylinder_Gas'),
+                  ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering')]
+          }
+
+for model, names in models.items():
+    if model == 'mss':
+        mod = MSSModel()
+    elif model == 'psms':
+        mod = PSMSModel()
+    elif model == 'dcm':
+        mod = DCMModel()
+    else:
+        pass
+
+for name in names:
+    # Get the model parameters used in Jech et al. (2015) for a particular model.
+    s = rm.get_model_specification(name[0])
+    m = rm.get_model_parameters(name[0])  # the subset of s with string items removed
+
+    # Add frequencies and angle to the model parameters
+    m['f'] = 38000  # [Hz]
+    m['theta'] = bm_theta['Angle_deg']
+
+    # and run these
+    ts = mod.calculate_ts(m, model_type=s['model_type'])
+
+    jech_index = np.mean(np.abs(ts - bm_theta[name[1]]))
+
+    # Plot the mss model and benchmark results
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    axs[0].plot(m['theta'], ts, label='echoSMs')
+    axs[0].plot(bm_theta['Angle_deg'], bm_theta[name[1]], label='Benchmark')
+    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
+    axs[0].set_xlabel(r'Angle ($\circ$)')
+    axs[0].legend(frameon=False, fontsize=6)
+
+    # Plot difference between benchmark values and newly calculated mss model values
+    axs[1].plot(m['theta'], ts-bm_theta[name[1]], color='black')
+    axs[1].set_xlabel(r'Angle ($\circ$)')
+    axs[1].set_ylabel(r'$\Delta$ TS [dB]')
+    axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
+                    backgroundcolor=[.8, .8, .8])
+    plt.suptitle(name[0])
 
 # %% ###############################################################################################
 # Some other ways to run models.

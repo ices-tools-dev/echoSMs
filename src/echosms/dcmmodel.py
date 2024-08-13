@@ -1,7 +1,9 @@
-"""A class that provides the deformed cylinder scattering model."""
+"""A class that provides the model series deformed cylinder scattering model."""
 
 import pandas as pd
 import xarray as xr
+from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
+import math
 # from mapply.mapply import mapply
 # import swifter
 from echosms import Utils
@@ -9,10 +11,10 @@ from .scattermodelbase import ScatterModelBaseClass
 
 
 class DCMModel(ScatterModelBaseClass):
-    """Deformed cylinder model (DCM).
+    """Modal series deformed cylinder model (DCM).
 
-    This class contains methods to calculate acoustic scatter from cylinders with various
-    boundary conditions.
+    This class contains methods to calculate acoustic scatter from finite straight cylinders with
+    various boundary conditions.
     """
 
     def __init__(self):
@@ -26,7 +28,7 @@ class DCMModel(ScatterModelBaseClass):
         self.min_frequency = 1.0  # [Hz]
 
     def calculate_ts(self, data, model_type, multiprocess=False):
-        """Calculate the scatter from a deformed cylinder.
+        """Calculate the scatter from a finite straight cylinder.
 
         Parameters
         ----------
@@ -74,12 +76,12 @@ class DCMModel(ScatterModelBaseClass):
         p = args[0].to_dict()  # so we can use it for keyword arguments
         return self.calculate_ts_single(**p, model_type=args[1])
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, theta, f, model_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, model_type,
                             target_c=None, target_rho=None,
                             shell_c=None, shell_rho=None, shell_thickness=None,
                             **kwargs):
         """
-        Calculate the scatter using the dcm model for one set of parameters.
+        Calculate the scatter from a finite cylinder using the modal series deformed cylinder model.
 
         Parameters
         ----------
@@ -121,14 +123,43 @@ class DCMModel(ScatterModelBaseClass):
         research. Journal of the Acoustical Society of America 138, 3742–3764.
         https://doi.org/10.1121/1.4937607
         """
+        if theta == 0.0:
+            return math.nan
+
+        theta_rad = theta*math.pi/180.
+        k = Utils.k(medium_c, f)
+        K = k * math.sin(theta_rad)
+        Ka = K*a
+        kL = k*b
+
+        m = range(30)  # this needs to vary with f
+
         # Some code varies with model type.
         match model_type:
             case 'fixed rigid':
-                pass
+                series = list(map(lambda m: (-1)**m * Utils.eta(m) * (jvp(m, Ka) / h1vp(m, Ka)), m))
             case 'pressure release':
-                pass
+                series = list(map(lambda m: (-1)**m * Utils.eta(m) *
+                                  (jv(m, Ka) / hankel1(m, Ka)), m))
             case 'fluid filled':
-                pass
+                g = target_rho/medium_rho
+                h = target_c/medium_c
+                gh = g*h
+                Kda = K/h*a
+
+                def Cm(m):
+                    numer = (jvp(m, Kda) * yv(m, Ka))/(jv(m, Kda) * jvp(m, Ka))\
+                        - gh*(yvp(m, Ka) / jvp(m, Ka))
+                    denom = (jvp(m, Kda) * jv(m, Ka))/(jv(m, Kda)*jvp(m, Ka)) - gh
+                    return numer/denom
+                series = list(map(lambda m: 1j**(2*m) * Utils.eta(m) / (1 + 1j*Cm(m)), m))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
+
+        fbs = 1j*b/math.pi * (math.sin(kL*math.cos(theta_rad))
+                              / (kL*math.cos(theta_rad))) * sum(series)
+
+        ts = 20*math.log10(abs(fbs))
+
+        return ts
