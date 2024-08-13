@@ -19,9 +19,6 @@ bm = BenchMarkData()
 bmf = bm.dataset_freq()
 bm_theta = bm.dataset_angle()
 
-mss = MSSModel()
-print(f'The {mss.short_name} model supports boundary types of {mss.model_types}.')
-
 # %% ###############################################################################################
 # Run the benchmark models and compare to the frequency-varying benchmark results.
 
@@ -125,12 +122,11 @@ for name in names:
     axs[0].plot(m['theta'], ts, label='echoSMs')
     axs[0].plot(bm_theta['Angle_deg'], bm_theta[name[1]], label='Benchmark')
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
-    axs[0].set_xlabel(r'Angle ($\circ$)')
     axs[0].legend(frameon=False, fontsize=6)
 
     # Plot difference between benchmark values and newly calculated mss model values
     axs[1].plot(m['theta'], ts-bm_theta[name[1]], color='black')
-    axs[1].set_xlabel(r'Angle ($\circ$)')
+    axs[1].set_xlabel('Angle (°)')
     axs[1].set_ylabel(r'$\Delta$ TS [dB]')
     axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
                     backgroundcolor=[.8, .8, .8])
