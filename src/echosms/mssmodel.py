@@ -7,6 +7,8 @@ from scipy.special import spherical_jn, spherical_yn
 from .utils import Utils
 from .scattermodelbase import ScatterModelBaseClass
 
+# pylint: disable=line-too-long
+
 
 class MSSModel(ScatterModelBaseClass):
     """Modal series solution (MSS) scattering model.
@@ -96,11 +98,11 @@ class MSSModel(ScatterModelBaseClass):
 
                 def Cn(n):
                     return\
-                        ((spherical_jn(n, k1a, True) * spherical_yn(n, ka))
-                            / (spherical_jn(n, k1a) * spherical_jn(n, ka, True))
-                            - gh * (spherical_yn(n, ka, True) / spherical_jn(n, ka, True)))\
-                        / ((spherical_jn(n, k1a, True) * spherical_jn(n, ka))
-                           / (spherical_jn(n, k1a) * spherical_jn(n, ka, True)) - gh)
+                        ((spherical_jn(n, k1a, True)*spherical_yn(n, ka))
+                            / (spherical_jn(n, k1a)*spherical_jn(n, ka, True))
+                            - gh*(spherical_yn(n, ka, True)/spherical_jn(n, ka, True)))\
+                        / ((spherical_jn(n, k1a, True)*spherical_jn(n, ka))
+                           / (spherical_jn(n, k1a)*spherical_jn(n, ka, True))-gh)
 
                 A = -1/(1 + 1j*np.asarray(list(map(Cn, n)), dtype=complex))
             case 'fluid shell fluid interior':
@@ -119,8 +121,7 @@ class MSSModel(ScatterModelBaseClass):
                     (b1, b2, a11, a21, a12, a22, a32, a13, a23, a33) =\
                         self.eqn9(n, k1a, g21, h21, k2*a, k2*b, k3b, h32, g32)
                     return (b1*a22*a33 + a13*b2*a32 - a12*b2*a33 - b1*a23*a32)\
-                        / (a11*a22*a33 + a13*a21*a32
-                           - a12*a21*a33 - a11*a23*a32)
+                        / (a11*a22*a33 + a13*a21*a32 - a12*a21*a33 - a11*a23*a32)
 
                 A = list(map(Cn, n))
             case 'fluid shell pressure release interior':
@@ -135,7 +136,7 @@ class MSSModel(ScatterModelBaseClass):
 
                 def Cn(n):
                     (b1, b2, d1, d2, a11, a21) = self.eqn10(n, k1a, g21, h21, ksa, k2*a, k2*b)
-                    return (b1*d2 - d1*b2) / (a11*d2 - d1*a21)
+                    return (b1*d2-d1*b2) / (a11*d2-d1*a21)
 
                 A = list(map(Cn, n))
             case _:
@@ -156,12 +157,10 @@ class MSSModel(ScatterModelBaseClass):
         # a31 = 0.0
         a12 = spherical_jn(n, k2a)
         a22 = spherical_jn(n, k2a, True)
-        a32 = spherical_jn(n, k2b) * spherical_jn(n, k3b, True)\
-            - g32*h32*spherical_jn(n, k2b, True) * spherical_jn(n, k3b)
+        a32 = spherical_jn(n, k2b)*spherical_jn(n, k3b, True) - g32*h32*spherical_jn(n, k2b, True)*spherical_jn(n, k3b)
         a13 = spherical_yn(n, k2a)
         a23 = spherical_yn(n, k2a, True)
-        a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, True)\
-            - g32*h32*spherical_yn(n, k2b, True)*spherical_jn(n, k3b)
+        a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, True) - g32*h32*spherical_yn(n, k2b, True)*spherical_jn(n, k3b)
 
         return b1, b2, a11, a21, a12, a22, a32, a13, a23, a33
 
@@ -171,10 +170,8 @@ class MSSModel(ScatterModelBaseClass):
         Applies to a pressure release interior shell.
         """
         (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
-        d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b)\
-            - spherical_jn(n, k2b)*spherical_yn(n, k2a)
-        d2 = spherical_jn(n, ksa, True)*spherical_yn(n, k2b)\
-            - spherical_jn(n, k2b)*spherical_yn(n, k2a, True)
+        d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b) - spherical_jn(n, k2b)*spherical_yn(n, k2a)
+        d2 = spherical_jn(n, ksa, True)*spherical_yn(n, k2b) - spherical_jn(n, k2b)*spherical_yn(n, k2a, True)
 
         return b1, b2, d1, d2, a11, a21
 
