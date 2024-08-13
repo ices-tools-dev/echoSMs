@@ -2,6 +2,9 @@
 
 import abc
 import numpy as np
+from .utils import Utils
+import pandas as pd
+import xarray as xr
 
 
 class ScatterModelBaseClass(abc.ABC):
@@ -11,7 +14,6 @@ class ScatterModelBaseClass(abc.ABC):
     ends with 'Model'.
     """
 
-    # pylint: disable=too-many-instance-attributes
     @abc.abstractmethod
     def __init__(self):
         self.long_name = ''  # the name in words
@@ -19,13 +21,57 @@ class ScatterModelBaseClass(abc.ABC):
         self.analytical_type = ''  # 'exact', 'approximate'
         self.model_types = []  # 'fixed rigid', 'pressure release', 'fluid filled'
         self.shapes = []  # the target shapes that this model can simulate
-        self.max_frequency = np.nan  # [Hz]
-        self.min_frequency = np.nan  # [Hz]
+        # An indication of the maximum ka value that this model provides accurate results for
+        self.max_ka = np.nan  # [1]
 
-    @abc.abstractmethod
-    def calculate_ts(self):
-        """Calculate the TS for many parameter sets."""
-        pass
+    def calculate_ts(self, data, model_type, multiprocess=False):
+        """Calculate the TS for many parameter sets.
+
+        Parameters
+        ----------
+        data: Pandas DataFrame or Xarray DataArray or dictionary
+            If a DataFrame, must contain column names as per the function parameters in the
+            calculate_ts_single() function in this class. Each row in the DataFrame will generate
+            one TS output. If a DataArray, must contain coordinate names as per the function
+            parameters in calculate_ts_single(). The TS will be calculated for all combinations of
+            the coordinate variables. If dictionary, it will be converted to a DataFrame first.
+
+        model_type: string
+            The type of model boundary to apply. Valid values are given in the model_types class
+            variable.
+
+        Returns
+        -------
+        ts: Numpy array
+            Returns the target strength calculated for all input parameters.
+
+        """
+        if isinstance(data, dict):
+            data = Utils.df_from_dict(data)
+        elif isinstance(data, pd.DataFrame):
+            pass
+        elif isinstance(data, xr.DataArray):
+            # For the moment just convert DataArrays into DataFrames
+            data = data.to_dataframe().reset_index()
+        else:
+            raise ValueError(f'Data type of {type(data)} is not supported'
+                             ' (only dictionaries, Pandas DataFrames and Xarray DataArrays are).')
+
+        if multiprocess:
+            # Using mapply:
+            # ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
+            # Using swifter
+            # ts = df.swifter.apply(self.__ts_helper, args=(model_type,), axis=1)
+            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+        else:  # this uses just one CPU
+            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+
+        return ts.to_numpy()
+
+    def __ts_helper(self, *args):
+        """Convert function arguments and call calculate_ts_single()."""
+        p = args[0].to_dict()  # so we can use it for keyword arguments
+        return self.calculate_ts_single(**p, model_type=args[1])
 
     @abc.abstractmethod
     def calculate_ts_single(self):
