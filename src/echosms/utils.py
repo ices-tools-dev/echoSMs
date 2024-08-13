@@ -27,6 +27,13 @@ class Utils:
         # Create the DataArray
         return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts')
 
+    def eta(m: int):
+        """Neumann number."""
+        if m == 0:
+            return 1
+        else:
+            return 2
+
     def k(c, f):
         """Calculate the acoustic wavenumber.
 
