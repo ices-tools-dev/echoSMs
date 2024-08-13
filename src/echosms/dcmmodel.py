@@ -5,8 +5,7 @@ import math
 from math import sin, cos
 # from mapply.mapply import mapply
 # import swifter
-from .utils import eta
-from .utils import k as wn
+from .utils import Utils
 from .scattermodelbase import ScatterModelBaseClass
 
 
@@ -75,7 +74,7 @@ class DCMModel(ScatterModelBaseClass):
             return math.nan
 
         theta_rad = theta*math.pi/180.
-        k = wn(medium_c, f)
+        k = Utils.k(medium_c, f)
         K = k * sin(theta_rad)
         Ka = K*a
         kL = k*b
@@ -85,9 +84,9 @@ class DCMModel(ScatterModelBaseClass):
         # Some code varies with model type.
         match model_type:
             case 'fixed rigid':
-                series = list(map(lambda m: (-1)**m * eta(m) * (jvp(m, Ka) / h1vp(m, Ka)), m))
+                series = list(map(lambda m: (-1)**m * Utils.eta(m) * (jvp(m, Ka) / h1vp(m, Ka)), m))
             case 'pressure release':
-                series = list(map(lambda m: (-1)**m * eta(m) * (jv(m, Ka) / hankel1(m, Ka)), m))
+                series = list(map(lambda m: (-1)**m * Utils.eta(m) * (jv(m, Ka) / hankel1(m, Ka)), m))
             case 'fluid filled':
                 g = target_rho/medium_rho
                 h = target_c/medium_c
@@ -99,7 +98,7 @@ class DCMModel(ScatterModelBaseClass):
                     denom = (jvp(m, Kda)*jv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka)) - gh
                     return numer/denom
 
-                series = list(map(lambda m: 1j**(2*m) * eta(m) / (1 + 1j*Cm(m)), m))
+                series = list(map(lambda m: 1j**(2*m) * Utils.eta(m) / (1 + 1j*Cm(m)), m))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
