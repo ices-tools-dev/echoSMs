@@ -19,4 +19,4 @@ plugins:
                     show_symbol_type_heading: true
                     show_bases: true
                     inherited_members: true
-                    filters: ["!^__"] # exclude private Python class members
+                    show_root_heading: true
