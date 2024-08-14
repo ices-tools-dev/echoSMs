@@ -12,6 +12,16 @@ class ScatterModelBaseClass(abc.ABC):
 
     All scattering models should inherit from this class, have a name that
     ends with 'Model', and provide __init__() and calculate_ts_single() functions.
+
+    Attributes
+    ----------
+    long_name : string
+    short_name : string
+    analytical_type : string
+    model_types :
+    shapes :
+    max_ka :
+
     """
 
     @abc.abstractmethod

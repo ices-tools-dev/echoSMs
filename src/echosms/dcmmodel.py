@@ -34,7 +34,7 @@ class DCMModel(ScatterModelBaseClass):
         medium_c : float
             Sound speed in the fluid medium surrounding the target [m/s].
         medium_rho : float
-            Density of the fluid medium surrounding the target [kg/m3].
+            Density of the fluid medium surrounding the target [kg/m³].
         a : float
             Radius of the cylinderical target [m].
         b : float
@@ -50,12 +50,12 @@ class DCMModel(ScatterModelBaseClass):
             Sound speed in the fluid inside the sphere [m/s].
             Only required for `model_type` of ``fluid filled``
         target_rho : float, optional
-            Density of the fluid inside the sphere [kg/m^3].
+            Density of the fluid inside the sphere [kg/m³].
             Only required for `model_type` of ``fluid filled``
 
         Returns
         -------
-        ts : the target strength (re 1 m2) of the target [dB].
+        ts : the target strength (re 1 m²) of the target [dB].
 
         Notes
         -----
@@ -63,11 +63,11 @@ class DCMModel(ScatterModelBaseClass):
 
         References
         ----------
-        ..[1] Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
+        [1] Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
         Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
         Comparisons among ten models of acoustic backscattering used in aquatic ecosystem
         research. Journal of the Acoustical Society of America 138, 3742–3764.
-        https://doi.org/10.1121/1.4937607
+        <https://doi.org/10.1121/1.4937607>
         """
         if theta == 0.0:
             return nan

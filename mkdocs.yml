@@ -5,16 +5,18 @@ nav:
     - Contributing: contributing.md
     - API Reference: api_reference.md
 
-theme: mkdocs # readthedocs 
+theme: readthedocs 
 
 plugins:
     - search
     - mkdocstrings:
         handlers:
             python:
+                paths: [src]
                 options:
                     docstring_style: numpy
-                    show_submodules: true
+                    show_submodules: false
                     show_symbol_type_heading: true
                     show_bases: true
+                    inherited_members: true
                     filters: ["!^__"] # exclude private Python class members
