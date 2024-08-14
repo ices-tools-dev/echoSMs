@@ -6,7 +6,7 @@ import numpy as np
 from echosms import MSSModel, PSMSModel, DCMModel
 from echosms import BenchMarkData
 from echosms import ReferenceModels
-from echosms import Utils
+from echosms import df_from_dict, da_from_dict
 
 # Load the reference model defintiions
 rm = ReferenceModels()
@@ -84,6 +84,7 @@ for model, names in models.items():
         axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
                         backgroundcolor=[.8, .8, .8])
         plt.suptitle(name[0])
+        plt.show()
 
 # %% ###############################################################################################
 # Run the benchmark models and compare to the angle-varying benchmark results.
@@ -131,6 +132,7 @@ for name in names:
     axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
                     backgroundcolor=[.8, .8, .8])
     plt.suptitle(name[0])
+    plt.show()
 
 # %% ###############################################################################################
 # Some other ways to run models.
@@ -143,7 +145,7 @@ m['f'] = np.linspace(12, 200, num=800) * 1e3  # [Hz]
 m['target_rho'] = np.arange(1020, 1030, 1)  # [kg/m^3]
 m['theta'] = [0, 90.0, 180.0]
 # can convert this to a dataframe
-models_df = Utils.df_from_dict(m)
+models_df = df_from_dict(m)
 # could also make a DataFrame of parameters that are not just the combination of all input
 # parameters. This offers a way to specify a more tailored set of model parameters.
 
@@ -162,6 +164,7 @@ for rho in m['target_rho']:
 plt.xlabel('Freq [kHz]')
 plt.ylabel('TS re 1 m$^2$ [dB] ')
 plt.legend(title='Density [kg m$^{-3}$]')
+plt.show()
 
 # %% ###############################################################################################
 # Example of model parameters not from the benchmarks
@@ -174,7 +177,7 @@ params = {'medium_rho': [1000, 1250, 1500],
           'target_rho': 1250}
 
 # Instead of converting those to a dataframe, an xarray can be used.
-params_xa = Utils.xa_from_dict(params)
+params_xa = da_from_dict(params)
 
 # how many models runs would that be?
 print(f'Running {np.prod(params_xa.shape)} models!')

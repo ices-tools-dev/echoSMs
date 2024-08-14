@@ -1,10 +1,11 @@
 """A class that provides the modal series solution scattering model."""
 
 import numpy as np
+from math import log10
 # from mapply.mapply import mapply
 # import swifter
 from scipy.special import spherical_jn, spherical_yn
-from .utils import Utils
+from .utils import h1, k
 from .scattermodelbase import ScatterModelBaseClass
 
 
@@ -80,21 +81,21 @@ class MSSModel(ScatterModelBaseClass):
         research. Journal of the Acoustical Society of America 138, 3742–3764.
         https://doi.org/10.1121/1.4937607
         """
-        k0 = Utils.k(medium_c, f)
+        k0 = k(medium_c, f)
         ka = k0*a
         n = np.arange(0, round(ka+20))
 
         # Some code varies with model type.
         match model_type:
             case 'fixed rigid':
-                A = list(map(lambda x: -spherical_jn(x, ka, True) / Utils.h1(x, ka, True), n))
+                A = list(map(lambda x: -spherical_jn(x, ka, True) / h1(x, ka, True), n))
             case 'pressure release':
-                A = list(map(lambda x: -spherical_jn(x, ka) / Utils.h1(x, ka), n))
+                A = list(map(lambda x: -spherical_jn(x, ka) / h1(x, ka), n))
             case 'fluid filled':
-                k1a = Utils.k(target_c, f)*a
+                k1a = k(target_c, f)*a
                 gh = target_rho/medium_rho * target_c/medium_c
 
-                def Cn(n):
+                def Cn_fr(n):
                     return\
                         ((spherical_jn(n, k1a, True)*spherical_yn(n, ka))
                             / (spherical_jn(n, k1a)*spherical_jn(n, ka, True))
@@ -102,7 +103,7 @@ class MSSModel(ScatterModelBaseClass):
                         / ((spherical_jn(n, k1a, True)*spherical_jn(n, ka))
                            / (spherical_jn(n, k1a)*spherical_jn(n, ka, True))-gh)
 
-                A = -1/(1 + 1j*np.asarray(list(map(Cn, n)), dtype=complex))
+                A = -1/(1 + 1j*np.asarray(list(map(Cn_fr, n)), dtype=complex))
             case 'fluid shell fluid interior':
                 b = a - shell_thickness
 
@@ -111,38 +112,38 @@ class MSSModel(ScatterModelBaseClass):
                 g32 = target_rho / shell_rho
                 h32 = target_c / shell_c
 
-                k1a = Utils.k(medium_c, f) * a
-                k2 = Utils.k(shell_c, f)
-                k3b = Utils.k(target_c, f) * b
+                k1a = k(medium_c, f) * a
+                k2 = k(shell_c, f)
+                k3b = k(target_c, f) * b
 
-                def Cn(n):
+                def Cn_fsfi(n):
                     (b1, b2, a11, a21, a12, a22, a32, a13, a23, a33) =\
                         self.eqn9(n, k1a, g21, h21, k2*a, k2*b, k3b, h32, g32)
                     return (b1*a22*a33 + a13*b2*a32 - a12*b2*a33 - b1*a23*a32)\
                         / (a11*a22*a33 + a13*a21*a32 - a12*a21*a33 - a11*a23*a32)
 
-                A = list(map(Cn, n))
+                A = list(map(Cn_fsfi, n))
             case 'fluid shell pressure release interior':
                 b = a - shell_thickness
 
                 g21 = shell_rho / medium_rho
                 h21 = shell_c / medium_c
 
-                k1a = Utils.k(medium_c, f) * a
-                k2 = Utils.k(shell_c, f)
+                k1a = k(medium_c, f) * a
+                k2 = k(shell_c, f)
                 ksa = k2 * a  # ksa is used in the paper, but isn't that the same as k2a?
 
-                def Cn(n):
+                def Cn_fspri(n):
                     (b1, b2, d1, d2, a11, a21) = self.eqn10(n, k1a, g21, h21, ksa, k2*a, k2*b)
                     return (b1*d2-d1*b2) / (a11*d2-d1*a21)
 
-                A = list(map(Cn, n))
+                A = list(map(Cn_fspri, n))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
 
         fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
-        return 20*np.log10(np.abs(fbs))  # ts
+        return 20*log10(abs(fbs))  # ts
 
     def eqn9(self, n, k1a, g21, h21, k2a, k2b, k3b, h32, g32):
         """Variables in eqn 9 of Jech et al, 2015.
@@ -178,7 +179,7 @@ class MSSModel(ScatterModelBaseClass):
         """Variables common to eqn 9 and 10 of Jech et al, 2015."""
         b1 = spherical_jn(n, k1a)
         b2 = g21*h21 * spherical_jn(n, k1a, True)
-        a11 = -Utils.h1(n, k1a)
-        a21 = -g21*h21 * Utils.h1(n, k1a, True)
+        a11 = -h1(n, k1a)
+        a21 = -g21*h21 * h1(n, k1a, True)
 
         return b1, b2, a11, a21

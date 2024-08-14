@@ -1,11 +1,10 @@
 """A class that provides the model series deformed cylinder scattering model."""
 
 from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
-import math
-from math import sin, cos
+from math import sin, cos, nan, pi, log10
 # from mapply.mapply import mapply
 # import swifter
-from .utils import Utils
+from .utils import eta, k
 from .scattermodelbase import ScatterModelBaseClass
 
 
@@ -22,7 +21,7 @@ class DCMModel(ScatterModelBaseClass):
         self.short_name = 'dcm'
         self.analytical_type = 'approximate analytical'
         self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
-        self.shapes = ['sphere']
+        self.shapes = ['finite cylinder']
         self.max_ka = 20  # [1]
 
     def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, model_type,
@@ -71,22 +70,21 @@ class DCMModel(ScatterModelBaseClass):
         https://doi.org/10.1121/1.4937607
         """
         if theta == 0.0:
-            return math.nan
+            return nan
 
-        theta_rad = theta*math.pi/180.
-        k = Utils.k(medium_c, f)
-        K = k * sin(theta_rad)
+        theta_rad = theta*pi/180.
+        kL = k(medium_c, f)*b
+        K = k(medium_c, f) * sin(theta_rad)
         Ka = K*a
-        kL = k*b
 
         m = range(30)  # this needs to vary with f
 
         # Some code varies with model type.
         match model_type:
             case 'fixed rigid':
-                series = list(map(lambda m: (-1)**m * Utils.eta(m)*(jvp(m, Ka) / h1vp(m, Ka)), m))
+                series = list(map(lambda m: (-1)**m * eta(m)*(jvp(m, Ka) / h1vp(m, Ka)), m))
             case 'pressure release':
-                series = list(map(lambda m: (-1)**m * Utils.eta(m)*(jv(m, Ka) / hankel1(m, Ka)), m))
+                series = list(map(lambda m: (-1)**m * eta(m)*(jv(m, Ka) / hankel1(m, Ka)), m))
             case 'fluid filled':
                 g = target_rho/medium_rho
                 h = target_c/medium_c
@@ -99,10 +97,10 @@ class DCMModel(ScatterModelBaseClass):
                     denom = (jvp(m, Kda)*jv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka)) - gh
                     return numer/denom
 
-                series = list(map(lambda m: 1j**(2*m) * Utils.eta(m) / (1 + 1j*Cm(m)), m))
+                series = list(map(lambda m: 1j**(2*m) * eta(m) / (1 + 1j*Cm(m)), m))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{model_type}".')
 
-        fbs = 1j*b/math.pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * sum(series)
-        return 20*math.log10(abs(fbs))  # ts
+        fbs = 1j*b/pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * sum(series)
+        return 20*log10(abs(fbs))  # ts

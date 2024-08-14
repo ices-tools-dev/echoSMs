@@ -2,7 +2,7 @@
 
 import abc
 import numpy as np
-from .utils import Utils
+from .utils import df_from_dict
 import pandas as pd
 import xarray as xr
 
@@ -10,8 +10,8 @@ import xarray as xr
 class ScatterModelBaseClass(abc.ABC):
     """Base class for a class that provides a scattering model.
 
-    All scattering models should inherit from this class and have a name that
-    ends with 'Model'.
+    All scattering models should inherit from this class, have a name that
+    ends with 'Model', and provide __init__() and calculate_ts_single() functions.
     """
 
     @abc.abstractmethod
@@ -19,7 +19,7 @@ class ScatterModelBaseClass(abc.ABC):
         self.long_name = ''  # the name in words
         self.short_name = ''  # an abbreviation
         self.analytical_type = ''  # 'exact', 'approximate'
-        self.model_types = []  # 'fixed rigid', 'pressure release', 'fluid filled'
+        self.model_types = []  # e.g., 'fixed rigid', 'pressure release', 'fluid filled'
         self.shapes = []  # the target shapes that this model can simulate
         # An indication of the maximum ka value that this model provides accurate results for
         self.max_ka = np.nan  # [1]
@@ -47,7 +47,7 @@ class ScatterModelBaseClass(abc.ABC):
 
         """
         if isinstance(data, dict):
-            data = Utils.df_from_dict(data)
+            data = df_from_dict(data)
         elif isinstance(data, pd.DataFrame):
             pass
         elif isinstance(data, xr.DataArray):
