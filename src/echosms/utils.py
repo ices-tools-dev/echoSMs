@@ -6,7 +6,20 @@ from scipy.special import spherical_jn, spherical_yn
 
 
 def df_from_dict(params: dict) -> pd.DataFrame:
-    """Convert model parameters from dict form to a Pandas DataFrame."""
+    """Convert model parameters from dict form to a Pandas DataFrame.
+
+    Parameters
+    ----------
+    params :
+        A dictionary containing model parameters.
+
+    Returns
+    -------
+    :
+        Returns a Pandas DataFrame generated from the Cartesian product of all items in the
+        input dict.
+
+    """
     # Use meshgrid to do the Cartesian product, then reshape into a 2D array, then create a
     # Pandas DataFrame() from that
     return pd.DataFrame(np.array(
@@ -15,7 +28,20 @@ def df_from_dict(params: dict) -> pd.DataFrame:
 
 
 def da_from_dict(params: dict) -> xr.DataArray:
-    """Convert model parameters from dict form to a Xarray DataArray."""
+    """Convert model parameters from dict form to a Xarray DataArray.
+
+    Parameters
+    ----------
+    params :
+        A dictionary containing model parameters.
+
+    Returns
+    -------
+    :
+        Returns a multi-dimensional DataArray generated from the Cartesian product of all items
+        in the input dict.
+
+    """
     # Convert scalars to iterables so xarray is happier later on
     for k, v in params.items():
         if not hasattr(v, '__iter__'):
@@ -27,7 +53,18 @@ def da_from_dict(params: dict) -> xr.DataArray:
 
 
 def eta(m: int) -> int:
-    """Neumann number."""
+    """Neumann number.
+
+    Parameters
+    ----------
+    m :
+        The input integer.
+
+    Returns
+    -------
+    :
+        The Neumann number.
+    """
     if m == 0:
         return 1
     else:
@@ -39,16 +76,16 @@ def k(c: float, f: float) -> float:
 
     Parameters
     ----------
-    c: array_like (float)
+    c :
         Sound speed [m/s]
 
-    f: array_like (float)
+    f :
         Frequency [Hz]
 
     Returns
     -------
-    k: scalar or array_like
-        The acoustic wavenumber [m-1].
+    k : scalar or array_like
+        The acoustic wavenumber [m$^{-1}$].
     """
     return 2*np.pi*f/c
 
@@ -58,28 +95,29 @@ def h1(n: int, z: float, derivative=False) -> complex:
 
     Parameters
     ----------
-    n: array_like (float)
+    n :
         Order (n >= 0).
-    z: array_like (float or complex)
+    z :
         Argument of the Hankel function.
-    derivative: bool, optional
+    derivative :
         if True, the value of the derivative (rather than the function itself) is returned.
 
     Returns
     -------
-    h: scalar or ndarray
+    :
         Value of the spherical Hankel function
 
     Notes
     -----
-    The value of the Hankel function is calculated from spherical Bessel functions [1]_.
+    The value of the Hankel function is calculated from spherical Bessel functions [1].
 
-    The derivative is computed from spherical Hankel functions [2]_.
+    The derivative is computed from spherical Hankel functions [2].
 
     References
     ----------
-    ..[1] https://dlmf.nist.gov/10.47.E10
-    ..[2] https://dlmf.nist.gov/10.51.E2
+    [1] <https://dlmf.nist.gov/10.47.E10>
+
+    [2] <https://dlmf.nist.gov/10.51.E2>
     """
     if n < 0:
         raise ValueError('Negative n values are not supported for spherical Hankel functions.')

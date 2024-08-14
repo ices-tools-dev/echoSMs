@@ -39,20 +39,23 @@ class ScatterModelBaseClass(abc.ABC):
 
         Parameters
         ----------
-        data: Pandas DataFrame or Xarray DataArray or dictionary
+        data : Pandas DataFrame or Xarray DataArray or dictionary
             If a DataFrame, must contain column names as per the function parameters in the
             calculate_ts_single() function in this class. Each row in the DataFrame will generate
             one TS output. If a DataArray, must contain coordinate names as per the function
             parameters in calculate_ts_single(). The TS will be calculated for all combinations of
             the coordinate variables. If dictionary, it will be converted to a DataFrame first.
 
-        model_type: string
+        model_type : string
             The type of model boundary to apply. Valid values are given in the model_types class
             variable.
 
+        multiprocess : boolean
+            Split the ts calculation across CPU cores.
+
         Returns
         -------
-        ts: Numpy array
+        : Numpy array
             Returns the target strength calculated for all input parameters.
 
         """
@@ -76,7 +79,7 @@ class ScatterModelBaseClass(abc.ABC):
         else:  # this uses just one CPU
             ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
 
-        return ts.to_numpy()
+        return ts.to_numpy()  # TODO - return data type that matches the input data type
 
     def __ts_helper(self, *args):
         """Convert function arguments and call calculate_ts_single()."""
