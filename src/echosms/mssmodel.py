@@ -7,8 +7,6 @@ from scipy.special import spherical_jn, spherical_yn
 from .utils import Utils
 from .scattermodelbase import ScatterModelBaseClass
 
-# pylint: disable=line-too-long
-
 
 class MSSModel(ScatterModelBaseClass):
     """Modal series solution (MSS) scattering model.
@@ -144,9 +142,7 @@ class MSSModel(ScatterModelBaseClass):
                                  f'a model type of "{model_type}".')
 
         fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
-        ts = 20*np.log10(np.abs(fbs))
-
-        return ts
+        return 20*np.log10(np.abs(fbs))  # ts
 
     def eqn9(self, n, k1a, g21, h21, k2a, k2b, k3b, h32, g32):
         """Variables in eqn 9 of Jech et al, 2015.
@@ -157,10 +153,12 @@ class MSSModel(ScatterModelBaseClass):
         # a31 = 0.0
         a12 = spherical_jn(n, k2a)
         a22 = spherical_jn(n, k2a, True)
-        a32 = spherical_jn(n, k2b)*spherical_jn(n, k3b, True) - g32*h32*spherical_jn(n, k2b, True)*spherical_jn(n, k3b)
+        a32 = spherical_jn(n, k2b)*spherical_jn(n, k3b, True)\
+            - g32*h32*spherical_jn(n, k2b, True)*spherical_jn(n, k3b)
         a13 = spherical_yn(n, k2a)
         a23 = spherical_yn(n, k2a, True)
-        a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, True) - g32*h32*spherical_yn(n, k2b, True)*spherical_jn(n, k3b)
+        a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, True)\
+            - g32*h32*spherical_yn(n, k2b, True)*spherical_jn(n, k3b)
 
         return b1, b2, a11, a21, a12, a22, a32, a13, a23, a33
 
@@ -171,7 +169,8 @@ class MSSModel(ScatterModelBaseClass):
         """
         (b1, b2, a11, a21) = self.eqn9_10_common(n, k1a, g21, h21)
         d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b) - spherical_jn(n, k2b)*spherical_yn(n, k2a)
-        d2 = spherical_jn(n, ksa, True)*spherical_yn(n, k2b) - spherical_jn(n, k2b)*spherical_yn(n, k2a, True)
+        d2 = spherical_jn(n, ksa, True)*spherical_yn(n, k2b)\
+            - spherical_jn(n, k2b)*spherical_yn(n, k2a, True)
 
         return b1, b2, d1, d2, a11, a21
 

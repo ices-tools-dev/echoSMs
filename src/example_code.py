@@ -37,10 +37,10 @@ models = {'mss': [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
                   ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
                   ('gas filled finite cylinder', 'Cylinder_Gas'),
                   ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering')],
-          'psms': [('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-                   ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
-                   ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
-                   ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')]
+          # 'psms': [('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
+          #          ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+          #          ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          #          ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')]
           }
 
 for model, names in models.items():

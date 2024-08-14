@@ -84,9 +84,9 @@ class DCMModel(ScatterModelBaseClass):
         # Some code varies with model type.
         match model_type:
             case 'fixed rigid':
-                series = list(map(lambda m: (-1)**m * Utils.eta(m) * (jvp(m, Ka) / h1vp(m, Ka)), m))
+                series = list(map(lambda m: (-1)**m * Utils.eta(m)*(jvp(m, Ka) / h1vp(m, Ka)), m))
             case 'pressure release':
-                series = list(map(lambda m: (-1)**m * Utils.eta(m) * (jv(m, Ka) / hankel1(m, Ka)), m))
+                series = list(map(lambda m: (-1)**m * Utils.eta(m)*(jv(m, Ka) / hankel1(m, Ka)), m))
             case 'fluid filled':
                 g = target_rho/medium_rho
                 h = target_c/medium_c
@@ -94,7 +94,8 @@ class DCMModel(ScatterModelBaseClass):
                 Kda = K/h*a
 
                 def Cm(m):
-                    numer = (jvp(m, Kda)*yv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka)) - gh*(yvp(m, Ka)/jvp(m, Ka))
+                    numer = (jvp(m, Kda)*yv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka))\
+                        - gh*(yvp(m, Ka)/jvp(m, Ka))
                     denom = (jvp(m, Kda)*jv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka)) - gh
                     return numer/denom
 
@@ -104,7 +105,4 @@ class DCMModel(ScatterModelBaseClass):
                                  f'a model type of "{model_type}".')
 
         fbs = 1j*b/math.pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * sum(series)
-
-        ts = 20*math.log10(abs(fbs))
-
-        return ts
+        return 20*math.log10(abs(fbs))  # ts
