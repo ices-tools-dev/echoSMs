@@ -7,7 +7,7 @@ import pandas as pd
 import xarray as xr
 
 
-class ScatterModelBaseClass(abc.ABC):
+class ScatterModelBase(abc.ABC):
     """Base class for a class that provides a scattering model.
 
     All scattering models should inherit from this class, have a name that

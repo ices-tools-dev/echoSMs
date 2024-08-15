@@ -6,10 +6,10 @@ from math import log10
 # import swifter
 from scipy.special import spherical_jn, spherical_yn
 from .utils import h1, k
-from .scattermodelbase import ScatterModelBaseClass
+from .scattermodelbase import ScatterModelBase
 
 
-class MSSModel(ScatterModelBaseClass):
+class MSSModel(ScatterModelBase):
     """Modal series solution (MSS) scattering model.
 
     This class contains methods to calculate acoustic scatter from spheres and shells with various

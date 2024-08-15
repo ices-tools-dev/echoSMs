@@ -5,10 +5,10 @@ import numpy as np
 # import swifter
 from scipy.special import pro_ang1, pro_rad1, pro_rad2
 from scipy.integrate import quad
-from .scattermodelbase import ScatterModelBaseClass
+from .scattermodelbase import ScatterModelBase
 
 
-class PSMSModel(ScatterModelBaseClass):
+class PSMSModel(ScatterModelBase):
     """Prolate spheroidal modal series (PSMS) scattering model."""
 
     def __init__(self):

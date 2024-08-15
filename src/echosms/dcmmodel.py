@@ -5,10 +5,10 @@ from math import sin, cos, nan, pi, log10
 # from mapply.mapply import mapply
 # import swifter
 from .utils import eta, k
-from .scattermodelbase import ScatterModelBaseClass
+from .scattermodelbase import ScatterModelBase
 
 
-class DCMModel(ScatterModelBaseClass):
+class DCMModel(ScatterModelBase):
     """Modal series deformed cylinder model (DCM).
 
     This class contains methods to calculate acoustic scatter from finite straight cylinders with
