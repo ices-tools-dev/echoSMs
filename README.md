@@ -1,7 +1,10 @@
 # echoSMs
+
+<https://img.shields.io/pypi/v/echosms.svg>
+
 Making acoustic scattering models available to fisheries and plankton scientists via the world wide web.
 
-Full documentation is available [here]( https://ices-tools-dev.github.io/echoSMs/).
+Full documentation is available [here](https://ices-tools-dev.github.io/echoSMs/).
 
 # Background
 This project is an international collaboration that is, in part, a component of a U.S. NOAA-Fisheries active acoustic strategic initiative [AA-SI](https://github.com/nmfs-fish-tools/AA-SI/tree/main). 
