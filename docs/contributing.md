@@ -1,6 +1,6 @@
 # Contributing to echoSMs
 
-We welcome all contributions to echoSMs, be it code, test cases, bug reports, discussion of models, etc. Please use the github facilities for this (i.e., issues and pull-requests). We are also happy to accept directly code that we can add to echoSMs on your behalf.
+We welcome all contributions to echoSMs, be it code, test cases, bug reports, discussion of models, etc. Please use the [github](https://github.com/ices-tools-dev/echoSMs) facilities for this (i.e., [issues](https://github.com/ices-tools-dev/echoSMs/issues), [pull requests](https://github.com/ices-tools-dev/echoSMs/pulls), and [discussions](https://github.com/ices-tools-dev/echoSMs/discussions)). We are also happy to accept directly code that we can add to echoSMs on your behalf.
 
 An objective of echoSMs is to provide scattering models in a form that is easy to access, use, and compare to other models. To help with that, we specify model parameter units, angle conventions, and required model outputs that code contributions should support. We also suggest coding conventions that should be followed. 
 

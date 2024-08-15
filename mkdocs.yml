@@ -1,8 +1,9 @@
 site_name: echoSMs
 nav:
     - Introduction: index.md
-    - Benchmarks: benchmark_data.md
+    - Usage: usage.md
     - Contributing: contributing.md
+    - Benchmarks: benchmark_data.md
     - API Reference: api_reference.md
 
 theme: readthedocs 
@@ -19,4 +20,7 @@ plugins:
                     show_symbol_type_heading: true
                     show_bases: true
                     inherited_members: true
-                    show_root_heading: true
+                    show_root_heading: false
+                    show_root_toc_entry: false
+                    show_source: false
+                    heading_level: 3
