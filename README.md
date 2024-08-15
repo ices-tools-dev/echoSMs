@@ -1,6 +1,8 @@
 # echoSMs
 
-<https://img.shields.io/pypi/v/echosms.svg>
+![Static badge](https://img.shields.io/pypi/v/echosms.svg)
+![Static badge](https://img.shields.io/github/license/ices-tools-dev/echosms)
+![Build docs](https://github.com/ices-tools-dev/echosms/actions/workflows/build-docs.yml/badge.svg)
 
 Making acoustic scattering models available to fisheries and plankton scientists via the world wide web.
 
