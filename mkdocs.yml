@@ -13,8 +13,9 @@ theme:
     icon:
         repo: fontawesome/brands/github
     features:
-        - content.action.edit
-
+        - navigation.top
+        - toc.integrate
+        
 repo_url: https://github.com/ices-tools-dev/echoSMs
 edit_uri: edit/main/docs/
 
