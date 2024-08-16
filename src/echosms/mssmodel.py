@@ -12,8 +12,8 @@ from .scattermodelbase import ScatterModelBase
 class MSSModel(ScatterModelBase):
     """Modal series solution (MSS) scattering model.
 
-    This class contains methods to calculate acoustic scatter from spheres and shells with various
-    boundary conditions.
+    This class calculates acoustic scatter from spheres and shells with various
+    boundary conditions, as listed in the ``model_types`` class attribute.
     """
 
     def __init__(self):
@@ -67,7 +67,7 @@ class MSSModel(ScatterModelBase):
 
         Returns
         -------
-        :
+        : float
             The target strength (re 1 m²) of the target [dB].
 
         Notes

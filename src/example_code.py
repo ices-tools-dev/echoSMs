@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from echosms import MSSModel, PSMSModel, DCMModel
-from echosms import BenchMarkData
+from echosms import BenchmarkData
 from echosms import ReferenceModels
 from echosms import df_from_dict, da_from_dict
 
@@ -15,7 +15,7 @@ for n in rm.model_names():
     print('\t' + n)
 
 # Load the benchmark data (from Jech et al., 2015)
-bm = BenchMarkData()
+bm = BenchmarkData()
 bmf = bm.dataset_freq()
 bm_theta = bm.dataset_angle()
 

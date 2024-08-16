@@ -24,9 +24,8 @@ Additional reference models may be defined in the future and can be added to the
 
 ::: echosms.ReferenceModels
 
-
-## BenchMarkData
-::: echosms.BenchMarkData
+## BenchmarkData
+::: echosms.BenchmarkData
  
  
 ## Utilities
