@@ -10,6 +10,9 @@ Each type of model is contained in a separate Python class (with name ending in 
 
 ## MSSModel
 ::: echosms.MSSModel
+    options:
+        filters:
+        - "!^_"
 
 ## PSMSModel
 ::: echosms.PSMSModel
@@ -25,7 +28,7 @@ Additional reference models may be defined in the future and can be added to the
 ::: echosms.ReferenceModels
 
 
-## BenchMarkData
+## BenchmarkData
 ::: echosms.BenchMarkData
  
  

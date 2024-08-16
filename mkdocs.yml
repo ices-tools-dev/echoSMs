@@ -6,7 +6,7 @@ nav:
     - Benchmarks: benchmark_data.md
     - API Reference: api_reference.md
 
-theme: readthedocs 
+theme: material 
 
 plugins:
     - search
@@ -22,5 +22,7 @@ plugins:
                     inherited_members: true
                     show_root_heading: false
                     show_root_toc_entry: false
-                    show_source: false
+                    show_source: true
                     heading_level: 3
+                    filters:
+                    - "!^_"
