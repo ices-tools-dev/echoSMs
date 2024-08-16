@@ -29,7 +29,7 @@ Additional reference models may be defined in the future and can be added to the
 
 
 ## BenchmarkData
-::: echosms.BenchMarkData
+::: echosms.BenchmarkData
  
  
 ## Utilities
