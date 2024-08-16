@@ -27,15 +27,38 @@ class ReferenceModels:
                     pass
 
     def models(self):
-        """Return the full set of model definitions."""
+        """Provide the full set of model definitions.
+
+        Returns
+        -------
+        : dict
+            The contents of the ```target definitions.toml`` file in the form of a dict.
+        """
         return self.defs
 
     def model_names(self):
-        """Return the names of all model definitions."""
+        """Names of all model definitions.
+
+        Returns
+        -------
+        : iterable of str
+            All model names in the ``target definitions/toml`` file.
+        """
         return [n['name'] for n in self.defs['target']]
 
     def get_model_specification(self, name):
-        """Get the model defintions for a particular model."""
+        """Get the model defintions for a particular model.
+
+        Parameters
+        ----------
+        name : str
+            The name of a model in the ``target definitions.toml`` file.
+
+        Returns
+        -------
+        : dict
+            The model definitions for the requested model or ``None`` if no model with that name.
+        """
         models = pd.DataFrame(self.defs['target'])
         m = models.query('name == @name')
         if len(m) == 1:
@@ -49,8 +72,23 @@ class ReferenceModels:
 
         Model parameters are a subset of the model specification where the non-numerical
         items have been removed.
+
+        Parameters
+        ----------
+        name : str
+            The name of a model in the ``target definitions.toml`` file.
+
+        Returns
+        -------
+        : dict
+            The model parameters for the requested model or ``None`` if no model with that name.
+
         """
         s = self.get_model_specification(name)
+
+        if s is None:
+            return s
+
         # Remove the entries that are not parameters
         p = s
         del p['name']

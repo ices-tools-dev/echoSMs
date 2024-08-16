@@ -42,7 +42,7 @@ class MSSModel(ScatterModelBase):
         a : float
             Radius of the spherical target [m].
         theta : float
-            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+            Pitch angle(s) to calculate the scattering at [°]. An angle of 0 is head on,
             90 is dorsal, and 180 is tail on.
         f : float
             Frequencies to calculate the scattering at [Hz].
@@ -50,10 +50,10 @@ class MSSModel(ScatterModelBase):
             The model type. Supported model types are given in the model_types class variable.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
-            Only required for `model_type` of ``fluid filled``
+            Only required for `model_type` of ``fluid filled``.
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
-            Only required for `model_type` of ``fluid filled``
+            Only required for `model_type` of ``fluid filled``.
         shell_c : float, optional
             Sound speed in the spherical shell [m/s].
             Only required for `model_type`s that include a fluid shell.

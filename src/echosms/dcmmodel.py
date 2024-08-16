@@ -40,18 +40,18 @@ class DCMModel(ScatterModelBase):
         b : float
             Length of the cylinderical target [m].
         theta : float
-            Pitch angle(s) to calculate the scattering at [degrees]. An angle of 0 is head on,
+            Pitch angle(s) to calculate the scattering at [°]. An angle of 0 is head on,
             90 is dorsal, and 180 is tail on.
         f : float
             Frequencies to calculate the scattering at [Hz].
         model_type : str
-            The model type. Supported model types are given in the model_types class variable.
+            The model type. Supported model types are given in the model_types class attribute.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
-            Only required for `model_type` of ``fluid filled``
+            Only required for `model_type` of ``fluid filled``.
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
-            Only required for `model_type` of ``fluid filled``
+            Only required for `model_type` of ``fluid filled``.
 
         Returns
         -------
