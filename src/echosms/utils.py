@@ -84,7 +84,7 @@ def k(c: float, f: float) -> float:
 
     Returns
     -------
-    k :
+    :
         The acoustic wavenumber [m⁻¹].
     """
     return 2*np.pi*f/c
@@ -96,7 +96,7 @@ def h1(n: int, z: float, derivative=False) -> complex:
     Parameters
     ----------
     n :
-        Order (n >= 0).
+        Order (n ≥ 0).
     z :
         Argument of the Hankel function.
     derivative :

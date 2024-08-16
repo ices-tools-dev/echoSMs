@@ -55,7 +55,8 @@ class DCMModel(ScatterModelBase):
 
         Returns
         -------
-        ts : the target strength (re 1 m²) of the target [dB].
+        : float
+            The target strength (re 1 m²) of the target [dB].
 
         Notes
         -----

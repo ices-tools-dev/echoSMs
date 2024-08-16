@@ -67,7 +67,7 @@ class MSSModel(ScatterModelBase):
 
         Returns
         -------
-        :
+        : float
             The target strength (re 1 m²) of the target [dB].
 
         Notes

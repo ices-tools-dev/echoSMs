@@ -10,9 +10,6 @@ Each type of model is contained in a separate Python class (with name ending in 
 
 ## MSSModel
 ::: echosms.MSSModel
-    options:
-        filters:
-        - "!^_"
 
 ## PSMSModel
 ::: echosms.PSMSModel
@@ -26,7 +23,6 @@ Reference models are the models and parameters defined in the Jech et al, 2015 p
 Additional reference models may be defined in the future and can be added to the TOML file.
 
 ::: echosms.ReferenceModels
-
 
 ## BenchmarkData
 ::: echosms.BenchmarkData
