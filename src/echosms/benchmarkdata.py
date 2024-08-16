@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 
-class BenchMarkData:
+class BenchmarkData:
     """Convenient interface to the benchmark dataset.
 
     This dataset contains the TS values from Jech et al., 2015.
