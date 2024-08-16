@@ -84,8 +84,8 @@ def k(c: float, f: float) -> float:
 
     Returns
     -------
-    k : scalar or array_like
-        The acoustic wavenumber [m$^{-1}$].
+    k :
+        The acoustic wavenumber [m⁻¹].
     """
     return 2*np.pi*f/c
 
@@ -106,6 +106,11 @@ def h1(n: int, z: float, derivative=False) -> complex:
     -------
     :
         Value of the spherical Hankel function
+
+    Raises
+    ------
+    ValueError
+        For negative n values.
 
     Notes
     -----

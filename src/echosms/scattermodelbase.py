@@ -11,16 +11,24 @@ class ScatterModelBase(abc.ABC):
     """Base class for a class that provides a scattering model.
 
     All scattering models should inherit from this class, have a name that
-    ends with 'Model', and provide __init__() and calculate_ts_single() functions.
+    ends with 'Model', and provide initialisation and calculate_ts_single() functions.
 
     Attributes
     ----------
-    long_name : string
-    short_name : string
-    analytical_type : string
-    model_types :
-    shapes :
-    max_ka :
+    long_name : str
+        The long name of the model.
+    short_name : str
+        A short version of the model's long name, typically an ancronym.
+    analytical_type : str
+        Whether the model implements an ``exact`` or an ``approximate`` model.
+    model_types : list of str
+        The types of boundary conditions that the model provides.
+    shapes : list of str
+        The shapes that the model can represent.
+    max_ka : float
+        An approximate maximum ka value that will result in accurate target strength results. Note
+        that ka is often not the only parameter that determines the accuracy of the model (e.g.,
+        aspect ratio and incident angle can also affect the accuracy).
 
     """
 
