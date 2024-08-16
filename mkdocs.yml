@@ -6,7 +6,10 @@ nav:
     - Benchmarks: benchmark_data.md
     - API Reference: api_reference.md
 
-theme: material 
+theme: 
+    name: material 
+    logo: echoSMs_logo.png
+    favicon: echoSMs_logo.png
 
 plugins:
     - search
