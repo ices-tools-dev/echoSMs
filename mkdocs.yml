@@ -4,7 +4,8 @@ nav:
     - Usage: usage.md
     - Contributing: contributing.md
     - Benchmarks: benchmark_data.md
-    - API Reference: api_reference.md
+    - API reference: api_reference.md
+    - Other software: other_software.md
 
 theme: 
     name: material 
