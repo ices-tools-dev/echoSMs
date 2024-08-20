@@ -1,3 +1,4 @@
+# %%
 """Examples of using the echoSMs code to estimate scatter from objects."""
 
 import matplotlib.pyplot as plt
@@ -11,13 +12,13 @@ from echosms import df_from_dict, da_from_dict
 # Load the reference model defintiions
 rm = ReferenceModels()
 print('Available reference models are:')
-for n in rm.model_names():
+for n in rm.names():
     print('\t' + n)
 
 # Load the benchmark data (from Jech et al., 2015)
 bm = BenchmarkData()
-bmf = bm.dataset_freq()
-bm_theta = bm.dataset_angle()
+bmf = bm.freq_dataset
+bmt = bm.angle_dataset
 
 # %% ###############################################################################################
 # Run the benchmark models and compare to the frequency-varying benchmark results.
@@ -58,11 +59,11 @@ for model, names in models.items():
 
     for name in names:
         # Get the model parameters used in Jech et al. (2015) for a particular model.
-        s = rm.get_model_specification(name[0])
-        m = rm.get_model_parameters(name[0])  # the subset of s with string items removed
+        s = rm.specification(name[0])
+        m = rm.parameters(name[0])  # the subset of s with string items removed
 
         # Add frequencies and angle to the model parameters
-        m['f'] = bmf['Frequency_kHz']*1e3  # [Hz]
+        m['f'] = bm.freq_dataset['Frequency_kHz']*1e3  # [Hz]
         m['theta'] = 90.0
 
         # and run these
@@ -106,27 +107,27 @@ for model, names in models.items():
 
 for name in names:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
-    s = rm.get_model_specification(name[0])
-    m = rm.get_model_parameters(name[0])  # the subset of s with string items removed
+    s = rm.specification(name[0])
+    m = rm.parameters(name[0])  # the subset of s with string items removed
 
     # Add frequencies and angle to the model parameters
     m['f'] = 38000  # [Hz]
-    m['theta'] = bm_theta['Angle_deg']
+    m['theta'] = bmt['Angle_deg']
 
     # and run these
     ts = mod.calculate_ts(m, model_type=s['model_type'])
 
-    jech_index = np.mean(np.abs(ts - bm_theta[name[1]]))
+    jech_index = np.mean(np.abs(ts - bmt[name[1]]))
 
     # Plot the mss model and benchmark results
     fig, axs = plt.subplots(2, 1, sharex=True)
     axs[0].plot(m['theta'], ts, label='echoSMs')
-    axs[0].plot(bm_theta['Angle_deg'], bm_theta[name[1]], label='Benchmark')
+    axs[0].plot(bmt['Angle_deg'], bmt[name[1]], label='Benchmark')
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
     axs[0].legend(frameon=False, fontsize=6)
 
     # Plot difference between benchmark values and newly calculated mss model values
-    axs[1].plot(m['theta'], ts-bm_theta[name[1]], color='black')
+    axs[1].plot(m['theta'], ts-bmt[name[1]], color='black')
     axs[1].set_xlabel('Angle (°)')
     axs[1].set_ylabel(r'$\Delta$ TS [dB]')
     axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
@@ -140,7 +141,7 @@ for name in names:
 mss = MSSModel()
 
 # Can add more variations to the model parameters
-m = rm.get_model_parameters('weakly scattering sphere')
+m = rm.parameters('weakly scattering sphere')
 m['f'] = np.linspace(12, 200, num=800) * 1e3  # [Hz]
 m['target_rho'] = np.arange(1020, 1030, 1)  # [kg/m^3]
 m['theta'] = [0, 90.0, 180.0]
