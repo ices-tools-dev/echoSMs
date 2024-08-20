@@ -36,7 +36,7 @@ class ReferenceModels:
         """
         return self.defs
 
-    def model_names(self):
+    def names(self):
         """Names of all model definitions.
 
         Returns
@@ -46,8 +46,8 @@ class ReferenceModels:
         """
         return [n['name'] for n in self.defs['target']]
 
-    def get_model_specification(self, name):
-        """Get the model defintions for a particular model.
+    def specification(self, name):
+        """Model defintions for a particular model.
 
         Parameters
         ----------
@@ -67,8 +67,8 @@ class ReferenceModels:
         else:
             return None
 
-    def get_model_parameters(self, name):
-        """Get the model parameters for a particular model.
+    def parameters(self, name):
+        """Model parameters for a particular model.
 
         Model parameters are a subset of the model specification where the non-numerical
         items have been removed.
@@ -84,7 +84,7 @@ class ReferenceModels:
             The model parameters for the requested model or ``None`` if no model with that name.
 
         """
-        s = self.get_model_specification(name)
+        s = self.specification(name)
 
         if s is None:
             return s

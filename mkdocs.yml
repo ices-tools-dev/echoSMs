@@ -9,8 +9,8 @@ nav:
 
 theme: 
     name: material 
-    logo: echoSMs_logo.png
-    favicon: echoSMs_logo.png
+    logo: resources/echoSMs_logo.png
+    favicon: resources/echoSMs_logo.png
     icon:
         repo: fontawesome/brands/github
     features:
@@ -20,6 +20,9 @@ theme:
         
 repo_url: https://github.com/ices-tools-dev/echoSMs
 edit_uri: edit/main/docs/
+
+markdown_extensions:
+    - attr_list
 
 plugins:
     - search

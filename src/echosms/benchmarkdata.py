@@ -13,6 +13,14 @@ class BenchmarkData:
     Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
     Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
     Journal of the Acoustical Society of America 138, 3742–3764. <https://doi.org/10.1121/1.4937607>
+
+    Attributes
+    ----------
+    angle_dataset : Pandas DataFrame
+        The angle dataset from the benchmark model runs.
+
+    freq_dataset : Pandas DataFrame
+        The frequency dataset from the benchmark model runs.
     """
 
     def __init__(self):
@@ -22,31 +30,5 @@ class BenchmarkData:
         angle_data_file = data_directory/'Benchmark_Angle_TS.csv'
         freq_data_file = data_directory/'Benchmark_Frequency_TS.csv'
 
-        self.angle_data = pd.read_csv(angle_data_file)
-        self.freq_data = pd.read_csv(freq_data_file)
-
-    def dataset_angle(self):
-        """Provide the angle benchmark data.
-
-        Returns
-        -------
-        : Pandas DataFrame
-            The TS as a function of incidence angle.
-        """
-        return self.angle_data
-
-    def dataset_freq(self):
-        """Provide the frequency benchmark data.
-
-        Returns
-        -------
-        : Pandas DataFrame
-            The TS as a function of frequency.
-        """
-        return self.freq_data
-
-    # def dataset_angle(self, names):
-    #     pass
-
-    # def dataset_freq(self, names):
-    #     pass
+        self.angle_dataset = pd.read_csv(angle_data_file)
+        self.freq_dataset = pd.read_csv(freq_data_file)
