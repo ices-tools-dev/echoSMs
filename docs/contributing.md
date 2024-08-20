@@ -22,7 +22,16 @@ A single coordinate system should be used for all models provided by echoSMs. Th
 
 The right-handed spherical coordinate system as defined by ISO 80000-2[1] is to be used, where organisms are oriented such that θ corresponds to pitch and ɸ to roll, as illustrated below, where the organism lies along the z-axis and the positive x-axis extends above the organism:
 
-![coordinate system](coordinate_system.jpg)
+
+<!--- This code will include an html file, originally used to
+include a live 3D view of the coordinate system, but there are
+issues with the html so for the moment a 2D image is used.
+<p align="center">
+<iframe src="../coordinate_system2.html" title="Coordinate system" width="100%" height="500" frameborder="0"></iframe>
+</p>
+--->
+
+![The coordinate system](resources/coordinate_system.svg){:style="height:400px;width400px"}
 
 The definitions are such that θ values of 0°, 90°, and 180° correspond to organism pitches of head on, dorsal, and tail on, respectively, and positive values of ɸ indicate a roll to starboard. All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.
 
