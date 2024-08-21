@@ -44,14 +44,15 @@ models = {'mss': [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           }
 
 for model, names in models.items():
-    if model == 'mss':
-        mod = MSSModel()
-    elif model == 'psms':
-        mod = PSMSModel()
-    elif model == 'dcm':
-        mod = DCMModel()
-    else:
-        pass
+    match model:
+        case 'mss':
+            mod = MSSModel()
+        case 'psms':
+            mod = PSMSModel()
+        case 'dcm':
+            mod = DCMModel()
+        case _:
+            pass
 
     print(f'The {mod.short_name.upper()} ({mod.long_name}) model supports boundary '
           f'types of {mod.boundary_types}.')
@@ -95,44 +96,45 @@ models = {'dcm': [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
           }
 
 for model, names in models.items():
-    if model == 'mss':
-        mod = MSSModel()
-    elif model == 'psms':
-        mod = PSMSModel()
-    elif model == 'dcm':
-        mod = DCMModel()
-    else:
-        pass
+    match model:
+        case 'mss':
+            mod = MSSModel()
+        case 'psms':
+            mod = PSMSModel()
+        case 'dcm':
+            mod = DCMModel()
+        case _:
+            pass
 
-for name in names:
-    # Get the model parameters used in Jech et al. (2015) for a particular model.
-    s = rm.specification(name[0])
-    m = rm.parameters(name[0])
+    for name in names:
+        # Get the model parameters used in Jech et al. (2015) for a particular model.
+        s = rm.specification(name[0])
+        m = rm.parameters(name[0])
 
-    # Add frequencies and angle to the model parameters
-    m['f'] = 38000  # [Hz]
-    m['theta'] = bmt['Angle_deg']
+        # Add frequencies and angle to the model parameters
+        m['f'] = 38000  # [Hz]
+        m['theta'] = bmt['Angle_deg']
 
-    # and run these
-    ts = mod.calculate_ts(m)
+        # and run these
+        ts = mod.calculate_ts(m)
 
-    jech_index = np.mean(np.abs(ts - bmt[name[1]]))
+        jech_index = np.mean(np.abs(ts - bmt[name[1]]))
 
-    # Plot the mss model and benchmark results
-    fig, axs = plt.subplots(2, 1, sharex=True)
-    axs[0].plot(m['theta'], ts, label='echoSMs')
-    axs[0].plot(bmt['Angle_deg'], bmt[name[1]], label='Benchmark')
-    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
-    axs[0].legend(frameon=False, fontsize=6)
+        # Plot the mss model and benchmark results
+        fig, axs = plt.subplots(2, 1, sharex=True)
+        axs[0].plot(m['theta'], ts, label='echoSMs')
+        axs[0].plot(bmt['Angle_deg'], bmt[name[1]], label='Benchmark')
+        axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
+        axs[0].legend(frameon=False, fontsize=6)
 
-    # Plot difference between benchmark values and newly calculated mss model values
-    axs[1].plot(m['theta'], ts-bmt[name[1]], color='black')
-    axs[1].set_xlabel('Angle (°)')
-    axs[1].set_ylabel(r'$\Delta$ TS [dB]')
-    axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
-                    backgroundcolor=[.8, .8, .8])
-    plt.suptitle(name[0])
-    plt.show()
+        # Plot difference between benchmark values and newly calculated mss model values
+        axs[1].plot(m['theta'], ts-bmt[name[1]], color='black')
+        axs[1].set_xlabel('Angle (°)')
+        axs[1].set_ylabel(r'$\Delta$ TS [dB]')
+        axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
+                        backgroundcolor=[.8, .8, .8])
+        plt.suptitle(name[0])
+        plt.show()
 
 # %% ###############################################################################################
 # Some other ways to run models.
