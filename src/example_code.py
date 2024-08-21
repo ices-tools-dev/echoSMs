@@ -83,7 +83,7 @@ for name, bm_name in models:
     plt.suptitle(name[0])
     plt.show()
 
-# %% ###############################################################################################
+    # %% ###############################################################################################
 # Run the benchmark models and compare to the angle-varying benchmark results.
 models = [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
           ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
