@@ -7,7 +7,7 @@ import numpy as np
 from echosms import MSSModel, PSMSModel, DCMModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
-from echosms import df_from_dict, da_from_dict
+from echosms import as_dataframe, as_dataarray
 
 # Load the reference model defintiions
 rm = ReferenceModels()
@@ -60,14 +60,14 @@ for model, names in models.items():
     for name in names:
         # Get the model parameters used in Jech et al. (2015) for a particular model.
         s = rm.specification(name[0])
-        m = rm.parameters(name[0])  # the subset of s with string items removed
+        m = rm.parameters(name[0])
 
         # Add frequencies and angle to the model parameters
         m['f'] = bm.freq_dataset['Frequency_kHz']*1e3  # [Hz]
         m['theta'] = 90.0
 
         # and run these
-        ts = mod.calculate_ts(m, model_type=s['model_type'])
+        ts = mod.calculate_ts(m)
 
         jech_index = np.mean(np.abs(ts - bmf[name[1]]))
 
@@ -108,14 +108,14 @@ for model, names in models.items():
 for name in names:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
     s = rm.specification(name[0])
-    m = rm.parameters(name[0])  # the subset of s with string items removed
+    m = rm.parameters(name[0])
 
     # Add frequencies and angle to the model parameters
     m['f'] = 38000  # [Hz]
     m['theta'] = bmt['Angle_deg']
 
     # and run these
-    ts = mod.calculate_ts(m, model_type=s['model_type'])
+    ts = mod.calculate_ts(m)
 
     jech_index = np.mean(np.abs(ts - bmt[name[1]]))
 
@@ -146,13 +146,13 @@ m['f'] = np.linspace(12, 200, num=800) * 1e3  # [Hz]
 m['target_rho'] = np.arange(1020, 1030, 1)  # [kg/m^3]
 m['theta'] = [0, 90.0, 180.0]
 # can convert this to a dataframe
-models_df = df_from_dict(m)
+models_df = as_dataframe(m)
 # could also make a DataFrame of parameters that are not just the combination of all input
 # parameters. This offers a way to specify a more tailored set of model parameters.
 
 print(f'Running {len(models_df)} models')
 # and run
-ts = mss.calculate_ts(models_df, model_type='fluid filled', multiprocess=True)
+ts = mss.calculate_ts(models_df, multiprocess=True)
 
 # And can then add the ts to the params dataframe for ease of selecting and plotting the results
 models_df['ts'] = ts
@@ -174,14 +174,19 @@ params = {'medium_rho': [1000, 1250, 1500],
           'f': np.linspace(12, 100, num=400) * 1000,
           'theta': np.arange(0, 180, 1),
           'a': 0.07,
+          'model_type': 'fluid filled',
           'target_c': 1450,
           'target_rho': 1250}
 
 # Instead of converting those to a dataframe, an xarray can be used.
-params_xa = da_from_dict(params)
+params_xa = as_dataarray(params)
 
 # how many models runs would that be?
 print(f'Running {np.prod(params_xa.shape)} models!')
 
 # and is called the same way as for the dataframe
-ts = mss.calculate_ts(params_xa, model_type='fluid filled', multiprocess=True)
+if False:  # cause it takes a long time to run (as multiprocess is not enabled internally)
+    ts = mss.calculate_ts(params_xa, multiprocess=True)
+
+# and it can be inserted into params_xa
+# TODO once the data is returned in an appropriate form

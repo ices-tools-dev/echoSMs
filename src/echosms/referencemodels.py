@@ -70,8 +70,8 @@ class ReferenceModels:
     def parameters(self, name):
         """Model parameters for a particular model.
 
-        Model parameters are a subset of the model specification where the non-numerical
-        items have been removed.
+        Model parameters are a subset of the model specification where the metadata items have
+        been removed.
 
         Parameters
         ----------
@@ -94,6 +94,5 @@ class ReferenceModels:
         del p['name']
         del p['shape']
         del p['description']
-        del p['model_type']
         del p['source']
         return p

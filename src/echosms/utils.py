@@ -3,9 +3,10 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.special import spherical_jn, spherical_yn
+from collections.abc import Iterable
 
 
-def df_from_dict(params: dict) -> pd.DataFrame:
+def as_dataframe(params: dict) -> pd.DataFrame:
     """Convert model parameters from dict form to a Pandas DataFrame.
 
     Parameters
@@ -20,14 +21,15 @@ def df_from_dict(params: dict) -> pd.DataFrame:
         input dict.
 
     """
-    # Use meshgrid to do the Cartesian product, then reshape into a 2D array, then create a
-    # Pandas DataFrame() from that
-    return pd.DataFrame(np.array(
-        np.meshgrid(*tuple(params.values()))).T.reshape(-1, len(params)),
-        columns=params.keys())
+    # Use meshgrid to do the Cartesian product then create a Pandas DataFrame from that, having
+    # flattened the multidimensional arrays and using a dict to provide column names.
+    # This preserves the differing dtypes in each column compared to other ways of
+    # constructing the DataFrame).
+    return pd.DataFrame({k: t.flatten()
+                         for k, t in zip(params.keys(), np.meshgrid(*tuple(params.values())))})
 
 
-def da_from_dict(params: dict) -> xr.DataArray:
+def as_dataarray(params: dict) -> xr.DataArray:
     """Convert model parameters from dict form to a Xarray DataArray.
 
     Parameters
@@ -44,8 +46,9 @@ def da_from_dict(params: dict) -> xr.DataArray:
     """
     # Convert scalars to iterables so xarray is happier later on
     for k, v in params.items():
-        if not hasattr(v, '__iter__'):
+        if not isinstance(v, Iterable) or isinstance(v, str):
             params[k] = [v]
+
     # Lengths of each parameter array
     sz = [len(v) for k, v in params.items()]
     # Create the DataArray
