@@ -78,9 +78,8 @@ class DCMModel(ScatterModelBase):
         K = k(medium_c, f) * sin(theta_rad)
         Ka = K*a
 
-        m = range(30)  # this needs to vary with f
+        m = range(30)  # TODO this needs to vary with f
 
-        # Some code varies with model type.
         match boundary_type:
             case 'fixed rigid':
                 series = list(map(lambda m: (-1)**m * eta(m)*(jvp(m, Ka) / h1vp(m, Ka)), m))

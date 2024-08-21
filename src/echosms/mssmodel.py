@@ -87,7 +87,6 @@ class MSSModel(ScatterModelBase):
         ka = k0*a
         n = np.arange(0, round(ka+20))
 
-        # Some code varies with model type.
         match boundary_type:
             case 'fixed rigid':
                 A = list(map(lambda x: -spherical_jn(x, ka, True) / h1(x, ka, True), n))

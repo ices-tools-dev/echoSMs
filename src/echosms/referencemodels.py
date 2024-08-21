@@ -13,6 +13,11 @@ class ReferenceModels:
     ----------
     definitions : dict
         A dict representation of the ``target definitions.toml`` file.
+
+    Raises
+    ------
+    KeyError
+        If the ``target definitions.toml`` file has multiple target entries with the same name.
     """
 
     def __init__(self):
@@ -23,7 +28,12 @@ class ReferenceModels:
         with open(self.defs_filename, 'rb') as f:
             self.definitions = tomllib.load(f)
 
-        # check that the names parameter is unique across all models
+        # Flag duplicate target names
+        pda = pd.Series(self.names())
+        duplicates = list(pda[pda.duplicated()])
+        if duplicates:
+            raise KeyError(f'The "{self.defs_filename.name}" file has multiple targets '
+                           f'with the same name: '+', '.join(duplicates))
 
         # Substitute parameters names in the target section by the values of those
         # parameters.
@@ -40,7 +50,7 @@ class ReferenceModels:
         Returns
         -------
         : iterable of str
-            All model names in the ``target definitions/toml`` file.
+            All model names in the ``target definitions.toml`` file.
         """
         return [n['name'] for n in self.definitions['target']]
 
@@ -55,15 +65,14 @@ class ReferenceModels:
         Returns
         -------
         : dict
-            The model definitions for the requested model or ``None`` if no model with that name.
+            The model definitions for the requested model or an empty set if no model
+            with that name.
         """
-        models = pd.DataFrame(self.definitions['target'])
-        m = models.loc[models['name'] == name]
-        if len(m) == 1:
-            m.dropna(axis=1, how='all', inplace=True)
-            return m.iloc[0].to_dict()
+        s = [t for t in self.definitions['target'] if t['name'] == name]
+        if not s:
+            return s
 
-        return None
+        return s[0]
 
     def parameters(self, name):
         """Model parameters for a particular model.
@@ -79,18 +88,19 @@ class ReferenceModels:
         Returns
         -------
         : dict
-            The model parameters for the requested model or ``None`` if no model with that name.
+            The model parameters for the requested model or an empty set if no model with that name.
 
         """
         s = self.specification(name)
 
-        if s is None:
-            return None
+        if not s:
+            return []
 
         # Remove the entries that are not parameters
-        p = s
+        p = s.copy()
         del p['name']
         del p['shape']
         del p['description']
         del p['source']
+        del p['benchmark_model']
         return p
