@@ -17,6 +17,9 @@ Each type of model is contained in a separate Python class (with name ending in 
 ## DCMModel
 ::: echosms.DCMModel
 
+## ESModel
+::: echosms.ESModel
+
 ## ReferenceModels
 Reference models are the models and parameters defined in the Jech et al, 2015 paper. The parameters are stored in a TOML-formatted file in the echoSMs repository and the ``ReferenceModels`` class provides easy access to the data in that file. 
 

@@ -12,8 +12,7 @@ from .scattermodelbase import ScatterModelBase
 class ESModel(ScatterModelBase):
     """Elastic sphere (ES) scattering model.
 
-    This class calculates acoustic scatter from spheres and shells with various
-    boundary conditions, as listed in the ``boundary_types`` class attribute.
+    This class calculates acoustic scatter from elastic spheres.
     """
 
     def __init__(self):
@@ -34,9 +33,9 @@ class ESModel(ScatterModelBase):
         Parameters
         ----------
         medium_c : float
-            Sound speed in the fluid medium surrounding the target [m/s].
+            Sound speed in the fluid medium surrounding the sphere [m/s].
         medium_rho : float
-            Density of the fluid medium surrounding the target [kg/m³].
+            Density of the fluid medium surrounding the sphere [kg/m³].
         diameter : float
             Diameter of the sphere [m].
         theta : float
