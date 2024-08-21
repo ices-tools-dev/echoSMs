@@ -24,7 +24,7 @@ class ESModel(ScatterModelBase):
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
 
-    def calculate_ts_single(self, medium_c, medium_rho, diameter, theta, f, boundary_type,
+    def calculate_ts_single(self, medium_c, medium_rho, diameter, theta, f,
                             target_longitudal_c, target_transverse_c, target_rho,
                             **kwargs) -> float:
         """
@@ -43,8 +43,6 @@ class ESModel(ScatterModelBase):
             90 is dorsal, and 180 is tail on.
         f : float
             Frequencies to calculate the scattering at [Hz].
-        boundary_type : str, optional
-            The boundary type. Supported types are given in the boundary_types class variable.
         target_longitudal_c : float
             Longitudal sound speed in the material inside the sphere [m/s].
         target_transverse_c : float
