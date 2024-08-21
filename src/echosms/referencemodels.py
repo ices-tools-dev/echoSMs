@@ -65,17 +65,14 @@ class ReferenceModels:
         Returns
         -------
         : dict
-            The model definitions for the requested model or ``None`` if no model with that name.
+            The model definitions for the requested model or an empty set if no model
+            with that name.
         """
-        # Convert to a DataFrame, find the row with name of 'name', remove columns with nan in
-        # them and return the row as a dictionary.
-        models = pd.DataFrame(self.definitions['target'])
-        m = models.loc[models['name'] == name]
-        if len(m) == 1:
-            m.dropna(axis=1, how='all', inplace=True)
-            return m.iloc[0].to_dict()
+        s = [t for t in self.definitions['target'] if t['name'] == name]
+        if not s:
+            return s
 
-        return None
+        return s[0]
 
     def parameters(self, name):
         """Model parameters for a particular model.
@@ -91,16 +88,16 @@ class ReferenceModels:
         Returns
         -------
         : dict
-            The model parameters for the requested model or ``None`` if no model with that name.
+            The model parameters for the requested model or an empty set if no model with that name.
 
         """
         s = self.specification(name)
 
-        if s is None:
-            return None
+        if not s:
+            return []
 
         # Remove the entries that are not parameters
-        p = s
+        p = s.copy()
         del p['name']
         del p['shape']
         del p['description']
