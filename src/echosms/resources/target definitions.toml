@@ -14,6 +14,7 @@ sound_speed = "m/s"
 radius = "m"
 length = "m"
 thickness = "m"
+diameter = "m"
 
 # Model parameters (add more as needed).
 #
@@ -52,8 +53,8 @@ example3_medium_sound_speed_dist = {type="arange", start=1490, stop=1500, step=1
 # For each reference target, include a [[target]] section below.
 #
 # Where sensible, use names from the parameter section above for specifying 
-# target parameters (e.g., the sound speed, density, size, etc). Substitution of the
-# parameter names with their values from the parameters section should be done in the 
+# target parameters (e.g., the sound speed, density, size, etc). # The 'name' entry should be unique.
+# Substitution of the parameter names with their values from the parameters section should be done in the 
 # code that reads this file.
 #
 # The source item in each section should be used to identify the source of the model configuration.
@@ -242,3 +243,29 @@ medium_c = "medium_sound_speed"
 target_rho = "target_weakly_density"
 target_c = "target_weakly_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+
+[[target]]
+name = "WC38.1 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 38.1 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.0381 # diameter
+medium_rho = "medium_density"
+medium_c = "medium_c"
+target_rho = 14900
+target_longitudal_c = 6853
+target_transverse_c = 4171
+source = ""
+
+[[target]]
+name = "Cu60 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 60 mm diameter copper sphere"
+a = 0.060 # diameter
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = 8947
+target_longitudal_c = 4760
+target_transverse_c = 2288.5
+source = ""

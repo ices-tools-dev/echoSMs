@@ -68,7 +68,6 @@ class ScatterModelBase(abc.ABC):
         elif isinstance(data, pd.DataFrame):
             pass
         elif isinstance(data, xr.DataArray):
-            # For the moment just convert DataArrays into DataFrames
             data = data.to_dataframe().reset_index()
         else:
             raise ValueError(f'Data type of {type(data)} is not supported'
@@ -81,7 +80,6 @@ class ScatterModelBase(abc.ABC):
             # ts = df.swifter.apply(self.__ts_helper, axis=1)
             ts = data.apply(self.__ts_helper, axis=1)
         else:  # this uses just one CPU
-            # ts = data.apply(self.__ts_helper, axis=1)
             ts = data.apply(self.__ts_helper, axis=1)
 
         return ts.to_numpy()  # TODO - return data type that matches the input data type

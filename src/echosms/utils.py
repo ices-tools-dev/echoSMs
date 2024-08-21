@@ -44,14 +44,12 @@ def as_dataarray(params: dict) -> xr.DataArray:
         in the input dict.
 
     """
-    # Convert scalars to iterables so xarray is happier later on
+    # Convert scalars to iterables so xarray is happy
     for k, v in params.items():
         if not isinstance(v, Iterable) or isinstance(v, str):
             params[k] = [v]
 
-    # Lengths of each parameter array
     sz = [len(v) for k, v in params.items()]
-    # Create the DataArray
     return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts')
 
 
