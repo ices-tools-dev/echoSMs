@@ -16,11 +16,11 @@ class PSMSModel(ScatterModelBase):
         self.long_name = 'prolate spheroidal modal series'
         self.short_name = 'psms'
         self.analytical_type = 'exact'
-        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
+        self.boundary_types = ['fixed rigid', 'pressure release', 'fluid filled']
         self.shapes = ['prolate spheroid']
         self.max_ka = 10  # [1]
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, model_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type,
                             target_c=None, target_rho=None):
         """Prolate spheroid modal series (PSMS) solution model.
 
@@ -39,14 +39,14 @@ class PSMSModel(ScatterModelBase):
             90 is dorsal, and 180 is tail on.
         f : float
             Frequencies to calculate the scattering at [Hz].
-        model_type : str
-            The model type. Supported model types are given in the model_types class variable.
+        boundary_type : str
+            The model type. Supported model types are given in the boundary_types class variable.
         target_c : float, optional
             Sound speed in the fluid inside the target [m/s].
-            Only required for `model_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid filled``.
         target_rho : float, optional
             Density of the fluid inside the target [kg/m³].
-            Only required for `model_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid filled``.
 
         Returns
         -------
@@ -64,17 +64,17 @@ class PSMSModel(ScatterModelBase):
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261–265.
         """
-        match model_type:
+        match boundary_type:
             case 'pressure release' | 'fluid filled':
                 pass
             case 'fixed rigid':
-                raise ValueError(f'Model type "{model_type}" has not yet been implemented '
+                raise ValueError(f'Model type "{boundary_type}" has not yet been implemented '
                                  f'for the {self.long_name} model.')
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
-                                 f'a model type of "{model_type}".')
+                                 f'a model type of "{boundary_type}".')
 
-        if model_type == 'fluid filled':
+        if boundary_type == 'fluid filled':
             hc = target_c / medium_c
             rh = target_rho / medium_rho
 
@@ -125,7 +125,7 @@ class PSMSModel(ScatterModelBase):
                 s_bs = pro_ang1(m, n, h0, np.cos(theta))
                 s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))
 
-                match model_type:
+                match boundary_type:
                     case 'fluid filled':
                         # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
                         # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)

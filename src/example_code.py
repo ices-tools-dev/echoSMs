@@ -55,7 +55,7 @@ for model, names in models.items():
         pass
 
     print(f'The {mod.short_name.upper()} ({mod.long_name}) model supports boundary '
-          f'types of {mod.model_types}.')
+          f'types of {mod.boundary_types}.')
 
     for name in names:
         # Get the model parameters used in Jech et al. (2015) for a particular model.
@@ -174,7 +174,7 @@ params = {'medium_rho': [1000, 1250, 1500],
           'f': np.linspace(12, 100, num=400) * 1000,
           'theta': np.arange(0, 180, 1),
           'a': 0.07,
-          'model_type': 'fluid filled',
+          'boundary_type': 'fluid filled',
           'target_c': 1450,
           'target_rho': 1250}
 

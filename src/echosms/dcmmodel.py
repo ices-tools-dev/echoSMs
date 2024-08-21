@@ -20,11 +20,11 @@ class DCMModel(ScatterModelBase):
         self.long_name = 'deformed cylinder model'
         self.short_name = 'dcm'
         self.analytical_type = 'approximate analytical'
-        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled']
+        self.boundary_types = ['fixed rigid', 'pressure release', 'fluid filled']
         self.shapes = ['finite cylinder']
         self.max_ka = 20  # [1]
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, model_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type,
                             target_c=None, target_rho=None, **kwargs):
         """
         Calculate the scatter from a finite cylinder using the modal series deformed cylinder model.
@@ -44,14 +44,14 @@ class DCMModel(ScatterModelBase):
             90 is dorsal, and 180 is tail on.
         f : float
             Frequencies to calculate the scattering at [Hz].
-        model_type : str
-            The model type. Supported model types are given in the model_types class attribute.
+        boundary_type : str
+            The model type. Supported model types are given in the boundary_types class attribute.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
-            Only required for `model_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid filled``.
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
-            Only required for `model_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid filled``.
 
         Returns
         -------
@@ -81,7 +81,7 @@ class DCMModel(ScatterModelBase):
         m = range(30)  # this needs to vary with f
 
         # Some code varies with model type.
-        match model_type:
+        match boundary_type:
             case 'fixed rigid':
                 series = list(map(lambda m: (-1)**m * eta(m)*(jvp(m, Ka) / h1vp(m, Ka)), m))
             case 'pressure release':
@@ -101,7 +101,7 @@ class DCMModel(ScatterModelBase):
                 series = list(map(lambda m: 1j**(2*m) * eta(m) / (1 + 1j*Cm(m)), m))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
-                                 f'a model type of "{model_type}".')
+                                 f'a model type of "{boundary_type}".')
 
         fbs = 1j*b/pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * sum(series)
         return 20*log10(abs(fbs))  # ts
