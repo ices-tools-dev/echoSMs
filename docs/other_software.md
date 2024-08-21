@@ -4,7 +4,7 @@ Other software that provides source code for acoustic scattering models of relev
 
 - [acousticTS](https://github.com/brandynlucca/acousticTS): R code for calculating scattering using the DCM, DWBA, SDWBA, SDWBA_curved, KRM, MSS model, as well as that of calibration spheres.
 - [Coupled BEM acoustic](https://github.com/elavia/coupled_bem_acoustic): Julia code that calculates the TS of three-dimensional shapes with an included object (e.g., a swimbladder).
-- [scatmod](https://github.com/SvenGastauer/scatmod): Open source acoustic scattering models for fisheries acoustics. Python and R code for fluid spheres and calibration spheres.
+- [scatmod](https://github.com/SvenGastauer/scatmod): Open source acoustic scattering models for fisheries acoustics. Python and R code for fluid spheres.
 - [FishAcoustics](https://github.com/gavinmacaulay/FishAcoustics): Contains a Python module that implements the phase-tracking DWBA model.
 - [KRM Model](https://www.fisheries.noaa.gov/data-tools/krm-model): A web page that uses the KRM model to estimate the TS of predefined or user-supplied shapes over a range of input parameters.
 - [KRMr](https://github.com/SvenGastauer/KRMr): KRM model for fish in R. 
