@@ -2,7 +2,7 @@
 
 import abc
 import numpy as np
-from .utils import df_from_dict
+from .utils import as_dataframe
 import pandas as pd
 import xarray as xr
 
@@ -42,7 +42,7 @@ class ScatterModelBase(abc.ABC):
         # An indication of the maximum ka value that this model provides accurate results for
         self.max_ka = np.nan  # [1]
 
-    def calculate_ts(self, data, model_type, multiprocess=False):
+    def calculate_ts(self, data, multiprocess=False):
         """Calculate the TS for many parameter sets.
 
         Parameters
@@ -54,10 +54,6 @@ class ScatterModelBase(abc.ABC):
             parameters in calculate_ts_single(). The TS will be calculated for all combinations of
             the coordinate variables. If dictionary, it will be converted to a DataFrame first.
 
-        model_type : string
-            The type of model boundary to apply. Valid values are given in the model_types class
-            variable.
-
         multiprocess : boolean
             Split the ts calculation across CPU cores.
 
@@ -68,7 +64,7 @@ class ScatterModelBase(abc.ABC):
 
         """
         if isinstance(data, dict):
-            data = df_from_dict(data)
+            data = as_dataframe(data)
         elif isinstance(data, pd.DataFrame):
             pass
         elif isinstance(data, xr.DataArray):
@@ -80,19 +76,20 @@ class ScatterModelBase(abc.ABC):
 
         if multiprocess:
             # Using mapply:
-            # ts = mapply(data, self.__ts_helper, args=(model_type,), axis=1)
+            # ts = mapply(data, self.__ts_helper, axis=1)
             # Using swifter
-            # ts = df.swifter.apply(self.__ts_helper, args=(model_type,), axis=1)
-            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+            # ts = df.swifter.apply(self.__ts_helper, axis=1)
+            ts = data.apply(self.__ts_helper, axis=1)
         else:  # this uses just one CPU
-            ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+            # ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+            ts = data.apply(self.__ts_helper, axis=1)
 
         return ts.to_numpy()  # TODO - return data type that matches the input data type
 
     def __ts_helper(self, *args):
         """Convert function arguments and call calculate_ts_single()."""
         p = args[0].to_dict()  # so we can use it for keyword arguments
-        return self.calculate_ts_single(**p, model_type=args[1])
+        return self.calculate_ts_single(**p)
 
     @abc.abstractmethod
     def calculate_ts_single(self):
