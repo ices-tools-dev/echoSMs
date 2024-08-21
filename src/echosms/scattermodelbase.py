@@ -21,10 +21,11 @@ class ScatterModelBase(abc.ABC):
         A short version of the model's long name, typically an ancronym.
     analytical_type : str
         Whether the model implements an ``exact`` or an ``approximate`` model.
-    model_types : list of str
-        The types of boundary conditions that the model provides.
+    boundary_types : list of str
+        The types of boundary conditions that the model provides, e.g., 'fixed rigid',
+        'pressure release', 'fluid filled'
     shapes : list of str
-        The shapes that the model can represent.
+        The target shapes that the model can represent.
     max_ka : float
         An approximate maximum ka value that will result in accurate target strength results. Note
         that ka is often not the only parameter that determines the accuracy of the model (e.g.,
@@ -34,13 +35,12 @@ class ScatterModelBase(abc.ABC):
 
     @abc.abstractmethod
     def __init__(self):
-        self.long_name = ''  # the name in words
-        self.short_name = ''  # an abbreviation
-        self.analytical_type = ''  # 'exact', 'approximate'
-        self.model_types = []  # e.g., 'fixed rigid', 'pressure release', 'fluid filled'
-        self.shapes = []  # the target shapes that this model can simulate
-        # An indication of the maximum ka value that this model provides accurate results for
-        self.max_ka = np.nan  # [1]
+        self.long_name = ''
+        self.short_name = ''
+        self.analytical_type = ''
+        self.boundary_types = []
+        self.shapes = []
+        self.max_ka = np.nan
 
     def calculate_ts(self, data, multiprocess=False):
         """Calculate the TS for many parameter sets.
@@ -81,7 +81,7 @@ class ScatterModelBase(abc.ABC):
             # ts = df.swifter.apply(self.__ts_helper, axis=1)
             ts = data.apply(self.__ts_helper, axis=1)
         else:  # this uses just one CPU
-            # ts = data.apply(self.__ts_helper, args=(model_type,), axis=1)
+            # ts = data.apply(self.__ts_helper, axis=1)
             ts = data.apply(self.__ts_helper, axis=1)
 
         return ts.to_numpy()  # TODO - return data type that matches the input data type

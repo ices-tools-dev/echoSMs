@@ -13,7 +13,7 @@ class MSSModel(ScatterModelBase):
     """Modal series solution (MSS) scattering model.
 
     This class calculates acoustic scatter from spheres and shells with various
-    boundary conditions, as listed in the ``model_types`` class attribute.
+    boundary conditions, as listed in the ``boundary_types`` class attribute.
     """
 
     def __init__(self):
@@ -21,12 +21,13 @@ class MSSModel(ScatterModelBase):
         self.long_name = 'modal series solution'
         self.short_name = 'mss'
         self.analytical_type = 'exact'
-        self.model_types = ['fixed rigid', 'pressure release', 'fluid filled',
-                            'fluid shell fluid interior', 'fluid shell pressure release interior']
+        self.boundary_types = ['fixed rigid', 'pressure release', 'fluid filled',
+                               'fluid shell fluid interior',
+                               'fluid shell pressure release interior']
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, theta, f, model_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, theta, f, boundary_type,
                             target_c=None, target_rho=None,
                             shell_c=None, shell_rho=None, shell_thickness=None,
                             **kwargs) -> float:
@@ -46,24 +47,24 @@ class MSSModel(ScatterModelBase):
             90 is dorsal, and 180 is tail on.
         f : float
             Frequencies to calculate the scattering at [Hz].
-        model_type : str
-            The model type. Supported model types are given in the model_types class variable.
+        boundary_type : str
+            The boundary type. Supported types are given in the boundary_types class variable.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
-            Only required for `model_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid filled``.
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
-            Only required for `model_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid filled``.
         shell_c : float, optional
             Sound speed in the spherical shell [m/s].
-            Only required for `model_type`s that include a fluid shell.
+            Only required for `boundary_type`s that include a fluid shell.
         shell_rho : float, optional
             Density in the spherical shell [kg/m³].
-            Only required for `model_type`s that include a fluid shell.
+            Only required for `boundary_type`s that include a fluid shell.
         shell_thickness : float, optional
             Thickness of the spherical shell [m]. This value is subtracted from ``a`` to give
             the radius of the interior sphere.
-            Only required for `model_type`s that include a fluid shell.
+            Only required for `boundary_type`s that include a fluid shell.
 
         Returns
         -------
@@ -87,7 +88,7 @@ class MSSModel(ScatterModelBase):
         n = np.arange(0, round(ka+20))
 
         # Some code varies with model type.
-        match model_type:
+        match boundary_type:
             case 'fixed rigid':
                 A = list(map(lambda x: -spherical_jn(x, ka, True) / h1(x, ka, True), n))
             case 'pressure release':
@@ -141,7 +142,7 @@ class MSSModel(ScatterModelBase):
                 A = list(map(Cn_fspri, n))
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
-                                 f'a model type of "{model_type}".')
+                                 f'a model type of "{boundary_type}".')
 
         fbs = -1j/k0 * np.sum((-1)**n * (2*n+1) * A)
         return 20*log10(abs(fbs))  # ts
