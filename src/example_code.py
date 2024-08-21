@@ -11,9 +11,8 @@ from echosms import as_dataframe, as_dataarray
 
 # Load the reference model defintiions
 rm = ReferenceModels()
-print('Available reference models are:')
-for n in rm.names():
-    print('\t' + n)
+print('Available reference models are:\n')
+print('\n'.join(rm.names()))
 
 # Load the benchmark data (from Jech et al., 2015)
 bm = BenchmarkData()
