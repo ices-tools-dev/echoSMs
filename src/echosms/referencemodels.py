@@ -102,4 +102,5 @@ class ReferenceModels:
         del p['shape']
         del p['description']
         del p['source']
+        del p['benchmark_model']
         return p

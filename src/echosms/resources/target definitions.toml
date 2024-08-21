@@ -70,6 +70,7 @@ a = "sphere_radius"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "mss"
 
 [[target]]
 name = "pressure release sphere"
@@ -80,6 +81,7 @@ a = "sphere_radius"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "mss"
 
 [[target]]
 name = "gas filled sphere"
@@ -92,6 +94,7 @@ medium_c = "medium_sound_speed"
 target_rho = "target_gas_density"
 target_c = "target_gas_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "mss"
 
 [[target]]
 name = "weakly scattering sphere"
@@ -104,6 +107,7 @@ medium_c = "medium_sound_speed"
 target_rho = "target_weakly_density"
 target_c = "target_weakly_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "mss"
 
 [[target]]
 name = "spherical fluid shell with pressure release interior"
@@ -117,6 +121,7 @@ medium_c = "medium_sound_speed"
 shell_rho = "target_shell_pressure_release_density"
 shell_c = "target_shell_pressure_release_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "mss"
 
 [[target]]
 name = "spherical fluid shell with gas interior"
@@ -132,6 +137,7 @@ shell_c = "target_shell_gas_filled_sound_speed"
 target_rho = "target_gas_density"
 target_c = "target_gas_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "mss"
 
 [[target]]
 name = "spherical fluid shell with weakly scattering interior"
@@ -147,6 +153,7 @@ shell_c = "target_shell_weakly_sound_speed"
 target_rho = "target_interior_weakly_density"
 target_c = "target_interior_weakly_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "mss"
 
 [[target]]
 name = "fixed rigid prolate spheroid"
@@ -158,6 +165,7 @@ b = "prolate_spheroid_minor_axis_radius"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "psms"
 
 [[target]]
 name = "pressure release prolate spheroid"
@@ -169,6 +177,7 @@ b = "prolate_spheroid_minor_axis_radius"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "psms"
 
 [[target]]
 name = "gas filled prolate spheroid"
@@ -182,6 +191,7 @@ medium_c = "medium_sound_speed"
 target_rho = "target_gas_density"
 target_c = "target_gas_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "psms"
 
 [[target]]
 name = "weakly scattering prolate spheroid"
@@ -195,6 +205,7 @@ medium_c = "medium_sound_speed"
 target_rho = "target_weakly_density"
 target_c = "target_weakly_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "psms"
 
 [[target]]
 name = "fixed rigid finite cylinder"
@@ -206,6 +217,7 @@ b = "finite_cylinder_length"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "dcm"
 
 [[target]]
 name = "pressure release finite cylinder"
@@ -217,6 +229,7 @@ b = "finite_cylinder_length"
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "dcm"
 
 [[target]]
 name = "gas filled finite cylinder"
@@ -230,6 +243,7 @@ medium_c = "medium_sound_speed"
 target_rho = "target_gas_density"
 target_c = "target_gas_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "dcm"
 
 [[target]]
 name = "weakly scattering finite cylinder"
@@ -243,6 +257,7 @@ medium_c = "medium_sound_speed"
 target_rho = "target_weakly_density"
 target_c = "target_weakly_sound_speed"
 source = "https://doi.org/10.1121/1.4937607"
+benchmark_model = "dcm"
 
 [[target]]
 name = "WC38.1 calibration sphere"
@@ -256,6 +271,7 @@ target_rho = 14900
 target_longitudal_c = 6853
 target_transverse_c = 4171
 source = ""
+benchmark_model = "es"
 
 [[target]]
 name = "Cu60 calibration sphere"
@@ -269,3 +285,4 @@ target_rho = 8947
 target_longitudal_c = 4760
 target_transverse_c = 2288.5
 source = ""
+benchmark_model = "es"
