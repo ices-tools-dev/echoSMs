@@ -83,7 +83,7 @@ for name, bm_name in models:
     plt.suptitle(name[0])
     plt.show()
 
-    # %% ###############################################################################################
+# %% ###############################################################################################
 # Run the benchmark models and compare to the angle-varying benchmark results.
 models = [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
           ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
@@ -133,6 +133,30 @@ for name, bm_name in models:
                     backgroundcolor=[.8, .8, .8])
     plt.suptitle(name[0])
     plt.show()
+
+# %% ###############################################################################################
+# Use the ES model on a calibration sphere
+name = 'WC38.1 calibration sphere'
+p = rm.parameters(name)
+p['f'] = np.arange(10, 100, 0.05) * 1e3  # [kHz]
+
+es = ESModel()
+ts = es.calculate_ts(p)
+
+plt.plot(p['f']*1e-3, ts)
+plt.xlabel('Freq [kHz]')
+plt.ylabel('TS re 1 m$^2$ [dB] ')
+plt.title(name)
+plt.show()
+
+# Can readily modify the parameters for a different sphere
+p['a'] = 0.012/2
+ts = es.calculate_ts(p)
+plt.plot(p['f']*1e-3, ts)
+plt.xlabel('Freq [kHz]')
+plt.ylabel('TS re 1 m$^2$ [dB] ')
+plt.title('WC12 calibration sphere')
+plt.show()
 
 # %% ###############################################################################################
 # Some other ways to run models.
@@ -189,18 +213,3 @@ if False:  # cause it takes a long time to run (as multiprocess is not enabled i
 
 # and it can be inserted into params_xa
 # TODO once the data is returned in an appropriate form
-
-# %% ###############################################################################################
-# Use the ES model on a calibration sphere
-p = rm.parameters('Cu60 calibration sphere')
-p['theta'] = 90
-p['f'] = np.arange(10, 400, 0.5) * 1e3  # [kHz]
-
-es = ESModel()
-ts = es.calculate_ts(p)
-
-plt.plot(p['f']*1e-3, ts)
-
-# Can readily modify the parameters for a different sphere
-p['a'] = 0.063
-ts = es.calculate_ts(p)
