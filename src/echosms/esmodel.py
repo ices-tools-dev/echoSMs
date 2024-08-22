@@ -24,7 +24,7 @@ class ESModel(ScatterModelBase):
         self.max_ka = 20  # [1]
 
     def calculate_ts_single(self, medium_c, medium_rho, a, f,
-                            target_longitudal_c, target_transverse_c, target_rho,
+                            target_longitudinal_c, target_transverse_c, target_rho,
                             **kwargs) -> float:
         """
         Calculate the backscatter from an elastic sphere for one set of parameters.
@@ -38,9 +38,9 @@ class ESModel(ScatterModelBase):
         a : float
             Radius of the sphere [m].
         f : float
-            Frequencies to calculate the scattering at [Hz].
-        target_longitudal_c : float
-            Longitudal sound speed in the material inside the sphere [m/s].
+            Frequency to calculate the scattering at [Hz].
+        target_longitudinal_c : float
+            Longitudinal sound speed in the material inside the sphere [m/s].
         target_transverse_c : float
             Transverse sound speed in the material inside the sphere [m/s].
         target_rho : float
@@ -62,10 +62,10 @@ class ESModel(ScatterModelBase):
         for Scotland.
         """
         q = k(medium_c, f)*a
-        q1 = q*medium_c/target_longitudal_c
+        q1 = q*medium_c/target_longitudinal_c
         q2 = q*medium_c/target_transverse_c
         alpha = 2. * (target_rho/medium_rho) * (target_transverse_c/medium_c)**2
-        beta = (target_rho/medium_rho) * (target_longitudal_c/medium_c)**2 - alpha
+        beta = (target_rho/medium_rho) * (target_longitudinal_c/medium_c)**2 - alpha
 
         n = range(20)
 
