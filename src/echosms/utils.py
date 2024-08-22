@@ -132,3 +132,22 @@ def h1(n: int, z: float, derivative=False) -> complex:
         return spherical_jn(n, z) + 1j*spherical_yn(n, z)
     else:
         return -h1(n+1, z) + (n/z) * h1(n, z)
+
+
+def spherical_jnpp(n: int, z: float) -> float:
+    """Second derivative of the spherical Bessel function.
+
+    Parameters
+    ----------
+    n :
+        Order (n ≥ 0)
+    z :
+        Argument of the Bessel function.
+
+    Returns
+    -------
+    :
+        The second derivative of the spherical Bessel function.
+
+    """
+    return 1./z**2 * ((n**2-n-z**2)*spherical_jn(n, z) + 2.*z*spherical_jn(n+1, z))
