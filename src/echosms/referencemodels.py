@@ -1,7 +1,11 @@
 """Reference model parameters."""
 
 from pathlib import Path
-import toml  # Could use standard library tomllib once python >=3.11
+import sys
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 import pandas as pd
 pd.options.mode.copy_on_write = True
 
@@ -25,8 +29,8 @@ class ReferenceModels:
 
         self.definitions = []
 
-        with open(self.defs_filename, 'r') as f:
-            self.definitions = toml.load(f)
+        with open(self.defs_filename, 'rb') as f:
+            self.definitions = tomllib.load(f)
 
         # Flag duplicate target names
         pda = pd.Series(self.names())
@@ -98,5 +102,6 @@ class ReferenceModels:
 
         # Remove the entries that are not parameters
         p = s.copy()
+        {}
         [p.pop(k, None) for k in ['name', 'shape', 'description', 'source', 'benchmark_model']]
         return p
