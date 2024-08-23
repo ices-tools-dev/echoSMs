@@ -98,9 +98,5 @@ class ReferenceModels:
 
         # Remove the entries that are not parameters
         p = s.copy()
-        del p['name']
-        del p['shape']
-        del p['description']
-        del p['source']
-        del p['benchmark_model']
+        [p.pop(k, None) for k in ['name', 'shape', 'description', 'source', 'benchmark_model']]
         return p
