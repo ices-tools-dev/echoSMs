@@ -30,7 +30,10 @@ class ReferenceModels:
         self.definitions = []
 
         with open(self.defs_filename, 'rb') as f:
-            self.definitions = tomllib.load(f)
+            try:
+                self.definitions = tomllib.load(f)
+            except tomllib.TOMLDecodeError as e:
+                raise Exception(f'Error while parsing file "{self.defs_filename.name}"') from e
 
         # Flag duplicate target names
         pda = pd.Series(self.names())
