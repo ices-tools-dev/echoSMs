@@ -6,7 +6,7 @@ from cmath import exp
 from scipy.special import spherical_jn, spherical_yn
 from .utils import k, spherical_jnpp
 from .scattermodelbase import ScatterModelBase
-
+from warnings import warn
 
 class ESModel(ScatterModelBase):
     """Elastic sphere (ES) scattering model.
@@ -67,8 +67,6 @@ class ESModel(ScatterModelBase):
         alpha = 2. * (target_rho/medium_rho) * (target_transverse_c/medium_c)**2
         beta = (target_rho/medium_rho) * (target_longitudinal_c/medium_c)**2 - alpha
 
-        n = range(20)
-
         # Use n instead of l (ell) because l looks like 1.
         def S(n):
             A2 = (n**2 + n-2) * spherical_jn(n, q2) + q2**2 * spherical_jnpp(n, q2)
@@ -80,6 +78,18 @@ class ESModel(ScatterModelBase):
                          / (B2*spherical_yn(n, q, True) - B1*spherical_yn(n, q)))
 
             return (-1)**n * (2*n+1) * sin(eta_n) * exp(1j*eta_n)
+
+        # Estimate the number of terms to use in the summation
+        n_max = round(q+10)
+        tol = 1e-10  # somewhat arbituary
+        while abs(S(n_max)) > tol:
+            n_max += 10
+
+        if n_max > 200:
+            warn('TS results may be inaccurate because the modal series required a large '
+                 f'number ({n_max}) of terms to converge.')
+
+        n = range(n_max)
 
         f_inf = -2.0/q * np.sum(list(map(S, n)))
 
