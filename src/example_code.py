@@ -80,7 +80,7 @@ for name, bm_name in models:
     axs[1].set_ylabel(r'$\Delta$ TS [dB]')
     axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
                     backgroundcolor=[.8, .8, .8])
-    plt.suptitle(name[0])
+    plt.suptitle(name)
     plt.show()
 
 # %% ###############################################################################################
@@ -131,7 +131,7 @@ for name, bm_name in models:
     axs[1].set_ylabel(r'$\Delta$ TS [dB]')
     axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
                     backgroundcolor=[.8, .8, .8])
-    plt.suptitle(name[0])
+    plt.suptitle(name)
     plt.show()
 
 # %% ###############################################################################################
