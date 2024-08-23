@@ -8,6 +8,7 @@ from .utils import k, spherical_jnpp
 from .scattermodelbase import ScatterModelBase
 from warnings import warn
 
+
 class ESModel(ScatterModelBase):
     """Elastic sphere (ES) scattering model.
 
