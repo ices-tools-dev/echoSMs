@@ -40,10 +40,10 @@ class DCMModel(ScatterModelBase):
         b : float
             Length of the cylinderical target [m].
         theta : float
-            Pitch angle(s) to calculate the scattering at [°]. An angle of 0 is head on,
+            Pitch angle to calculate the scattering at [°]. An angle of 0 is head on,
             90 is dorsal, and 180 is tail on.
         f : float
-            Frequencies to calculate the scattering at [Hz].
+            Frequency to calculate the scattering at [Hz].
         boundary_type : str
             The model type. Supported model types are given in the boundary_types class attribute.
         target_c : float, optional

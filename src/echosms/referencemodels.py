@@ -20,6 +20,8 @@ class ReferenceModels:
 
     Raises
     ------
+    TOMLDecodeError
+        If the ``target definitions.toml`` file is not valid TOML.
     KeyError
         If the ``target definitions.toml`` file has multiple target entries with the same name.
     """
