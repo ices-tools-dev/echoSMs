@@ -62,7 +62,7 @@ class ScatterModelBase(abc.ABC):
             Split the ts calculation across CPU cores.
 
         expand : bool
-            Only applicable if `data` is a dict. The default is `False`. If `True`, will expand
+            Only applicable if `data` is a dict. The default is `False`. If `True`, will return
             the dict into a DataFrame containing the Cartesian product of all values in the dict
             (with one column per key in the dict) and return that DataFrame, adding a column
             named `ts` for the TS results.
