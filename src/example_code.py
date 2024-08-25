@@ -174,11 +174,12 @@ models_df = as_dataframe(m)
 # parameters. This offers a way to specify a more tailored set of model parameters.
 
 print(f'Running {len(models_df)} models')
-# and run
+# and run. This will return a Series
 ts = mss.calculate_ts(models_df, multiprocess=True)
-
-# And can then add the ts to the params dataframe for ease of selecting and plotting the results
 models_df['ts'] = ts
+
+# Alternatively, the ts results can be added to the dataframe that is passed in:
+# ts = mss.calculate_ts(models_df, multiprocess=True, result_type='expand')
 
 # plot some of the results
 for rho in m['target_rho']:
@@ -209,7 +210,9 @@ print(f'Running {np.prod(params_xa.shape)} models!')
 
 # and is called the same way as for the dataframe
 if False:  # cause it takes a long time to run (as multiprocess is not enabled internally)
-    ts = mss.calculate_ts(params_xa, multiprocess=True)
+    # When called with a dataarray, the values in that dataarray are overwritten with the ts, so
+    # it is not necessary to get the return value (i.e., there is an implicit inplace=True)
+    mss.calculate_ts(params_xa, multiprocess=True)
 
-# and it can be inserted into params_xa
-# TODO once the data is returned in an appropriate form
+# Xarray selections and dimenions names can then be used
+plt.plot(params_xa.f, params_xa.sel(theta=90, medium_rho=1000, medium_c=1600))

@@ -42,47 +42,77 @@ class ScatterModelBase(abc.ABC):
         self.shapes = []
         self.max_ka = np.nan
 
-    def calculate_ts(self, data, multiprocess=False):
+    def calculate_ts(self, data, multiprocess=False, result_type=None):
         """Calculate the TS for many parameter sets.
 
         Parameters
         ----------
-        data : Pandas DataFrame or Xarray DataArray or dictionary
-            If a DataFrame, must contain column names as per the function parameters in the
-            calculate_ts_single() function in this class. Each row in the DataFrame will generate
-            one TS output. If a DataArray, must contain coordinate names as per the function
-            parameters in calculate_ts_single(). The TS will be calculated for all combinations of
-            the coordinate variables. If dictionary, it will be converted to a DataFrame first.
+        data : Pandas DataFrame, Xarray DataArray or dict
+            Requirements for the different input data types are:
+            
+            - **DataFrame**: column names must match the function parameter names in
+              calculate_ts_single(). One TS value will be calculated for each row in the DataFrame.
+            - **DataArray**: dimension names must match the function parameter names in
+              calculate_ts_single(). TS will be calculated for all combinations of the
+              coordinate variables.
+            - **dict**: keys must match the function parameters in calculate_ts_single().
+              TS will be calculated for all combinations of the dict values.
 
         multiprocess : boolean
             Split the ts calculation across CPU cores.
 
+        result_type : str or None
+            Only applicable if `data` is a dict:
+
+            - `None`: return a list of TS values. This is the default.
+            - `expand`: return a DataFrame with a column for each key in the dict. The TS values
+               will be in a column named `ts`.
+
         Returns
         -------
-        : Numpy array
-            Returns the target strength calculated for all input parameters.
+        : list, Series, DataFrame, or DataArray
+            Returns the TS. Variable type is determined by the type of `data`:
+
+            - dict input returns a list (or DataFrame if `result_type` is `expand`).
+            - DataFrame input returns a Series
+            - DataArray input returns the given DataArray with the values set to the TS 
 
         """
-        if isinstance(data, dict):
-            data = as_dataframe(data)
-        elif isinstance(data, pd.DataFrame):
-            pass
-        elif isinstance(data, xr.DataArray):
-            data = data.to_dataframe().reset_index()
-        else:
-            raise ValueError(f'Data type of {type(data)} is not supported'
-                             ' (only dictionaries, Pandas DataFrames and Xarray DataArrays are).')
+        match data:
+            case dict():
+                data_df = as_dataframe(data)
+            case pd.DataFrame():
+                data_df = data
+            case xr.DataArray():
+                data_df = data.to_dataframe().reset_index()
+            case _:
+                raise ValueError(f'Data type of {type(data)} is not supported'
+                                 ' (only dictionaries, Pandas DataFrames and'
+                                 ' Xarray DataArrays are).')
 
         if multiprocess:
             # Using mapply:
-            # ts = mapply(data, self.__ts_helper, axis=1)
+            # ts = mapply(data_df, self.__ts_helper, axis=1)
             # Using swifter
-            # ts = df.swifter.apply(self.__ts_helper, axis=1)
-            ts = data.apply(self.__ts_helper, axis=1)
+            # ts = data_df.swifter.apply(self.__ts_helper, axis=1)
+            ts = data_df.apply(self.__ts_helper, axis=1)
         else:  # this uses just one CPU
-            ts = data.apply(self.__ts_helper, axis=1)
+            ts = data_df.apply(self.__ts_helper, axis=1)
 
-        return ts.to_numpy()  # TODO - return data type that matches the input data type
+        match data:
+            case dict():
+                if result_type == 'expand':
+                    data_df['ts'] = ts
+                    return data_df
+                else:
+                    return ts.to_list()
+            case pd.DataFrame():
+                return ts.rename('ts', inplace=True)
+            case xr.DataArray():
+                data.values = ts.to_numpy().reshape(data.shape)
+                return data
+            case _:
+                return ts
 
     def __ts_helper(self, *args):
         """Convert function arguments and call calculate_ts_single()."""
