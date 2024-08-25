@@ -73,7 +73,7 @@ class ScatterModelBase(abc.ABC):
         : list, Series, DataFrame, or DataArray
             Returns the TS. Variable type is determined by the type of `data`:
 
-            - dict input returns a list (or DataFrame if `result_type` is `expand`).
+            - dict input returns a list or DataFrame (if `result_type` is `expand`).
             - DataFrame input returns a Series
             - DataArray input returns the given DataArray with the values set to the TS 
 
