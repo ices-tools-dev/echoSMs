@@ -58,7 +58,7 @@ class ScatterModelBase(abc.ABC):
             - **dict**: keys must match the function parameters in calculate_ts_single().
               TS values will be calculated for all combinations of the dict values.
 
-        multiprocess : boolean
+        multiprocess : bool
             Split the ts calculation across CPU cores.
 
         expand : bool
@@ -74,7 +74,7 @@ class ScatterModelBase(abc.ABC):
 
         Returns
         -------
-        : None, list[float], Series, DataFrame
+        : None, list[float], Series, or DataFrame
             The return type and value are determined by the type of the input variable (`data`) and
             the `expand` and `inplace` parameters:
 

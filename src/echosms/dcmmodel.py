@@ -45,7 +45,7 @@ class DCMModel(ScatterModelBase):
         f : float
             Frequency to calculate the scattering at [Hz].
         boundary_type : str
-            The model type. Supported model types are given in the boundary_types class attribute.
+            The model type. Supported model types are given in the `boundary_types` class attribute.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
             Only required for `boundary_type` of ``fluid filled``.

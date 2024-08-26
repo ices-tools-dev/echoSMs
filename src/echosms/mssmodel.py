@@ -48,7 +48,7 @@ class MSSModel(ScatterModelBase):
         f : float
             Frequency to calculate the scattering at [Hz].
         boundary_type : str
-            The boundary type. Supported types are given in the boundary_types class variable.
+            The boundary type. Supported types are given in the `boundary_types` class variable.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
             Only required for `boundary_type` of ``fluid filled``.
