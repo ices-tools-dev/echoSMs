@@ -7,7 +7,9 @@ from .esmodel import ESModel
 from .mssmodel import MSSModel
 from .psmsmodel import PSMSModel
 from .dcmmodel import DCMModel
+from .ptdwbamodel import PTDWBAModel
 
-__all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels', 'MSSModel', 'PSMSModel',
-           'DCMModel', 'ESModel', 'k', 'eta', 'h1', 'spherical_jnpp',
+__all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
+           'MSSModel', 'PSMSModel', 'DCMModel', 'ESModel', 'PTDWBAModel',
+           'k', 'eta', 'h1', 'spherical_jnpp',
            'as_dataframe', 'as_dataarray']

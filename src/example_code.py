@@ -4,7 +4,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from echosms import MSSModel, PSMSModel, DCMModel, ESModel
+from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
@@ -216,3 +216,35 @@ if False:  # cause it takes a long time to run (as multiprocess is not enabled i
 
 # Xarray selections and dimenions names can then be used
 plt.plot(params_xa.f, params_xa.sel(theta=90, medium_rho=1000, medium_c=1600))
+
+# %% ###############################################################################################
+# Example of PT-DWBA model
+
+# A simple, minimal example
+p = {
+     'f': 38000,
+     'theta': 45,
+     'phi': 0,
+     'voxel_size': [0.0005, 0.0005, 0.0005],
+     'target_rho': [1024, 1025, 1026],
+     'target_c': [1480, 1490, 1500],
+     'volume': np.array([[[0, 0, 0, 0],
+                          [0, 1, 2, 0],
+                          [0, 0, 0, 0]],
+                         [[0, 0, 0, 0],
+                          [0, 1, 0, 2],
+                          [0, 0, 0, 0]],
+                         [[0, 0, 0, 0],
+                          [0, 1, 0, 2],
+                          [0, 0, 0, 0]],
+                         [[0, 0, 0, 0],
+                          [0, 1, 0, 1],
+                          [0, 0, 0, 0]],
+                         [[0, 0, 0, 0],
+                          [0, 1, 0, 1],
+                          [0, 0, 0, 0]]])}
+
+pt = PTDWBAModel()
+pt.calculate_ts_single(**p)
+
+# Note that PTDWBAModel() doesn't yet support calling via the calculate_ts() call.
