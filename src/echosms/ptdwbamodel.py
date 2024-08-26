@@ -62,7 +62,7 @@ class PTDWBAModel(ScatterModelBase):
 
         Returns
         -------
-        : Numpy ndarray[float]
+        : float
             The target strength (re 1 m²) [dB] of the target.
 
         Notes
