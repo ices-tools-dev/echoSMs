@@ -42,8 +42,8 @@ class ScatterModelBase(abc.ABC):
         self.shapes = []
         self.max_ka = np.nan
 
-    def calculate_ts(self, data, expand=None, inplace=False, multiprocess=False):
-        """Calculate the TS for many parameters.
+    def calculate_ts(self, data, expand=False, inplace=False, multiprocess=False):
+        """Calculate the target strength (TS) for many parameters.
 
         Parameters
         ----------
@@ -53,30 +53,30 @@ class ScatterModelBase(abc.ABC):
             - **DataFrame**: column names must match the function parameter names in
               calculate_ts_single(). One TS value will be calculated for each row in the DataFrame.
             - **DataArray**: dimension names must match the function parameter names in
-              calculate_ts_single(). TS will be calculated for all combinations of the
+              calculate_ts_single(). TS values will be calculated for all combinations of the
               coordinate variables.
             - **dict**: keys must match the function parameters in calculate_ts_single().
-              TS will be calculated for all combinations of the dict values.
+              TS values will be calculated for all combinations of the dict values.
 
         multiprocess : boolean
             Split the ts calculation across CPU cores.
 
         expand : bool
-            Only applicable if `data` is a dict. The default is `False`. If `True`, will return
-            the dict into a DataFrame containing the Cartesian product of all values in the dict
-            (with one column per key in the dict) and return that DataFrame, adding a column
-            named `ts` for the TS results.
+            Only applicable if `data` is a dict. If `True`, will use
+            [`as_dataframe()`][echosms.utils.as_dataframe]
+            to expand the dict into a DataFrame with one column per dict key
+            and return that, adding a column named `ts` for the results.
 
         inplace : bool
-            Only applicable if `data` is a DataFrame. Default is `False`. If `True`, the TS results
-            will be added to the input DataFrame in a column named `ts`. It a `ts` column exists,
-            it is overwritten.
+            Only applicable if `data` is a DataFrame. If `True`, the results
+            will be added to the input DataFrame in a column named `ts`. It a `ts` column
+            already exists, it is overwritten.
 
         Returns
         -------
         : None, list[float], Series, DataFrame
-            The return type and value is determined by the type of the input variable `data` and
-            the `expand` and `inplace` input parameters:
+            The return type and value are determined by the type of the input variable (`data`) and
+            the `expand` and `inplace` parameters:
 
             - dict input and `expand=False` returns a list of floats.
             - dict input and `expand=True` returns a DataFrame.

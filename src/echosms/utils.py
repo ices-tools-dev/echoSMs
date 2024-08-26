@@ -18,7 +18,7 @@ def as_dataframe(params: dict) -> pd.DataFrame:
     -------
     :
         Returns a Pandas DataFrame generated from the Cartesian product of all items in the
-        input dict.
+        input dict. DataFrame column names are obtained from the dict keys.
 
     """
     # Use meshgrid to do the Cartesian product then create a Pandas DataFrame from that, having
@@ -41,7 +41,8 @@ def as_dataarray(params: dict) -> xr.DataArray:
     -------
     :
         Returns a multi-dimensional DataArray generated from the Cartesian product of all items
-        in the input dict.
+        in the input dict. The array is named `ts`, the values are initialised to `nan`, the
+        dimension names are the dict keys, and the coordinate variables are the dict values.
 
     """
     # Convert scalars to iterables so xarray is happy
