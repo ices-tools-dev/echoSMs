@@ -3,22 +3,26 @@
 ![Static badge](https://img.shields.io/pypi/v/echosms.svg)
 ![Static badge](https://img.shields.io/github/license/ices-tools-dev/echosms)
 ![Build docs](https://github.com/ices-tools-dev/echosms/actions/workflows/build-docs.yml/badge.svg)
+[![python](https://img.shields.io/pypi/pyversions/echosms.svg?logo=python&logoColor=white)](https://pypi.org/project/echosms/)
 
 Making acoustic scattering models available to fisheries and plankton scientists via the world wide web.
 
 Full documentation is available [here](https://ices-tools-dev.github.io/echoSMs/).
 
-# Background
-This project is an international collaboration that is, in part, a component of a U.S. NOAA-Fisheries active acoustic strategic initiative [AA-SI](https://github.com/nmfs-fish-tools/AA-SI/tree/main). 
+## Background
+
+This project is an international collaboration that is, in part, a component of a U.S. NOAA-Fisheries active acoustic strategic initiative [AA-SI](https://github.com/nmfs-fish-tools/AA-SI/tree/main).
 
 Quantitative interpretation of acoustic echograms require software expertise to develop advanced analytical methods for echo classification using mathematical models that predict acoustic backscatter (e.g., target strength, TS, dB re m<sup>2</sup>). These models and predictions can be used to inform echo classification by validating empirical measurements and generating training data for machine learning (ML), artificial intelligence (AI), and other advanced analytical methods, such as inverse methods. Application of these models to fish and plankton requires anatomical and morphological data that are easily accessible and available to the models.
 
 The goal of this project is to make acoustic scattering models available to fisheries and plankton acoustic scientists via the world wide web. By providing the models in an open-access and open-source software language (e.g, Python, R) and providing morphological and anatomical data in open data formats (e.g., HDF5, relational database), the proper and appropriate use of these models can extend to the entire fisheries and plankton acoustics’ community.
 
-# Scattering Models
+## Scattering Models
+
 The initial set of acoustic scattering models will be those used by [Jech et al. (2015)](https://doi.org/10.1121/1.4937607) (Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research. JASA. 138(6): 3742-3764). Acoustic model coding will follow 3 - 4 phases, where the first phase will focus on exact solutions and canonical shapes (Table 1), the second phase will focus on approximate analytical models applied to canonical shapes (Table 2), the third phase will focus on approximate analytical models applied to complex shapes approximating biological targets such as fish and zooplankton, and the fourth phase (if funding and time allows) will focus on numerical models applied to canonical shapes and biological targets.
 
-# Exact Solutions
+## Exact Solutions
+
 | Model                             | Shape  | Description | References |
 |-----------------------------------|--------|-------------|------------|
 | Modal Series<br> solution (MSS)   | Sphere | Fluid       | 1,2        |
@@ -37,14 +41,15 @@ The initial set of acoustic scattering models will be those used by [Jech et al.
 |  |  | Gas-filled | 2,4,5 |
 | Infinite cylinder? |  |  | 3 |
 | Infinite plane? |  |  |  |
+
 1. [Anderson, V. C. 1950. Sound scattering from a fluid sphere. JASA. 22(4): 426-431](https://doi.org/10.1121/1.1906621)
 2. [Jech et al. 2015. Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research. JASA. 138: 3742-3764](https://doi.org/10.1121/1.4937607)
 3. [Faran, J. J. 1951. Sound scattering by solid cylinders and spheres. JASA. 23(4): 405-418.](https://doi.org/10.1121/1.1906621)
 4. Skudrzyk. 1971. The Foundations of Acoustics (Springer, NY), pp. 455-465.
 5. Furusawa. 1988. Prolate spheroidal models for predicting general trends of fish target strength,” J. Acoust. Soc. Jpn. (E) 9, 13–14.
 
+## Approximate Analytical Models and Shapes
 
-# Approximate Analytical Models and Shapes 
 | Model                             | Shape  | Description | References |
 |-----------------------------------|--------|-------------|------------|
 | Modal Series-based<br> deformed cylinder<br> model | Finite cylinder | Fixed rigid | 1,2,3 |
