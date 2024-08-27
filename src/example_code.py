@@ -35,12 +35,11 @@ models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           ('fixed rigid finite cylinder', 'Cylinder_Rigid'),
           ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
           ('gas filled finite cylinder', 'Cylinder_Gas'),
-          ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering')]
-# Remove PSMS ones until the PSMS model works
-# ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-# ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
-# ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
-# ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')]
+          ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
+          # ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
+          ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+          # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')]
 
 for name, bm_name in models:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
@@ -58,24 +57,27 @@ for name, bm_name in models:
         case _:
             pass
 
-    # Add frequencies and angle to the model parameters
-    m['f'] = bm.freq_dataset['Frequency_kHz']*1e3  # [Hz]
+    # Add frequencies that have finite TS values and incident angle to the model parameters
+    m['f'] = bmf['Frequency_kHz'][~np.isnan(bmf[bm_name])]*1e3  # [Hz]
     m['theta'] = 90.0
 
     # and run these
     ts = mod.calculate_ts(m)
 
-    jech_index = np.mean(np.abs(ts - bmf[bm_name]))
+    # The finite benchmark TS values
+    bm_ts = bmf[bm_name][~np.isnan(bmf[bm_name])]
+
+    jech_index = np.mean(np.abs(ts - bm_ts))
 
     # Plot the mss model and benchmark results
     fig, axs = plt.subplots(2, 1, sharex=True)
     axs[0].plot(m['f']/1e3, ts, label='echoSMs')
-    axs[0].plot(bmf['Frequency_kHz'], bmf[bm_name], label='Benchmark')
+    axs[0].plot(m['f']/1e3, bm_ts, label='Benchmark')
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
     axs[0].legend(frameon=False, fontsize=6)
 
     # Plot difference between benchmark values and newly calculated mss model values
-    axs[1].plot(m['f']*1e-3, ts-bmf[bm_name], color='black')
+    axs[1].plot(m['f']*1e-3, ts-bm_ts, color='black')
     axs[1].set_xlabel('Frequency [kHz]')
     axs[1].set_ylabel(r'$\Delta$ TS [dB]')
     axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',

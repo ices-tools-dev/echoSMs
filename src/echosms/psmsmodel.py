@@ -91,6 +91,8 @@ class PSMSModel(ScatterModelBase):
         phi_inc = np.pi  # radians, incident direction
         phi_bs = 0  # radians, backscattered direction
 
+        theta = np.deg2rad(theta)
+
         # Approximate limits on the summations
         m_max = int(np.ceil(2*k0*b))
         n_max = int(m_max + np.ceil(h0/2))
@@ -120,11 +122,10 @@ class PSMSModel(ScatterModelBase):
                 if (even and even_reached_tol) or (not even and odd_reached_tol):
                     continue
 
-                # s_bs = aswfb(m, n, h0, cos(theta), 1)
-                # s_inc = aswfb(m, n, h0, cos(pi - theta), 1)
-                s_bs = pro_ang1(m, n, h0, np.cos(theta))
-                s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))
-
+                s_bs = pro_ang1(m, n, h0, np.cos(theta))[0]
+                s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))[0]
+                # print(m,n,h0)
+                # print(s_bs, s_inc)
                 match boundary_type:
                     case 'fluid filled':
                         # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
@@ -132,7 +133,7 @@ class PSMSModel(ScatterModelBase):
                         # print(m,n,h0,xi0,flush=True)
                         r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
                         r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
-                        r_type1B, dr_type1B, _, _ = pro_rad1(m, n, h0/hc, xi0)
+                        r_type1B, dr_type1B = pro_rad1(m, n, h0/hc, xi0)
 
                         eeA = r_type1A - rh*r_type1B/dr_type1B*dr_type1A
                         eeB = eeA + 1j*(r_type2A - rh*r_type1B/dr_type1B*dr_type2A)
@@ -141,6 +142,8 @@ class PSMSModel(ScatterModelBase):
                         # r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)
                         r_type1, _ = pro_rad1(m, n, h0, xi0)
                         r_type2, _ = pro_rad2(m, n, h0, xi0)
+                        # print(m,n,h0,xi0)
+                        # print(r_type1, r_type2)
                         aa = -r_type1/(r_type1 + 1j*r_type2)
                     case 'fixed rigid':
                         pass  # see eqn of (3) of Furusawa, 1988
@@ -162,9 +165,10 @@ class PSMSModel(ScatterModelBase):
                 #   Tables (Dover, New York), 10th ed.
 
                 # Matlab code uses quadgk as plain quad didn't work....
-                n_mn = quad(self.aswfa2, -1, 1, args=(m, n, h0), epsrel=1e-5)
+                n_mn = quad(PSMSModel.aswfa2, -1, 1, args=(m, n, h0), epsrel=1e-5)
 
-                x = epsilon / n_mn * s_inc * aa * s_bs * np.cos(m*(phi_bs - phi_inc))
+                x = epsilon / n_mn[0] * s_inc * aa * s_bs * np.cos(m*(phi_bs - phi_inc))
+
                 f += x
 
                 tsx = 20*np.log10(abs(2/(1j*k0)*x) / (2*a))
@@ -185,9 +189,10 @@ class PSMSModel(ScatterModelBase):
                 if (20*np.log10(f_all[-1]) - 20*np.log10(f_all[-2])) < 0.01:
                     break
 
-        return np.numpy(20*np.log10(2*a*f_all))
+        return 20*np.log10(2*a*f_all[-1])
 
-        def aswfa2(self, eta, m, n, h0):
-            """Need eta argument to be first for use in quad()."""
-            # Calculates the square of S_mn for the given values of eta.
-            return pro_ang1(m, n, h0, eta)[0]**2
+    @staticmethod
+    def aswfa2(eta, m, n, h0):
+        """Need eta argument to be first for use in quad()."""
+        # Calculates the square of S_mn for the given values of eta.
+        return pro_ang1(m, n, h0, eta)[0]**2
