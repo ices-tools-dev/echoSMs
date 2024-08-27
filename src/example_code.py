@@ -39,7 +39,8 @@ models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           # ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
           ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
           # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
-          ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering')]
+          #('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),
+          ]
 
 for name, bm_name in models:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
