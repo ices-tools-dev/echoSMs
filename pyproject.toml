@@ -24,10 +24,6 @@ dependencies = [
   "xarray",
   'tomli >= 1.1.0; python_version < "3.11"'
 ]
-dev-dependencies = [
-  "mkdocstrings[python]"
-]
-
 classifiers = [
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Science/Research',
@@ -39,6 +35,14 @@ classifiers = [
     'Programming Language :: Python :: 3.12',
     'Topic :: Scientific/Engineering',
 ]
+
+[project.optional-dependencies]
+dev = [
+  "mkdocstrings[python]",
+  "matplotlib",
+  "twine"
+]
+
 
 [project.urls]
 Homepage = 'https://github.com/ices-tools-dev/echoSMs'
