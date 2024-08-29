@@ -20,7 +20,6 @@ requires-python = ">=3.10"
 dependencies = [
 	"numpy",
 	"scipy != 1.13.0, != 1.13.1, != 1.14.0",
-	"matplotlib",
 	"pandas",
   "xarray",
   'tomli >= 1.1.0; python_version < "3.11"'
