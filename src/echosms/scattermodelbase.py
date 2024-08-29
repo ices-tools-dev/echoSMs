@@ -42,6 +42,16 @@ class ScatterModelBase(abc.ABC):
         self.shapes = []
         self.max_ka = np.nan
 
+    def __repr__(self):
+        """Return representation of the object."""
+        return 'Name: ' + self.__class__.__name__ + ', Vars: ' + str(vars(self))
+
+    def __str__(self):
+        """Return user-friedly representation of the object."""
+        s = self.__class__.__name__ + " class with attributes of:\n"
+        s += '\n'.join(['\t' + str(k) + ' = ' + str(v) for k, v in vars(self).items()])
+        return s
+
     def calculate_ts(self, data, expand=False, inplace=False, multiprocess=False):
         """Calculate the target strength (TS) for many parameters.
 
