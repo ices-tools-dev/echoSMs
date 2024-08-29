@@ -39,7 +39,7 @@ models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           # ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
           ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
           # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
-          #('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),
+          # ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),
           ]
 
 for name, bm_name in models:
