@@ -51,7 +51,8 @@ def as_dataarray(params: dict) -> xr.DataArray:
             params[k] = [v]
 
     sz = [len(v) for k, v in params.items()]
-    return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts')
+    return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts',
+                        attrs={'units': 'dB', 'dB_reference': '1 m^2'})
 
 
 def eta(m: int) -> int:
