@@ -43,8 +43,8 @@ class ScatterModelBase(abc.ABC):
         self.max_ka = np.nan
 
     def __repr__(self):
-        """Return representation of the object."""
-        return 'Name: ' + self.__class__.__name__ + ', Vars: ' + str(vars(self))
+        """Return a representation of the object."""
+        return 'Name: ' + self.__class__.__name__ + ', vars: ' + str(vars(self))
 
     def __str__(self):
         """Return user-friedly representation of the object."""
@@ -79,7 +79,7 @@ class ScatterModelBase(abc.ABC):
 
         inplace : bool
             Only applicable if `data` is a DataFrame. If `True`, the results
-            will be added to the input DataFrame in a column named `ts`. It a `ts` column
+            will be added to the input DataFrame in a column named `ts`. If a `ts` column
             already exists, it is overwritten.
 
         Returns
