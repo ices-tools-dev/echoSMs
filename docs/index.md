@@ -19,7 +19,7 @@ The initial set of acoustic scattering models will be those used in [Jech et al.
 3. Approximate analytical models applied to complex shapes approximating biological targets, such as fish and zooplankton,
 4. Mumerical models applied to canonical shapes and biological targets (this phase will depend on time and funding).
 
-## Exact Solutions
+### Exact Solutions
 
 The exact solutions, shapes, and supported boundary conditions will be:
 
@@ -47,7 +47,7 @@ The exact solutions, shapes, and supported boundary conditions will be:
 4. [Skudrzyk. 1971.](https://doi.org/10.1007/978-3-7091-8255-0) The Foundations of Acoustics (Springer, NY), pp. 455-465.
 5. [Furusawa. 1988.](https://doi.org/10.1250/ast.9.13) Prolate spheroidal models for predicting general trends of fish target strength, J. Acoust. Soc. Jpn. (E) 9, 13–14.
 
-## Approximate Analytical Models and Shapes
+### Approximate Analytical Models and Shapes
 
 The approximate analytical models,shapes, and supported boundary conditions will be:
 
