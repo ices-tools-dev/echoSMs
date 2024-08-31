@@ -4,7 +4,7 @@
 
 ## Background
 
-This project is an international collaboration that is, in part, a component of a U.S. NOAA-Fisheries active acoustic strategic initiative, [AA-SI](https://github.com/nmfs-fish-tools/AA-SI/tree/main). 
+This project is an international collaboration that is, in part, a component of a U.S. NOAA-Fisheries active acoustic strategic initiative, [AA-SI](https://github.com/nmfs-fish-tools/AA-SI/tree/main).
 
 Quantitative interpretation of acoustic echograms requires software expertise to develop advanced analytical methods for echo classification using mathematical models that predict acoustic backscatter (e.g., target strength, TS re 1 m² [dB]). These models and predictions can be used to inform echo classification by validating empirical measurements and generating training data for machine learning (ML), artificial intelligence (AI), and other advanced analytical methods, such as inverse methods. Application of these models to fish and plankton requires anatomical and morphological data that are easily accessible and available to the models.
 

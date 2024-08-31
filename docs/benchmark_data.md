@@ -50,9 +50,3 @@ The column names and descriptions are:
 | Cylinder_PressureRelease | Benchmark values for the pressure release cylinder. TS values for end-on (0°) incidence were not computed. |
 | Cylinder_Gas | Benchmark values for the gas filled cylinder. TS values for end-on (0°) incidence were not computed. |
 | Cylinder_WeaklyScattering | Benchmark values for the weakly scattering cylinder. TS values for end-on (0°) incidence were not computed. |
-
-
-
-
-
-
