@@ -13,7 +13,7 @@ We use SI units for the model parameters and do not use SI prefixes for model in
 |length, diameter, radius, thickness, etc|m||
 |density|kg/m³||
 |sound speed|m/s||
-|angle|°|See below for coordinate conventions|
+|angle|°|[see below][coordinate-systems]|
 |frequency|Hz||
 |target strength|dB|reference value is 1 m²|
 
