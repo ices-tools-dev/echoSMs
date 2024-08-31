@@ -2,11 +2,11 @@
 
 from pathlib import Path
 import sys
+import pandas as pd
 if sys.version_info >= (3, 11):
     import tomllib
 else:
     import tomli as tomllib
-import pandas as pd
 pd.options.mode.copy_on_write = True
 
 
@@ -35,7 +35,7 @@ class ReferenceModels:
             try:
                 self.definitions = tomllib.load(f)
             except tomllib.TOMLDecodeError as e:
-                raise Exception(f'Error while parsing file "{self.defs_filename.name}"') from e
+                raise SyntaxError(f'Error while parsing file "{self.defs_filename.name}"') from e
 
         # Flag duplicate target names
         pda = pd.Series(self.names())
@@ -107,6 +107,6 @@ class ReferenceModels:
 
         # Remove the entries that are not parameters
         p = s.copy()
-        {}
-        [p.pop(k, None) for k in ['name', 'shape', 'description', 'source', 'benchmark_model']]
+        for k in ['name', 'shape', 'description', 'source', 'benchmark_model']:
+            p.pop(k, None)
         return p

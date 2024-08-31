@@ -1,10 +1,10 @@
 """Base class for scatter model classes."""
 
 import abc
-import numpy as np
-from .utils import as_dataframe
 import pandas as pd
 import xarray as xr
+import numpy as np
+from .utils import as_dataframe
 
 
 class ScatterModelBase(abc.ABC):
@@ -124,12 +124,12 @@ class ScatterModelBase(abc.ABC):
                 return ts.to_list()
             case pd.DataFrame() if inplace:
                 data_df['ts'] = ts
-                return
+                return None
             case pd.DataFrame():
                 return ts.rename('ts', inplace=True)
             case xr.DataArray():
                 data.values = ts.to_numpy().reshape(data.shape)
-                return
+                return None
             case _:
                 raise AssertionError('This code should never be reached - unsupported input data '
                                      f'type of {type(data)}.')
@@ -142,4 +142,3 @@ class ScatterModelBase(abc.ABC):
     @abc.abstractmethod
     def calculate_ts_single(self):
         """Calculate the TS for one parameter set."""
-        pass

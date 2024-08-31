@@ -1,10 +1,10 @@
 """A class that provides the model series deformed cylinder scattering model."""
 
-from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
 from math import sin, cos, nan, pi, log10
+from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
 # from mapply.mapply import mapply
 # import swifter
-from .utils import eta, k
+from .utils import eta, wavenumber
 from .scattermodelbase import ScatterModelBase
 
 
@@ -74,8 +74,8 @@ class DCMModel(ScatterModelBase):
             return nan
 
         theta_rad = theta*pi/180.
-        kL = k(medium_c, f)*b
-        K = k(medium_c, f) * sin(theta_rad)
+        kL = wavenumber(medium_c, f)*b
+        K = wavenumber(medium_c, f) * sin(theta_rad)
         Ka = K*a
 
         m = range(30)  # TODO this needs to vary with f

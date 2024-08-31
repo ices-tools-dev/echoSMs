@@ -1,11 +1,11 @@
 """A class that provides the modal series solution scattering model."""
 
-import numpy as np
 from math import log10
+import numpy as np
 # from mapply.mapply import mapply
 # import swifter
 from scipy.special import spherical_jn, spherical_yn
-from .utils import h1, k
+from .utils import h1, wavenumber
 from .scattermodelbase import ScatterModelBase
 
 
@@ -83,7 +83,7 @@ class MSSModel(ScatterModelBase):
         research. Journal of the Acoustical Society of America 138, 3742–3764.
         <https://doi.org/10.1121/1.4937607>
         """
-        k0 = k(medium_c, f)
+        k0 = wavenumber(medium_c, f)
         ka = k0*a
         n = np.arange(0, round(ka+20))
 
@@ -93,7 +93,7 @@ class MSSModel(ScatterModelBase):
             case 'pressure release':
                 A = list(map(lambda x: -spherical_jn(x, ka) / h1(x, ka), n))
             case 'fluid filled':
-                k1a = k(target_c, f)*a
+                k1a = wavenumber(target_c, f)*a
                 gh = target_rho/medium_rho * target_c/medium_c
 
                 def Cn_fr(n):
@@ -113,9 +113,9 @@ class MSSModel(ScatterModelBase):
                 g32 = target_rho / shell_rho
                 h32 = target_c / shell_c
 
-                k1a = k(medium_c, f) * a
-                k2 = k(shell_c, f)
-                k3b = k(target_c, f) * b
+                k1a = wavenumber(medium_c, f) * a
+                k2 = wavenumber(shell_c, f)
+                k3b = wavenumber(target_c, f) * b
 
                 def Cn_fsfi(n):
                     (b1, b2, a11, a21, a12, a22, a32, a13, a23, a33) =\
@@ -130,8 +130,8 @@ class MSSModel(ScatterModelBase):
                 g21 = shell_rho / medium_rho
                 h21 = shell_c / medium_c
 
-                k1a = k(medium_c, f) * a
-                k2 = k(shell_c, f)
+                k1a = wavenumber(medium_c, f) * a
+                k2 = wavenumber(shell_c, f)
                 ksa = k2 * a  # ksa is used in the paper, but isn't that the same as k2a?
 
                 def Cn_fspri(n):

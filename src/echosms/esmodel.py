@@ -1,12 +1,12 @@
 """A class that provides the elastic scattering model."""
 
-import numpy as np
 from math import log10, sin, atan
 from cmath import exp
-from scipy.special import spherical_jn, spherical_yn
-from .utils import k, spherical_jnpp
-from .scattermodelbase import ScatterModelBase
 from warnings import warn
+import numpy as np
+from scipy.special import spherical_jn, spherical_yn
+from .utils import wavenumber, spherical_jnpp
+from .scattermodelbase import ScatterModelBase
 
 
 class ESModel(ScatterModelBase):
@@ -62,7 +62,7 @@ class ESModel(ScatterModelBase):
         Scottish Fisheries Research Report Number 22. Department of Agriculture and Fisheries
         for Scotland.
         """
-        q = k(medium_c, f)*a
+        q = wavenumber(medium_c, f)*a
         q1 = q*medium_c/target_longitudinal_c
         q2 = q*medium_c/target_transverse_c
         alpha = 2. * (target_rho/medium_rho) * (target_transverse_c/medium_c)**2

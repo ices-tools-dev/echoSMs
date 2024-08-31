@@ -1,9 +1,9 @@
 """Miscellaneous utility functions."""
+from collections.abc import Iterable
 import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.special import spherical_jn, spherical_yn
-from collections.abc import Iterable
 
 
 def as_dataframe(params: dict) -> pd.DataFrame:
@@ -70,11 +70,10 @@ def eta(m: int) -> int:
     """
     if m == 0:
         return 1
-    else:
-        return 2
+    return 2
 
 
-def k(c: float, f: float) -> float:
+def wavenumber(c: float, f: float) -> float:
     """Calculate the acoustic wavenumber.
 
     Parameters
@@ -132,8 +131,7 @@ def h1(n: int, z: float, derivative=False) -> complex:
 
     if not derivative:
         return spherical_jn(n, z) + 1j*spherical_yn(n, z)
-    else:
-        return -h1(n+1, z) + (n/z) * h1(n, z)
+    return -h1(n+1, z) + (n/z) * h1(n, z)
 
 
 def spherical_jnpp(n: int, z: float) -> float:

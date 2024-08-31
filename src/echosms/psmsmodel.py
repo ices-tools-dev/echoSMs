@@ -117,7 +117,7 @@ class PSMSModel(ScatterModelBase):
             odd_reached_tol = False
 
             for n in range(m, n_max+1):
-                even = True if (m-n) % 2 == 0 else False
+                even = (m-n) % 2 == 0
 
                 if (even and even_reached_tol) or (not even and odd_reached_tol):
                     continue
