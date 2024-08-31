@@ -21,11 +21,9 @@ theme:
 repo_url: https://github.com/ices-tools-dev/echoSMs
 edit_uri: edit/main/docs/
 
-markdown_extensions:
-    - attr_list
-
 plugins:
     - search
+    - autorefs
     - mkdocstrings:
         handlers:
             python:
@@ -42,3 +40,8 @@ plugins:
                     heading_level: 3
                     filters:
                     - "!^_"
+
+markdown_extensions:
+    - attr_list
+    - footnotes
+    - tables

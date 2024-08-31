@@ -67,7 +67,7 @@ class PTDWBAModel(ScatterModelBase):
 
         Notes
         -----
-        This class implements the method presented in Jones et. al., (2009). The code is
+        This class implements the method presented in Jones et. al. (2009). The code is
         based closely on the Matlab code in Jones (2006).
 
         References

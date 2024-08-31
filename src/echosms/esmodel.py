@@ -54,7 +54,7 @@ class ESModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the code in [1].
+        The class implements the code in MacLennan (1981).
 
         References
         ----------

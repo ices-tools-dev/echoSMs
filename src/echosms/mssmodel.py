@@ -73,11 +73,11 @@ class MSSModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the code in Section A.1 of [1].
+        The class implements the code in Section A.1 of Jech et al. (2015).
 
         References
         ----------
-        [1] Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N.,
+        Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N.,
         Jones, B., Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
         Comparisons among ten models of acoustic backscattering used in aquatic ecosystem
         research. Journal of the Acoustical Society of America 138, 3742–3764.

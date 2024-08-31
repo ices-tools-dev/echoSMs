@@ -13,6 +13,11 @@ pd.options.mode.copy_on_write = True
 class ReferenceModels:
     """Provide access to reference scattering model parameters.
 
+    Reference models are the models and parameters defined in Jech et al. (2015).
+    The parameters are stored in a TOML-formatted file in the echoSMs repository
+    and this class provides easy access to the data in that file. Additional reference
+    models may be defined in the future and added to the TOML file.
+
     Attributes
     ----------
     definitions : dict
@@ -24,6 +29,13 @@ class ReferenceModels:
         If the ``target definitions.toml`` file is not valid TOML.
     KeyError
         If the ``target definitions.toml`` file has multiple target entries with the same name.
+
+    References
+    ----------
+    Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
+    Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
+    Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
+    Journal of the Acoustical Society of America 138, 3742–3764. <https://doi.org/10.1121/1.4937607>
     """
 
     def __init__(self):

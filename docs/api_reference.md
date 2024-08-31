@@ -44,10 +44,6 @@ This is a placeholder for the stochastic distorted wave Born approximation model
 
 ## ReferenceModels
 
-Reference models are the models and parameters defined in the Jech et al, 2015 paper. The parameters are stored in a TOML-formatted file in the echoSMs repository and the ``ReferenceModels`` class provides easy access to the data in that file.
-
-Additional reference models may be defined in the future and can be added to the TOML file.
-
 ::: echosms.ReferenceModels
 
 ## BenchmarkData

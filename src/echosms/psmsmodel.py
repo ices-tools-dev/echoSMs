@@ -56,11 +56,15 @@ class PSMSModel(ScatterModelBase):
         Notes
         -----
         The backscattered target strength of a pressure release or fluid-filled prolate spheroid
-        is calculated using the PSMS method of Furusawa [1] and corrections [2].
+        is calculated using the PSMS method of Furusawa (1988) and corrections in
+        Furusawa et al. (1994).
 
-        .. [1] Furusawa, M. (1988). "Prolate spheroidal models for predicting general
+        References
+        ----------
+
+        Furusawa, M. (1988). "Prolate spheroidal models for predicting general
             trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
-        .. [2] Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
+        Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261–265.
         """
