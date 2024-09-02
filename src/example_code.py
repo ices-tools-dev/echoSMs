@@ -211,11 +211,11 @@ params_xa = as_dataarray(params)
 # how many models runs would that be?
 print(f'Running {np.prod(params_xa.shape)} models!')
 
-# and is called the same way as for the dataframe
-if False:  # cause it takes a long time to run (as multiprocess is not enabled internally)
-    # When called with a dataarray, the values in that dataarray are overwritten with the ts, so
-    # it is not necessary to get the return value (i.e., there is an implicit inplace=True)
-    mss.calculate_ts(params_xa, multiprocess=True)
+mss = MSSModel()
+
+# and is called the same way as for the dataframe. Use multiprocessing for this one as there
+# are a lot of models to run.
+mss.calculate_ts(params_xa, multiprocess=True)
 
 # Xarray selections and dimenions names can then be used
 plt.plot(params_xa.f, params_xa.sel(theta=90, medium_rho=1000, medium_c=1600))
@@ -251,3 +251,11 @@ pt = PTDWBAModel()
 pt.calculate_ts_single(**p)
 
 # Note that PTDWBAModel() doesn't yet support calling via the calculate_ts() call.
+
+# The benchmark sphere model
+m = rm.ReferenceModels('weakly scattering sphere')
+
+# Add in the things that the PT-DWBA model needs
+
+# Make up the voxel dataset based on the parameters in m
+voxel_size = ()  # same as used in Jech et al (2015)

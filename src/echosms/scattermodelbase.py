@@ -69,7 +69,11 @@ class ScatterModelBase(abc.ABC):
               TS values will be calculated for all combinations of the dict values.
 
         multiprocess : bool
-            Split the ts calculation across CPU cores.
+            Split the ts calculation across CPU cores. Multiprocessing is currently provided by
+            [mapply](https://github.com/ddelange/mapply) with little customisation. For more
+            sophisticated uses it may be preferred to use a multiprocessing package of your choice
+            directly on the `calculate_ts_single()` method. See the code in this method
+            (`calculate_ts()`) for an example.
 
         expand : bool
             Only applicable if `data` is a dict. If `True`, will use
@@ -108,11 +112,8 @@ class ScatterModelBase(abc.ABC):
                                  ' Xarray DataArrays are).')
 
         if multiprocess:
-            # Using mapply:
-            # ts = mapply(data_df, self.__ts_helper, axis=1)
-            # Using swifter
-            # ts = data_df.swifter.apply(self.__ts_helper, axis=1)
-            ts = data_df.apply(self.__ts_helper, axis=1)
+            from mapply.mapply import mapply
+            ts = mapply(data_df, self.__ts_helper, axis=1)
         else:  # this uses just one CPU
             ts = data_df.apply(self.__ts_helper, axis=1)
 
