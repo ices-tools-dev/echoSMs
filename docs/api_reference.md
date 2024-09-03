@@ -14,11 +14,13 @@ Each type of model is contained in a separate Python class (with name ending in 
 
 ## DWBA models
 
-There are several models that use the distorted wave Born approximation, documented below:
+There are several models that use the distorted-wave Born approximation, documented below:
 
 ### DWBA
 
-This is a placeholder for the distorted wave Born approximation model.
+::: echosms.DWBAModel
+    options:
+        heading_level: 4
 
 ### PT-DWBA
 
@@ -28,7 +30,9 @@ This is a placeholder for the distorted wave Born approximation model.
 
 ### SDWBA
 
-This is a placeholder for the stochastic distorted wave Born approximation model.
+::: echosms.SDWBAModel
+    options:
+        heading_level: 4
 
 ## ESModel
 
