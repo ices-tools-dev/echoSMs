@@ -253,7 +253,7 @@ pt.calculate_ts_single(**p)
 # Note that PTDWBAModel() doesn't yet support calling via the calculate_ts() call.
 
 # The benchmark sphere model
-m = rm.ReferenceModels('weakly scattering sphere')
+m = rm.parameters('weakly scattering sphere')
 
 # Add in the things that the PT-DWBA model needs
 
