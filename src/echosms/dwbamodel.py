@@ -4,7 +4,12 @@ from .scattermodelbase import ScatterModelBase
 
 
 class DWBAModel(ScatterModelBase):
-    """Distorted-wave Born approximation scattering model."""
+    """Distorted-wave Born approximation scattering model.
+
+    Note
+    ----
+    The DWBA model is not yet functional.
+    """
 
     def __init__(self):
         super().__init__()

@@ -4,7 +4,12 @@ from .scattermodelbase import ScatterModelBase
 
 
 class SDWBAModel(ScatterModelBase):
-    """Stochastic distorted-wave Born approximation scattering model."""
+    """Stochastic distorted-wave Born approximation scattering model.
+
+    Note
+    ----
+    The SDWBA model is not yet functional.
+    """
 
     def __init__(self):
         super().__init__()
