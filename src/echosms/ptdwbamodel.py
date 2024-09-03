@@ -1,4 +1,4 @@
-"""The phase-tracking distorted wave Born approximation model."""
+"""The phase-tracking distorted-wave Born approximation model."""
 
 import numpy as np
 from scipy import ndimage
@@ -6,11 +6,11 @@ from .scattermodelbase import ScatterModelBase
 
 
 class PTDWBAModel(ScatterModelBase):
-    """Phase-tracking distorted wave Born approximation scattering model."""
+    """Phase-tracking distorted-wave Born approximation scattering model."""
 
     def __init__(self):
         super().__init__()
-        self.long_name = 'phase-tracking distorted wave Born approximation'
+        self.long_name = 'phase-tracking distorted-wave Born approximation'
         self.short_name = 'pt-dwba'
         self.analytical_type = 'approximate'
         self.boundary_types = 'weakly scattering'
@@ -18,9 +18,9 @@ class PTDWBAModel(ScatterModelBase):
         self.max_ka = 20
 
     def calculate_ts_single(self, volume, theta, phi, f, voxel_size, target_rho, target_c):
-        """Phase-tracking distorted wave Born approximation scattering model.
+        """Phase-tracking distorted-wave Born approximation scattering model.
 
-        Implements the phase-tracking distorted wave Born approximation
+        Implements the phase-tracking distorted-wave Born approximation
         model for calculating the acoustic backscatter from weakly scattering bodies.
 
         Warning
@@ -73,7 +73,7 @@ class PTDWBAModel(ScatterModelBase):
         References
         ----------
         Jones, B. A. (2006). Acoustic scattering of broadband echolocation signals
-        from prey of Blainville’s beaked whales: Modeling and analysis. Master of Science,
+        from prey of Blainville's beaked whales: Modeling and analysis. Master of Science,
         Massachusetts Institute of Technology. <https://doi.org/10.1575/1912/1283>
 
         Jones, B. A., Lavery, A. C., & Stanton, T. K. (2009). Use of the distorted
