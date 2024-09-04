@@ -1,12 +1,9 @@
 """A class that provides the prolate spheroidal modal series scattering model."""
 
 import numpy as np
-# from mapply.mapply import mapply
-# import swifter
-from scipy.special import pro_ang1, pro_rad1, pro_rad2
 from scipy.integrate import quad
 from .scattermodelbase import ScatterModelBase
-
+from .utils import prolate_swf
 
 class PSMSModel(ScatterModelBase):
     """Prolate spheroidal modal series (PSMS) scattering model."""
@@ -126,6 +123,7 @@ class PSMSModel(ScatterModelBase):
                 if (even and even_reached_tol) or (not even and odd_reached_tol):
                     continue
 
+                # call prolate_swf() here
                 s_bs = pro_ang1(m, n, h0, np.cos(theta))[0]
                 s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))[0]
                 # print(m,n,h0)
