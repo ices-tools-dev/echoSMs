@@ -229,7 +229,8 @@ def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float], no
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
 
     """
-    import prolate_swf_vanBuren  # no point importing this unless we need this function.
+    # no point importing this unless we need this function.
+    from spheroidalwavefunctions import prolate_swf
 
     # TODO: more input validity checking
     if c < 0:
@@ -247,8 +248,8 @@ def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float], no
     # if xi-1 == 0, then ioprad must be set to 1 (or 0) since r2 and r2d are infinite
     ioprad = 1 if xi-1.0 < 1e-7 else 2
 
-    a = prolate_swf_vanBuren.prolate_swf.profcn(c=c, m=m, lnum=lnum, x1=xi-1.0, ioprad=ioprad,
-                                                iopang=2, iopnorm=int(norm), arg=eta)
+    a = prolate_swf(c=c, m=m, lnum=lnum, x1=xi-1.0, ioprad=ioprad, iopang=2,
+                    iopnorm=int(norm), arg=eta)
 
     swf = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
                              'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
