@@ -154,7 +154,8 @@ def spherical_jnpp(n: int, z: float) -> float:
     return 1./z**2 * ((n**2-n-z**2)*spherical_jn(n, z) + 2.*z*spherical_jn(n+1, z))
 
 
-def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float], norm=False):
+def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float],
+                norm=False) -> tuple:
     """Calculate prolate spheroidal wave function values.
 
     Parameters
@@ -179,6 +180,14 @@ def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float], no
         same norm as the corresponding associated Legendre function (that is,
         the Meixner and Schafke normalization scheme). This norm becomes very
         large as `m` becomes large.
+    angular : bool
+        Whether to return values for the angular functions.
+    radial : bool
+        Whether to return values for the radial functions.
+    angular_derivative : bool
+        Whether to return values for the derivative of the angular functions.
+    radial_derivative : bool
+        Whether to return values for the derivative of the radial functions.
 
     Returns
     -------
@@ -215,7 +224,7 @@ def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float], no
     This method encapsulates the prolate spheroidal wave function code for non complex
     arguments (van Buren & Boisvert, 2002, and van Buren & Boisvert, 2024), available on
     [github](https://github.com/MathieuandSpheroidalWaveFunctions). This code is in Fortran90
-    and code was interfaced to Python using `numpy.f2py` then wrapped with the current method to
+    and was interfaced to Python using `numpy.f2py` then wrapped with the current method to
     provide a convenient interface for use in the [`PSMSModel`][psmsmodel] class.
 
     References

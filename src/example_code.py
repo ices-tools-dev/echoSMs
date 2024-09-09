@@ -19,6 +19,27 @@ bm = BenchmarkData()
 bmf = bm.freq_dataset
 bmt = bm.angle_dataset
 
+
+def plot_compare(f1, ts1, label1, f2, ts2, label2, title):
+    """Plot together two ts results TS."""
+    jech_index = np.mean(np.abs(np.array(ts1) - np.array(ts2)))
+    # Plot the mss model and benchmark results
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    axs[0].plot(f1/1e3, ts1, label=label1)
+    axs[0].plot(f2/1e3, ts2, label=label2)
+    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
+    axs[0].legend(frameon=False, fontsize=6)
+
+    # Plot difference between the two ts datasets
+    axs[1].plot(f1/1e3, np.array(ts1)-np.array(ts2), color='black')
+    axs[1].set_xlabel('Frequency [kHz]')
+    axs[1].set_ylabel(r'$\Delta$ TS [dB]')
+    axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
+                    backgroundcolor=[.8, .8, .8])
+    plt.suptitle(title)
+    plt.show()
+
+
 # %% ###############################################################################################
 # Run the benchmark models and compare to the frequency-varying benchmark results.
 
@@ -68,23 +89,7 @@ for name, bm_name in models:
     # The finite benchmark TS values
     bm_ts = bmf[bm_name][~np.isnan(bmf[bm_name])]
 
-    jech_index = np.mean(np.abs(ts - bm_ts))
-
-    # Plot the mss model and benchmark results
-    fig, axs = plt.subplots(2, 1, sharex=True)
-    axs[0].plot(m['f']/1e3, ts, label='echoSMs')
-    axs[0].plot(m['f']/1e3, bm_ts, label='Benchmark')
-    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
-    axs[0].legend(frameon=False, fontsize=6)
-
-    # Plot difference between benchmark values and newly calculated mss model values
-    axs[1].plot(m['f']*1e-3, ts-bm_ts, color='black')
-    axs[1].set_xlabel('Frequency [kHz]')
-    axs[1].set_ylabel(r'$\Delta$ TS [dB]')
-    axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
-                    backgroundcolor=[.8, .8, .8])
-    plt.suptitle(name)
-    plt.show()
+    plot_compare(m['f'], ts, s['benchmark_model'], m['f'], bm_ts, 'Benchmark', name)
 
 # %% ###############################################################################################
 # Run the benchmark models and compare to the angle-varying benchmark results.
@@ -223,39 +228,46 @@ plt.plot(params_xa.f, params_xa.sel(theta=90, medium_rho=1000, medium_c=1600))
 # %% ###############################################################################################
 # Example of PT-DWBA model
 
-# A simple, minimal example
-p = {
-     'f': 38000,
-     'theta': 45,
-     'phi': 0,
-     'voxel_size': [0.0005, 0.0005, 0.0005],
-     'target_rho': [1024, 1025, 1026],
-     'target_c': [1480, 1490, 1500],
-     'volume': np.array([[[0, 0, 0, 0],
-                          [0, 1, 2, 0],
-                          [0, 0, 0, 0]],
-                         [[0, 0, 0, 0],
-                          [0, 1, 0, 2],
-                          [0, 0, 0, 0]],
-                         [[0, 0, 0, 0],
-                          [0, 1, 0, 2],
-                          [0, 0, 0, 0]],
-                         [[0, 0, 0, 0],
-                          [0, 1, 0, 1],
-                          [0, 0, 0, 0]],
-                         [[0, 0, 0, 0],
-                          [0, 1, 0, 1],
-                          [0, 0, 0, 0]]])}
-
-pt = PTDWBAModel()
-pt.calculate_ts_single(**p)
-
-# Note that PTDWBAModel() doesn't yet support calling via the calculate_ts() call.
-
 # The benchmark sphere model
 m = rm.parameters('weakly scattering sphere')
 
-# Add in the things that the PT-DWBA model needs
+# make a 3d matrix of 0's and 1's and set to 1 for the sphere
+# and 0 for not the sphere
+m['voxel_size'] = (0.0001, 0.0001, 0.0001)  # [m]
+x = np.arange(-m['a'], m['a'], m['voxel_size'][0])
+(X, Y, Z) = np.meshgrid(x, x, x)
 
-# Make up the voxel dataset based on the parameters in m
-voxel_size = ()  # same as used in Jech et al (2015)
+m['volume'] = (np.sqrt(X**2 + Y**2 + Z**2) <= m['a']).astype(int)
+m['f'] = 38000
+m['theta'] = 90
+m['phi'] = 0
+m['rho'] = [m['medium_rho'], m['target_rho']]
+m['c'] = [m['medium_c'], m['target_c']]
+
+freqs = bmf['Frequency_kHz']*1e3
+
+pt = PTDWBAModel()
+dwba_ts = []
+for f in freqs:
+    print(f/1e3)
+    m['f'] = f
+    # PTDWBAModel() doesn't yet support calling via the calculate_ts() call.
+    dwba_ts.append(pt.calculate_ts_single(**m))
+
+plot_compare(freqs, dwba_ts, 'PT-DWBA',
+             freqs, bmf['Sphere_WeaklyScattering'], 'Benchmark',
+             'weakly scattering sphere')
+
+# So, this PT_DWBA on a weakly scattering sphere is also different from the benchmark
+# TS values. Hmmmm. Now look at the difference between the PT-DWBA and MSS model runs...
+
+mss = MSSModel()
+mm = rm.parameters('weakly scattering sphere')
+mm['f'] = freqs
+mm['theta'] = 90.0
+
+mss_ts = mss.calculate_ts(mm)
+
+plot_compare(freqs, ts, 'PT-DWBA',
+             freqs, mss_ts, 'MSS',
+             'weakly scattering sphere')

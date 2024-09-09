@@ -17,7 +17,7 @@ class PTDWBAModel(ScatterModelBase):
         self.shapes = ['unrestricted voxel-based']
         self.max_ka = 20
 
-    def calculate_ts_single(self, volume, theta, phi, f, voxel_size, target_rho, target_c):
+    def calculate_ts_single(self, volume, theta, phi, f, voxel_size, rho, c, **kwargs):
         """Phase-tracking distorted-wave Born approximation scattering model.
 
         Implements the phase-tracking distorted-wave Born approximation
@@ -52,11 +52,11 @@ class PTDWBAModel(ScatterModelBase):
             The size of the voxels in `volume` [m], ordered (_x_, _y_, _z_).
             This code assumes that the voxels are cubes so _y_ and _z_ are currently irrevelant.
 
-        target_rho : iterable[float]
+        rho : iterable[float]
             Densities of each material. Must have at least the same number of entries as unique
             integers in `volume` [kg/m³].
 
-        target_c : iterable[float]
+        c : iterable[float]
             Sound speed of each material. Must have at least the same number of entries as unique
             integers in `volume` [m/s].
 
@@ -82,8 +82,8 @@ class PTDWBAModel(ScatterModelBase):
         125(1), 73-88. <https://doi.org/10.1121/1.3021298>
         """
         # Make sure things are numpy arrays
-        target_rho = np.array(target_rho)
-        target_c = np.array(target_c)
+        rho = np.array(rho)
+        c = np.array(c)
         voxel_size = np.array(voxel_size)
 
         # volume of the voxels [m^3]
@@ -116,17 +116,17 @@ class PTDWBAModel(ScatterModelBase):
             raise ValueError('The integers in volume must include all values in the series '
                              '(0, 1, 2, ..., n), where n is the largest integer in volume.')
 
-        if not len(target_rho) >= len(categories):
+        if not len(rho) >= len(categories):
             raise ValueError('The target_rho variable must contain at least as many values as '
                              'unique integers in the volume variable.')
 
-        if not len(target_c) >= len(categories):
+        if not len(c) >= len(categories):
             raise ValueError('The target_c variable must contain at least as many values '
                              'as unique integers in the volume variable.')
 
         # density and sound speed ratios for all object materials
-        g = target_rho[1:] / target_rho[0]
-        h = target_c[1:] / target_c[0]
+        g = rho[1:] / rho[0]
+        h = c[1:] / c[0]
 
         # Do the pitch and roll rotations
         v = ndimage.rotate(volume, -theta, axes=(0, 2), order=0)
@@ -135,7 +135,7 @@ class PTDWBAModel(ScatterModelBase):
         categories = np.unique(v)  # or just take the max?
 
         # wavenumbers in the various media
-        k = 2.0*np.pi * f / target_c
+        k = 2.0*np.pi * f / c
 
         # DWBA coefficients
         # amplitudes in media 1,2,...,n
