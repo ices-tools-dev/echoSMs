@@ -7,7 +7,6 @@ import numpy as np
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
-from echosms import as_dataframe, as_dataarray
 
 # Load the reference model defintiions
 rm = ReferenceModels()
@@ -177,7 +176,7 @@ m['f'] = np.linspace(12, 200, num=800) * 1e3  # [Hz]
 m['target_rho'] = np.arange(1020, 1030, 1)  # [kg/m^3]
 m['theta'] = [0, 90.0, 180.0]
 # can convert this to a dataframe
-models_df = as_dataframe(m)
+models_df = mss.as_dataframe(m)
 # could also make a DataFrame of parameters that are not just the combination of all input
 # parameters. This offers a way to specify a more tailored set of model parameters.
 
@@ -210,13 +209,13 @@ params = {'medium_rho': [1000, 1250, 1500],
           'target_c': 1450,
           'target_rho': 1250}
 
-# Instead of converting those to a dataframe, an xarray can be used.
-params_xa = as_dataarray(params)
+mss = MSSModel()
+
+# Instead of converting params to a dataframe, an xarray can be used.
+params_xa = mss.as_dataarray(params)
 
 # how many models runs would that be?
 print(f'Running {np.prod(params_xa.shape)} models!')
-
-mss = MSSModel()
 
 # and is called the same way as for the dataframe. Use multiprocessing for this one as there
 # are a lot of models to run.
@@ -238,15 +237,48 @@ x = np.arange(-m['a'], m['a'], m['voxel_size'][0])
 (X, Y, Z) = np.meshgrid(x, x, x)
 
 m['volume'] = (np.sqrt(X**2 + Y**2 + Z**2) <= m['a']).astype(int)
-m['f'] = 38000
 m['theta'] = 90
 m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
-
-freqs = bmf['Frequency_kHz']*1e3
+m['f'] = bmf['Frequency_kHz']*1e3
 
 pt = PTDWBAModel()
+dwba_ts = pt.calculate_ts(m)
+
+plot_compare(m['f'], dwba_ts, 'PT-DWBA',
+             m['f'], bmf['Sphere_WeaklyScattering'], 'Benchmark',
+             'weakly scattering sphere')
+
+# So, this PT_DWBA on a weakly scattering sphere is also different from the benchmark
+# TS values. Hmmmm. Now look at the difference between the PT-DWBA and MSS model runs...
+
+mss = MSSModel()
+mm = rm.parameters('weakly scattering sphere')
+mm['f'] = bmf['Frequency_kHz']*1e3
+mm['theta'] = 90.0
+
+mss_ts = mss.calculate_ts(mm)
+
+plot_compare(mm['f'], dwba_ts, 'PT-DWBA',
+             mm['f'], mss_ts, 'MSS',
+             'weakly scattering sphere')
+
+########################################################
+# And then the same thing, but for the prolate spheroid
+m = rm.parameters('weakly scattering prolate spheroid')
+m['voxel_size'] = (0.0001, 0.0001, 0.0001)  # [m]
+x = np.arange(-m['b'], m['b'], m['voxel_size'][0])
+y = np.arange(-m['b'], m['b'], m['voxel_size'][0])
+z = np.arange(-m['a'], m['a'], m['voxel_size'][0])
+(X, Y, Z) = np.meshgrid(x, y, z)
+
+m['volume'] = ((X**2 + Y**2)/m['b']**2 + Z**2/m['a']**2) <= 1
+m['theta'] = 0
+m['phi'] = 0
+m['rho'] = [m['medium_rho'], m['target_rho']]
+m['c'] = [m['medium_c'], m['target_c']]
+
 dwba_ts = []
 for f in freqs:
     print(f/1e3)
@@ -255,19 +287,5 @@ for f in freqs:
     dwba_ts.append(pt.calculate_ts_single(**m))
 
 plot_compare(freqs, dwba_ts, 'PT-DWBA',
-             freqs, bmf['Sphere_WeaklyScattering'], 'Benchmark',
-             'weakly scattering sphere')
-
-# So, this PT_DWBA on a weakly scattering sphere is also different from the benchmark
-# TS values. Hmmmm. Now look at the difference between the PT-DWBA and MSS model runs...
-
-mss = MSSModel()
-mm = rm.parameters('weakly scattering sphere')
-mm['f'] = freqs
-mm['theta'] = 90.0
-
-mss_ts = mss.calculate_ts(mm)
-
-plot_compare(freqs, ts, 'PT-DWBA',
-             freqs, mss_ts, 'MSS',
-             'weakly scattering sphere')
+             freqs, bmf['ProlateSpheroid_WeaklyScattering'], 'Benchmark',
+             'weakly scattering prolate spheroid')

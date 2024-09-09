@@ -1,59 +1,8 @@
 """Miscellaneous utility functions."""
 from collections.abc import Iterable
 import numpy as np
-import pandas as pd
-import xarray as xr
 from scipy.special import spherical_jn, spherical_yn
 from collections import namedtuple
-
-
-def as_dataframe(params: dict) -> pd.DataFrame:
-    """Convert model parameters from dict form to a Pandas DataFrame.
-
-    Parameters
-    ----------
-    params :
-        A dictionary containing model parameters.
-
-    Returns
-    -------
-    :
-        Returns a Pandas DataFrame generated from the Cartesian product of all items in the
-        input dict. DataFrame column names are obtained from the dict keys.
-
-    """
-    # Use meshgrid to do the Cartesian product then create a Pandas DataFrame from that, having
-    # flattened the multidimensional arrays and using a dict to provide column names.
-    # This preserves the differing dtypes in each column compared to other ways of
-    # constructing the DataFrame).
-    return pd.DataFrame({k: t.flatten()
-                         for k, t in zip(params.keys(), np.meshgrid(*tuple(params.values())))})
-
-
-def as_dataarray(params: dict) -> xr.DataArray:
-    """Convert model parameters from dict form to a Xarray DataArray.
-
-    Parameters
-    ----------
-    params :
-        A dictionary containing model parameters.
-
-    Returns
-    -------
-    :
-        Returns a multi-dimensional DataArray generated from the Cartesian product of all items
-        in the input dict. The array is named `ts`, the values are initialised to `nan`, the
-        dimension names are the dict keys, and the coordinate variables are the dict values.
-
-    """
-    # Convert scalars to iterables so xarray is happy
-    for k, v in params.items():
-        if not isinstance(v, Iterable) or isinstance(v, str):
-            params[k] = [v]
-
-    sz = [len(v) for k, v in params.items()]
-    return xr.DataArray(data=np.full(sz, np.nan), coords=params, name='ts',
-                        attrs={'units': 'dB', 'dB_reference': '1 m^2'})
 
 
 def eta(m: int) -> int:

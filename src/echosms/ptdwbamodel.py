@@ -16,6 +16,7 @@ class PTDWBAModel(ScatterModelBase):
         self.boundary_types = 'weakly scattering'
         self.shapes = ['unrestricted voxel-based']
         self.max_ka = 20
+        self.no_expand_parameters = ['volume', 'voxel_size', 'rho', 'c']
 
     def calculate_ts_single(self, volume, theta, phi, f, voxel_size, rho, c, **kwargs):
         """Phase-tracking distorted-wave Born approximation scattering model.

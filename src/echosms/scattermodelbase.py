@@ -1,10 +1,10 @@
 """Base class for scatter model classes."""
 
 import abc
+from collections.abc import Iterable
 import pandas as pd
 import xarray as xr
 import numpy as np
-from .utils import as_dataframe
 
 
 class ScatterModelBase(abc.ABC):
@@ -30,6 +30,10 @@ class ScatterModelBase(abc.ABC):
         An approximate maximum ka value that will result in accurate target strength results. Note
         that ka is often not the only parameter that determines the accuracy of the model (e.g.,
         aspect ratio and incident angle can also affect the accuracy).
+    no_expand_parameters : list[str]
+        The model parameters that are not expanded into Pandas DataFrame columns or
+        Xarray DataArray coordinates. They will instead end up as a dict in the DataFrame or
+        DataArray `attrs` attribute.
 
     """
 
@@ -41,6 +45,7 @@ class ScatterModelBase(abc.ABC):
         self.boundary_types = []
         self.shapes = []
         self.max_ka = np.nan
+        self.no_expand_parameters = []
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -101,21 +106,29 @@ class ScatterModelBase(abc.ABC):
         """
         match data:
             case dict():
-                data_df = as_dataframe(data)
+                data_df = self.as_dataframe(data)
             case pd.DataFrame():
                 data_df = data
             case xr.DataArray():
                 data_df = data.to_dataframe().reset_index()
+                data_df.attrs = data.attrs
             case _:
                 raise ValueError(f'Data type of {type(data)} is not supported'
                                  ' (only dictionaries, Pandas DataFrames and'
                                  ' Xarray DataArrays are).')
 
+        # Get the non-expandable model parameters
+        p = data_df.attrs['parameters'] if 'parameters' in data_df.attrs else {}
+
+        # Note: the args argument in the apply call below requires a tuple. data_df.attrs is a
+        # dict and the usual behaviour is to make a tuple using the dict keys. The trailing comma
+        # and parenthesis instead causes the tuple to have one entry of the dict.
+
         if multiprocess:
             from mapply.mapply import mapply
-            ts = mapply(data_df, self.__ts_helper, axis=1)
+            ts = mapply(data_df, self.__ts_helper, args=(p,), axis=1)
         else:  # this uses just one CPU
-            ts = data_df.apply(self.__ts_helper, axis=1)
+            ts = data_df.apply(self.__ts_helper, args=(p,), axis=1)
 
         match data:
             case dict() if expand:
@@ -138,8 +151,89 @@ class ScatterModelBase(abc.ABC):
     def __ts_helper(self, *args):
         """Convert function arguments and call calculate_ts_single()."""
         p = args[0].to_dict()  # so we can use it for keyword arguments
+        p |= args[1]  # merge in the dict of non-expandable model parameters
         return self.calculate_ts_single(**p)
 
     @abc.abstractmethod
     def calculate_ts_single(self):
         """Calculate the TS for one parameter set."""
+
+    def __split_parameters(self, params):
+        """Split model parameters.
+
+        Splits model parameters into a dict of expandable items and a dict of non-expandable items
+
+        Parameters
+        ----------
+        params : dict
+            Dict of model parameters.
+
+        Returns
+        -------
+        : tuple(dict, dict)
+            The input parameter dict split into those parameters that can be expanded (index 0) and
+            those that cannot (index 1).
+        """
+        nexpand = {k: v for k, v in params.items() if k in self.no_expand_parameters}
+        expand = {k: v for k, v in params.items() if k not in self.no_expand_parameters}
+        return expand, nexpand
+
+    def as_dataarray(self, params: dict) -> xr.DataArray:
+        """Convert model parameters from dict form to a Xarray DataArray.
+
+        Parameters
+        ----------
+        params :
+            A dictionary containing model parameters.
+
+        Returns
+        -------
+        :
+            Returns a multi-dimensional DataArray generated from the Cartesian product of all
+            expandable items in the input dict. Non-expandable items are added to the DataArray
+            attrs property. Expandable items are those that can be sensibly expandeded into
+            DataArray coordinates. Not all models have non-expandable items.
+            The array is named `ts`, the values are initialised to `nan`, the
+            dimension names are the dict keys, and the coordinate variables are the dict values.
+
+        """
+        expand, nexpand = self.__split_parameters(params)
+
+        # Convert scalars to iterables so xarray is happy
+        for k, v in expand.items():
+            if not isinstance(v, Iterable) or isinstance(v, str):
+                expand[k] = [v]
+
+        sz = [len(v) for k, v in expand.items()]
+        return xr.DataArray(data=np.full(sz, np.nan), coords=expand, name='ts',
+                            attrs={'units': 'dB', 'dB_reference': '1 m^2',
+                                   'parameters': nexpand})
+
+    def as_dataframe(self, params: dict) -> pd.DataFrame:
+        """Convert model parameters from dict form to a Pandas DataFrame.
+
+        Parameters
+        ----------
+        params :
+            A dictionary containing model parameters.
+
+        Returns
+        -------
+        :
+            Returns a Pandas DataFrame generated from the Cartesian product of all expandable
+            items in the input dict. DataFrame column names are obtained from the dict keys.
+            Non-expandable items are added to the DataFrame attrs property. Expandable items are
+            those that can be sensibly expandeded into DataFrame columns. Not all models have
+            non-expandable items.
+
+        """
+        expand, nexpand = self.__split_parameters(params)
+
+        # Use meshgrid to do the Cartesian product then create a Pandas DataFrame from that, having
+        # flattened the multidimensional arrays and using a dict to provide column names.
+        # This preserves the differing dtypes in each column compared to other ways of
+        # constructing the DataFrame).
+        df = pd.DataFrame({k: t.flatten()
+                           for k, t in zip(expand.keys(), np.meshgrid(*tuple(expand.values())))})
+        df.attrs = {'parameters': nexpand}
+        return df

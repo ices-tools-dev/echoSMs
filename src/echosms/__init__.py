@@ -1,5 +1,5 @@
 """Setup the public API for echoSMs."""
-from .utils import wavenumber, eta, h1, prolate_swf, spherical_jnpp, as_dataframe, as_dataarray
+from .utils import wavenumber, eta, h1, prolate_swf, spherical_jnpp
 from .scattermodelbase import ScatterModelBase
 from .benchmarkdata import BenchmarkData
 from .referencemodels import ReferenceModels
@@ -14,5 +14,4 @@ from .sdwbamodel import SDWBAModel
 __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'MSSModel', 'PSMSModel', 'DCMModel', 'ESModel', 'PTDWBAModel',
            'DWBAModel', 'SDWBAModel',
-           'wavenumber', 'eta', 'h1', 'spherical_jnpp', 'prolate_swf',
-           'as_dataframe', 'as_dataarray']
+           'wavenumber', 'eta', 'h1', 'spherical_jnpp', 'prolate_swf']
