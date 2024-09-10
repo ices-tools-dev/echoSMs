@@ -228,9 +228,7 @@ def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float],
 
 
 def split_dict(d: dict, s: list) -> tuple[dict, dict]:
-    """Split a dict based on a list of keys.
-
-    Splits model parameters into a dict of expandable items and a dict of non-expandable items
+    """Split a dict into two dicts based on a list of keys.
 
     Parameters
     ----------
@@ -294,8 +292,7 @@ def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
     params :
         The model parameters.
 
-    no_expand
-    ---------
+    no_expand :
         Key values of the non-expandable model parameters in `params`.
 
     Returns
@@ -304,7 +301,7 @@ def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
         Returns a Pandas DataFrame generated from the Cartesian product of all expandable
         items in the input dict. DataFrame column names are obtained from the dict keys.
         Non-expandable items are added to the DataFrame attrs property. Expandable items are
-        those that can be sensibly expandeded into DataFrame columns. Not all models have
+        those that can be sensibly expanded into DataFrame columns. Not all models have
         non-expandable items.
 
     """
