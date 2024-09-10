@@ -265,7 +265,7 @@ def as_dataarray(params: dict, no_expand: list = []) -> xr.DataArray:
     :
         Returns a multi-dimensional DataArray generated from the Cartesian product of all
         expandable items in the input dict. Non-expandable items are added to the DataArray
-        attrs property. Expandable items are those that can be sensibly expandeded into
+        attrs property. Expandable items are those that can be sensibly expanded into
         DataArray coordinates. Not all models have non-expandable items.
         The array is named `ts`, the values are initialised to `nan`, the
         dimension names are the dict keys, and the coordinate variables are the dict values.
