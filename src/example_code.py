@@ -282,17 +282,14 @@ m['theta'] = 0
 m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
+m['f'] = bmf['Frequency_kHz']*1e3
 # remove unneeded parameters
 m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'b', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
 
-dwba_ts = []
-for f in freqs:
-    print(f/1e3)
-    m['f'] = f
-    # PTDWBAModel() doesn't yet support calling via the calculate_ts() call.
-    dwba_ts.append(pt.calculate_ts_single(**m))
+pt = PTDWBAModel()
+dwba_ts = pt.calculate_ts(m, multiprocess=True)
 
-plot_compare(freqs, dwba_ts, 'PT-DWBA',
-             freqs, bmf['ProlateSpheroid_WeaklyScattering'], 'Benchmark',
+plot_compare(m['f'], dwba_ts, 'PT-DWBA',
+             m['f'], bmf['ProlateSpheroid_WeaklyScattering'], 'Benchmark',
              'weakly scattering prolate spheroid')
