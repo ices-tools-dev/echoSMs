@@ -7,6 +7,7 @@ import numpy as np
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
+from echosms import as_dataframe, as_dataarray
 
 # Load the reference model defintiions
 rm = ReferenceModels()
@@ -176,7 +177,7 @@ m['f'] = np.linspace(12, 200, num=800) * 1e3  # [Hz]
 m['target_rho'] = np.arange(1020, 1030, 1)  # [kg/m^3]
 m['theta'] = [0, 90.0, 180.0]
 # can convert this to a dataframe
-models_df = mss.as_dataframe(m)
+models_df = as_dataframe(m, mss.no_expand_parameters)
 # could also make a DataFrame of parameters that are not just the combination of all input
 # parameters. This offers a way to specify a more tailored set of model parameters.
 
@@ -212,7 +213,7 @@ params = {'medium_rho': [1000, 1250, 1500],
 mss = MSSModel()
 
 # Instead of converting params to a dataframe, an xarray can be used.
-params_xa = mss.as_dataarray(params)
+params_xa = as_dataarray(params, mss.no_expand_parameters)
 
 # how many models runs would that be?
 print(f'Running {np.prod(params_xa.shape)} models!')
@@ -242,6 +243,9 @@ m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
 m['f'] = bmf['Frequency_kHz']*1e3
+# remove unneeded parameters
+m = {k: v for k, v in m.items()
+     if k not in ['boundary_type', 'a', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
 
 pt = PTDWBAModel()
 dwba_ts = pt.calculate_ts(m)
@@ -278,6 +282,9 @@ m['theta'] = 0
 m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
+# remove unneeded parameters
+m = {k: v for k, v in m.items()
+     if k not in ['boundary_type', 'a', 'b', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
 
 dwba_ts = []
 for f in freqs:

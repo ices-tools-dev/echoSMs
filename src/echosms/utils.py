@@ -1,6 +1,8 @@
 """Miscellaneous utility functions."""
 from collections.abc import Iterable
 import numpy as np
+import xarray as xr
+import pandas as pd
 from scipy.special import spherical_jn, spherical_yn
 from collections import namedtuple
 
@@ -223,3 +225,96 @@ def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float],
     S1d = p.s1dc * np.float_power(10.0, p.is1de)
 
     return R1, R2, R1d, R2d, S1, S1d, p.naccr, p.naccs
+
+
+def split_dict(d: dict, s: list) -> tuple[dict, dict]:
+    """Split a dict based on a list of keys.
+
+    Splits model parameters into a dict of expandable items and a dict of non-expandable items
+
+    Parameters
+    ----------
+    d : dict
+        Dict to be split.
+
+    s: list
+        List of dict keys to use for splitting `d`.
+
+    Returns
+    -------
+    : tuple(dict, dict)
+        The `input` dict split into two dicts based on the keys in `s`. The first tuple item
+        contains the items that do not have keys in `s`.
+    """
+    contains = {k: v for k, v in d.items() if k in s}
+    ncontains = {k: v for k, v in d.items() if k not in s}
+    return ncontains, contains
+
+
+def as_dataarray(params: dict, no_expand: list = []) -> xr.DataArray:
+    """Convert model parameters from dict form to a Xarray DataArray.
+
+    Parameters
+    ----------
+    params :
+        The model parameters.
+
+    no_expand :
+        Key values of the non-expandable model parameters in `params`.
+
+    Returns
+    -------
+    :
+        Returns a multi-dimensional DataArray generated from the Cartesian product of all
+        expandable items in the input dict. Non-expandable items are added to the DataArray
+        attrs property. Expandable items are those that can be sensibly expandeded into
+        DataArray coordinates. Not all models have non-expandable items.
+        The array is named `ts`, the values are initialised to `nan`, the
+        dimension names are the dict keys, and the coordinate variables are the dict values.
+
+    """
+    expand, nexpand = split_dict(params, no_expand)
+
+    # Convert scalars to iterables so xarray is happy
+    for k, v in expand.items():
+        if not isinstance(v, Iterable) or isinstance(v, str):
+            expand[k] = [v]
+
+    sz = [len(v) for k, v in expand.items()]
+    return xr.DataArray(data=np.full(sz, np.nan), coords=expand, name='ts',
+                        attrs={'units': 'dB', 'dB_reference': '1 m^2',
+                               'parameters': nexpand})
+
+
+def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
+    """Convert model parameters from dict form to a Pandas DataFrame.
+
+    Parameters
+    ----------
+    params :
+        The model parameters.
+
+    no_expand
+    ---------
+        Key values of the non-expandable model parameters in `params`.
+
+    Returns
+    -------
+    :
+        Returns a Pandas DataFrame generated from the Cartesian product of all expandable
+        items in the input dict. DataFrame column names are obtained from the dict keys.
+        Non-expandable items are added to the DataFrame attrs property. Expandable items are
+        those that can be sensibly expandeded into DataFrame columns. Not all models have
+        non-expandable items.
+
+    """
+    expand, nexpand = split_dict(params, no_expand)
+
+    # Use meshgrid to do the Cartesian product then create a Pandas DataFrame from that, having
+    # flattened the multidimensional arrays and using a dict to provide column names.
+    # This preserves the differing dtypes in each column compared to other ways of
+    # constructing the DataFrame).
+    df = pd.DataFrame({k: t.flatten()
+                       for k, t in zip(expand.keys(), np.meshgrid(*tuple(expand.values())))})
+    df.attrs = {'parameters': nexpand}
+    return df
