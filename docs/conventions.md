@@ -2,7 +2,7 @@
 
 ## Units
 
-We use SI units for the model parameters, except for angles (we use degrees instead of radians) and target strength (we use deciBels).  All model code must accept inputs and produce results using the units below. If the model calculations use different units internally, the code should internally convert between the them.
+We use SI units for the model parameters, except for angles (we use degrees instead of radians) and target strength (we use deciBels).  All model code must accept inputs and produce results using the units below. If the model calculations use different units internally, the code should internally convert between them.
 
 | Parameter | Units | Notes |
 |-----------|-------|--|
@@ -15,7 +15,7 @@ We use SI units for the model parameters, except for angles (we use degrees inst
 
 ## Coordinate systems
 
-A single coordinate system should be used for all models provided by echoSMs. The aim is to ease the comparison of results between different models.
+A single coordinate system is used for all models implemented by echoSMs. The aim is to ease the comparison of results between different models.
 
 The right-handed spherical coordinate system as defined by ISO 80000-2[^1] is to be used, as illustrated below. The organism should lie along the _z_-axis with the positive _x_-axis extending above the dorsal surface of the organism:
 
