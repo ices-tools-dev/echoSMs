@@ -19,4 +19,4 @@ EchoSMs documentation is available [here](https://ices-tools-dev.github.io/echoS
 
 ## Contributing
 
-We welcome all contributions to echoSMs, be it code, test cases, bug reports, discussion of models, etc. Guidance on this is available in the echoSMs [documentation](https://ices-tools-dev.github.io/echoSMs/#contributing-to-echosms/).
+We welcome all contributions to echoSMs, be it code, test cases, bug reports, discussion of models, etc. Guidance on this is available in the echoSMs [documentation](https://ices-tools-dev.github.io/echoSMs/#contributing-to-echosms).
