@@ -17,7 +17,7 @@ The initial set of acoustic scattering models will be those used in [Jech et al.
 1. Exact solutions and canonical shapes ([see table below][exact-solutions]),
 2. Approximate analytical models applied to canonical shapes ([see table below][approximate-analytical-models-and-shapes]),
 3. Approximate analytical models applied to complex shapes approximating biological targets, such as fish and zooplankton,
-4. Mumerical models applied to canonical shapes and biological targets (this phase will depend on time and funding).
+4. Numerical models applied to canonical shapes and biological targets (this phase will depend on time and funding).
 
 ### Exact Solutions
 
