@@ -21,7 +21,7 @@ We use SI units for the model parameters for model inputs and outputs, except fo
 
 A single coordinate system should be used for all models provided by echoSMs. The aim is to ease the comparison of results between different models.
 
-The right-handed spherical coordinate system as defined by ISO 80000-2[^1] is to be used, where organisms are oriented such that θ corresponds to pitch and ɸ to roll, as illustrated below, where the organism lies along the _z_-axis and the positive _x_-axis extends above the organism:
+The right-handed spherical coordinate system as defined by ISO 80000-2[^1] is to be used, where organisms are oriented such that _θ_ corresponds to pitch and _ɸ_ to roll, as illustrated below, where the organism lies along the _z_-axis and the positive _x_-axis extends above the organism:
 
 <!--- This code will include an html file, originally used to
 include a live 3D view of the coordinate system, but there are
@@ -33,7 +33,7 @@ issues with the html so for the moment a 2D image is used.
 
 ![The coordinate system](resources/coordinate_system.svg){:style="height:400px;width400px"}
 
-The definitions are such that _θ_ values of 0°, 90°, and 180° correspond to organism pitches of head on, dorsal, and tail on, respectively, and positive values of _ɸ_ indicate a roll to starboard. All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.
+The definitions are such that _θ_ values of 0°, 90°, and 180° correspond to acoustic wave incidence angles of head on, dorsal, and tail on, respectively, and positive values of _ɸ_ indicate incidence angles from the positive _y_-axis side of the organism. Note that the definition of these angles is in terms of the acoustic wave, not the orientation of the organism. All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.
 
 ## Code style
 
