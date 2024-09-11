@@ -29,6 +29,8 @@ issues with the html so for the moment a 2D image is used.
 
 ![The coordinate system](resources/coordinate_system.svg){:style="height:400px;width400px"}
 
+Note: the figure above is not correct (see [issue 26](https://github.com/ices-tools-dev/echoSMs/issues/26)).
+
 The definitions are such that for _ɸ_=0°, _θ_ values of 0°, 90°, and 180° correspond to acoustic wave incidence angles of head on, dorsal, and tail on, respectively. Note that the definition of these angles is in terms of the acoustic wave, not the orientation of the organism (which should always be as shown in the illustration).
 
 All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.
