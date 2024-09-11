@@ -27,7 +27,7 @@ class PTDWBAModel(ScatterModelBase):
         Warning
         -------
         Input parameters `theta`, `phi`, and the orientation of `volume` do not currently follow the
-        echoSMs [coordinate system](contributing.md#coordinate-systems).
+        echoSMs [coordinate system](conventions.md#coordinate-systems).
 
         Parameters
         ----------

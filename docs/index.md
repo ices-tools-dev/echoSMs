@@ -10,6 +10,12 @@ Quantitative interpretation of acoustic echograms requires software expertise to
 
 The goal of this project is to make acoustic scattering models available to fisheries and plankton acoustic scientists via the world wide web. By providing the models in an open-access and open-source software language (e.g, Python, R) and providing morphological and anatomical data in open data formats (e.g., HDF5, relational databases), the proper and appropriate use of these models can extend to the entire fisheries and plankton acoustics’ community.
 
+## Contributing to echoSMs
+
+We welcome all contributions to echoSMs, be it code, test cases, bug reports, discussion of models, etc. Please use the [github](https://github.com/ices-tools-dev/echoSMs) facilities for this (i.e., [issues](https://github.com/ices-tools-dev/echoSMs/issues), [pull requests](https://github.com/ices-tools-dev/echoSMs/pulls), and [discussions](https://github.com/ices-tools-dev/echoSMs/discussions)). We are also happy to accept directly code that we can add to echoSMs on your behalf.
+
+An objective of echoSMs is to provide scattering models in a form that is easy to access, use, and compare to other models. To help with that, we [specify][conventions] model parameter units, angle conventions, and required model outputs that code contributions should support. We also suggest coding conventions that should be followed.
+
 ## Scattering Models
 
 The initial set of acoustic scattering models will be those used in [Jech et al. (2015)](https://doi.org/10.1121/1.4937607). Acoustic model development will follow 3–4 phases:
