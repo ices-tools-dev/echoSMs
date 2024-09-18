@@ -3,7 +3,8 @@
 import numpy as np
 from scipy.integrate import quad
 from .scattermodelbase import ScatterModelBase
-from .utils import prolate_swf
+from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann
+
 
 class PSMSModel(ScatterModelBase):
     """Prolate spheroidal modal series (PSMS) scattering model."""
@@ -58,7 +59,6 @@ class PSMSModel(ScatterModelBase):
 
         References
         ----------
-
         Furusawa, M. (1988). "Prolate spheroidal models for predicting general
             trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
         Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
@@ -79,74 +79,42 @@ class PSMSModel(ScatterModelBase):
             hc = target_c / medium_c
             rh = target_rho / medium_rho
 
-        # The wavenumber for the surrounding fluid
-        k0 = 2*np.pi*f/medium_c
-        # The semi-focal length of the prolate spheroid (same as for an ellipse)
-        q = np.sqrt(a*a - b*b)
-        # An alternative to ka is kq, the wavenumber multiplied by the focal length
-        h0 = k0 * q
-        # Epsilon is a characteristic of the spheroid, whereby a = xi0 * q,
-        # hence converting this to use a and b gives:
-        xi0 = (1.0 - (b/a)**2)**(-.5)
-        # Phi, the port/starboard angle is fixed for this code
-        phi_inc = np.pi  # radians, incident direction
-        phi_bs = 0  # radians, backscattered direction
+        xiw = (1.0 - (b/a)**2)**(-.5)
+        q = a/xiw  # semi-focal length
 
-        theta = np.deg2rad(theta)
+        kw = wavenumber(medium_c, f)
+        hw = kw*q
+
+        # Phi, the port/starboard angle is fixed for this code
+        phi_inc = np.pi  # incident direction
+        phi_sca = np.pi + phi_inc  # scattered direction
+
+        theta_inc = np.deg2rad(theta)  # incident direction
+        theta_sca = np.pi - theta_inc  # scattered direction
 
         # Approximate limits on the summations
-        m_max = int(np.ceil(2*k0*b))
-        n_max = int(m_max + np.ceil(h0/2))
+        m_max = int(np.ceil(2*kw*b))
+        n_max = int(m_max + np.ceil(hw/2))
 
-        # Terms in the summation smaller than this will cause the iteration to
-        # stop. Even and odd values of (m-n) are treated separately.
-        # The value is quite low as some of the summations start out low then rise
-        # quite a lot. This value will get rid of the summations that don't add
-        # much.
-        tol = -50  # [dB]
-        check_after = 20  # iterations
-
-        f = 0.0
-        f_all = []
-        idx = 1
+        f_sc = 0.0
         for m in range(m_max+1):
-            # epsilon is the Neumann factor, a rather obtuse way of saying this:
-            epsilon = 1 if m == 0 else 2
-
-            # reset the tolerance flags for the new m
-            even_reached_tol = False
-            odd_reached_tol = False
-
+            epsilon_m = Neumann(m)
             for n in range(m, n_max+1):
-                even = (m-n) % 2 == 0
-
-                if (even and even_reached_tol) or (not even and odd_reached_tol):
-                    continue
-
-                # call prolate_swf() here
-                s_bs = pro_ang1(m, n, h0, np.cos(theta))[0]
-                s_inc = pro_ang1(m, n, h0, np.cos(np.pi - theta))[0]
-                # print(m,n,h0)
-                # print(s_bs, s_inc)
+                Smn_inc, _ = pro_ang1(m, n, hw, np.cos(theta_inc))
+                Smn_sca, _ = pro_ang1(m, n, hw, np.cos(theta_sca))
                 match boundary_type:
                     case 'fluid filled':
-                        # r_type1A, dr_type1A, r_type2A, dr_type2A = rswfp(m, n, h0, xi0, 3)
-                        # r_type1B, dr_type1B, _, _ = rswfp(m, n, h0/hc, xi0, 3)
-                        # print(m,n,h0,xi0,flush=True)
-                        r_type1A, dr_type1A = pro_rad1(m, n, h0, xi0)
-                        r_type2A, dr_type2A = pro_rad2(m, n, h0, xi0)
-                        r_type1B, dr_type1B = pro_rad1(m, n, h0/hc, xi0)
+                        r_type1A, dr_type1A = pro_rad1(m, n, hw, xiw)
+                        r_type2A, dr_type2A = pro_rad2(m, n, hw, xiw)
+                        r_type1B, dr_type1B = pro_rad1(m, n, hw/hc, xiw)
 
                         eeA = r_type1A - rh*r_type1B/dr_type1B*dr_type1A
                         eeB = eeA + 1j*(r_type2A - rh*r_type1B/dr_type1B*dr_type2A)
-                        aa = -eeA/eeB  # Furusawa (1988) Eq. 5 p 15
+                        Amn = -eeA/eeB  # Furusawa (1988) Eq. 5 p 15
                     case 'pressure release':
-                        # r_type1, _, r_type2, _ = rswfp(m, n, h0, xi0, 3)
-                        r_type1, _ = pro_rad1(m, n, h0, xi0)
-                        r_type2, _ = pro_rad2(m, n, h0, xi0)
-                        # print(m,n,h0,xi0)
-                        # print(r_type1, r_type2)
-                        aa = -r_type1/(r_type1 + 1j*r_type2)
+                        r_type1, _ = pro_rad1(m, n, hw, xiw)
+                        r_type2, _ = pro_rad2(m, n, hw, xiw)
+                        Amn = -r_type1/(r_type1 + 1j*r_type2)
                     case 'fixed rigid':
                         pass  # see eqn of (3) of Furusawa, 1988
 
@@ -167,31 +135,12 @@ class PSMSModel(ScatterModelBase):
                 #   Tables (Dover, New York), 10th ed.
 
                 # Matlab code uses quadgk as plain quad didn't work....
-                n_mn = quad(PSMSModel.aswfa2, -1, 1, args=(m, n, h0), epsrel=1e-5)
+                n_mn = quad(PSMSModel.aswfa2, -1, 1, args=(m, n, hw), epsrel=1e-5)
 
-                x = epsilon / n_mn[0] * s_inc * aa * s_bs * np.cos(m*(phi_bs - phi_inc))
+                f_sc += epsilon_m / n_mn[0]\
+                    * Smn_inc * Amn * Smn_sca * np.cos(m*(phi_sca - phi_inc))
 
-                f += x
-
-                tsx = 20*np.log10(abs(2/(1j*k0)*x) / (2*a))
-
-                if n > (m+check_after):
-                    if even and (tsx < tol):
-                        even_reached_tol = True
-                    elif not even and (tsx < tol):
-                        odd_reached_tol = True
-
-                # Apply the final factor and normalise to make it independent of
-                # the physical size of the spheroid
-                f_all.append(abs(2.0 / (1j*k0) * f) / (2.0*a))
-                idx = idx + 1
-
-            # end the iterations if the overall TS change is small
-            if idx >= check_after:
-                if (20*np.log10(f_all[-1]) - 20*np.log10(f_all[-2])) < 0.01:
-                    break
-
-        return 20*np.log10(2*a*f_all[-1])
+        return 20*np.log10(-2j / kw * f_sc)
 
     @staticmethod
     def aswfa2(eta, m, n, h0):
