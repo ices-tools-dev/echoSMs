@@ -140,7 +140,7 @@ class PSMSModel(ScatterModelBase):
                 f_sc += epsilon_m / n_mn[0]\
                     * Smn_inc * Amn * Smn_sca * np.cos(m*(phi_sca - phi_inc))
 
-        return 20*np.log10(-2j / kw * f_sc)
+        return 20*np.log10(np.abs(-2j / kw * f_sc))
 
     @staticmethod
     def aswfa2(eta, m, n, h0):
