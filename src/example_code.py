@@ -22,7 +22,7 @@ bmt = bm.angle_dataset
 
 def plot_compare(f1, ts1, label1, f2, ts2, label2, title):
     """Plot together two ts results TS."""
-    jech_index = np.mean(np.abs(np.array(ts1) - np.array(ts2)))
+    jech_index = np.nanmean(np.abs(np.array(ts1) - np.array(ts2)))
     # Plot the mss model and benchmark results
     fig, axs = plt.subplots(2, 1, sharex=True)
     axs[0].plot(f1/1e3, ts1, label=label1)
