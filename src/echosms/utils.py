@@ -5,9 +5,13 @@ import xarray as xr
 import pandas as pd
 from scipy.special import spherical_jn, spherical_yn
 from collections import namedtuple
+from spheroidalwavefunctions import prolate_swf
+
+swf_t = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
+                           'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
 
 
-def eta(m: int) -> int:
+def Neumann(m: int) -> int:
     """Neumann number.
 
     Parameters
@@ -105,128 +109,6 @@ def spherical_jnpp(n: int, z: float) -> float:
     return 1./z**2 * ((n**2-n-z**2)*spherical_jn(n, z) + 2.*z*spherical_jn(n+1, z))
 
 
-def prolate_swf(m: int, lnum: int, c: float, xi: float, eta: Iterable[float],
-                norm=False) -> tuple:
-    """Calculate prolate spheroidal wave function values.
-
-    Parameters
-    ----------
-    m : int
-        Order m
-    lnum : int
-        Number of values to calculate for degree l (ell). Will provide
-        values of l = m, m+1, m+2, ..., m+lnum-1
-    c : float
-        Size parameter, equal to kd/2 where k is the wavenumber and d the
-        prolate spheroid interfocal distance
-    xi : float
-        Radial coordinate value to calculate the prolate radial function at [°].
-    eta : iterable[float]
-        Values of angular coordinate eta for which the prolate spheroidal angular
-        function will be calculated.
-    norm: bool
-        If `True` the angular functions of the first kind and their derivatives
-        are normalised by the square root of the normalization of the corresponding
-        associated Legendre function. If `False`, the angular functions have the
-        same norm as the corresponding associated Legendre function (that is,
-        the Meixner and Schafke normalization scheme). This norm becomes very
-        large as `m` becomes large.
-    angular : bool
-        Whether to return values for the angular functions.
-    radial : bool
-        Whether to return values for the radial functions.
-    angular_derivative : bool
-        Whether to return values for the derivative of the angular functions.
-    radial_derivative : bool
-        Whether to return values for the derivative of the radial functions.
-
-    Returns
-    -------
-    R1 : ndarray[float]
-        Radial prolate spheroidal values of the first kind for all values of l (ell).
-    R2 : ndarray[float]
-        Radial prolate spheroidal values of the second kind for all values of l (ell).
-    R1d : ndarray[float]
-        Derivative of the radial prolate spheroidal values of the first kind for all
-        values of l (ell).
-    R2d : ndarray[float]
-        Derivative of the radial prolate spheroidal values of the second kind for all
-        values of l (ell).
-    S1 : ndarray[float]
-        Angular prolate spheroidal values of the first kind for all values of l (ell)
-        and eta.
-    S1d : ndarray[float]
-        Derivative of the angular prolate spheroidal values of the first kind for
-        all values of l (ell) and eta.
-    Racc : ndarray[int]
-        Estimated accuracy of the radial values (number of significant digits) for all
-        values of l (ell).
-    Sacc : ndarray[int]
-        Estimated accuracy of the angular values (number of significant digits) for
-        all values of l (ell) and eta.
-
-    Raises
-    ------
-    ValueError
-        If any input arguments are invalid.
-
-    Notes
-    -----
-    This method encapsulates the prolate spheroidal wave function code for non complex
-    arguments (van Buren & Boisvert, 2002, and van Buren & Boisvert, 2024), available on
-    [github](https://github.com/MathieuandSpheroidalWaveFunctions). This code is in Fortran90
-    and was interfaced to Python using `numpy.f2py` then wrapped with the current method to
-    provide a convenient interface for use in the [`PSMSModel`][psmsmodel] class.
-
-    References
-    ----------
-    Van Buren, A. L., & Boisvert, J. E. (2002). Accurate calculation of prolate spheroidal
-    radial functions of the first kind and their first derivatives. Quarterly of Applied
-    Mathematics, 60(3), 589-599. <https://doi.org/10.1090/qam/1914443>
-
-    Van Buren, A. L., & Boisvert, J. E. (2004). Improved Calculation of Prolate Spheroidal
-    Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
-    Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
-
-    """
-    # no point importing this unless we need this function.
-    from spheroidalwavefunctions import prolate_swf
-
-    # TODO: more input validity checking
-    if c < 0:
-        raise ValueError('c must be not be negative.')
-
-    if m < 0:
-        raise ValueError('m must not be negative')
-
-    if lnum < 0:
-        raise ValueError('lnum must not be negative.')
-
-    if xi < 0.0:
-        raise ValueError('xi must not be negative.')
-
-    # if xi-1 == 0, then ioprad must be set to 1 (or 0) since r2 and r2d are infinite
-    ioprad = 1 if xi-1.0 < 1e-7 else 2
-
-    a = prolate_swf(c=c, m=m, lnum=lnum, x1=xi-1.0, ioprad=ioprad, iopang=2,
-                    iopnorm=int(norm), arg=eta)
-
-    swf = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
-                             'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
-
-    p = swf._make(a)
-
-    # convert characteristic and exponent form of the values into floats.
-    R1 = p.r1c * np.float_power(10.0, p.ir1e)
-    R2 = p.r2c * np.float_power(10.0, p.ir2e)
-    R1d = p.r1dc * np.float_power(10.0, p.ir1de)
-    R2d = p.r2dc * np.float_power(10.0, p.ir2de)
-    S1 = p.s1c * np.float_power(10.0, p.is1e)
-    S1d = p.s1dc * np.float_power(10.0, p.is1de)
-
-    return R1, R2, R1d, R2d, S1, S1d, p.naccr, p.naccs
-
-
 def split_dict(d: dict, s: list) -> tuple[dict, dict]:
     """Split a dict into two dicts based on a list of keys.
 
@@ -315,3 +197,163 @@ def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
                        for k, t in zip(expand.keys(), np.meshgrid(*tuple(expand.values())))})
     df.attrs = {'parameters': nexpand}
     return df
+
+
+def pro_ang1(m: int, n: int, c: float, x: float) -> tuple[float, float]:
+    """Prolate spheroidal angular function of the first kind and derivative.
+
+    Calculates the prolate spheroidal angular function of the first kind and its'
+    derivative with respect to `x`.
+
+    Parameters
+    ----------
+    m :
+        The order parameter.
+    n :
+        The degree parameter (≥ `m`).
+    c :
+        The size parameter.
+    x :
+        The eta parameter.
+
+    Returns
+    -------
+    :
+        The value of the prolate spheroidal angular function and its' derivative.
+
+    Notes
+    -----
+    This method uses the prolate spheroidal wave function code for non complex
+    arguments (van Buren & Boisvert, 2002, and van Buren & Boisvert, 2024), available on
+    [github](https://github.com/MathieuandSpheroidalWaveFunctions). This code is in Fortran90
+    and was interfaced to Python using `numpy.f2py` then wrapped with the current method to
+    provide a similar calling convention as the Scipy function of the same name.
+
+    References
+    ----------
+    Van Buren, A. L., & Boisvert, J. E. (2002). Accurate calculation of prolate spheroidal
+    radial functions of the first kind and their first derivatives. Quarterly of Applied
+    Mathematics, 60(3), 589-599. <https://doi.org/10.1090/qam/1914443>
+
+    Van Buren, A. L., & Boisvert, J. E. (2004). Improved Calculation of Prolate Spheroidal
+    Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
+    Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
+    """
+    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=0.0, ioprad=0, iopang=2, iopnorm=0, arg=[x])
+    p = swf_t._make(a)
+    s = p.s1c * np.float_power(10.0, p.is1e)
+    sp = p.s1dc * np.float_power(10.0, p.is1de)
+
+    # print(m,n,c,x,s, sp)
+
+    return s[n-m][0], sp[n-m][0]
+
+
+def pro_rad1(m: int, n: int, c: float, x: float) -> tuple[float, float]:
+    """Prolate spheroidal radial function of the first kind and derivative.
+
+    Calculates the prolate spheroidal radial function of the first kind and its'
+    derivative with respect to `x`.
+
+    Parameters
+    ----------
+    m :
+        The order parameter.
+    n :
+        The degree parameter (≥ `m`).
+    c :
+        The size parameter.
+    x :
+        The radial coordinate.
+
+    Returns
+    -------
+    :
+        The value of the prolate spheroidal radial function and its' derivative.
+
+    Notes
+    -----
+    This method uses the prolate spheroidal wave function code for non complex
+    arguments (van Buren & Boisvert, 2002, and van Buren & Boisvert, 2024), available on
+    [github](https://github.com/MathieuandSpheroidalWaveFunctions). This code is in Fortran90
+    and was interfaced to Python using `numpy.f2py` then wrapped with the current method to
+    provide a similar calling convention as the Scipy function of the same name.
+
+    References
+    ----------
+    Van Buren, A. L., & Boisvert, J. E. (2002). Accurate calculation of prolate spheroidal
+    radial functions of the first kind and their first derivatives. Quarterly of Applied
+    Mathematics, 60(3), 589-599. <https://doi.org/10.1090/qam/1914443>
+
+    Van Buren, A. L., & Boisvert, J. E. (2004). Improved Calculation of Prolate Spheroidal
+    Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
+    Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
+    """
+    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=x-1.0, ioprad=1, iopang=0, iopnorm=0, arg=[0])
+    p = swf_t._make(a)
+    s = p.r1c * np.float_power(10.0, p.ir1e)
+    sp = p.r1dc * np.float_power(10.0, p.ir1de)
+
+    # print(m,n,c,x,s, sp)
+
+    return s[n-m], sp[n-m]
+
+
+def pro_rad2(m, n, c, x):
+    """Prolate spheroidal radial function of the second kind and derivative.
+
+    Calculates the prolate spheroidal radial function of the second kind and its'
+    derivative with respect to `x`.
+
+    Parameters
+    ----------
+    m :
+        The order parameter.
+    n :
+        The degree parameter (≥ `m`).
+    c :
+        The size parameter.
+    x :
+        The radial coordinate.
+
+    Returns
+    -------
+    :
+        The value of the prolate spheroidal radial function and its' derivative.
+
+    Notes
+    -----
+    This method uses the prolate spheroidal wave function code for non complex
+    arguments (van Buren & Boisvert, 2002, and van Buren & Boisvert, 2024), available on
+    [github](https://github.com/MathieuandSpheroidalWaveFunctions). This code is in Fortran90
+    and was interfaced to Python using `numpy.f2py` then wrapped with the current method to
+    provide a similar calling convention as the Scipy function of the same name.
+
+    References
+    ----------
+    Van Buren, A. L., & Boisvert, J. E. (2002). Accurate calculation of prolate spheroidal
+    radial functions of the first kind and their first derivatives. Quarterly of Applied
+    Mathematics, 60(3), 589-599. <https://doi.org/10.1090/qam/1914443>
+
+    Van Buren, A. L., & Boisvert, J. E. (2004). Improved Calculation of Prolate Spheroidal
+    Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
+    Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
+    """
+    ioprad = 1 if x-1.0 < 1e-10 else 2
+
+    # Add +2 to lnum instead of +1 as it exposes a bug in the Fortran code - if n = 0, zeros
+    # are returned instead of the correct value.
+    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=x-1.0,
+                           ioprad=ioprad, iopang=0, iopnorm=0, arg=[0])
+    p = swf_t._make(a)
+
+    if ioprad == 1:
+        s = np.inf
+        sp = np.inf
+    else:
+        s = p.r2c * np.float_power(10.0, p.ir2e)
+        sp = p.r2dc * np.float_power(10.0, p.ir2de)
+
+    # print(m,n,c,x,s, sp)
+
+    return s[n-m], sp[n-m]
