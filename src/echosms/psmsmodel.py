@@ -122,9 +122,7 @@ class PSMSModel(ScatterModelBase):
                 # 21.7.11 in Abramowitz & Stegun (10th printing) as the
                 # Meixner-Schãfke normalisation scheme. Note that the RHS of
                 # 21.7.11 doesn't give correct results compared to doing the actual
-                # integration. Note also that the plain Matlab quad() function
-                # fails to give correct answers also in some cases, so the quadgk()
-                # function is used.
+                # integration.
                 #
                 # Yeh, C. (1967). "Scattering of Acoustic Waves by a Penetrable
                 #   Prolate Spheroid I Liquid Prolate Spheroid," J. Acoust. Soc.
@@ -134,8 +132,7 @@ class PSMSModel(ScatterModelBase):
                 #   Mathematical Functions with Formulas, Graphs, and Mathematical
                 #   Tables (Dover, New York), 10th ed.
 
-                # Matlab code uses quadgk as plain quad didn't work....
-                n_mn = quad(PSMSModel.aswfa2, -1, 1, args=(m, n, hw), epsrel=1e-5)
+                n_mn = quad(PSMSModel._aswfa2, -1.0, 1.0, args=(m, n, hw), epsrel=1e-5)
 
                 f_sc += epsilon_m / n_mn[0]\
                     * Smn_inc * Amn * Smn_sca * np.cos(m*(phi_sca - phi_inc))
@@ -143,7 +140,6 @@ class PSMSModel(ScatterModelBase):
         return 20*np.log10(np.abs(-2j / kw * f_sc))
 
     @staticmethod
-    def aswfa2(eta, m, n, h0):
-        """Need eta argument to be first for use in quad()."""
-        # Calculates the square of S_mn for the given values of eta.
-        return pro_ang1(m, n, h0, eta)[0]**2
+    def _aswfa2(x, m, n, h0):
+        """Just pro_ang1()**2, but with x as the first parameter for use with `quad()`."""
+        return pro_ang1(m, n, h0, x)[0]**2
