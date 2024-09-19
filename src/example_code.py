@@ -58,7 +58,7 @@ models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           ('gas filled finite cylinder', 'Cylinder_Gas'),
           ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
           # ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-          ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+          # ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
           # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
           # ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),
           ]
