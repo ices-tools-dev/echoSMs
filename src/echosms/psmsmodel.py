@@ -1,7 +1,7 @@
 """A class that provides the prolate spheroidal modal series scattering model."""
 
 import numpy as np
-from scipy.integrate import quad
+from math import factorial
 from .scattermodelbase import ScatterModelBase
 from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann
 
@@ -65,25 +65,19 @@ class PSMSModel(ScatterModelBase):
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261–265.
         """
-        match boundary_type:
-            case 'pressure release' | 'fluid filled':
-                pass
-            case 'fixed rigid':
-                raise ValueError(f'Model type "{boundary_type}" has not yet been implemented '
-                                 f'for the {self.long_name} model.')
-            case _:
-                raise ValueError(f'The {self.long_name} model does not support '
-                                 f'a model type of "{boundary_type}".')
-
-        if boundary_type == 'fluid filled':
-            hc = target_c / medium_c
-            rh = target_rho / medium_rho
+        if boundary_type not in self.boundary_types:
+            raise ValueError(f'The {self.long_name} model does not support '
+                             f'a model type of "{boundary_type}".')
 
         xiw = (1.0 - (b/a)**2)**(-.5)
         q = a/xiw  # semi-focal length
 
         kw = wavenumber(medium_c, f)
         hw = kw*q
+
+        if boundary_type == 'fluid filled':
+            g = target_rho / medium_rho
+            ht = wavenumber(target_c, f)*q
 
         # Phi, the port/starboard angle is fixed for this code
         phi_inc = np.pi  # incident direction
@@ -100,46 +94,44 @@ class PSMSModel(ScatterModelBase):
         for m in range(m_max+1):
             epsilon_m = Neumann(m)
             for n in range(m, n_max+1):
-                Smn_inc, _ = pro_ang1(m, n, hw, np.cos(theta_inc))
-                Smn_sca, _ = pro_ang1(m, n, hw, np.cos(theta_sca))
+                Smn_inc, _ = pro_ang1(m, n, hw, np.cos(theta_inc), norm=True)
+                Smn_sca, _ = pro_ang1(m, n, hw, np.cos(theta_sca), norm=True)
+                # The Meixner-Schäfke normalisation scheme for the angular function of the first
+                # kind. Refer to eqn 21.7.11 in Abramowitz, M., and Stegun, I. A. (1964).
+                # Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables
+                # (Dover, New York), 10th ed.
+                n_mn = 2/(2*n+1) * factorial(n+m) / factorial(n-m)
+                # since n_mn and the angular functions can be very large for large m,
+                # structure things to reduce roundoff errors.
+                ss = (Smn_inc / n_mn) * Smn_sca
+
                 match boundary_type:
                     case 'fluid filled':
-                        r_type1A, dr_type1A = pro_rad1(m, n, hw, xiw)
-                        r_type2A, dr_type2A = pro_rad2(m, n, hw, xiw)
-                        r_type1B, dr_type1B = pro_rad1(m, n, hw/hc, xiw)
+                        # Note: we can implement the simplier equations if hw is similar to ht,
+                        # but that only applies to weakly scattering conditions. The gas-filled
+                        # condition does not meet that, so we have two paths here. The simplified
+                        # equations are quicker, so it is worth to do.
+                        R1w, dR1w = pro_rad1(m, n, hw, xiw)
+                        R1t, dR1t = pro_rad1(m, n, ht, xiw)
+                        R2w, dR2w = pro_rad2(m, n, hw, xiw)
 
-                        eeA = r_type1A - rh*r_type1B/dr_type1B*dr_type1A
-                        eeB = eeA + 1j*(r_type2A - rh*r_type1B/dr_type1B*dr_type2A)
-                        Amn = -eeA/eeB  # Furusawa (1988) Eq. 5 p 15
+                        R3w = R1w + 1j*R2w
+                        dR3w = dR1w + 1j*dR2w
+                        if abs((hw - ht)/ht) <= 0.1:
+                            E1 = R1w - g * R1t / dR1t * dR1w
+                            E3 = R3w - g * R1t / dR1t * dR3w
+                            Amn = -E1/E3
+                        else:
+                            Amn = 1.0
                     case 'pressure release':
-                        r_type1, _ = pro_rad1(m, n, hw, xiw)
-                        r_type2, _ = pro_rad2(m, n, hw, xiw)
-                        Amn = -r_type1/(r_type1 + 1j*r_type2)
+                        R1w, _ = pro_rad1(m, n, hw, xiw)
+                        R2w, _ = pro_rad2(m, n, hw, xiw)
+                        Amn = -R1w/(R1w + 1j*R2w)
                     case 'fixed rigid':
-                        pass  # see eqn of (3) of Furusawa, 1988
+                        _, dR1w = pro_rad1(m, n, hw, xiw)
+                        _, dR2w = pro_rad2(m, n, hw, xiw)
+                        Amn = -dR1w/(dR1w + 1j*dR2w)
 
-                # This definition of the norm of S is in Yeh (1967), and is equation
-                # 21.7.11 in Abramowitz & Stegun (10th printing) as the
-                # Meixner-Schãfke normalisation scheme. Note that the RHS of
-                # 21.7.11 doesn't give correct results compared to doing the actual
-                # integration.
-                #
-                # Yeh, C. (1967). "Scattering of Acoustic Waves by a Penetrable
-                #   Prolate Spheroid I Liquid Prolate Spheroid," J. Acoust. Soc.
-                #   Am. 42, 518-521.
-                #
-                # Abramowitz, M., and Stegun, I. A. (1964). Handbook of
-                #   Mathematical Functions with Formulas, Graphs, and Mathematical
-                #   Tables (Dover, New York), 10th ed.
-
-                n_mn = quad(PSMSModel._aswfa2, -1.0, 1.0, args=(m, n, hw), epsrel=1e-5)
-
-                f_sc += epsilon_m / n_mn[0]\
-                    * Smn_inc * Amn * Smn_sca * np.cos(m*(phi_sca - phi_inc))
+                f_sc += epsilon_m * ss * Amn * np.cos(m*(phi_sca - phi_inc))
 
         return 20*np.log10(np.abs(-2j / kw * f_sc))
-
-    @staticmethod
-    def _aswfa2(x, m, n, h0):
-        """Just pro_ang1()**2, but with x as the first parameter for use with `quad()`."""
-        return pro_ang1(m, n, h0, x)[0]**2

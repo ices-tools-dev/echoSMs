@@ -57,9 +57,10 @@ models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
           ('gas filled finite cylinder', 'Cylinder_Gas'),
           ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
-          # ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-          # ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
-          # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
+          ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+          ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          # weakly scattering takes a while to run, so leave it out for the moment
           # ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),
           ]
 
@@ -79,15 +80,24 @@ for name, bm_name in models:
         case _:
             pass
 
-    # Add frequencies that have finite TS values and incident angle to the model parameters
+    # Add frequencies that have non nan benchmark TS values to the model parameters
     m['f'] = bmf['Frequency_kHz'][~np.isnan(bmf[bm_name])]*1e3  # [Hz]
+
+    # No benchmark TS is available for this model, so add some sensible frequencies in
+    if bm_name == 'ProlateSpheroid_Gas':
+        m['f'] = np.arange(12, 82, 2)*1e3
+
     m['theta'] = 90.0
 
-    # and run these
+    # and run the models
     ts = mod.calculate_ts(m)
 
-    # The finite benchmark TS values
+    # Get the benchmark TS values
     bm_ts = bmf[bm_name][~np.isnan(bmf[bm_name])]
+
+    # Cope with there being no benchmark TS for this model
+    if bm_name == 'ProlateSpheroid_Gas':
+        bm_ts = m['f'] * np.nan
 
     plot_compare(m['f'], ts, s['benchmark_model'], m['f'], bm_ts, 'Benchmark', name)
 
@@ -96,7 +106,11 @@ for name, bm_name in models:
 models = [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
           ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
           ('gas filled finite cylinder', 'Cylinder_Gas'),
-          ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering')]
+          ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
+          ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
+          ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+          ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),]
 
 for name, bm_name in models:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
