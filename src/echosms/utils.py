@@ -199,7 +199,7 @@ def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
     return df
 
 
-def pro_ang1(m: int, n: int, c: float, x: float) -> tuple[float, float]:
+def pro_ang1(m: int, n: int, c: float, x: float, norm=False) -> tuple[float, float]:
     """Prolate spheroidal angular function of the first kind and derivative.
 
     Calculates the prolate spheroidal angular function of the first kind and its'
@@ -215,6 +215,11 @@ def pro_ang1(m: int, n: int, c: float, x: float) -> tuple[float, float]:
         The size parameter.
     x :
         The eta parameter.
+    norm :
+        If `False`, returned values are not normalised (i.e., the Meixner-Schäfke normlalisation
+        scheme is used). For large m this norm becomes very large. If `True` the returned values
+        are scaled by the square root of the normalisation of the corresponding Legendre function.
+        This avoids the large values that occur when `norm = False`.
 
     Returns
     -------
@@ -299,7 +304,7 @@ def pro_rad1(m: int, n: int, c: float, x: float) -> tuple[float, float]:
     return s[n-m], sp[n-m]
 
 
-def pro_rad2(m, n, c, x):
+def pro_rad2(m: int, n: int, c: float, x: float) -> tuple[float, float]:
     """Prolate spheroidal radial function of the second kind and derivative.
 
     Calculates the prolate spheroidal radial function of the second kind and its'
