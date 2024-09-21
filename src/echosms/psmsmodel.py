@@ -94,16 +94,16 @@ class PSMSModel(ScatterModelBase):
         for m in range(m_max+1):
             epsilon_m = Neumann(m)
             for n in range(m, n_max+1):
-                Smn_inc, _ = pro_ang1(m, n, hw, np.cos(theta_inc), norm=True)
-                Smn_sca, _ = pro_ang1(m, n, hw, np.cos(theta_sca), norm=True)
+                Smn_inc, _ = pro_ang1(m, n, hw, np.cos(theta_inc))
+                Smn_sca, _ = pro_ang1(m, n, hw, np.cos(theta_sca))
                 # The Meixner-Schäfke normalisation scheme for the angular function of the first
                 # kind. Refer to eqn 21.7.11 in Abramowitz, M., and Stegun, I. A. (1964).
                 # Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables
                 # (Dover, New York), 10th ed.
-                n_mn = 2/(2*n+1) * factorial(n+m) / factorial(n-m)
-                # since n_mn and the angular functions can be very large for large m,
+                N_mn = 2/(2*n+1) * factorial(n+m) / factorial(n-m)
+                # since N_mn and the angular functions can be very large for large m,
                 # structure things to reduce roundoff errors.
-                ss = (Smn_inc / n_mn) * Smn_sca
+                ss = (Smn_inc / N_mn) * Smn_sca
 
                 match boundary_type:
                     case 'fluid filled':
