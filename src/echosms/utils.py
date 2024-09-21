@@ -199,22 +199,22 @@ def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
     return df
 
 
-def pro_ang1(m: int, n: int, c: float, x: float, norm=False) -> tuple[float, float]:
+def pro_ang1(m: int, n: int, c: float, eta: float, norm=False) -> tuple[float, float]:
     """Prolate spheroidal angular function of the first kind and derivative.
 
     Calculates the prolate spheroidal angular function of the first kind and its'
-    derivative with respect to `x`.
+    derivative with respect to `eta`.
 
     Parameters
     ----------
     m :
-        The order parameter.
+        The order parameter (≥ 0)
     n :
         The degree parameter (≥ `m`).
     c :
         The size parameter.
-    x :
-        The eta parameter.
+    eta :
+        The angular coordinate, η, where |η| ≤ 1.
     norm :
         If `False`, returned values are not normalised (i.e., the Meixner-Schäfke normlalisation
         scheme is used). For large m this norm becomes very large. If `True` the returned values
@@ -244,33 +244,38 @@ def pro_ang1(m: int, n: int, c: float, x: float, norm=False) -> tuple[float, flo
     Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
     """
+    if m < 0:
+        raise ValueError('The m parameter must be positive.')
+    if n < m:
+        raise ValueError('The n parameter must be greater than or equal to the m parameter.')
+    if abs(eta) > 1.0:
+        raise ValueError('The eta parameter must be less than or equal to 1')
+
     a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=0.0, ioprad=0, iopang=2,
-                           iopnorm=int(norm), arg=[x])
+                           iopnorm=int(norm), arg=[eta])
     p = swf_t._make(a)
     s = p.s1c * np.float_power(10.0, p.is1e)
     sp = p.s1dc * np.float_power(10.0, p.is1de)
 
-    # print(m,n,c,x,s, sp)
-
     return s[n-m][0], sp[n-m][0]
 
 
-def pro_rad1(m: int, n: int, c: float, x: float) -> tuple[float, float]:
+def pro_rad1(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     """Prolate spheroidal radial function of the first kind and derivative.
 
     Calculates the prolate spheroidal radial function of the first kind and its'
-    derivative with respect to `x`.
+    derivative with respect to `xi`.
 
     Parameters
     ----------
     m :
-        The order parameter.
+        The order parameter (≥ 0).
     n :
         The degree parameter (≥ `m`).
     c :
         The size parameter.
-    x :
-        The radial coordinate.
+    xi :
+        The radial coordinate, ξ, where ξ ≥ 1.
 
     Returns
     -------
@@ -295,32 +300,37 @@ def pro_rad1(m: int, n: int, c: float, x: float) -> tuple[float, float]:
     Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
     """
-    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=x-1.0, ioprad=1, iopang=0, iopnorm=0, arg=[0])
+    if m < 0:
+        raise ValueError('The m parameter must be positive.')
+    if n < m:
+        raise ValueError('The n parameter must be greater than or equal to the m parameter.')
+    if xi < 1.0:
+        raise ValueError('The xi parameter must be greater than or equal to 1')
+
+    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=xi-1.0, ioprad=1, iopang=0, iopnorm=0, arg=[0])
     p = swf_t._make(a)
     s = p.r1c * np.float_power(10.0, p.ir1e)
     sp = p.r1dc * np.float_power(10.0, p.ir1de)
 
-    # print(m,n,c,x,s, sp)
-
     return s[n-m], sp[n-m]
 
 
-def pro_rad2(m: int, n: int, c: float, x: float) -> tuple[float, float]:
+def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     """Prolate spheroidal radial function of the second kind and derivative.
 
     Calculates the prolate spheroidal radial function of the second kind and its'
-    derivative with respect to `x`.
+    derivative with respect to `xi`.
 
     Parameters
     ----------
     m :
-        The order parameter.
+        The order parameter (≥ 0).
     n :
         The degree parameter (≥ `m`).
     c :
         The size parameter.
-    x :
-        The radial coordinate.
+    xi :
+        The radial coordinate, ξ, where ξ ≥ 1.
 
     Returns
     -------
@@ -345,11 +355,18 @@ def pro_rad2(m: int, n: int, c: float, x: float) -> tuple[float, float]:
     Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
     """
-    ioprad = 1 if x-1.0 < 1e-10 else 2
+    if m < 0:
+        raise ValueError('The m parameter must be positive.')
+    if n < m:
+        raise ValueError('The n parameter must be greater than or equal to the m parameter.')
+    if xi < 1.0:
+        raise ValueError('The xi parameter must be greater than or equal to 1')
+
+    ioprad = 1 if xi-1.0 < 1e-10 else 2
 
     # Add +2 to lnum instead of +1 as it exposes a bug in the Fortran code - if n = 0, zeros
     # are returned instead of the correct value.
-    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=x-1.0,
+    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=xi-1.0,
                            ioprad=ioprad, iopang=0, iopnorm=0, arg=[0])
     p = swf_t._make(a)
 
@@ -359,7 +376,5 @@ def pro_rad2(m: int, n: int, c: float, x: float) -> tuple[float, float]:
     else:
         s = p.r2c * np.float_power(10.0, p.ir2e)
         sp = p.r2dc * np.float_power(10.0, p.ir2de)
-
-    # print(m,n,c,x,s, sp)
 
     return s[n-m], sp[n-m]
