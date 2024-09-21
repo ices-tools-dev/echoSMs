@@ -244,7 +244,8 @@ def pro_ang1(m: int, n: int, c: float, x: float, norm=False) -> tuple[float, flo
     Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
     """
-    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=0.0, ioprad=0, iopang=2, iopnorm=0, arg=[x])
+    a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=0.0, ioprad=0, iopang=2,
+                           iopnorm=int(norm), arg=[x])
     p = swf_t._make(a)
     s = p.s1c * np.float_power(10.0, p.is1e)
     sp = p.s1dc * np.float_power(10.0, p.is1de)
