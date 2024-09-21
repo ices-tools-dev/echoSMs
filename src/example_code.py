@@ -21,7 +21,7 @@ bmt = bm.angle_dataset
 
 
 def plot_compare(f1, ts1, label1, f2, ts2, label2, title):
-    """Plot together two ts results TS."""
+    """Plot together two ts(f) result sets."""
     jech_index = np.nanmean(np.abs(np.array(ts1) - np.array(ts2)))
     # Plot the mss model and benchmark results
     fig, axs = plt.subplots(2, 1, sharex=True)
@@ -37,6 +37,27 @@ def plot_compare(f1, ts1, label1, f2, ts2, label2, title):
     axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
                     backgroundcolor=[.8, .8, .8])
     plt.suptitle(title)
+    plt.show()
+
+
+def plot_compare_angle(theta1, ts1, label1, theta2, ts2, label2, title):
+    """Plot together two ts(theta) result sets."""
+    jech_index = np.nanmean(np.abs(np.array(ts1) - np.array(ts2)))
+
+    # Plot the mss model and benchmark results
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    axs[0].plot(theta1, ts1, label=label1)
+    axs[0].plot(theta2, ts2, label=label2)
+    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
+    axs[0].legend(frameon=False, fontsize=6)
+
+    # Plot difference between benchmark values and newly calculated mss model values
+    axs[1].plot(theta1, np.array(ts1)-np.array(ts2), color='black')
+    axs[1].set_xlabel('Angle (°)')
+    axs[1].set_ylabel(r'$\Delta$ TS [dB]')
+    axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
+                    backgroundcolor=[.8, .8, .8])
+    plt.suptitle(name)
     plt.show()
 
 
@@ -138,23 +159,7 @@ for name, bm_name in models:
     # and run these
     ts = mod.calculate_ts(m)
 
-    jech_index = np.mean(np.abs(ts - bmt[bm_name]))
-
-    # Plot the mss model and benchmark results
-    fig, axs = plt.subplots(2, 1, sharex=True)
-    axs[0].plot(m['theta'], ts, label='echoSMs')
-    axs[0].plot(bmt['Angle_deg'], bmt[bm_name], label='Benchmark')
-    axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
-    axs[0].legend(frameon=False, fontsize=6)
-
-    # Plot difference between benchmark values and newly calculated mss model values
-    axs[1].plot(m['theta'], ts-bmt[bm_name], color='black')
-    axs[1].set_xlabel('Angle (°)')
-    axs[1].set_ylabel(r'$\Delta$ TS [dB]')
-    axs[1].annotate(f'{jech_index:.2f} dB', (0.05, 0.80), xycoords='axes fraction',
-                    backgroundcolor=[.8, .8, .8])
-    plt.suptitle(name)
-    plt.show()
+    plot_compare_angle(m['theta'], ts, 'echoSMs', m['theta'], bmt[bm_name], 'Benchmark', name)
 
 # %% ###############################################################################################
 # Use the ES model on a calibration sphere
