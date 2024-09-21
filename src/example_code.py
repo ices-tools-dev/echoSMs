@@ -20,7 +20,7 @@ bmf = bm.freq_dataset
 bmt = bm.angle_dataset
 
 
-def plot_compare(f1, ts1, label1, f2, ts2, label2, title):
+def plot_compare_freq(f1, ts1, label1, f2, ts2, label2, title):
     """Plot together two ts(f) result sets."""
     jech_index = np.nanmean(np.abs(np.array(ts1) - np.array(ts2)))
     # Plot the mss model and benchmark results
@@ -80,7 +80,8 @@ models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
           ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
           ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
           ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
-          ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          # Gas filled is not yet supported
+          # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
           # weakly scattering takes a while to run, so leave it out for the moment
           # ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),
           ]
@@ -120,7 +121,7 @@ for name, bm_name in models:
     if bm_name == 'ProlateSpheroid_Gas':
         bm_ts = m['f'] * np.nan
 
-    plot_compare(m['f'], ts, s['benchmark_model'], m['f'], bm_ts, 'Benchmark', name)
+    plot_compare_freq(m['f'], ts, s['benchmark_model'], m['f'], bm_ts, 'Benchmark', name)
 
 # %% ###############################################################################################
 # Run the benchmark models and compare to the angle-varying benchmark results.
@@ -130,7 +131,8 @@ models = [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
           ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
           ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
           ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
-          ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          # Gas filled is not yet supported
+          # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
           ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),]
 
 for name, bm_name in models:
