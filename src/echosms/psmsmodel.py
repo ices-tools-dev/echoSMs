@@ -90,7 +90,7 @@ class PSMSModel(ScatterModelBase):
         m_max = int(np.ceil(2*kw*b))
         n_max = int(m_max + np.ceil(hw/2))
 
-        f_sc = 0.0
+        f_sca = 0.0
         for m in range(m_max+1):
             epsilon_m = Neumann(m)
             for n in range(m, n_max+1):
@@ -117,12 +117,12 @@ class PSMSModel(ScatterModelBase):
 
                         R3w = R1w + 1j*R2w
                         dR3w = dR1w + 1j*dR2w
-                        if abs((hw - ht)/ht) <= 0.1:
+                        if abs((hw - ht)/ht) <= 0.1:  # weakly scattering simplification
                             E1 = R1w - g * R1t / dR1t * dR1w
                             E3 = R3w - g * R1t / dR1t * dR3w
                             Amn = -E1/E3
                         else:
-                            Amn = 1.0
+                            Amn = PSMSModel._fluidfilled(m, n, hw, ht, xiw, theta_inc)
                     case 'pressure release':
                         R1w, _ = pro_rad1(m, n, hw, xiw)
                         R2w, _ = pro_rad2(m, n, hw, xiw)
@@ -132,6 +132,18 @@ class PSMSModel(ScatterModelBase):
                         _, dR2w = pro_rad2(m, n, hw, xiw)
                         Amn = -dR1w/(dR1w + 1j*dR2w)
 
-                f_sc += epsilon_m * ss * Amn * np.cos(m*(phi_sca - phi_inc))
+                f_sca += epsilon_m * ss * Amn * np.cos(m*(phi_sca - phi_inc))
 
-        return 20*np.log10(np.abs(-2j / kw * f_sc))
+        return 20*np.log10(np.abs(-2j / kw * f_sca))
+
+    @staticmethod
+    def _fluidfilled(m, n, hw, ht, xiw, theta_inc):
+        """Calculate Amn for fluid filled prolate spheroids."""
+        # This is conplicated!
+
+        # Setup the system of simultaneous equations to solve for Amn.
+
+        # Solve for Amn
+        Amn = 1.0
+
+        return Amn
