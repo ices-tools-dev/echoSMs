@@ -217,9 +217,9 @@ def pro_ang1(m: int, n: int, c: float, eta: float, norm=False) -> tuple[float, f
         The angular coordinate, η, where |η| ≤ 1.
     norm :
         If `False`, returned values are not normalised (i.e., the Meixner-Schäfke normlalisation
-        scheme is used). For large m this norm becomes very large. If `True` the returned values
+        scheme is used). For large `m` this norm becomes very large. If `True` the returned values
         are scaled by the square root of the normalisation of the corresponding Legendre function.
-        This avoids the large values that occur when `norm = False`.
+        This avoids the large values that occur when `norm` is `False`.
 
     Returns
     -------
