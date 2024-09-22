@@ -271,9 +271,9 @@ m = {k: v for k, v in m.items()
 pt = PTDWBAModel()
 dwba_ts = pt.calculate_ts(m)
 
-plot_compare(m['f'], dwba_ts, 'PT-DWBA',
-             m['f'], bmf['Sphere_WeaklyScattering'], 'Benchmark',
-             'weakly scattering sphere')
+plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA',
+                  m['f'], bmf['Sphere_WeaklyScattering'], 'Benchmark',
+                  'weakly scattering sphere')
 
 # So, this PT_DWBA on a weakly scattering sphere is also different from the benchmark
 # TS values. Hmmmm. Now look at the difference between the PT-DWBA and MSS model runs...
@@ -285,9 +285,9 @@ mm['theta'] = 90.0
 
 mss_ts = mss.calculate_ts(mm)
 
-plot_compare(mm['f'], dwba_ts, 'PT-DWBA',
-             mm['f'], mss_ts, 'MSS',
-             'weakly scattering sphere')
+plot_compare_freq(mm['f'], dwba_ts, 'PT-DWBA',
+                  mm['f'], mss_ts, 'MSS',
+                  'weakly scattering sphere')
 
 ########################################################
 # And then the same thing, but for the prolate spheroid
@@ -311,6 +311,6 @@ m = {k: v for k, v in m.items()
 pt = PTDWBAModel()
 dwba_ts = pt.calculate_ts(m, multiprocess=True)
 
-plot_compare(m['f'], dwba_ts, 'PT-DWBA',
-             m['f'], bmf['ProlateSpheroid_WeaklyScattering'], 'Benchmark',
-             'weakly scattering prolate spheroid')
+plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA',
+                  m['f'], bmf['ProlateSpheroid_WeaklyScattering'], 'Benchmark',
+                  'weakly scattering prolate spheroid')
