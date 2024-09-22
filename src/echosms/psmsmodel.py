@@ -69,11 +69,11 @@ class PSMSModel(ScatterModelBase):
             raise ValueError(f'The {self.long_name} model does not support '
                              f'a model type of "{boundary_type}".')
 
-        xiw = (1.0 - (b/a)**2)**(-.5)
-        q = a/xiw  # semi-focal length
+        xim = (1.0 - (b/a)**2)**(-.5)
+        q = a/xim  # semi-focal length
 
-        kw = wavenumber(medium_c, f)
-        hw = kw*q
+        km = wavenumber(medium_c, f)
+        hm = km*q
 
         if boundary_type == 'fluid filled':
             g = target_rho / medium_rho
@@ -87,59 +87,53 @@ class PSMSModel(ScatterModelBase):
         theta_sca = np.pi - theta_inc  # scattered direction
 
         # Approximate limits on the summations
-        m_max = int(np.ceil(2*kw*b))
-        n_max = int(m_max + np.ceil(hw/2))
+        m_max = int(np.ceil(2*km*b))
+        n_max = int(m_max + np.ceil(hm/2))
 
         f_sca = 0.0
         for m in range(m_max+1):
             epsilon_m = Neumann(m)
+            cos_term = np.cos(m*(phi_sca - phi_inc))
             for n in range(m, n_max+1):
-                Smn_inc, _ = pro_ang1(m, n, hw, np.cos(theta_inc))
-                Smn_sca, _ = pro_ang1(m, n, hw, np.cos(theta_sca))
+                Smn_inc, _ = pro_ang1(m, n, hm, np.cos(theta_inc))
+                Smn_sca, _ = pro_ang1(m, n, hm, np.cos(theta_sca))
                 # The Meixner-Schäfke normalisation scheme for the angular function of the first
                 # kind. Refer to eqn 21.7.11 in Abramowitz, M., and Stegun, I. A. (1964).
                 # Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables
                 # (Dover, New York), 10th ed.
                 N_mn = 2/(2*n+1) * factorial(n+m) / factorial(n-m)
-                # since N_mn and the angular functions can be very large for large m,
-                # structure things to reduce roundoff errors.
-                ss = (Smn_inc / N_mn) * Smn_sca
+
+                R1m, dR1m = pro_rad1(m, n, hm, xim)
+                R2m, dR2m = pro_rad2(m, n, hm, xim)
 
                 match boundary_type:
                     case 'fluid filled':
-                        # Note: we can implement the simplier equations if hw is similar to ht,
-                        # but that only applies to weakly scattering conditions. The gas-filled
+                        R1t, dR1t = pro_rad1(m, n, ht, xim)
+                        R3m = R1m + 1j*R2m
+                        dR3m = dR1m + 1j*dR2m
+
+                        # Note: we can implement the simplier equations if impedances are
+                        # similar between the medium and the target. The gas-filled
                         # condition does not meet that, so we have two paths here. The simplified
                         # equations are quicker, so it is worth to do.
-                        R1w, dR1w = pro_rad1(m, n, hw, xiw)
-                        R1t, dR1t = pro_rad1(m, n, ht, xiw)
-                        R2w, dR2w = pro_rad2(m, n, hw, xiw)
-
-                        R3w = R1w + 1j*R2w
-                        dR3w = dR1w + 1j*dR2w
-                        # weakly scattering simplification
-                        if (abs(1.0-medium_c/target_c) <= 0.01) and\
-                           (abs(1.0-medium_rho/target_rho) <= 0.01):
-                            E1 = R1w - g * R1t / dR1t * dR1w
-                            E3 = R3w - g * R1t / dR1t * dR3w
+                        if (abs(1.0-target_c/medium_c) <= 0.01) and\
+                           (abs(1.0-g) <= 0.01):
+                            E1 = R1m - g * R1t / dR1t * dR1m
+                            E3 = R3m - g * R1t / dR1t * dR3m
                             Amn = -E1/E3
                         else:
-                            Amn = PSMSModel._fluidfilled(m, n, hw, ht, xiw, theta_inc)
+                            Amn = PSMSModel._fluidfilled(m, n, hm, ht, xim, theta_inc)
                     case 'pressure release':
-                        R1w, _ = pro_rad1(m, n, hw, xiw)
-                        R2w, _ = pro_rad2(m, n, hw, xiw)
-                        Amn = -R1w/(R1w + 1j*R2w)
+                        Amn = -R1m/(R1m + 1j*R2m)
                     case 'fixed rigid':
-                        _, dR1w = pro_rad1(m, n, hw, xiw)
-                        _, dR2w = pro_rad2(m, n, hw, xiw)
-                        Amn = -dR1w/(dR1w + 1j*dR2w)
+                        Amn = -dR1m/(dR1m + 1j*dR2m)
 
-                f_sca += epsilon_m * ss * Amn * np.cos(m*(phi_sca - phi_inc))
+                f_sca += epsilon_m * (Smn_inc / N_mn) * Smn_sca * Amn * cos_term
 
-        return 20*np.log10(np.abs(-2j / kw * f_sca))
+        return 20*np.log10(np.abs(-2j / km * f_sca))
 
     @staticmethod
-    def _fluidfilled(m, n, hw, ht, xiw, theta_inc):
+    def _fluidfilled(m, n, hm, ht, xim, theta_inc):
         """Calculate Amn for fluid filled prolate spheroids."""
         # This is conplicated!
 
