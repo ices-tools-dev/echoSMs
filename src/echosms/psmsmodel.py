@@ -117,7 +117,9 @@ class PSMSModel(ScatterModelBase):
 
                         R3w = R1w + 1j*R2w
                         dR3w = dR1w + 1j*dR2w
-                        if abs((hw - ht)/ht) <= 0.1:  # weakly scattering simplification
+                        # weakly scattering simplification
+                        if (abs(1.0-medium_c/target_c) <= 0.01) and\
+                           (abs(1.0-medium_rho/target_rho) <= 0.01):
                             E1 = R1w - g * R1t / dR1t * dR1w
                             E3 = R3w - g * R1t / dR1t * dR3w
                             Amn = -E1/E3
