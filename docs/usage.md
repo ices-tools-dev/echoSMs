@@ -250,7 +250,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
 
 ## Benchmark model TS
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](https://ices-tools-dev.github.io/echoSMs/api_reference/#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted benchmark values into a Pandas DataFrame, whereupon they can be readily accessed like this:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](https://ices-tools-dev.github.io/echoSMs/api_reference/#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be readily accessed like this:
 
 ```py
     from echosms import BenchmarkData
