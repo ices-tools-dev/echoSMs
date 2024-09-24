@@ -76,7 +76,7 @@ class ReferenceModels:
         return [n['name'] for n in self.definitions['target']]
 
     def specification(self, name):
-        """Model defintions for a particular model.
+        """Model definitions for a particular model.
 
         Parameters
         ----------
