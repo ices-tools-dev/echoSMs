@@ -17,6 +17,7 @@ theme:
         - navigation.top
         - toc.integrate
         - content.action.view
+        - content.code.copy
         
 repo_url: https://github.com/ices-tools-dev/echoSMs
 edit_uri: edit/main/docs/
@@ -46,3 +47,10 @@ markdown_extensions:
     - attr_list
     - footnotes
     - tables
+    - pymdownx.highlight:
+       anchor_linenums: true
+       line_spans: __span
+       pygments_lang_class: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
