@@ -135,7 +135,7 @@ But, as it is very convenient to have all the model parameters in one data struc
     m['volume'][3,3,3] = 1  #  something to produce scatter
     p = as_dataframe(m, model.no_expand_parameters)
     model.calculate_ts(p, inplace=True)
-    p
+    print(p)
 ```
 
 For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains just two columns. The remaining parameters are available via:
@@ -215,9 +215,9 @@ which returns:
  'target_c': 1483.3,
  'source': 'https://doi.org/10.1121/1.4937607',
  'benchmark_model': 'mss'}
-````
+```
 
-Note that the specification contains more information that the model itself needs, so the subset needed for running a model are available via:
+Note that the specification contains more information that the model itself needs, so the subset needed for running a model is available via:
 
 ```py
     m = rm.parameters('spherical fluid shell with weakly scattering interior')
