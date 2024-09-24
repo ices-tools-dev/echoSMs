@@ -66,27 +66,26 @@ def plot_compare_angle(theta1, ts1, label1, theta2, ts2, label2, title):
 
 # This is the mapping between model name from ReferenceModels and the appropriate column of data in
 # BenchMarkData and which model to use.
-models = [('weakly scattering sphere', 'Sphere_WeaklyScattering'),
-          ('fixed rigid sphere', 'Sphere_Rigid'),
-          ('pressure release sphere', 'Sphere_PressureRelease'),
-          ('gas filled sphere', 'Sphere_Gas'),
-          ('spherical fluid shell with pressure release interior', 'ShellSphere_PressureRelease'),
-          ('spherical fluid shell with gas interior', 'ShellSphere_Gas'),
-          ('spherical fluid shell with weakly scattering interior',
-           'ShellSphere_WeaklyScattering'),
-          ('fixed rigid finite cylinder', 'Cylinder_Rigid'),
-          ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
-          ('gas filled finite cylinder', 'Cylinder_Gas'),
-          ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
-          ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-          ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+models = ['weakly scattering sphere',
+          'fixed rigid sphere',
+          'pressure release sphere',
+          'gas filled sphere',
+          'spherical fluid shell with pressure release interior',
+          'spherical fluid shell with gas interior',
+          'spherical fluid shell with weakly scattering interior',
+          'fixed rigid finite cylinder',
+          'pressure release finite cylinder',
+          'gas filled finite cylinder',
+          'weakly scattering finite cylinder',
+          'fixed rigid prolate spheroid',
+          'pressure release prolate spheroid',
           # Gas filled is not yet supported
-          # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
+          # 'gas filled prolate spheroid',
           # weakly scattering takes a while to run, so leave it out for the moment
-          # ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),
+          # 'weakly scattering prolate spheroid',
           ]
 
-for name, bm_name in models:
+for name in models:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
     s = rm.specification(name)
     m = rm.parameters(name)
@@ -103,10 +102,10 @@ for name, bm_name in models:
             pass
 
     # Add frequencies that have non nan benchmark TS values to the model parameters
-    m['f'] = bmf['Frequency_kHz'][~np.isnan(bmf[bm_name])]*1e3  # [Hz]
+    m['f'] = bmf['frequency (kHz)'][~np.isnan(bmf[name])]*1e3  # [Hz]
 
     # No benchmark TS is available for this model, so add some sensible frequencies in
-    if bm_name == 'ProlateSpheroid_Gas':
+    if name == 'gas filled prolate spheroid':
         m['f'] = np.arange(12, 82, 2)*1e3
 
     m['theta'] = 90.0
@@ -115,27 +114,27 @@ for name, bm_name in models:
     ts = mod.calculate_ts(m)
 
     # Get the benchmark TS values
-    bm_ts = bmf[bm_name][~np.isnan(bmf[bm_name])]
+    bm_ts = bmf[name][~np.isnan(bmf[name])]
 
     # Cope with there being no benchmark TS for this model
-    if bm_name == 'ProlateSpheroid_Gas':
+    if name == 'gas filled prolate spheroid':
         bm_ts = m['f'] * np.nan
 
     plot_compare_freq(m['f'], ts, s['benchmark_model'], m['f'], bm_ts, 'Benchmark', name)
 
 # %% ###############################################################################################
 # Run the benchmark models and compare to the angle-varying benchmark results.
-models = [('fixed rigid finite cylinder', 'Cylinder_Rigid'),
-          ('pressure release finite cylinder', 'Cylinder_PressureRelease'),
-          ('gas filled finite cylinder', 'Cylinder_Gas'),
-          ('weakly scattering finite cylinder', 'Cylinder_WeaklyScattering'),
-          ('fixed rigid prolate spheroid', 'ProlateSpheroid_Rigid'),
-          ('pressure release prolate spheroid', 'ProlateSpheroid_PressureRelease'),
+models = ['fixed rigid finite cylinder',
+          'pressure release finite cylinder',
+          'gas filled finite cylinder',
+          'weakly scattering finite cylinder',
+          'fixed rigid prolate spheroid',
+          'pressure release prolate spheroid',
           # Gas filled is not yet supported
-          # ('gas filled prolate spheroid', 'ProlateSpheroid_Gas'),
-          ('weakly scattering prolate spheroid', 'ProlateSpheroid_WeaklyScattering'),]
+          # 'gas filled prolate spheroid',
+          'weakly scattering prolate spheroid']
 
-for name, bm_name in models:
+for name in models:
     # Get the model parameters used in Jech et al. (2015) for a particular model.
     s = rm.specification(name)
     m = rm.parameters(name)
@@ -156,12 +155,12 @@ for name, bm_name in models:
 
     # Add frequencies and angle to the model parameters
     m['f'] = 38000  # [Hz]
-    m['theta'] = bmt['Angle_deg']
+    m['theta'] = bmt['angle (deg)']
 
     # and run these
     ts = mod.calculate_ts(m)
 
-    plot_compare_angle(m['theta'], ts, 'echoSMs', m['theta'], bmt[bm_name], 'Benchmark', name)
+    plot_compare_angle(m['theta'], ts, 'echoSMs', m['theta'], bmt[name], 'Benchmark', name)
 
 # %% ###############################################################################################
 # Use the ES model on a calibration sphere

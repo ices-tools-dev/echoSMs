@@ -16,7 +16,8 @@ class ReferenceModels:
     Reference models are the models and parameters defined in Jech et al. (2015).
     The parameters are stored in a TOML-formatted file in the echoSMs repository
     and this class provides easy access to the data in that file. Additional reference
-    models may be defined in the future and added to the TOML file.
+    models may be defined in the future and added to the TOML file (for example, entries
+    have been added for all known calibration sphere sizes).
 
     Attributes
     ----------
