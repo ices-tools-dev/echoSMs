@@ -8,7 +8,7 @@ EchoSMs is available on [PyPi](https://pypi.org) as [`echosms`](https://pypi.org
 
     pip install echosms
 
-Some of the models in echoSMs use spheroidal wave functions. A high-accuracy implementation of these is available in the Python package [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/), as the versions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are insufficient. This should be installed automatically when you install echosms, but note that `spheroidalwavefunctions` is currently only available for Linux and Windows on x86_64 CPU architectures.
+Some of the models in echoSMs use spheroidal wave functions. A high-accuracy implementation of these is available in the Python package [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/), as the versions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are insufficient. This should be installed automatically when you install echosms, but note that `spheroidalwavefunctions` is currently only available for Linux and Windows on x86_64 CPU architectures (create an [issue](https://github.com/ices-tools-dev/echoSMs/issues) if you want it on a system that is not currently supported).
 
 ## Model overview
 
@@ -170,11 +170,52 @@ returns the same results as
     rm.names()
 ```
 
+which returns:
+
+```py
+['fixed rigid sphere',
+ 'pressure release sphere',
+ 'gas filled sphere',
+ 'weakly scattering sphere',
+ 'spherical fluid shell with pressure release interior',
+ 'spherical fluid shell with gas interior',
+ 'spherical fluid shell with weakly scattering interior',
+ 'fixed rigid prolate spheroid',
+ 'pressure release prolate spheroid',
+ 'gas filled prolate spheroid',
+ 'weakly scattering prolate spheroid',
+ 'fixed rigid finite cylinder',
+ 'pressure release finite cylinder',
+ 'gas filled finite cylinder',
+ 'weakly scattering finite cylinder',
+ 'WC38.1 calibration sphere',
+ 'Cu60 calibration sphere']
+```
+
 and the specification for a particular model is given by:
 
 ```py
     rm.specification('spherical fluid shell with weakly scattering interior')
 ```
+
+which returns:
+
+```py
+{'name': 'spherical fluid shell with weakly scattering interior',
+ 'shape': 'sphere',
+ 'boundary_type': 'fluid shell fluid interior',
+ 'description': 'A fluid spherical shell with a weakly scattering shell and interior',
+ 'a': 0.01,
+ 'shell_thickness': 0.001,
+ 'medium_rho': 1026.8,
+ 'medium_c': 1477.4,
+ 'shell_rho': 1028.9,
+ 'shell_c': 1480.3,
+ 'target_rho': 1031.0,
+ 'target_c': 1483.3,
+ 'source': 'https://doi.org/10.1121/1.4937607',
+ 'benchmark_model': 'mss'}
+````
 
 Note that the specification contains more information that the model itself needs, so the subset needed for running a model are available via:
 
@@ -182,10 +223,29 @@ Note that the specification contains more information that the model itself need
     m = rm.parameters('spherical fluid shell with weakly scattering interior')
 ```
 
-Note that the `parameters()` call does not return all of the parameters needed by a model. For example, `f` is not there and needs to be added before running a model:
+which returns:
+
+```py
+{'boundary_type': 'fluid shell fluid interior',
+ 'a': 0.01,
+ 'shell_thickness': 0.001,
+ 'medium_rho': 1026.8,
+ 'medium_c': 1477.4,
+ 'shell_rho': 1028.9,
+ 'shell_c': 1480.3,
+ 'target_rho': 1031.0,
+ 'target_c': 1483.3}
+```
+
+Note that the `parameters()` call does not return all of the parameters needed by a model. For example, `f` and `theta` are not there and need to be added before running a model:
 
 ```py
     m['f'] = [38000, 40000, 42000]
+    m['theta'] = 90
+
+    from echosms import MSSModel
+    model = MSSModel()
+    model.calculate_ts(m)
 ```
 
 ## Benchmark model TS
