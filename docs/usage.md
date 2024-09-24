@@ -77,7 +77,7 @@ This will return one TS value corresponding to the parameters given. If you want
 
 It is also fine to have multiple items with multiple values:
 
-```py hl_lines="3 6"
+```py hl_lines="3 4 6"
         p = {'medium_rho': 1026.8,
              'medium_c': 1477.4,
              'a': np.arange(0.01, 0.02, 0.001),
@@ -118,7 +118,7 @@ The `multiprocess = True` parameter in the call to `calculate_ts` will cause ech
 Some models require parameters for which it is not sensible to duplicate them across rows in a DataFrame or as a dimension in a DataArray (e.g., the data that specifies the three-dimensional shape of a fish swimbladder).
 EchoSMs allows for this with the concept of _non-expandable_ parameters - these are not expanded into DataFrame columns or DataArray dimensions.
 
-But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as DataFrame or DataArray attributes. Due to a bug in the DataFrame implementation, the parameters are actually stored as a nested dictionary under a `parameters` key. An example of this is the PTDWBAModel():
+But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as DataFrame or DataArray attributes. Due to a bug in the DataFrame implementation, the parameters are actually stored as a nested dictionary under a `parameters` key. An example of this is the `PTDWBAModel`:
 
 ```py
     from echosms import PTDWBAModel, as_dataframe
@@ -144,10 +144,20 @@ For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains jus
     p.attrs.['parameters']
 ```
 
-If you pass the dictionary form of the parameters to a model, this treatment of non-expanding parameters is done automatically:
+Note that while `rho`, and `c` look like parameters that would be expanded, they are in the list of non-expandable parameters, so are not expanded. This is because the structure of the PTDWBA model means that it it not sensible to have variable parameters for `rho` and `c`. 
+
+If you pass the dictionary form of the parameters to a model, this treatment of non-expanding parameters is done automatically, where
 
 ```py
     model.calculate_ts(m, expand=True)
+```
+
+returns the same results as
+
+```py
+    p = as_dataframe(m, model.no_expand_parameters)
+    model.calculate_ts(p, inplace=True)`
+    print(p)
 ```
 
 ## Reference model definitions
