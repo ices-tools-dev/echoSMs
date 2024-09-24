@@ -141,7 +141,7 @@ But, as it is very convenient to have all the model parameters in one data struc
 For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains just two columns. The remaining parameters are available via:
 
 ```py
-    p.attrs.['parameters']
+    p.attrs['parameters']
 ```
 
 Note that while `rho`, and `c` look like parameters that would be expanded, they are in the list of non-expandable parameters, so are not expanded. This is because the structure of the PTDWBA model means that it it not sensible to have variable parameters for `rho` and `c`. 
