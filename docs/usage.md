@@ -32,7 +32,7 @@ Each echoSMs model expects input parameters that define the particulars of the m
 - A Pandas **DataFrame** with columns for each required parameter and a row for each model run to be done,
 - An Xarray **DataArray** with as many dimensions as required parameters. The parameter values are given by the DataArray coordinate variables.
 
-To use a model, you need to know what parameters it requires. These are documented in the `calculate_ts_single` function that each model has (refer to the echoSMS [API reference](https://ices-tools-dev.github.io/echoSMs/api_reference/API) for details). For example, the MSSModel, when simulating the scattering from a pressure release sphere, needs the following parameters:
+To use a model, you need to know what parameters it requires. These are documented in the `calculate_ts_single` function that each model has (refer to the echoSMS [API reference](https://ices-tools-dev.github.io/echoSMs/api_reference) for details). For example, the MSSModel, when simulating the scattering from a pressure release sphere, needs the following parameters:
 
 |Parameter name|Description|
 |--------------|-----------|
