@@ -44,6 +44,14 @@ finite_cylinder_radius = 0.01
 finite_cylinder_length = 0.07
 target_shell_thickness = 0.001
 
+# These are nominal values for WC and Cu calibration spheres
+WC_calibration_sphere_rho = 14900
+WC_calibration_sphere_longitudinal_c = 6853
+WC_calibration_sphere_transverse_c = 4171
+Cu_calibration_sphere_rho = 8947
+Cu_calibration_sphere_longitudinal_c = 4760
+Cu_calibration_sphere_transverse_c = 2288.5
+
 # These values are for testing of how to specify ranges or distributions of values
 example1_medium_sound_speed_dist = {type="normal", mean=1490, std=40, num=100} # normal distribution
 # Which of these two to support? Both? 
@@ -260,6 +268,62 @@ source = "https://doi.org/10.1121/1.4937607"
 benchmark_model = "dcm"
 
 [[target]]
+name = "WC20 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 20 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.01 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "WC21 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 21 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.015 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "WC22 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 22 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.011 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "WC25 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 25 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.0125 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
 name = "WC38.1 calibration sphere"
 shape = "sphere"
 boundary_type = "elastic sphere"
@@ -267,10 +331,122 @@ description = "A 38.1 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.01905 # radius
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
-target_rho = 14900
-target_longitudinal_c = 6853
-target_transverse_c = 4171
-source = " "
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "WC57.2 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 57.2 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.0286 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "WC60 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 60 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.030 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "WC64 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 64 mm diameter tungsten carbide sphere with 6% cobalt binder"
+a = 0.032 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "WC_calibration_sphere_rho"
+target_longitudinal_c = "WC_calibration_sphere_longitudinal_c"
+target_transverse_c = "WC_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu13.7 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 13.7 mm diameter copper sphere"
+a = 0.00685 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu23 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 23 mm diameter copper sphere"
+a = 0.0115 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu32 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 32 mm diameter copper sphere"
+a = 0.016 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu42 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 42 mm diameter copper sphere"
+a = 0.021 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu45 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 45 mm diameter copper sphere"
+a = 0.0225 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
 benchmark_model = "es"
 
 [[target]]
@@ -281,8 +457,36 @@ description = "A 60 mm diameter copper sphere"
 a = 0.030 # radius
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
-target_rho = 8947
-target_longitudinal_c = 4760
-target_transverse_c = 2288.5
-source = " "
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu63 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 63 mm diameter copper sphere"
+a = 0.0315 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu64 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic sphere"
+description = "A 64 mm diameter copper sphere"
+a = 0.032 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_calibration_sphere_rho"
+target_longitudinal_c = "Cu_calibration_sphere_longitudinal_c"
+target_transverse_c = "Cu_calibration_sphere_transverse_c"
+source = "https://doi.org/10.17895/ices.pub.5494"
 benchmark_model = "es"
