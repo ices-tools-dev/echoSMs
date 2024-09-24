@@ -108,21 +108,14 @@ class PSMSModel(ScatterModelBase):
 
                 match boundary_type:
                     case 'fluid filled':
-                        R1t, dR1t = pro_rad1(m, n, ht, xim)
-                        R3m = R1m + 1j*R2m
-                        dR3m = dR1m + 1j*dR2m
-
                         # Note: we can implement the simplier equations if impedances are
                         # similar between the medium and the target. The gas-filled
                         # condition does not meet that, so we have two paths here. The simplified
                         # equations are quicker, so it is worth to do.
-                        if (abs(1.0-target_c/medium_c) <= 0.01) and\
-                           (abs(1.0-g) <= 0.01):
-                            E1 = R1m - g * R1t / dR1t * dR1m
-                            E3 = R3m - g * R1t / dR1t * dR3m
-                            Amn = -E1/E3
+                        if (abs(1.0-target_c/medium_c) <= 0.01) and (abs(1.0-g) <= 0.01):
+                            Amn = PSMSModel._fluidfilled_approx(m, n, hm, ht, xim, g)
                         else:
-                            Amn = PSMSModel._fluidfilled(m, n, hm, ht, xim, theta_inc)
+                            Amn = PSMSModel._fluidfilled_exact(m, n, hm, ht, xim, g, theta_inc)
                     case 'pressure release':
                         Amn = -R1m/(R1m + 1j*R2m)
                     case 'fixed rigid':
@@ -133,7 +126,21 @@ class PSMSModel(ScatterModelBase):
         return 20*np.log10(np.abs(-2j / km * f_sca))
 
     @staticmethod
-    def _fluidfilled(m, n, hm, ht, xim, theta_inc):
+    def _fluidfilled_approx(m, n, hm, ht, xim, g):
+
+        R1m, dR1m = pro_rad1(m, n, hm, xim)
+        R2m, dR2m = pro_rad2(m, n, hm, xim)
+
+        R1t, dR1t = pro_rad1(m, n, ht, xim)
+        R3m = R1m + 1j*R2m
+        dR3m = dR1m + 1j*dR2m
+
+        E1 = R1m - g * R1t / dR1t * dR1m
+        E3 = R3m - g * R1t / dR1t * dR3m
+        return -E1/E3
+
+    @staticmethod
+    def _fluidfilled_exact(m, n, hm, ht, xim, g, theta_inc):
         """Calculate Amn for fluid filled prolate spheroids."""
         # This is conplicated!
 
