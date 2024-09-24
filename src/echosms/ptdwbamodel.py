@@ -83,8 +83,8 @@ class PTDWBAModel(ScatterModelBase):
         125(1), 73-88. <https://doi.org/10.1121/1.3021298>
         """
         # Make sure things are numpy arrays
-        rho = np.array(rho)
-        c = np.array(c)
+        rho = np.atleast_1d(rho)
+        c = np.atleast_1d(c)
         voxel_size = np.array(voxel_size)
 
         # volume of the voxels [m^3]
