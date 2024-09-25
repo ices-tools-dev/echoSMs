@@ -16,11 +16,11 @@ Currently, the following models are available in echoSMs:
 
 |Model type|Python class name|Description|
 |----------|----------|-----------|
-|Modal Series Solution|MSSModel|Spheres with various boundary conditions, including shells|
-|Deformed Cylinder Model|DCMModel|Truncated cylinders with various boundary conditions|
-|Prolate Spheroidal Modal Series|PSMSModel|Prolate spheroids with various boundary conditions|
-|Elastic Sphere|ESModel|Elastic spheres, such as echosounder calibration spheres|
-|Phase-tracking Distorted Wave Born Approximation|PTDWBAModel|Weakly scattering objects of any shape and with inhomogenous interiors|
+|Modal series solution|MSSModel|Spheres with various boundary conditions, including shells|
+|Deformed cylinder model|DCMModel|Truncated cylinders with various boundary conditions|
+|Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
+|Elastic sphere|ESModel|Elastic spheres, such as echosounder calibration spheres|
+|Phase-tracking distorted wave Born approximation|PTDWBAModel|Weakly scattering objects of any shape with inhomogeneous interiors|
 
 Future models will include more types of DWBA models, the Kirchhoff-type models, and potentially finite element and boundary element models.
 
@@ -162,7 +162,7 @@ returns the same results as
 
 ## Reference model definitions
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](https://ices-tools-dev.github.io/echoSMs/api_reference/#referencemodels) class. For example, the names of all the model definitions are available wiht:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](https://ices-tools-dev.github.io/echoSMs/api_reference/#referencemodels) class. For example, the names of all the model definitions are available with:
 
 ```py
     from echosms import ReferenceModels
@@ -221,6 +221,7 @@ Note that the specification contains more information that the model itself need
 
 ```py
     m = rm.parameters('spherical fluid shell with weakly scattering interior')
+    print(m)
 ```
 
 which returns:
@@ -259,16 +260,16 @@ Note that the `parameters()` call does not return all of the parameters needed b
     bm.freq_dataset  # the TS as a function of frequency
 ```
 
-The TS(f) values for a particular benchmark are available via:
+The TS and frequency values for a particular benchmark are available via:
 
 ```py
-    bm.freq_dataset['Sphere_WeaklyScattering']
-    bm.freq_dataset['Frequency_kHz']
+    bm.freq_dataset['weakly scattering sphere']
+    bm.freq_dataset['frequency (kHz)']
 ```
 
 or for the angle dataset:
 
 ```py
-    bm.angle_dataset['Sphere_WeaklyScattering']
-    bm.angle_dataset['Angle_deg']
+    bm.angle_dataset['weakly scattering sphere']
+    bm.angle_dataset['angle (deg)']
 ```
