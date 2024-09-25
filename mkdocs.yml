@@ -18,9 +18,34 @@ theme:
         - toc.integrate
         - content.action.view
         - content.code.copy
-        
+        - search.suggest
+        - search.highlight
+        - search.share
+    palette:
+
+     # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to system preference
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+
 repo_url: https://github.com/ices-tools-dev/echoSMs
 edit_uri: edit/main/docs/
+site_url: https://ices-tools-dev.github.io/echoSMs/
 
 plugins:
     - search
