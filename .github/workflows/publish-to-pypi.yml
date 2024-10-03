@@ -93,7 +93,7 @@ jobs:
         --repo '${{ github.repository }}'
 
   publish-to-testpypi:
-    name: Publish Python distribution to TestPyPI
+    name: Publish echoSMs to TestPyPI
     needs:
     - build
     runs-on: ubuntu-latest
