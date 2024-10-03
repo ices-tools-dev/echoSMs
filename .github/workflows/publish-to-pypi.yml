@@ -1,6 +1,6 @@
 name: Publish echoSMs to PyPI and TestPyPI
 
-on: push:
+on: push
 
 jobs:
   build:
