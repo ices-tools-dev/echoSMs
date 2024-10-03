@@ -15,15 +15,15 @@ We use SI units for the model parameters, except for angles (we use degrees inst
 
 ## Coordinate systems
 
-A single coordinate system is used for all models implemented by echoSMs. The right-handed cartesian coordinate system as defined by ISO 80000-2[^1] is to be used, as illustrated below. The acoustic wave is defined to always travel along the positive _z_-axis and the organism is rotated to achieve different acoustic incidence angles.
+The right-handed cartesian coordinate system as defined by ISO 80000-2[^1] is to be used, as illustrated below. The acoustic wave is defined to always travel in the positive _z_ direction and the organism is rotated to achieve different acoustic incidence angles.
 
-The [Tait-Bryan](https://en.wikipedia.org/wiki/Euler_angles) _z_-_y'_-_x''_ (intrinsic) convention was chosen to represent organism rotations as it is commonly used in nautical situations. Intrinsic means that the rotations are about the axes of the rotating coordinate system, rather than the original coordinate system. The _z_-_y'_-_x''_ ordering indicates the order in which rotations are applied.
+The [Tait-Bryan](https://en.wikipedia.org/wiki/Euler_angles#Tait–Bryan_angles) _z_-_y'_-_x''_ (intrinsic) convention was chosen to represent organism rotations as it is commonly used in nautical situations. Intrinsic means that the rotations are about the axes of the rotating organism, rather than the original coordinate system. The order of rotations is _z_, then _y_, then _x_.
 
-Rotations around the  _x_-axis are roll (_ɸ_), about the _y_-axis are pitch (_θ_), and about the _z_-axis are yaw (_ψ_). The definitions are such that:
+Rotations about the _z_-axis are yaw (_ψ_), about the _y_-axis are pitch (_θ_), and about the _x_-axis are roll (_ɸ_). The definitions are such that:
 
+- A yaw (_ψ_) value of 0° occurs when the organism lies along the positive _x_-axis (as per the illustration) and positive yaw values (as per the yellow arrow) rotate the organism's head towards the positive _y_-axis,
 - Pitch (_θ_) values of –90°, 0°, and 90° correspond to acoustic wave incidence angles of tail on, dorsal, and head on, respectively,
-- Roll (_ɸ_) values of –90°, 0°, and 90° correspond to acoustic wave incidence angles onto the right, dorsal, and left sides of the organism, respectively,
-- A yaw (_ψ_) value of 0° occurs when the organism lies along the positive _x_-axis and positive yaw values rotate the organism's head towards the positive _y_-axis.
+- Roll (_ɸ_) values of –90°, 0°, and 90° correspond to acoustic wave incidences onto the right (starboard), dorsal, and left (port) sides of the organism, respectively.
 
 All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.
 

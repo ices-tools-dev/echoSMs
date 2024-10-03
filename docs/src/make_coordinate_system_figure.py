@@ -156,6 +156,7 @@ p.camera_position = [(9.44840097372024, 17.277196718053595, -7.056312001523225),
 # p.export_obj('coordinate_system2.obj')  # no colour?
 # p.export_gltf('coordinate_system2.gltf')  # loses text
 # p.export_vrml('coordinate_system2.vrml')  # no text??
+# p.export_vtksz(resourcesDir/'coordinate_system.vtksz')
 
 # no greek symbols and scale > 1 loses some of the text
 # p.screenshot('coordinate_system2.png', transparent_background=True, scale=1)
