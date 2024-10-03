@@ -22,7 +22,6 @@ theme:
         - search.highlight
         - search.share
     palette:
-
      # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
       toggle:
