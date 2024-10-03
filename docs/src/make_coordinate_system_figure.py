@@ -86,26 +86,30 @@ arrow_z = pv.Arrow(start=(0, 0, 0), direction=(0, 0, al), shaft_radius=sr, tip_r
                    tip_length=0.1, scale='auto')
 
 # Angle arrows and arcs
-arrow_theta = pv.Arrow(start=(0, 0, 0), direction=(al/2, 0, al/2),
-                       shaft_radius=sr/2, tip_radius=0.02, tip_length=0.1, scale='auto')
-arc_theta = semi_circular_arrow(center=(0, 0, 0), circ_frac=38/360, start_angle=-np.pi/2,
-                                circ_radius=al/3, normal=(0, 1, 0),
+circ_frac = 0.8
+along_axis = 0.7
+arc_pitch = semi_circular_arrow(center=(0, al*along_axis, 0), circ_frac=circ_frac,
+                                start_angle=0,
+                                circ_radius=al/10, normal=(0, 1, 0),
                                 body_radius=0.05, head_length=0.5)
-
-arrow_phi = pv.Arrow(start=(0, 0, 0), direction=(al/2, al/2, 0),
-                     shaft_radius=sr/2, tip_radius=0.02, tip_length=0.1, scale='auto')
-arc_phi = semi_circular_arrow(center=(0, 0, 0), circ_frac=38/360, start_angle=0,
-                              circ_radius=al/3, normal=(0, 0, 1),
+arc_roll = semi_circular_arrow(center=(al*along_axis, 0, 0), circ_frac=circ_frac,
+                               start_angle=0,
+                               circ_radius=al/10, normal=(1, 0, 0),
+                               body_radius=0.05, head_length=0.5)
+arc_yaw = semi_circular_arrow(center=(0, 0, al*along_axis), circ_frac=circ_frac,
+                              start_angle=0,
+                              circ_radius=al/10, normal=(0, 0, 1),
                               body_radius=0.05, head_length=0.5)
 
 # axes labels
-axes_label_pts = [[al, 0., 0.], [0., al, 0.], [0., 0., al]]
+axes_label_pts = [[al*1.02, 0., 0.], [0., al*1.05, 0.], [0., 0., al*1.07]]
 axes_label_txt = ['x', 'y', 'z']
 
 # angle labels
-angles_label_pts = [[al/3*np.tan(22.5/180*np.pi), 0., al/3],
-                    [al/3, al/3*np.tan(22.5/180*np.pi), 0.]]
-angles_label_txt = ['θ', 'φ']
+angles_label_pts = [[al*along_axis, 0., -al/10*1.1],
+                    [al/10*1.1, al*along_axis, 0.],
+                    [al/10*1.1, 0., al*along_axis]]
+angles_label_txt = ['φ', 'θ', 'ψ']
 
 # the fish model came from: https://3dmag.org/en/market/download/item/6255/
 reader = pv.get_reader('../resources/herring.stl')
@@ -117,39 +121,35 @@ offset = (-((b[1]-b[0])/2 + b[0]), (b[3]-b[2])/2 + b[2], (b[5]-b[4])/2 + b[4])
 fish.translate(offset, inplace=True)
 
 # rotate the fish to fit our coordinate system
-fish.rotate_x(-90, inplace=True)
+fish.rotate_x(180, inplace=True)
 fish.rotate_z(-90, inplace=True)
 
 # scale the fish to length (along the z axis)
 length = fish.bounds[5] - fish.bounds[4]
-fish.scale(0.7*al/length, inplace=True)
+fish.scale(0.3*al/length, inplace=True)
 
 # Assemble the 3D scene
-p = pv.Plotter(window_size=[1600, 1200])  # to get a good size for raster outputs
+p = pv.Plotter(window_size=[1600, 860])  # to get a good size for raster outputs
 p.add_mesh(fish, opacity=.9)
 p.add_mesh(arrow_x, color='gray')
 p.add_mesh(arrow_y, color='gray')
 p.add_mesh(arrow_z, color='gray')
-p.add_mesh(arrow_theta, color='red')
-p.add_mesh(arc_theta, color='red')
-p.add_mesh(arrow_phi, color='green')
-p.add_mesh(arc_phi, color='green')
+p.add_mesh(arc_pitch, color='green')
+p.add_mesh(arc_roll, color='red')
+p.add_mesh(arc_yaw, color='yellow')
 
 # the angle labels
-p.add_point_labels(angles_label_pts[0], [angles_label_txt[0]], font_family='times',
+p.add_point_labels(angles_label_pts, angles_label_txt, font_family='times',
                    bold=False, shape=None, always_visible=True, show_points=False,
                    font_size=50)
-p.add_point_labels(angles_label_pts[1], [angles_label_txt[1]], font_family='times',
-                   bold=False, shape=None, always_visible=True, show_points=False,
-                   justification_horizontal='right', font_size=50)
 # the axes labels
 p.add_point_labels(axes_label_pts, axes_label_txt,
                    font_size=50, italic=True, bold=False, shape=None,
                    always_visible=True, show_points=False, font_family='times')
 
-p.camera_position = [(10.0, 22.8, 15.4),
-                     (4.7, 3.9, 3.3),
-                     (0.97, -0.14, -0.19)]
+p.camera_position = [(9.44840097372024, 17.277196718053595, -7.056312001523225),
+                     (2.7462545037450483, 2.6898350612751827, 1.695119545588695),
+                     (-0.2125924945535939, -0.42901864969164194, -0.877922222908294)]
 
 # Unfortunately, all exports have issues...
 # p.export_html('coordinate_system2.html')  # loses all text

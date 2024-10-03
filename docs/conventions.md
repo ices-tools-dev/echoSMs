@@ -15,9 +15,19 @@ We use SI units for the model parameters, except for angles (we use degrees inst
 
 ## Coordinate systems
 
-A single coordinate system is used for all models implemented by echoSMs. The aim is to ease the comparison of results between different models.
+A single coordinate system is used for all models implemented by echoSMs. The right-handed cartesian coordinate system as defined by ISO 80000-2[^1] is to be used, as illustrated below. The acoustic wave is defined to always travel along the positive _z_-axis and the organism is rotated to achieve different acoustic incidence angles.
 
-The right-handed spherical coordinate system as defined by ISO 80000-2[^1] is to be used, as illustrated below. The organism should lie along the _z_-axis with the positive _x_-axis extending above the dorsal surface of the organism:
+The [Tait-Bryan](https://en.wikipedia.org/wiki/Euler_angles) _z_-_y'_-_x''_ (intrinsic) convention was chosen to represent organism rotations as it is commonly used in nautical situations. Intrinsic means that the rotations are about the axes of the rotating coordinate system, rather than the original coordinate system. The _z_-_y'_-_x''_ ordering indicates the order in which rotations are applied.
+
+Rotations around the  _x_-axis are roll (_ɸ_), about the _y_-axis are pitch (_θ_), and about the _z_-axis are yaw (_ψ_). The definitions are such that:
+
+- Pitch (_θ_) values of –90°, 0°, and 90° correspond to acoustic wave incidence angles of tail on, dorsal, and head on, respectively,
+- Roll (_ɸ_) values of –90°, 0°, and 90° correspond to acoustic wave incidence angles onto the right, dorsal, and left sides of the organism, respectively, and
+- a _ψ_ value of 0° occurs when the organism lies along the positive _x_-axis and positive _ψ_ values rotate the organism's head towards the _y_-axis.
+
+
+All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.
+
 
 <!--- This code will include an html file, originally used to
 include a live 3D view of the coordinate system, but there are
@@ -27,13 +37,9 @@ issues with the html so for the moment a 2D image is used.
 </p>
 --->
 
-![The coordinate system](resources/coordinate_system.svg){:style="height:400px;width400px"}
+![The coordinate system](resources/coordinate_system.svg)
 
-Note: the figure above is not correct (see [issue 26](https://github.com/ices-tools-dev/echoSMs/issues/26)).
 
-The definitions are such that for _ɸ_=0°, _θ_ values of 0°, 90°, and 180° correspond to acoustic wave incidence angles of head on, dorsal, and tail on, respectively. Note that the definition of these angles is in terms of the acoustic wave, not the orientation of the organism (which should always be as shown in the illustration).
-
-All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.
 
 ## Code style
 
