@@ -48,6 +48,25 @@ def wavenumber(c: float, f: float) -> float:
     return 2*np.pi*f/c
 
 
+def wavelength(c: float, f: float) -> float:
+    """Calculate the acoustic wavelength.
+
+    Parameters
+    ----------
+    c :
+        Sound speed [m/s]
+
+    f :
+        Frequency [Hz]
+
+    Returns
+    -------
+    :
+        The acoustic wavelength [m].
+    """
+    return c/f
+
+
 def h1(n: int, z: float, derivative=False) -> complex:
     """Spherical Hankel function of the first kind or its' derivative.
 

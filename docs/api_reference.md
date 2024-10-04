@@ -38,6 +38,10 @@ There are several models that use the distorted-wave Born approximation, documen
 
 ::: echosms.ESModel
 
+## KAModel
+
+::: echosms.KAModel
+
 ## MSSModel
 
 ::: echosms.MSSModel

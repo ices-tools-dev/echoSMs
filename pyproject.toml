@@ -23,6 +23,7 @@ dependencies = [
 	"pandas",
   "xarray",
   'tomli >= 1.1.0; python_version < "3.11"',
+  'trimesh',
   'spheroidalwavefunctions',
 ]
 classifiers = [

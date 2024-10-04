@@ -3,8 +3,9 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import trimesh
 
-from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel
+from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
@@ -313,3 +314,29 @@ dwba_ts = pt.calculate_ts(m, multiprocess=True)
 plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA',
                   m['f'], bmf['ProlateSpheroid_WeaklyScattering'], 'Benchmark',
                   'weakly scattering prolate spheroid')
+# %% ##################################################
+# Test the KAModel
+# mesh = trimesh.load(r'..\docs\resources\herring.stl')
+# mesh = trimesh.creation.cylinder(radius=0.01, height=0.07, sections=500)
+
+name = 'fixed rigid sphere'
+s = rm.specification(name)
+
+mesh = trimesh.creation.icosphere(radius=s['a'], subdivisions=4)
+m = {}
+m['medium_c'] = s['medium_c']
+m['f'] = bmf['frequency (kHz)'][~np.isnan(bmf[name])]*1e3  # [Hz]
+m['phi'] = 0
+m['theta'] = 90.0
+m['mesh'] = mesh
+m['boundary_type'] = 'fixed rigid'
+
+mod = KAModel()
+
+# and run the models
+ts = mod.calculate_ts(m)
+
+# Get the benchmark TS values
+bm_ts = bmf[name][~np.isnan(bmf[name])]
+
+plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
