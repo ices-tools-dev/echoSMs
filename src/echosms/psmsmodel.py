@@ -108,7 +108,7 @@ class PSMSModel(ScatterModelBase):
 
                 match boundary_type:
                     case 'fluid filled':
-                        # Note: we can implement the simplier equations if impedances are
+                        # Note: we can implement the simpler equations if impedances are
                         # similar between the medium and the target. The gas-filled
                         # condition does not meet that, so we have two paths here. The simplified
                         # equations are quicker, so it is worth to do.
