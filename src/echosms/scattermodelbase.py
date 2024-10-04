@@ -22,7 +22,7 @@ class ScatterModelBase(abc.ABC):
         long_name : str
             The long name of the model.
         short_name : str
-            A short version of the model's long name, typically an ancronym.
+            A short version of the model's long name, typically an acronym.
         analytical_type : str
             Whether the model implements an ``exact`` or an ``approximate`` model.
         boundary_types : list[str]
@@ -31,9 +31,9 @@ class ScatterModelBase(abc.ABC):
         shapes : list[str]
             The target shapes that the model can represent.
         max_ka : float
-            An approximate maximum ka value that will result in accurate target strength results. Note
-            that ka is often not the only parameter that determines the accuracy of the model (e.g.,
-            aspect ratio and incident angle can also affect the accuracy).
+            An approximate maximum ka value that will result in accurate target strength results.
+            Note that ka is often not the only parameter that determines the accuracy of the
+            model (e.g., aspect ratio and incident angle can also affect the accuracy).
         no_expand_parameters : list[str]
             The model parameters that are not expanded into Pandas DataFrame columns or
             Xarray DataArray coordinates. They will instead end up as a dict in the DataFrame or
@@ -52,7 +52,7 @@ class ScatterModelBase(abc.ABC):
         return 'Name: ' + self.__class__.__name__ + ', vars: ' + str(vars(self))
 
     def __str__(self):
-        """Return user-friedly representation of the object."""
+        """Return user-friendly representation of the object."""
         s = self.__class__.__name__ + " class with attributes of:\n"
         s += '\n'.join(['\t' + str(k) + ' = ' + str(v) for k, v in vars(self).items()])
         return s
