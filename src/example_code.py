@@ -329,7 +329,7 @@ m['f'] = bmf['frequency (kHz)'][~np.isnan(bmf[name])]*1e3  # [Hz]
 m['phi'] = 0
 m['theta'] = 90.0
 m['mesh'] = mesh
-m['boundary_type'] = 'fixed rigid'
+m['boundary_type'] = 'pressure release'
 
 mod = KAModel()
 
