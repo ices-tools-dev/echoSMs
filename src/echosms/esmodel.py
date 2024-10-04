@@ -82,7 +82,7 @@ class ESModel(ScatterModelBase):
 
         # Estimate the number of terms to use in the summation
         n_max = round(q+10)
-        tol = 1e-10  # somewhat arbituary
+        tol = 1e-10  # somewhat arbitrary
         while abs(S(n_max)) > tol:
             n_max += 10
 
@@ -92,6 +92,6 @@ class ESModel(ScatterModelBase):
 
         n = range(n_max)
 
-        f_inf = -2.0/q * np.sum(list(map(S, n)))
+        f_inf = -2.0/q * sum(map(S, n))
 
         return 10*log10(a**2 * abs(f_inf)**2 / 4.0)
