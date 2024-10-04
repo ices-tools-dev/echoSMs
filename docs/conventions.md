@@ -35,7 +35,8 @@ issues with the html so for the moment a 2D image is used.
 </p>
 --->
 
-![The coordinate system](resources/coordinate_system.svg)
+![The coordinate system](resources/coordinate_system_light.svg#only-light)
+![The coordinate system](resources/coordinate_system_dark.svg#only-dark)
 
 ## Code style
 
