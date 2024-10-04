@@ -10,8 +10,7 @@ from .scattermodelbase import ScatterModelBase
 class KAModel(ScatterModelBase):
     """Kirchhoff approximation (KA) scattering model.
 
-    This class calculates acoustic scatter from arbituary surfaces with a
-    pressure release boundary condition.
+    This class calculates acoustic scatter from arbituary surfaces.
     """
 
     def __init__(self):
@@ -19,7 +18,7 @@ class KAModel(ScatterModelBase):
         self.long_name = 'Kirchhoff approximation'
         self.short_name = 'ka'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['fixed rigid', 'pressure release']
+        self.boundary_types = ['pressure release']
         self.shapes = ['closed surfaces']
         self.max_ka = 20  # [1]
         self.no_expand_parameters = ['mesh']
@@ -63,14 +62,14 @@ class KAModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the code in Foote & Franics (2002).
+        The class implements the code in Foote (1985).
 
         References
         ----------
-        Foote, K. G., & Francis, D. T. I. (2002). Comparing Kirchhoff-approximation and
-        boundary-element models for computing gadoid target strengths. The Journal of
-        the Acoustical Society of America, 111(4), 1644–1654.
-        <https://doi.org/10.1121/1.1458939>
+        Foote, K. G. (1985). Rather-high-frequency sound scattering of swimbladdered fish.
+        The Journal of the Acoustical Society of America, 78(2), 688–700.
+        <https://doi.org/10.1121/1.392438>
+
         """
         if boundary_type not in self.boundary_types:
             raise ValueError(f'The {self.long_name} model does not support '
