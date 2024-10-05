@@ -27,7 +27,7 @@ class MSSModel(ScatterModelBase):
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, theta, f, boundary_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, f, boundary_type,
                             target_c=None, target_rho=None,
                             shell_c=None, shell_rho=None, shell_thickness=None,
                             **kwargs) -> float:
@@ -42,9 +42,6 @@ class MSSModel(ScatterModelBase):
             Density of the fluid medium surrounding the target [kg/m³].
         a : float
             Radius of the spherical target [m].
-        theta : float
-            Pitch angle to calculate the scattering at [°]. An angle of 0 is head on,
-            90 is dorsal, and 180 is tail on.
         f : float
             Frequency to calculate the scattering at [Hz].
         boundary_type : str

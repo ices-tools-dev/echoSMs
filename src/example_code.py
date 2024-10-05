@@ -109,7 +109,7 @@ for name in models:
     if name == 'gas filled prolate spheroid':
         m['f'] = np.arange(12, 82, 2)*1e3
 
-    m['theta'] = 90.0
+    m['theta'] = 90.0  # not needed for the mss model
 
     # and run the models
     ts = mod.calculate_ts(m)
