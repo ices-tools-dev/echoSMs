@@ -22,7 +22,7 @@ The [Tait-Bryan](https://en.wikipedia.org/wiki/Euler_angles#Tait–Bryan_angles)
 Rotations about the _z_-axis are yaw (_ψ_), about the _y_-axis are pitch (_θ_), and about the _x_-axis are roll (_ɸ_). The definitions are such that:
 
 - A yaw (_ψ_) value of 0° occurs when the organism lies along the positive _x_-axis (as per the illustration) and positive yaw values (as per the yellow arrow) rotate the organism's head towards the positive _y_-axis,
-- Pitch (_θ_) values of –90°, 0°, and 90° correspond to acoustic wave incidence angles of tail on, dorsal, and head on, respectively,
+- Pitch (_θ_) values of 0°, 90°, and 180° correspond to acoustic wave incidence angles of head on, dorsal, and tail on, respectively,
 - Roll (_ɸ_) values of –90°, 0°, and 90° correspond to acoustic wave incidences onto the right (starboard), dorsal, and left (port) sides of the organism, respectively.
 
 All model code should accept angles and produce results in this coordinate system. If the model calculations use a different coordinate system, the code should internally convert between the system given above and the version used in the code.

@@ -41,10 +41,14 @@ class PTDWBAModel(ScatterModelBase):
             - axis 2: along direction, increasing towards the tail of the organism
 
         theta : float
-            Incident wave pitch angle [°].
+            Pitch angle to calculate the scattering as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
 
         phi : float
-            Incident wave roll angle [°].
+            Roll angle to calculate the scattering as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
 
         f : float
             Frequency to run the model at [Hz]

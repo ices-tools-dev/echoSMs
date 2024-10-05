@@ -33,8 +33,9 @@ class PSMSModel(ScatterModelBase):
         b : float
             Prolate spheroid minor axis radius [m].
         theta : float
-            Pitch angle to calculate the scattering at [°]. An angle of 0 is head on,
-            90 is dorsal, and 180 is tail on.
+            Pitch angle to calculate the scattering as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
         boundary_type : str

@@ -29,18 +29,18 @@ class DWBAModel(ScatterModelBase):
         Parameters
         ----------
         theta : float
-            Incident wave pitch angle [°].
-
+            Pitch angle to calculate the scattering as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
         phi : float
-            Incident wave roll angle [°].
-
+            Roll angle to calculate the scattering as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
         f : float
             Frequency to run the model at [Hz]
-
         target_rho : iterable[float]
             Densities of each material. Must have at least the same number of entries as unique
             integers in `volume` [kg/m³].
-
         target_c : iterable[float]
             Sound speed of each material. Must have at least the same number of entries as unique
             integers in `volume` [m/s].

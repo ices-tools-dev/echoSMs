@@ -89,7 +89,7 @@ arrow_z = pv.Arrow(start=(0, 0, 0), direction=(0, 0, al), shaft_radius=sr, tip_r
 circ_frac = 0.8
 along_axis = 0.7
 arc_pitch = semi_circular_arrow(center=(0, al*along_axis, 0), circ_frac=circ_frac,
-                                start_angle=0,
+                                start_angle=-0,
                                 circ_radius=al/10, normal=(0, 1, 0),
                                 body_radius=0.05, head_length=0.5)
 arc_roll = semi_circular_arrow(center=(al*along_axis, 0, 0), circ_frac=circ_frac,
@@ -136,7 +136,7 @@ for t in [pv.themes.DocumentTheme(), pv.themes.DarkTheme()]:
         text_colour = pv.Color([190, 193, 198])  # to match text color in the docs dark theme
         t.background = pv.Color([20, 33, 41])  # to match the background in the docs dark theme
 
-    p = pv.Plotter(window_size=[1600, 860], theme=t)  # a good size for raster outputs
+    p = pv.Plotter(window_size=[1600, 860], theme=t, off_screen=True)
     p.add_mesh(fish, opacity=.9)
     p.add_mesh(arrow_x, color='gray')
     p.add_mesh(arrow_y, color='gray')
