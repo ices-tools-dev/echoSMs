@@ -3,6 +3,7 @@
 import pyvista as pv
 import numpy as np
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 # These two functions came from https://github.com/pyvista/pyvista/discussions/5023 and are
 # used to create arced arrows.
@@ -146,7 +147,7 @@ for t in [pv.themes.DocumentTheme(), pv.themes.DarkTheme()]:
     p.add_mesh(arc_yaw, color='yellow')
 
     # the angle labels
-    p.add_point_labels(angles_label_pts, angles_label_txt, font_family='times',
+    p.add_point_labels(angles_label_pts, angles_label_txt, font_family='times', italic=True,
                        bold=False, shape=None, always_visible=True, show_points=False,
                        font_size=50, text_color=text_colour)
     # the axes labels
@@ -180,4 +181,13 @@ for t in [pv.themes.DocumentTheme(), pv.themes.DarkTheme()]:
     # this generates an on-screen version. But doesn't show the greek symbols
     # p.show()
 
-    p.close()
+    # p.close()
+
+    # Modify the generate svg to make the labels properly italic
+    tree = ET.parse(savefile)
+    root = tree.getroot()
+
+    for text in root.iter('{http://www.w3.org/2000/svg}text'):
+        text.set('font-style', 'italic')
+
+    tree.write(savefile)
