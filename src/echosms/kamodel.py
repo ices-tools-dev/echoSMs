@@ -80,7 +80,7 @@ class KAModel(ScatterModelBase):
         # into an (x,y,z) vector.
 
         # Acoustic wave incident vector and its' norm
-        rot = R.from_euler('ZYX', (0, -theta, -phi), degrees=True)
+        rot = R.from_euler('ZYX', (0, theta-90, -phi), degrees=True)
         k_norm = rot.as_matrix() @ np.array([[0, 0, 1]]).T
         k = k_norm * wavenumber(medium_c, f)
 
