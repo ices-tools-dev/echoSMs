@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", 'hatch-vcs']
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
@@ -7,7 +7,6 @@ packages = ["src/echosms"]
 
 [project]
 name = 'echosms'
-version = '0.1.11'
 license = {file = "LICENSE"}
 keywords = ["acoustic", "backscatter", "model"]
 authors = [
@@ -37,6 +36,10 @@ classifiers = [
     'Programming Language :: Python :: 3.12',
     'Topic :: Scientific/Engineering',
 ]
+dynamic = [ 'version']
+
+[tool.hatch.version]
+source = 'vcs'
 
 [project.optional-dependencies]
 dev = [
