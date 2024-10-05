@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy import ndimage
+from scipy.spatial.transform import Rotation as R
 from .scattermodelbase import ScatterModelBase
 
 
@@ -24,21 +25,20 @@ class PTDWBAModel(ScatterModelBase):
         Implements the phase-tracking distorted-wave Born approximation
         model for calculating the acoustic backscatter from weakly scattering bodies.
 
-        Warning
-        -------
-        Input parameters `theta`, `phi`, and the orientation of `volume` do not currently follow the
-        echoSMs [coordinate system](conventions.md#coordinate-systems).
-
         Parameters
         ----------
         volume : Numpy ndarray[int]
             The object to be modelled as a 3D volume of voxels. Array contents should be 0
             for the surrounding medium, then increasing by 1 for each additional material
-            type (i.e., 1, 2, 3, etc). `volume` should be ordered thus:
+            type (i.e., 1, 2, 3, etc). `volume` should be arranged as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems), where
 
-            - axis 0: height direction, increasing towards the underside of the organism
-            - axis 1: across direction, increasing towards the left side of the organism
-            - axis 2: along direction, increasing towards the tail of the organism
+            - axis 0 (rows) is the _x_-axis
+            - axis 1 (columns) is the _y_-axis
+            - axis 2: (slices) is the _z_-axis
+            
+            Increasing axes indices correspond to increasing _x_, _y_, and _z_ values.
 
         theta : float
             Pitch angle to calculate the scattering as per the echoSMs
@@ -55,7 +55,7 @@ class PTDWBAModel(ScatterModelBase):
 
         voxel_size : iterable[float]
             The size of the voxels in `volume` [m], ordered (_x_, _y_, _z_).
-            This code assumes that the voxels are cubes so _y_ and _z_ are currently irrevelant.
+            This code assumes that the voxels are cubes so _y_ and _z_ are currently irrelevant.
 
         rho : iterable[float]
             Densities of each material. Must have at least the same number of entries as unique
@@ -107,7 +107,7 @@ class PTDWBAModel(ScatterModelBase):
         if f < 0.0:
             raise ValueError('The f input variable must contain only positive values.')
 
-        if (theta < -180.0) or (theta > 180.0):
+        if (theta < -0.0) or (theta > 180.0):
             raise ValueError('The theta (pitch) angle must be between -180.0 and +180.0')
 
         if (phi < -180.0) or (phi > 180.0):
@@ -134,8 +134,19 @@ class PTDWBAModel(ScatterModelBase):
         h = c[1:] / c[0]
 
         # Do the pitch and roll rotations
-        v = ndimage.rotate(volume, -theta, axes=(0, 2), order=0)
-        v = ndimage.rotate(v, -phi, axes=(0, 1), order=0)
+
+        # Convert echoSMs rotation angles (which are intrinsic) into extrinsic as
+        # that is what ndimage.rotate() below uses.
+        if phi == 0.0:  # short circuit the coordinate transformation if we can
+            pitch = theta-90
+            roll = 0.0
+        else:
+            rot = R.from_euler('ZYX', (0, theta-90, -phi), degrees=True)
+            # for backscatter we don't care about yaw
+            _, pitch, roll = rot.as_euler('zyz', degrees=True)
+
+        v = ndimage.rotate(volume, pitch, axes=(0, 2), order=0)
+        v = ndimage.rotate(v, roll, axes=(1, 2), order=0)
 
         categories = np.unique(v)  # or just take the max?
 
@@ -155,8 +166,8 @@ class PTDWBAModel(ScatterModelBase):
             dph[masks[i]] = k[i] * voxel_size[0]
         masks.pop(0)  # don't need to keep the category[0] mask
 
-        # cummulative summation of phase along the x-direction
-        phase = dph.cumsum(axis=0) - dph/2.0
+        # cumulative summation of phase along the z-direction
+        phase = dph.cumsum(axis=2) - dph/2.0
         dA = np.zeros(phase.shape, dtype=np.complex128)
 
         # differential phases for each voxel

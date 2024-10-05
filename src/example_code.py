@@ -250,7 +250,8 @@ plt.plot(params_xa.f, params_xa.sel(theta=90, medium_rho=1000, medium_c=1600))
 # Example of PT-DWBA model
 
 # The benchmark sphere model
-m = rm.parameters('weakly scattering sphere')
+name = 'weakly scattering sphere'
+m = rm.parameters(name)
 
 # make a 3d matrix of 0's and 1's and set to 1 for the sphere
 # and 0 for not the sphere
@@ -263,7 +264,7 @@ m['theta'] = 90
 m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
-m['f'] = bmf['Frequency_kHz']*1e3
+m['f'] = bmf['frequency (kHz)']*1e3
 # remove unneeded parameters
 m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
@@ -271,39 +272,36 @@ m = {k: v for k, v in m.items()
 pt = PTDWBAModel()
 dwba_ts = pt.calculate_ts(m)
 
-plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA',
-                  m['f'], bmf['Sphere_WeaklyScattering'], 'Benchmark',
-                  'weakly scattering sphere')
+plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bmf[name], 'Benchmark', name)
 
 # So, this PT_DWBA on a weakly scattering sphere is also different from the benchmark
 # TS values. Hmmmm. Now look at the difference between the PT-DWBA and MSS model runs...
 
 mss = MSSModel()
-mm = rm.parameters('weakly scattering sphere')
+mm = rm.parameters(name)
 mm['f'] = bmf['Frequency_kHz']*1e3
 mm['theta'] = 90.0
 
 mss_ts = mss.calculate_ts(mm)
 
-plot_compare_freq(mm['f'], dwba_ts, 'PT-DWBA',
-                  mm['f'], mss_ts, 'MSS',
-                  'weakly scattering sphere')
+plot_compare_freq(mm['f'], dwba_ts, 'PT-DWBA', mm['f'], mss_ts, 'MSS', name)
 
 ########################################################
 # And then the same thing, but for the prolate spheroid
-m = rm.parameters('weakly scattering prolate spheroid')
+name = 'weakly scattering prolate spheroid'
+m = rm.parameters(name)
 m['voxel_size'] = (0.0001, 0.0001, 0.0001)  # [m]
-x = np.arange(-m['b'], m['b'], m['voxel_size'][0])
+x = np.arange(-m['a'], m['a'], m['voxel_size'][0])
 y = np.arange(-m['b'], m['b'], m['voxel_size'][0])
-z = np.arange(-m['a'], m['a'], m['voxel_size'][0])
-(X, Y, Z) = np.meshgrid(x, y, z)
+z = np.arange(-m['b'], m['b'], m['voxel_size'][0])
+(X, Y, Z) = np.meshgrid(x, y, z, indexing='ij')
 
-m['volume'] = ((X**2 + Y**2)/m['b']**2 + Z**2/m['a']**2) <= 1
-m['theta'] = 0
+m['volume'] = ((Y**2 + Z**2)/m['b']**2 + X**2/m['a']**2) <= 1
+m['theta'] = 90
 m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
-m['f'] = bmf['Frequency_kHz']*1e3
+m['f'] = bmf['frequency (kHz)']*1e3
 # remove unneeded parameters
 m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'b', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
@@ -311,9 +309,8 @@ m = {k: v for k, v in m.items()
 pt = PTDWBAModel()
 dwba_ts = pt.calculate_ts(m, multiprocess=True)
 
-plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA',
-                  m['f'], bmf['ProlateSpheroid_WeaklyScattering'], 'Benchmark',
-                  'weakly scattering prolate spheroid')
+plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bmf[name], 'Benchmark', name)
+
 # %% ##################################################
 # Test the KAModel
 # mesh = trimesh.load(r'..\docs\resources\herring.stl')
