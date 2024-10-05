@@ -63,7 +63,7 @@ class PSMSModel(ScatterModelBase):
             trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
         Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
             “Prediction of krill target strength by liquid prolate spheroid
-            model,” Fish. Sci., 60, 261–265.
+            model,” Fish. Sci., 60, 261-265.
         """
         if boundary_type not in self.boundary_types:
             raise ValueError(f'The {self.long_name} model does not support '
