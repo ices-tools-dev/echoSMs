@@ -10,12 +10,14 @@ EchoSMs is available on [PyPi](https://pypi.org) as [`echosms`](https://pypi.org
 
 Some of the models in echoSMs use spheroidal wave functions. A high-accuracy implementation of these is available in the Python package [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/), as the versions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are insufficient. This should be installed automatically when you install echosms, but note that `spheroidalwavefunctions` is currently only available for Linux and Windows on x86_64 CPU architectures (create an [issue](https://github.com/ices-tools-dev/echoSMs/issues) if you want it on a system that is not currently supported).
 
-## Version
+## Versions
 
 The installed version of echosms can be printed with this code:
 
     import importlib
     print(importlib.metadata.version('echosms'))
+
+The changelogs for echoSMs are available [here](https://github.com/ices-tools-dev/echoSMs/releases). The latest version is always at the top of that list.
 
 ## Model overview
 
