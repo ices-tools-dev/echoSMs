@@ -204,7 +204,7 @@ models_df = as_dataframe(m, mss.no_expand_parameters)
 
 print(f'Running {len(models_df)} models')
 # and run. This will return a Series
-ts = mss.calculate_ts(models_df, multiprocess=True)
+ts = mss.calculate_ts(models_df, multiprocess=False)
 models_df['ts'] = ts
 
 # Alternatively, the ts results can be added to the dataframe that is passed in:

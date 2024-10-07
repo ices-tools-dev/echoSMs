@@ -1,6 +1,7 @@
 """The stochastic distorted-wave Born approximation model."""
 
 from .scattermodelbase import ScatterModelBase
+from .utils import as_dict
 
 
 class SDWBAModel(ScatterModelBase):
@@ -20,7 +21,11 @@ class SDWBAModel(ScatterModelBase):
         self.shapes = ["any"]
         self.max_ka = 20
 
-    def calculate_ts_single(self, theta, phi, f, target_rho, target_c):
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+
+    def calculate_ts_single(self, theta, phi, f, target_rho, target_c, validate_parameters=True):
         """Stochastic distorted-wave Born approximation scattering model.
 
         Implements the stochastic distorted-wave Born approximation
@@ -32,22 +37,20 @@ class SDWBAModel(ScatterModelBase):
             Pitch angle to calculate the scattering as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
             conventions/#coordinate-systems) [°].
-
         phi : float
             Roll angle to calculate the scattering as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
             conventions/#coordinate-systems) [°].
-
         f : float
             Frequency to run the model at [Hz]
-
         target_rho : iterable[float]
             Densities of each material. Must have at least the same number of entries as unique
             integers in `volume` [kg/m³].
-
         target_c : iterable[float]
             Sound speed of each material. Must have at least the same number of entries as unique
             integers in `volume` [m/s].
+        validate_parameters :
+            Whether to validate the model parameters.
 
         Returns
         -------
@@ -75,4 +78,8 @@ class SDWBAModel(ScatterModelBase):
         krill target strength. ICES Journal of Marine Science, 63(5), 928-935.
         <https://doi.org/10.1016/j.icesjms.2006.02.007>
         """
+        if validate_parameters:
+            p = {'theta': theta, 'phi': phi, 'f': f, 'target_rho': f, 'target_c': target_c}
+            self.validate_parameters(p)
+
         return None

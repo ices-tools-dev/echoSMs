@@ -5,7 +5,7 @@ import numpy as np
 # from mapply.mapply import mapply
 # import swifter
 from scipy.special import spherical_jn, spherical_yn
-from .utils import h1, wavenumber
+from .utils import h1, wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase
 
 
@@ -27,9 +27,26 @@ class MSSModel(ScatterModelBase):
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
 
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
+        super()._present_and_positive(p, ['medium_rho', 'a', 'f'])
+
+        for bt in np.atleast_1d(p['boundary_type']):
+            match bt:
+                case 'fluid filled':
+                    super()._present_and_positive(p, ['target_c', 'target_rho'])
+                case 'fluid shell fluid interior':
+                    super()._present_and_positive(p, ['target_c', 'target_rho', 'shell_c',
+                                                      'shell_rho', 'shell_thickness'])
+                case 'fluid shell pressure release interior':
+                    super()._present_and_positive(p, ['shell_c', 'shell_rho', 'shell_thickness'])
+
     def calculate_ts_single(self, medium_c, medium_rho, a, f, boundary_type,
                             target_c=None, target_rho=None,
                             shell_c=None, shell_rho=None, shell_thickness=None,
+                            validate_parameters=True,
                             **kwargs) -> float:
         """
         Calculate the scatter using the mss model for one set of parameters.
@@ -80,6 +97,12 @@ class MSSModel(ScatterModelBase):
         research. Journal of the Acoustical Society of America 138, 3742–3764.
         <https://doi.org/10.1121/1.4937607>
         """
+        if validate_parameters:
+            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'f': f,
+                 'boundary_type': boundary_type, 'target_c': target_c, 'target_rho': target_rho,
+                 'shell_c': shell_c, 'shell_rho': shell_rho, 'shell_thickness': shell_thickness}
+            self.validate_parameters(p)
+
         k0 = wavenumber(medium_c, f)
         ka = k0*a
         n = np.arange(0, round(ka+20))

@@ -4,6 +4,7 @@ import numpy as np
 from scipy import ndimage
 from scipy.spatial.transform import Rotation as R
 from .scattermodelbase import ScatterModelBase
+from .utils import as_dict
 
 
 class PTDWBAModel(ScatterModelBase):
@@ -19,7 +20,12 @@ class PTDWBAModel(ScatterModelBase):
         self.max_ka = 20
         self.no_expand_parameters = ['volume', 'voxel_size', 'rho', 'c']
 
-    def calculate_ts_single(self, volume, theta, phi, f, voxel_size, rho, c, **kwargs):
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+
+    def calculate_ts_single(self, volume, theta, phi, f, voxel_size, rho, c,
+                            validate_parameters=True, **kwargs):
         """Phase-tracking distorted-wave Born approximation scattering model.
 
         Implements the phase-tracking distorted-wave Born approximation
@@ -64,6 +70,8 @@ class PTDWBAModel(ScatterModelBase):
         c : iterable[float]
             Sound speed of each material. Must have at least the same number of entries as unique
             integers in `volume` [m/s].
+        validate_parameters :
+            Whether to validate the model parameters.
 
         Returns
         -------
@@ -86,6 +94,11 @@ class PTDWBAModel(ScatterModelBase):
         Application to squid. The Journal of the Acoustical Society of America,
         125(1), 73-88. <https://doi.org/10.1121/1.3021298>
         """
+        if validate_parameters:
+            p = {'volume': volume, 'theta': theta, 'phi': phi, 'f': f,
+                 'voxel_size': voxel_size, 'rho': rho, 'c': c}
+            self.validate_parameters(p)
+
         # Make sure things are numpy arrays
         rho = np.atleast_1d(rho)
         c = np.atleast_1d(c)

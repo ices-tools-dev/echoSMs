@@ -270,7 +270,7 @@ benchmark_model = "dcm"
 [[target]]
 name = "WC20 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 20 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.01 # radius
 medium_rho = "medium_density"
@@ -284,7 +284,7 @@ benchmark_model = "es"
 [[target]]
 name = "WC21 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 21 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.015 # radius
 medium_rho = "medium_density"
@@ -298,7 +298,7 @@ benchmark_model = "es"
 [[target]]
 name = "WC22 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 22 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.011 # radius
 medium_rho = "medium_density"
@@ -312,7 +312,7 @@ benchmark_model = "es"
 [[target]]
 name = "WC25 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 25 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.0125 # radius
 medium_rho = "medium_density"
@@ -326,7 +326,7 @@ benchmark_model = "es"
 [[target]]
 name = "WC38.1 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 38.1 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.01905 # radius
 medium_rho = "medium_density"
@@ -340,7 +340,7 @@ benchmark_model = "es"
 [[target]]
 name = "WC57.2 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 57.2 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.0286 # radius
 medium_rho = "medium_density"
@@ -354,7 +354,7 @@ benchmark_model = "es"
 [[target]]
 name = "WC60 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 60 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.030 # radius
 medium_rho = "medium_density"
@@ -368,7 +368,7 @@ benchmark_model = "es"
 [[target]]
 name = "WC64 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 64 mm diameter tungsten carbide sphere with 6% cobalt binder"
 a = 0.032 # radius
 medium_rho = "medium_density"
@@ -382,7 +382,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu13.7 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 13.7 mm diameter copper sphere"
 a = 0.00685 # radius
 medium_rho = "medium_density"
@@ -396,7 +396,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu23 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 23 mm diameter copper sphere"
 a = 0.0115 # radius
 medium_rho = "medium_density"
@@ -410,7 +410,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu32 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 32 mm diameter copper sphere"
 a = 0.016 # radius
 medium_rho = "medium_density"
@@ -424,7 +424,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu42 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 42 mm diameter copper sphere"
 a = 0.021 # radius
 medium_rho = "medium_density"
@@ -438,7 +438,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu45 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 45 mm diameter copper sphere"
 a = 0.0225 # radius
 medium_rho = "medium_density"
@@ -452,7 +452,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu60 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 60 mm diameter copper sphere"
 a = 0.030 # radius
 medium_rho = "medium_density"
@@ -466,7 +466,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu63 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 63 mm diameter copper sphere"
 a = 0.0315 # radius
 medium_rho = "medium_density"
@@ -480,7 +480,7 @@ benchmark_model = "es"
 [[target]]
 name = "Cu64 calibration sphere"
 shape = "sphere"
-boundary_type = "elastic sphere"
+boundary_type = "elastic"
 description = "A 64 mm diameter copper sphere"
 a = 0.032 # radius
 medium_rho = "medium_density"

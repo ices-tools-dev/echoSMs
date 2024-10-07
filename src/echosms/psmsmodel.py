@@ -3,7 +3,7 @@
 import numpy as np
 from math import factorial
 from .scattermodelbase import ScatterModelBase
-from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann
+from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict
 
 
 class PSMSModel(ScatterModelBase):
@@ -18,8 +18,19 @@ class PSMSModel(ScatterModelBase):
         self.shapes = ['prolate spheroid']
         self.max_ka = 10  # [1]
 
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
+        super()._present_and_positive(p, ['medium_c', 'medium_rho', 'a', 'b', 'f'])
+
+        for bt in np.atleast_1d(p['boundary_type']):
+            match bt:
+                case 'fluid filled':
+                    super()._present_and_positive(p, ['target_c', 'target_rho'])
+
     def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type,
-                            target_c=None, target_rho=None):
+                            target_c=None, target_rho=None, validate_parameters=True):
         """Prolate spheroid modal series (PSMS) solution model.
 
         Parameters
@@ -40,12 +51,14 @@ class PSMSModel(ScatterModelBase):
             Frequency to calculate the scattering at [Hz].
         boundary_type : str
             The model type. Supported model types are given in the `boundary_types` class variable.
-        target_c : float, optional
+        target_c : float
             Sound speed in the fluid inside the target [m/s].
             Only required for `boundary_type` of ``fluid filled``.
-        target_rho : float, optional
+        target_rho : float
             Density of the fluid inside the target [kg/m³].
             Only required for `boundary_type` of ``fluid filled``.
+        validate_parameters :
+            Whether to validate the input parameters.
 
         Returns
         -------
@@ -66,6 +79,12 @@ class PSMSModel(ScatterModelBase):
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261-265.
         """
+        if validate_parameters:
+            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'b': b,
+                 'theta': theta, 'f': f, 'boundary_type': boundary_type,
+                 'target_c': target_c, 'target_rho': target_rho}
+            self.validate_parameters(p)
+
         if boundary_type not in self.boundary_types:
             raise ValueError(f'The {self.long_name} model does not support '
                              f'a model type of "{boundary_type}".')

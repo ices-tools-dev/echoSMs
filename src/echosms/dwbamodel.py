@@ -1,6 +1,7 @@
 """The distorted-wave Born approximation model."""
 
 from .scattermodelbase import ScatterModelBase
+from .utils import as_dict
 
 
 class DWBAModel(ScatterModelBase):
@@ -20,7 +21,11 @@ class DWBAModel(ScatterModelBase):
         self.shapes = ['any']
         self.max_ka = 20
 
-    def calculate_ts_single(self, theta, phi, f, target_rho, target_c):
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+
+    def calculate_ts_single(self, theta, phi, f, target_rho, target_c, validate_parameters=True):
         """Distorted-wave Born approximation scattering model.
 
         Implements the distorted-wave Born approximation
@@ -44,6 +49,8 @@ class DWBAModel(ScatterModelBase):
         target_c : iterable[float]
             Sound speed of each material. Must have at least the same number of entries as unique
             integers in `volume` [m/s].
+        validate_parameters :
+            Whether to validate the model parameters.
 
         Returns
         -------
@@ -62,4 +69,7 @@ class DWBAModel(ScatterModelBase):
         of America, 93(5), 2985–2988. <https://doi.org/10.1121/1.405818>
 
         """
+        if validate_parameters:
+            p = {'theta': theta, 'phi': phi, 'f': f, 'target_rho': f, 'target_c': target_c}
+            self.validate_parameters(p)
         return None

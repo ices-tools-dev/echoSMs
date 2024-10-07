@@ -4,7 +4,8 @@ from math import sin, cos, nan, pi, log10
 from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
 # from mapply.mapply import mapply
 # import swifter
-from .utils import Neumann, wavenumber
+import numpy as np
+from .utils import Neumann, wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase
 
 
@@ -24,8 +25,19 @@ class DCMModel(ScatterModelBase):
         self.shapes = ['finite cylinder']
         self.max_ka = 20  # [1]
 
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
+        super()._present_and_positive(p, ['medium_rho', 'medium_c', 'a', 'b', 'f'])
+
+        for bt in np.atleast_1d(p['boundary_type']):
+            if bt == 'fluid filled':
+                super()._present_and_positive(p, ['target_c', 'target_rho'])
+
     def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type,
-                            target_c=None, target_rho=None, **kwargs):
+                            target_c=None, target_rho=None, validate_parameters=True,
+                            **kwargs):
         """
         Calculate the scatter from a finite cylinder using the modal series deformed cylinder model.
 
@@ -53,6 +65,8 @@ class DCMModel(ScatterModelBase):
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
             Only required for `boundary_type` of ``fluid filled``.
+        validate_parameters :
+            Whether to validate the model parameters.
 
         Returns
         -------
@@ -71,6 +85,12 @@ class DCMModel(ScatterModelBase):
         research. Journal of the Acoustical Society of America 138, 3742–3764.
         <https://doi.org/10.1121/1.4937607>
         """
+        if validate_parameters:
+            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'b': b, 'f': f,
+                 'boundary_type': boundary_type, 'target_c': target_c, 'target_rho': target_rho,
+                 'theta': theta}
+            self.validate_parameters(p)
+
         if theta == 0.0:
             return nan
 

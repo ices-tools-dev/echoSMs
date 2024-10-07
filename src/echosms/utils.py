@@ -218,6 +218,38 @@ def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
     return df
 
 
+def as_dict(params: dict | pd.DataFrame | xr.DataArray) -> dict:
+    """Convert model parameters from DataFrame or DataArray to dict.
+
+    Parameters
+    ----------
+    params:
+        The model parameters
+
+    Raises
+    ------
+    TypeError:
+        If the input data type is not supported.
+
+    Returns
+    -------
+    :
+        A dict containing the model parameters.
+    """
+    if isinstance(params, dict):
+        return params
+
+    # Get the non-expandable model parameters
+    p = params.attrs['parameters'] if 'parameters' in params.attrs else {}
+
+    if isinstance(params, xr.DataArray):
+        return dict(zip(params.coords, params.indexes.values())) | p
+    elif isinstance(params, pd.DataFrame):
+        return params.to_dict(orient='list') | p
+
+    raise TypeError('Only dict, DataFrame, or DataArray are accepted.')
+
+
 def pro_ang1(m: int, n: int, c: float, eta: float, norm=False) -> tuple[float, float]:
     """Prolate spheroidal angular function of the first kind and derivative.
 

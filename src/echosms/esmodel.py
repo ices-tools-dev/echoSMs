@@ -3,9 +3,8 @@
 from math import log10, sin, atan
 from cmath import exp
 from warnings import warn
-import numpy as np
 from scipy.special import spherical_jn, spherical_yn
-from .utils import wavenumber, spherical_jnpp
+from .utils import wavenumber, spherical_jnpp, as_dict
 from .scattermodelbase import ScatterModelBase
 
 
@@ -20,12 +19,21 @@ class ESModel(ScatterModelBase):
         self.long_name = 'elastic sphere'
         self.short_name = 'es'
         self.analytical_type = 'exact'
-        self.boundary_types = ['elastic sphere']
+        self.boundary_types = ['elastic']
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
 
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
+        super()._present_and_positive(p, ['medium_rho', 'medium_c', 'a', 'f',
+                                          'target_longitudinal_c',
+                                          'target_transverse_c', 'target_rho'])
+
     def calculate_ts_single(self, medium_c, medium_rho, a, f,
                             target_longitudinal_c, target_transverse_c, target_rho,
+                            validate_parameters=True,
                             **kwargs) -> float:
         """
         Calculate the backscatter from an elastic sphere for one set of parameters.
@@ -46,6 +54,8 @@ class ESModel(ScatterModelBase):
             Transverse sound speed in the material inside the sphere [m/s].
         target_rho : float
             Density of the material inside the sphere [kg/m³].
+        validate_parameters :
+            Whether to validate the model parameters.
 
         Returns
         -------
@@ -62,6 +72,13 @@ class ESModel(ScatterModelBase):
         Scottish Fisheries Research Report Number 22. Department of Agriculture and Fisheries
         for Scotland.
         """
+        if validate_parameters:
+            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'f': f,
+                 'target_longitudinal_c': target_longitudinal_c,
+                 'target_transverse_c': target_transverse_c,
+                 'target_rho': target_rho}
+            self.validate_parameters(p)
+
         q = wavenumber(medium_c, f)*a
         q1 = q*medium_c/target_longitudinal_c
         q2 = q*medium_c/target_transverse_c

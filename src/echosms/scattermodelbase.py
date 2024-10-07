@@ -16,7 +16,8 @@ class ScatterModelBase(abc.ABC):
 
     @abc.abstractmethod
     def __init__(self):
-        """
+        """Initialise.
+
         Attributes
         ----------
         long_name : str
@@ -117,6 +118,8 @@ class ScatterModelBase(abc.ABC):
                                  ' (only dictionaries, Pandas DataFrames and'
                                  ' Xarray DataArrays are).')
 
+        self.validate_parameters(data_df)
+
         # Get the non-expandable model parameters
         p = data_df.attrs['parameters'] if 'parameters' in data_df.attrs else {}
 
@@ -152,7 +155,74 @@ class ScatterModelBase(abc.ABC):
         """Convert function arguments and call calculate_ts_single()."""
         p = args[0].to_dict()  # so we can use it for keyword arguments
         p |= args[1]  # merge in the dict of non-expandable model parameters
-        return self.calculate_ts_single(**p)
+        return self.calculate_ts_single(**p, validate_parameters=False)
+
+    @abc.abstractmethod
+    def validate_parameters(self, p):
+        """Validate the model parameters.
+
+        Parameters
+        ----------
+        p : dict
+            Dict containing the model parameters.
+
+        Raises
+        ------
+        ValueError
+            If any of the model parameters are invalid.
+        KeyError
+            If any required model parameters are not present.
+        """
+
+    def _present_and_in(self, p: dict, names: list, valid_values: list):
+        """Check that that parameters are present and are in the given iterable.
+
+        Parameters
+        ----------
+        p :
+            Model parameters.
+        name :
+            Model parameter names to validate.
+        valid_values :
+            List of valid parameter values.
+
+        Raises
+        ------
+        ValueError
+            If any of the model parameters are invalid.
+        KeyError
+            If any required model parameters are not present.
+        """
+        for name in names:
+            if name not in p:
+                raise KeyError(f"Models require a '{name}' parameter.")
+            if not all(True for x in np.atleast_1d(p[name]) if x in valid_values):
+                raise ValueError(f"Model parameter '{name}' contains 1 or more invalid values.")
+
+    def _present_and_positive(self, p: dict, names: list):
+        """Check that that parameters are present and have a positive value.
+
+        Parameters
+        ----------
+        p :
+            Model parameters
+        name :
+            Model parameter names to validate.
+
+        Raises
+        ------
+        ValueError
+            If any of the model parameters are invalid.
+        KeyError
+            If any required model parameters are not present.
+        """
+        for name in names:
+            if name not in p:
+                raise KeyError(f"Models require a '{name}' parameter.")
+            if None in p[name]:
+                raise ValueError(f"Model parameter '{name}' must not contain None values.")
+            if np.min(p[name]) <= 0:
+                raise ValueError(f"Model parameter '{name}' must be greater than zero.")
 
     @abc.abstractmethod
     def calculate_ts_single(self):

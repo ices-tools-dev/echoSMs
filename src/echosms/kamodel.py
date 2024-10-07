@@ -3,14 +3,14 @@
 from math import log10
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-from .utils import wavenumber, wavelength
+from .utils import wavenumber, wavelength, as_dict
 from .scattermodelbase import ScatterModelBase
 
 
 class KAModel(ScatterModelBase):
     """Kirchhoff approximation (KA) scattering model.
 
-    This class calculates acoustic scatter from arbituary surfaces.
+    This class calculates acoustic scatter from arbitrary surfaces.
     """
 
     def __init__(self):
@@ -23,8 +23,14 @@ class KAModel(ScatterModelBase):
         self.max_ka = 20  # [1]
         self.no_expand_parameters = ['mesh']
 
+    def validate_parameters(self, params):
+        """Validate the model parameters."""
+        p = as_dict(params)
+        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
+        super()._present_and_positive(p, ['medium_c', 'f'])
+
     def calculate_ts_single(self, medium_c, theta, phi, f, mesh,
-                            boundary_type, **kwargs) -> float:
+                            boundary_type, validate_parameters=True, **kwargs) -> float:
         """
         Calculate the scatter using the ka model for one set of parameters.
 
@@ -54,6 +60,8 @@ class KAModel(ScatterModelBase):
             is [trimesh](https://trimesh.org).
         boundary_type : str
             The boundary type. Supported types are given in the `boundary_types` class variable.
+        validate_parameters :
+            Whether to validate the model parameters.
 
         Returns
         -------
@@ -71,6 +79,10 @@ class KAModel(ScatterModelBase):
         <https://doi.org/10.1121/1.392438>
 
         """
+        if validate_parameters:
+            p = {'medium_c': medium_c, 'theta': theta, 'phi': phi, 'f': f, 'mesh': mesh}
+            self.validate_parameters(p)
+
         if boundary_type not in self.boundary_types:
             raise ValueError(f'The {self.long_name} model does not support '
                              f'a model type of "{boundary_type}".')
