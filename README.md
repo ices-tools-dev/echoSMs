@@ -1,9 +1,11 @@
 # echoSMs
 
-![Static badge](https://img.shields.io/pypi/v/echosms.svg)
-![Static badge](https://img.shields.io/github/license/ices-tools-dev/echosms)
-![Build docs](https://github.com/ices-tools-dev/echosms/actions/workflows/build-docs.yml/badge.svg)
+[![Static badge](https://img.shields.io/pypi/v/echosms.svg)](https://pypi.org/project/echosms/)
+[![Static badge](https://img.shields.io/github/license/ices-tools-dev/echosms)](https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/heads/main/LICENSE)
 [![python](https://img.shields.io/pypi/pyversions/echosms.svg?logo=python&logoColor=white)](https://pypi.org/project/echosms/)
+
+[![Build](https://github.com/ices-tools-dev/echosms/actions/workflows/publish-to-pypi.yml/badge.svg)](https://github.com/ices-tools-dev/echoSMs/actions/workflows/publish-to-pypi.yml)
+[![Docs](https://github.com/ices-tools-dev/echosms/actions/workflows/build-docs.yml/badge.svg)](https://ices-tools-dev.github.io/echoSMs/)
 
 > Making acoustic scattering models available to fisheries and plankton scientists via the world wide web
 
