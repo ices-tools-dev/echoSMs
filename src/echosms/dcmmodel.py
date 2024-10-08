@@ -1,6 +1,6 @@
 """A class that provides the model series deformed cylinder scattering model."""
 
-from math import sin, cos, nan, pi, log10
+from math import sin, cos, nan, pi, log10, fsum
 from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
 # from mapply.mapply import mapply
 # import swifter
@@ -123,5 +123,5 @@ class DCMModel(ScatterModelBase):
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{boundary_type}".')
 
-        fbs = 1j*b/pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * sum(series)
+        fbs = 1j*b/pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * fsum(series)
         return 20*log10(abs(fbs))  # ts

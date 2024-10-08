@@ -1,6 +1,6 @@
 """A class that provides the elastic scattering model."""
 
-from math import log10, sin, atan
+from math import log10, sin, atan, fsum
 from cmath import exp
 from warnings import warn
 from scipy.special import spherical_jn, spherical_yn
@@ -109,6 +109,6 @@ class ESModel(ScatterModelBase):
 
         n = range(n_max)
 
-        f_inf = -2.0/q * sum(map(S, n))
+        f_inf = -2.0/q * fsum(map(S, n))
 
         return 10*log10(a**2 * abs(f_inf)**2 / 4.0)
