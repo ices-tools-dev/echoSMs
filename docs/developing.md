@@ -10,8 +10,6 @@ The echoSMs [source code](https://github.com/ices-tools-dev/echoSMs) is kept on 
 
     https://github.com/ices-tools-dev/echoSMs.git
 
-
-
 ## Generating packages for PyPI
 
 EchoSMs is a pure Python package. The build configuration is done via a [pyproject.toml](https://github.com/ices-tools-dev/echoSMs/blob/main/pyproject.toml) file and [`hatchling`](https://hatch.pypa.io/latest/) is used to produce packages.

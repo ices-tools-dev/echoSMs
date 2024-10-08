@@ -7,7 +7,14 @@ from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict
 
 
 class PSMSModel(ScatterModelBase):
-    """Prolate spheroidal modal series (PSMS) scattering model."""
+    """Prolate spheroidal modal series (PSMS) scattering model.
+
+    Note
+    -------
+    The fluid filled boundary type implementation is currently only accurate
+    for weakly scattering interiors. Support for strongly scattering
+    (e.g., gas-filled) will come later.
+    """
 
     def __init__(self):
         super().__init__()
