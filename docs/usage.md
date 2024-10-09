@@ -171,7 +171,7 @@ The `multiprocess = True` parameter in the call to `calculate_ts` will cause ech
 
 ## Reference model definitions
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](../api_reference/#referencemodels) class. For example, the names of all the model definitions are available with:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](../api_reference/#referencemodels) class, along with other objects, such as calibration spheres. For example, the names of all the model definitions are available with:
 
 ```py
     from echosms import ReferenceModels
@@ -197,8 +197,22 @@ which returns:
  'pressure release finite cylinder',
  'gas filled finite cylinder',
  'weakly scattering finite cylinder',
+ 'WC20 calibration sphere',
+ 'WC21 calibration sphere',
+ 'WC22 calibration sphere',
+ 'WC25 calibration sphere',
  'WC38.1 calibration sphere',
- 'Cu60 calibration sphere']
+ 'WC57.2 calibration sphere',
+ 'WC60 calibration sphere',
+ 'WC64 calibration sphere',
+ 'Cu13.7 calibration sphere',
+ 'Cu23 calibration sphere',
+ 'Cu32 calibration sphere',
+ 'Cu42 calibration sphere',
+ 'Cu45 calibration sphere',
+ 'Cu60 calibration sphere',
+ 'Cu63 calibration sphere',
+ 'Cu64 calibration sphere']
 ```
 
 and the specification for a particular model is given by:
@@ -247,11 +261,10 @@ which returns:
  'target_c': 1483.3}
 ```
 
-Note that the `parameters()` call does not return all of the parameters needed by a model. For example, `f` and `theta` are not there and need to be added before running a model:
+Note that the `parameters()` call does not return all of the parameters needed by a model. For example, `f` is not there and needs to be added before running a model:
 
 ```py
     m['f'] = [38000, 40000, 42000]
-    m['theta'] = 90
 
     from echosms import MSSModel
     model = MSSModel()
