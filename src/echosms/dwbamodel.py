@@ -17,7 +17,7 @@ class DWBAModel(ScatterModelBase):
         self.long_name = 'distorted-wave Born approximation'
         self.short_name = 'dwba'
         self.analytical_type = 'approximate'
-        self.boundary_types = 'weakly scattering'
+        self.boundary_types = ['weakly scattering']
         self.shapes = ['any']
         self.max_ka = 20
 
