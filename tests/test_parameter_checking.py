@@ -1,8 +1,7 @@
-"""
-
-"""
+"""Functions to test that models check their input parameters."""
 import pytest
-from echosms import MSSModel, ReferenceModels, BenchmarkData
+import echosms
+from echosms import ReferenceModels, BenchmarkData
 
 
 @pytest.fixture
@@ -16,15 +15,34 @@ def bm():
     """Provide a BenchmarkData instance."""
     return BenchmarkData()
 
+@pytest.fixture
+def models():
+    """All available models."""
+    model_names = [d for d in dir(echosms) if d.endswith('Model')]
 
-models = [d for d in dir(echosms) if d.endswith('Model')]
+    models = []
+    for m in model_names:
+        models.append(getattr(echosms, m)())
+
+    return models
+
+
+# These are more playing around with tests than real or comprehensive...
+
+
+def test_test_instance(models):
+    for m in models:
+        assert isinstance(m.boundary_types, list)
+        assert isinstance(m.shapes, list)
+        assert isinstance(m.long_name, str)
+        assert isinstance(m.short_name, str)
+        assert isinstance(m.analytical_type, str)
+        assert m.max_ka > 0.0
+
 
 def test_reference_models(rm):
     assert len(rm.names()) > 0
 
-
-#####################################################################
-# Test the parameter validation that each model should have implemented.
 
 def test_benchmark_data(bm):
     bmf = bm.freq_dataset
@@ -34,15 +52,17 @@ def test_benchmark_data(bm):
     assert bmt.shape[0] > 0 and bmt.shape[1] > 0
 
 
-def test_function(rm):
+def test_ts_results(rm):
+    from echosms import MSSModel
+    mod = MSSModel()
     m = rm.parameters('pressure release sphere')
 
     m['f'] = 38000
-    mod = MSSModel()
     assert mod.calculate_ts(m) == [-44.99786464477027]
 
 
 def test_missing_parameter(rm):
+    from echosms import MSSModel
     m = rm.parameters('pressure release sphere')
 
     mod = MSSModel()
@@ -51,6 +71,7 @@ def test_missing_parameter(rm):
 
 
 def test_negative_parameter(rm):
+    from echosms import MSSModel
     m = rm.parameters('pressure release sphere')
 
     mod = MSSModel()
@@ -60,6 +81,7 @@ def test_negative_parameter(rm):
 
 
 def test_unsupported_boundary_type(rm):
+    from echosms import MSSModel
     m = rm.parameters('pressure release sphere')
 
     mod = MSSModel()
@@ -67,6 +89,3 @@ def test_unsupported_boundary_type(rm):
     m['boundary_type'] = ['elastic']
     with pytest.raises(ValueError):
         mod.calculate_ts(m)
-
-#############################
-# Test TS results from models
