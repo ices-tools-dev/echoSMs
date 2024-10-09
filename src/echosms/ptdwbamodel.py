@@ -15,7 +15,7 @@ class PTDWBAModel(ScatterModelBase):
         self.long_name = 'phase-tracking distorted-wave Born approximation'
         self.short_name = 'pt-dwba'
         self.analytical_type = 'approximate'
-        self.boundary_types = 'weakly scattering'
+        self.boundary_types = ['weakly scattering']
         self.shapes = ['unrestricted voxel-based']
         self.max_ka = 20
         self.no_expand_parameters = ['volume', 'voxel_size', 'rho', 'c']
@@ -43,7 +43,7 @@ class PTDWBAModel(ScatterModelBase):
             - axis 0 (rows) is the _x_-axis
             - axis 1 (columns) is the _y_-axis
             - axis 2: (slices) is the _z_-axis
-            
+
             Increasing axes indices correspond to increasing _x_, _y_, and _z_ values.
 
         theta : float
