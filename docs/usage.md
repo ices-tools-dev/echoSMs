@@ -8,7 +8,7 @@ EchoSMs is available on [PyPi](https://pypi.org) as [`echosms`](https://pypi.org
 
     pip install echosms
 
-Some of the models in echoSMs use spheroidal wave functions. A high-accuracy implementation of these is available in the Python package [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/), as the versions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are insufficient. This should be installed automatically when you install echosms, but note that `spheroidalwavefunctions` is currently only available for Linux and Windows on x86_64 CPU architectures (create an [issue](https://github.com/ices-tools-dev/echoSMs/issues) if you want it on a system that is not currently supported).
+The prolate spheroidal modal series model in echoSMs uses spheroidal wave functions. A high-accuracy implementation of these is available in the Python package [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/), as the versions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are insufficient. This should be installed automatically when you install echosms, but note that `spheroidalwavefunctions` is currently only available for Linux and Windows on x86_64 CPU architectures (create an [issue](https://github.com/ices-tools-dev/echoSMs/issues) if you want it on a system that is not currently supported).
 
 ## Versions
 
@@ -36,11 +36,11 @@ Future models will include more types of DWBA models, the Kirchhoff-ray-mode mod
 
 ## Running a model
 
-Each echoSMs model expects input parameters that define the particulars of the model (e.g., size, shape, material properties, etc). These can be provided in three ways:
+Each echoSMs model expects input parameters that define the model (e.g., size, shape, material properties, etc). These can be provided in three ways:
 
 - A Python **dictionary** with an entry for each parameter,
-- A Pandas **DataFrame** with columns for each required parameter and a row for each model run to be done,
-- An Xarray **DataArray** with as many dimensions as required parameters. The parameter values are given by the DataArray coordinate variables.
+- A Pandas **DataFrame** with columns for each parameter and a row for each model run,
+- An Xarray **DataArray** with as many dimensions as parameters. The parameter values are in the DataArray coordinate variables.
 
 To use a model, you need to know what parameters it requires. These are documented in the `calculate_ts_single` function that each model has (refer to the echoSMS [API reference](../api_reference) for details). The units for numerical parameters will always follow the echoSMs unit [convention](../conventions/#units). For example, the MSSModel, when simulating the scattering from a pressure release sphere, needs the following parameters:
 
@@ -109,26 +109,19 @@ An introductory [Jupyter notebook](https://github.com/ices-tools-dev/echoSMs/blo
 
 Instead of passing a dictionary to the `calculate_ts` function, a DataFrame or DataArray can be passed instead. The crucial aspect is that the DataFrame columns must have the same names as the parameters that the model requires. For a DataArray, the coordinate dimensions must have the same names as the model parameters.
 
-EchoSMS provides two utility functions ([`as_dataframe`](../api_reference/#echosms.utils.as_dataframe), and [`as_dataarray`](../api_reference/#echosms.utils.as_dataarray)) to convert from a dictionary representation of model parameters to a DataFrame or DataArray, or you can construct your own, or modify those returned by the `as_dataframe` and `as_dataarray` functions. 
+EchoSMS provides two utility functions ([`as_dataframe`](../api_reference/#echosms.utils.as_dataframe), and [`as_dataarray`](../api_reference/#echosms.utils.as_dataarray)) to convert from a dictionary representation of model parameters to a DataFrame or DataArray, or you can construct your own, or modify those returned by the `as_dataframe` and `as_dataarray` functions.
 
-The benefit of using a DataFrame is that you have fine control over what model runs will happen - it doesn't have to be the full set of combinations of the input parameters. The benefit of using a DataArray is that it is easy to extract subsets of the results for further analysis and plotting.
+The benefit of using a DataFrame is that you have fine control over what model runs will happen - it doesn't have to be the full set of combinations of input parameters. The benefit of using a DataArray is that it is easy to extract subsets of the results for further analysis and plotting.
 
 For a DataFrame, the number of model runs will be the number of rows in the DataFrame. For a DataArray the number of models run will be the size of the DataArray (e.g., `DataArray.size()`)
 
 When passing a DataFrame to a model, you can choose whether the TS results are returned as a `Series` or are added to the existing DataFrame (in a column called `ts`). Use the `inplace = True` parameter in the call to `calculate_ts` for this. When passing a DataArray to a model, the TS results are always returned as the data part of the passed in DataArray.
 
-## Multiprocessing
-
-_This is an experimental feature._
-
-The `multiprocess = True` parameter in the call to `calculate_ts` will cause echoSMs to divide the requested model runs over as many cores as your computer has. Total solution time will decrease almost linearly with the number of models runs.
-
 ## More complex model parameters
 
-Some models require parameters for which it is not sensible to duplicate them across rows in a DataFrame or as a dimension in a DataArray (e.g., the data that specifies the three-dimensional shape of a fish swimbladder).
-EchoSMs allows for this with the concept of _non-expandable_ parameters - these are not expanded into DataFrame columns or DataArray dimensions.
+Some models require parameters for which it is not sensible to duplicate them across rows in a DataFrame or as a dimension in a DataArray (e.g., the data that specifies the three-dimensional shape of a fish swimbladder). EchoSMs allows for this with the concept of _non-expandable_ parameters - these are not expanded into DataFrame columns or DataArray dimensions and are available from the models `no_expand_parameters` attribute.
 
-But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as DataFrame or DataArray attributes. Due to a bug in the DataFrame implementation, the parameters are actually stored as a nested dictionary under a `parameters` key. An example of this is the `PTDWBAModel`:
+But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as DataFrame or DataArray attributes. Due to a bug in the DataFrame implementation, the parameters are stored as a nested dictionary under a `parameters` attribute. An example of this is the `PTDWBAModel`:
 
 ```py
     from echosms import PTDWBAModel, as_dataframe
@@ -142,7 +135,7 @@ But, as it is very convenient to have all the model parameters in one data struc
          'voxel_size': (0.001, 0.001, 0.001),
          'theta': 90,
          'phi': 0}
-    m['volume'][3,3,3] = 1  #  something to produce scatter
+    m['volume'][3,3,3] = 1  # something to produce scatter
     p = as_dataframe(m, model.no_expand_parameters)
     model.calculate_ts(p, inplace=True)
     print(p)
@@ -169,6 +162,12 @@ returns the same results as
     model.calculate_ts(p, inplace=True)`
     print(p)
 ```
+
+## Multiprocessing
+
+_This is an experimental feature._
+
+The `multiprocess = True` parameter in the call to `calculate_ts` will cause echoSMs to divide the requested model runs over as many cores as your computer has. Total solution time will decrease almost linearly with the number of models runs.
 
 ## Reference model definitions
 
@@ -270,7 +269,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
     bm.freq_dataset  # the TS as a function of frequency
 ```
 
-The TS and frequency values for a particular benchmark are available via:
+The TS and frequency values for a particular benchmark are available with normal Pandas DataFrame indexing syntax. The DataFrame columns names as the same as the ReferenceModels names. For example:
 
 ```py
     bm.freq_dataset['weakly scattering sphere']
