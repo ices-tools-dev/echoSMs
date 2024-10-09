@@ -25,13 +25,14 @@ Currently, the following models are available in echoSMs:
 
 |Model type|Python class name|Description|
 |----------|----------|-----------|
-|Modal series solution|MSSModel|Spheres with various boundary conditions, including shells|
 |Deformed cylinder model|DCMModel|Truncated cylinders with various boundary conditions|
-|Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
 |Elastic sphere|ESModel|Elastic spheres, such as echosounder calibration spheres|
+|Kirchhoff approximation|KAModel|Surfaces that are mainly convex|
+|Modal series solution|MSSModel|Spheres with various boundary conditions, including shells|
+|Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
 |Phase-tracking distorted wave Born approximation|PTDWBAModel|Weakly scattering objects of any shape with inhomogeneous interiors|
 
-Future models will include more types of DWBA models, the Kirchhoff-type models, and potentially finite element and boundary element models.
+Future models will include more types of DWBA models, the Kirchhoff-ray-mode model, the Fourier matching method, and potentially finite element and boundary element models.
 
 ## Running a model
 
@@ -41,9 +42,9 @@ Each echoSMs model expects input parameters that define the particulars of the m
 - A Pandas **DataFrame** with columns for each required parameter and a row for each model run to be done,
 - An Xarray **DataArray** with as many dimensions as required parameters. The parameter values are given by the DataArray coordinate variables.
 
-To use a model, you need to know what parameters it requires. These are documented in the `calculate_ts_single` function that each model has (refer to the echoSMS [API reference](https://ices-tools-dev.github.io/echoSMs/api_reference) for details). For example, the MSSModel, when simulating the scattering from a pressure release sphere, needs the following parameters:
+To use a model, you need to know what parameters it requires. These are documented in the `calculate_ts_single` function that each model has (refer to the echoSMS [API reference](../api_reference) for details). The units for numerical parameters will always follow the echoSMs unit [convention](../conventions/#units). For example, the MSSModel, when simulating the scattering from a pressure release sphere, needs the following parameters:
 
-|Parameter name|Description|
+|Name|Description|
 |--------------|-----------|
 |medium_c|Sound speed in the fluid medium surrounding the target [m/s]|
 |medium_rho|Density of the fluid medium surrounding the target [kg/m³]|
@@ -80,7 +81,7 @@ This will return one TS value corresponding to the parameters given. If you want
              'a': 0.01,
              'theta': 90,
              'boundary_type': 'pressure release',
-             'f', np.arange(10, 100, 1)*1000}
+             'f', np.arange(10, 100, 1)*1000}  # [Hz]
         model.calculate_ts(p)
 ```
 
@@ -89,10 +90,10 @@ It is also fine to have multiple items with multiple values:
 ```py hl_lines="3 4 6"
         p = {'medium_rho': 1026.8,
              'medium_c': 1477.4,
-             'a': np.arange(0.01, 0.02, 0.001),
-             'theta': [0, 30, 60, 90],
+             'a': np.arange(0.01, 0.02, 0.001),  # [m]
+             'theta': [0, 30, 60, 90],  # [°]
              'boundary_type': 'pressure release',
-             'f': np.arange(10, 100, 1)*1000}
+             'f': np.arange(10, 100, 1)*1000}  # [Hz]
         model.calculate_ts(p)
 ```
 
@@ -108,7 +109,7 @@ An introductory [Jupyter notebook](https://github.com/ices-tools-dev/echoSMs/blo
 
 Instead of passing a dictionary to the `calculate_ts` function, a DataFrame or DataArray can be passed instead. The crucial aspect is that the DataFrame columns must have the same names as the parameters that the model requires. For a DataArray, the coordinate dimensions must have the same names as the model parameters.
 
-EchoSMS provides two utility functions ([`as_dataframe`](https://ices-tools-dev.github.io/echoSMs/api_reference/#echosms.utils.as_dataframe), and [`as_dataarray`](https://ices-tools-dev.github.io/echoSMs/api_reference/#echosms.utils.as_dataarray)) to convert from a dictionary representation of model parameters to a DataFrame or DataArray, or you can construct your own, or modify those returned by the `as_dataframe` and `as_dataarray` functions. 
+EchoSMS provides two utility functions ([`as_dataframe`](../api_reference/#echosms.utils.as_dataframe), and [`as_dataarray`](../api_reference/#echosms.utils.as_dataarray)) to convert from a dictionary representation of model parameters to a DataFrame or DataArray, or you can construct your own, or modify those returned by the `as_dataframe` and `as_dataarray` functions. 
 
 The benefit of using a DataFrame is that you have fine control over what model runs will happen - it doesn't have to be the full set of combinations of the input parameters. The benefit of using a DataArray is that it is easy to extract subsets of the results for further analysis and plotting.
 
@@ -153,7 +154,7 @@ For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains jus
     p.attrs['parameters']
 ```
 
-Note that while `rho`, and `c` look like parameters that would be expanded, they are in the list of non-expandable parameters, so are not expanded. This is because the structure of the PTDWBA model means that it it not sensible to have variable parameters for `rho` and `c`. 
+Note that while `rho` and `c` look like parameters that would be expanded, they are in the list of non-expandable parameters, so are not expanded. This is because the structure of the PTDWBA model means that it it not sensible to have variable parameters for `rho` and `c`. 
 
 If you pass the dictionary form of the parameters to a model, this treatment of non-expanding parameters is done automatically, where
 
@@ -171,7 +172,7 @@ returns the same results as
 
 ## Reference model definitions
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](https://ices-tools-dev.github.io/echoSMs/api_reference/#referencemodels) class. For example, the names of all the model definitions are available with:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](../api_reference/#referencemodels) class. For example, the names of all the model definitions are available with:
 
 ```py
     from echosms import ReferenceModels
@@ -260,7 +261,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
 
 ## Benchmark model TS
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](https://ices-tools-dev.github.io/echoSMs/api_reference/#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be readily accessed like this:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](../api_reference/#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be readily accessed like this:
 
 ```py
     from echosms import BenchmarkData
