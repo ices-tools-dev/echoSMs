@@ -123,5 +123,5 @@ class DCMModel(ScatterModelBase):
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{boundary_type}".')
 
-        fbs = 1j*b/pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * fsum(series)
+        fbs = 1j*b/pi * (sin(kL*cos(theta_rad)) / (kL*cos(theta_rad))) * sum(series)
         return 20*log10(abs(fbs))  # ts
