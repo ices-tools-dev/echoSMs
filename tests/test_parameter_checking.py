@@ -15,6 +15,7 @@ def bm():
     """Provide a BenchmarkData instance."""
     return BenchmarkData()
 
+
 @pytest.fixture
 def models():
     """All available models."""
