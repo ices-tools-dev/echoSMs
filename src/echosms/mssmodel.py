@@ -28,7 +28,11 @@ class MSSModel(ScatterModelBase):
         self.max_ka = 20  # [1]
 
     def validate_parameters(self, params):
-        """Validate the model parameters."""
+        """Validate the model parameters.
+
+        See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
+
+        """
         p = as_dict(params)
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_rho', 'a', 'f'])

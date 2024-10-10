@@ -22,7 +22,11 @@ class DWBAModel(ScatterModelBase):
         self.max_ka = 20
 
     def validate_parameters(self, params):
-        """Validate the model parameters."""
+        """Validate the model parameters.
+        
+        See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
+        """
+
         p = as_dict(params)
 
     def calculate_ts_single(self, theta, phi, f, target_rho, target_c, validate_parameters=True):

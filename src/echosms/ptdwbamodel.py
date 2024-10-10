@@ -21,7 +21,11 @@ class PTDWBAModel(ScatterModelBase):
         self.no_expand_parameters = ['volume', 'voxel_size', 'rho', 'c']
 
     def validate_parameters(self, params):
-        """Validate the model parameters."""
+        """Validate the model parameters.
+        
+        See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
+        """
+
         p = as_dict(params)
 
     def calculate_ts_single(self, volume, theta, phi, f, voxel_size, rho, c,
