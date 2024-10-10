@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://ices-tools-dev.github.io/echoSMs/</loc>
+         <lastmod>2024-10-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ices-tools-dev.github.io/echoSMs/api_reference/</loc>
+         <lastmod>2024-10-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ices-tools-dev.github.io/echoSMs/benchmark_data/</loc>
+         <lastmod>2024-10-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ices-tools-dev.github.io/echoSMs/conventions/</loc>
+         <lastmod>2024-10-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ices-tools-dev.github.io/echoSMs/developing/</loc>
+         <lastmod>2024-10-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ices-tools-dev.github.io/echoSMs/other_software/</loc>
+         <lastmod>2024-10-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ices-tools-dev.github.io/echoSMs/usage/</loc>
+         <lastmod>2024-10-10</lastmod>
+    </url>
+</urlset>
