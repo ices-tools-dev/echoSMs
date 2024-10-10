@@ -65,7 +65,7 @@ class DCMModel(ScatterModelBase):
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
             Only required for `boundary_type` of ``fluid filled``.
-        validate_parameters :
+        validate_parameters : bool
             Whether to validate the model parameters.
 
         Returns
@@ -75,7 +75,7 @@ class DCMModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the code in Section B.1 of Ject et al. (2015).
+        The class implements the code in Section B.1 of Jech et al. (2015).
 
         References
         ----------

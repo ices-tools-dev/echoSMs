@@ -20,7 +20,7 @@ Every commit to the echoSMs repository will generate a development package being
 
 ## Documentation
 
-The echoSMs documentation is produced using [`mkdocs`](https://www.mkdocs.org/) and [`mkdocstring`](https://mkdocstrings.github.io/). The static documentation pages are hosted by github and are regenerated after every commit to the repository using a github [action](https://github.com/ices-tools-dev/echoSMs/actions/workflows/build-docs.yml).
+The echoSMs documentation is produced using [`mkdocs`](https://www.mkdocs.org/) and [`mkdocstrings`](https://mkdocstrings.github.io/). The documentation pages are hosted by github and are regenerated after every commit to the repository using a github [action](https://github.com/ices-tools-dev/echoSMs/actions/workflows/build-docs.yml).
 
 Documentation edits can be tested locally by running:
 

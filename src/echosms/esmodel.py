@@ -54,7 +54,7 @@ class ESModel(ScatterModelBase):
             Transverse sound speed in the material inside the sphere [m/s].
         target_rho : float
             Density of the material inside the sphere [kg/m³].
-        validate_parameters :
+        validate_parameters : bool
             Whether to validate the model parameters.
 
         Returns

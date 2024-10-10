@@ -1,6 +1,6 @@
 # Using echoSMs
 
-EchoSMs is (currently) a Python package that implements acoustic scattering models. Each different model is a separate Python class in the echoSMs package. They all inherit from a common base class that defines a common calling convention for all models.
+EchoSMs is (currently) a Python package that implements acoustic scattering models. Each different model is a separate Python class in the echoSMs package. They all inherit from a common base class that defines a common calling convention.
 
 ## Installation
 
@@ -97,7 +97,7 @@ It is also fine to have multiple items with multiple values:
         model.calculate_ts(p)
 ```
 
-The TS will be calculated for all combinations of the parameters. To do this, EchoSMs expands the parameters into a Pandas DataFrame with one column for each parameter and one row for each of the combinations. It then runs the model on each row of the DataFrame. That DataFrame, with the TS included, can be returned instead of a list of TS values by using the `expand` option:
+The TS will be calculated for all combinations of the parameters. To do this, echoSMs expands the parameters into a Pandas DataFrame with one column for each parameter and one row for each of the combinations. It then runs the model on each row of the DataFrame. That DataFrame, with the TS included, can be returned instead of a list of TS values by using the `expand` option:
 
 ```py
         model.calculate_ts(p, expand=True)
@@ -115,7 +115,7 @@ The benefit of using a DataFrame is that you have fine control over what model r
 
 For a DataFrame, the number of model runs will be the number of rows in the DataFrame. For a DataArray the number of models run will be the size of the DataArray (e.g., `DataArray.size()`)
 
-When passing a DataFrame to a model, you can choose whether the TS results are returned as a `Series` or are added to the existing DataFrame (in a column called `ts`). Use the `inplace = True` parameter in the call to `calculate_ts` for this. When passing a DataArray to a model, the TS results are always returned as the data part of the passed in DataArray.
+When passing a DataFrame to a model, you can choose whether the TS results are returned as a `Series` or are added to the existing DataFrame (in a column called `ts`). Use the `inplace = True` parameter in the call to `calculate_ts` for this. When passing a DataArray to a model, the TS results are always returned in the data part of the passed in DataArray.
 
 ## More complex model parameters
 

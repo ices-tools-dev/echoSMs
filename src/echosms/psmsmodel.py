@@ -64,7 +64,7 @@ class PSMSModel(ScatterModelBase):
         target_rho : float
             Density of the fluid inside the target [kg/m³].
             Only required for `boundary_type` of ``fluid filled``.
-        validate_parameters :
+        validate_parameters : bool
             Whether to validate the input parameters.
 
         Returns

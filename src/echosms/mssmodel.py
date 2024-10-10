@@ -79,6 +79,8 @@ class MSSModel(ScatterModelBase):
             Thickness of the spherical shell [m]. This value is subtracted from ``a`` to give
             the radius of the interior sphere.
             Only required for `boundary_type`s that include a fluid shell.
+        validate_parameters : bool
+            Whether to validate the model parameters.
 
         Returns
         -------

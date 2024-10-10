@@ -60,7 +60,7 @@ class KAModel(ScatterModelBase):
             is [trimesh](https://trimesh.org).
         boundary_type : str
             The boundary type. Supported types are given in the `boundary_types` class variable.
-        validate_parameters :
+        validate_parameters : bool
             Whether to validate the model parameters.
 
         Returns
