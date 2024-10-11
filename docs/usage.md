@@ -50,7 +50,6 @@ To use a model, you need to know what parameters it requires. These are document
 |medium_rho|Density of the fluid medium surrounding the target [kg/m³]|
 |a|Radius of the spherical target [m]|
 |f|Frequency to calculate the scattering at [Hz]|
-|theta|Pitch angle to calculate the scattering at [°]. An angle of 0 is head on, 90 is dorsal, and 180 is tail on|
 |boundary_type|The boundary type. Supported types are `fixed rigid`, `pressure release`, and `fluid filled`|
 
 The simplest way to provide these to the model is a dictionary:
@@ -60,8 +59,7 @@ The simplest way to provide these to the model is a dictionary:
          'medium_c': 1477.4,
          'a': 0.01, 
          'boundary_type': 'pressure release',
-         'f': 38000,
-         'theta': 90}
+         'f': 38000}
 ```
 
 An instance of the model can then be created and the `calculate_ts` function called with these parameters:
@@ -74,12 +72,11 @@ An instance of the model can then be created and the `calculate_ts` function cal
 
 This will return one TS value corresponding to the parameters given. If you want to run the model for a range of parameters, the relevant dictionary items can contain multiple values:
 
-```py hl_lines="7"
+```py hl_lines="6"
         import numpy as np
         p = {'medium_rho': 1026.8,
              'medium_c': 1477.4,
              'a': 0.01,
-             'theta': 90,
              'boundary_type': 'pressure release',
              'f', np.arange(10, 100, 1)*1000}  # [Hz]
         model.calculate_ts(p)
@@ -87,12 +84,11 @@ This will return one TS value corresponding to the parameters given. If you want
 
 It is also fine to have multiple items with multiple values:
 
-```py hl_lines="3 4 6"
+```py hl_lines="3 4 5"
         p = {'medium_rho': 1026.8,
              'medium_c': 1477.4,
              'a': np.arange(0.01, 0.02, 0.001),  # [m]
-             'theta': [0, 30, 60, 90],  # [°]
-             'boundary_type': 'pressure release',
+             'boundary_type': ['pressure release', 'fixed rigid'],
              'f': np.arange(10, 100, 1)*1000}  # [Hz]
         model.calculate_ts(p)
 ```
