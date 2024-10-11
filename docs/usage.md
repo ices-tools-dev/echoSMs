@@ -115,7 +115,7 @@ When passing a DataFrame to a model, you can choose whether the TS results are r
 
 ## More complex model parameters
 
-Some models require parameters for which it is not sensible to duplicate them across rows in a DataFrame or as a dimension in a DataArray (e.g., the data that specifies the three-dimensional shape of a fish swimbladder). EchoSMs allows for this with the concept of _non-expandable_ parameters - these are not expanded into DataFrame columns or DataArray dimensions and are available from the models `no_expand_parameters` attribute.
+Some models use parameters that are not sensibly duplicated across rows in a DataFrame or as a dimension in a DataArray (e.g., the data that specifies the three-dimensional shape of a fish swimbladder). EchoSMs allows for this with the concept of _non-expandable_ parameters - these are not expanded into DataFrame columns or DataArray dimensions. Non-expandable parameter names are available from the models' `no_expand_parameters` attribute.
 
 But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as DataFrame or DataArray attributes. Due to a bug in the DataFrame implementation, the parameters are stored as a nested dictionary under a `parameters` attribute. An example of this is the `PTDWBAModel`:
 
@@ -137,7 +137,7 @@ But, as it is very convenient to have all the model parameters in one data struc
     print(p)
 ```
 
-For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains just two columns. The remaining parameters are available via:
+For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains three columns (`theta`, `phi`, and `ts`). The remaining parameters are available via:
 
 ```py
     p.attrs['parameters']
@@ -269,7 +269,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
 
 ## Benchmark model TS
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](api_reference.md#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be readily accessed like this:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](api_reference.md#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be accessed like this:
 
 ```py
     from echosms import BenchmarkData
@@ -278,7 +278,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
     bm.freq_dataset  # the TS as a function of frequency
 ```
 
-The TS and frequency values for a particular benchmark are available with normal Pandas DataFrame indexing syntax. The DataFrame columns names as the same as the ReferenceModels names. For example:
+The TS and frequency values for a particular benchmark are available with normal Pandas DataFrame indexing syntax. The DataFrame columns names are the same as the ReferenceModels names. For example:
 
 ```py
     bm.freq_dataset['weakly scattering sphere']
