@@ -42,7 +42,7 @@ Each echoSMs model expects input parameters that define the model (e.g., size, s
 - A Pandas **DataFrame** with columns for each parameter and a row for each model run,
 - An Xarray **DataArray** with as many dimensions as parameters. The parameter values are in the DataArray coordinate variables.
 
-To use a model, you need to know what parameters it requires. These are documented in the `calculate_ts_single` function that each model has (refer to the echoSMS [API reference](../api_reference) for details). The units for numerical parameters will always follow the echoSMs unit [convention](../conventions/#units). For example, the MSSModel, when simulating the scattering from a pressure release sphere, needs the following parameters:
+To use a model, you need to know what parameters it requires. These are documented in the `calculate_ts_single` function that each model has (refer to the echoSMS [API reference](api_reference.md) for details). The units for numerical parameters will always follow the echoSMs unit [convention](conventions.md#units). For example, the MSSModel, when simulating the scattering from a pressure release sphere, needs the following parameters:
 
 |Name|Description|
 |--------------|-----------|
@@ -105,7 +105,7 @@ An introductory [Jupyter notebook](https://github.com/ices-tools-dev/echoSMs/blo
 
 Instead of passing a dictionary to the `calculate_ts` function, a DataFrame or DataArray can be passed instead. The crucial aspect is that the DataFrame columns must have the same names as the parameters that the model requires. For a DataArray, the coordinate dimensions must have the same names as the model parameters.
 
-EchoSMS provides two utility functions ([`as_dataframe`](../api_reference/#echosms.utils.as_dataframe), and [`as_dataarray`](../api_reference/#echosms.utils.as_dataarray)) to convert from a dictionary representation of model parameters to a DataFrame or DataArray, or you can construct your own, or modify those returned by the `as_dataframe` and `as_dataarray` functions.
+EchoSMS provides two utility functions ([`as_dataframe`](api_reference.md#echosms.utils.as_dataframe), and [`as_dataarray`](api_reference.md#echosms.utils.as_dataarray)) to convert from a dictionary representation of model parameters to a DataFrame or DataArray, or you can construct your own, or modify those returned by the `as_dataframe` and `as_dataarray` functions.
 
 The benefit of using a DataFrame is that you have fine control over what model runs will happen - it doesn't have to be the full set of combinations of input parameters. The benefit of using a DataArray is that it is easy to extract subsets of the results for further analysis and plotting.
 
@@ -167,7 +167,7 @@ The `multiprocess = True` parameter in the call to `calculate_ts` will cause ech
 
 ## Reference model definitions
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](../api_reference/#referencemodels) class, along with other objects, such as calibration spheres. For example, the names of all the model definitions are available with:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](api_reference.md#referencemodels) class, along with other objects, such as calibration spheres. For example, the names of all the model definitions are available with:
 
 ```py
     from echosms import ReferenceModels
@@ -269,7 +269,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
 
 ## Benchmark model TS
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](../api_reference/#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be readily accessed like this:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](api_reference.md#benchmarkdata) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be readily accessed like this:
 
 ```py
     from echosms import BenchmarkData
