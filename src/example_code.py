@@ -65,8 +65,6 @@ def plot_compare_angle(theta1, ts1, label1, theta2, ts2, label2, title):
 # %% ###############################################################################################
 # Run the benchmark models and compare to the frequency-varying benchmark results.
 
-# This is the mapping between model name from ReferenceModels and the appropriate column of data in
-# BenchMarkData and which model to use.
 models = ['weakly scattering sphere',
           'fixed rigid sphere',
           'pressure release sphere',
