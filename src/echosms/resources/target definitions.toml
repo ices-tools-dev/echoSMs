@@ -380,6 +380,20 @@ source = "https://doi.org/10.17895/ices.pub.5494"
 benchmark_model = "es"
 
 [[target]]
+name = "Cu10.3 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic"
+description = "A 10.3 mm diameter copper sphere"
+a = 0.00515 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_density"
+target_longitudinal_c = "Cu_longitudinal_sound_speed"
+target_transverse_c = "Cu_transverse_sound_speed"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
 name = "Cu13.7 calibration sphere"
 shape = "sphere"
 boundary_type = "elastic"
@@ -413,6 +427,20 @@ shape = "sphere"
 boundary_type = "elastic"
 description = "A 32 mm diameter copper sphere"
 a = 0.016 # radius
+medium_rho = "medium_density"
+medium_c = "medium_sound_speed"
+target_rho = "Cu_density"
+target_longitudinal_c = "Cu_longitudinal_sound_speed"
+target_transverse_c = "Cu_transverse_sound_speed"
+source = "https://doi.org/10.17895/ices.pub.5494"
+benchmark_model = "es"
+
+[[target]]
+name = "Cu32.1 calibration sphere"
+shape = "sphere"
+boundary_type = "elastic"
+description = "A 32.1 mm diameter copper sphere"
+a = 0.01605 # radius
 medium_rho = "medium_density"
 medium_c = "medium_sound_speed"
 target_rho = "Cu_density"
