@@ -8,7 +8,7 @@ EchoSMs is available on [PyPi](https://pypi.org) as [`echosms`](https://pypi.org
 
     pip install echosms
 
-The prolate spheroidal modal series model in echoSMs uses spheroidal wave functions. A high-accuracy implementation of these is available in the Python package [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/), as the versions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are insufficient. This should be installed automatically when you install echosms, but note that `spheroidalwavefunctions` is currently only available for Linux and Windows on x86_64 CPU architectures (create an [issue](https://github.com/ices-tools-dev/echoSMs/issues) if you want it on a system that is not currently supported).
+The prolate spheroidal modal series model in echoSMs uses spheroidal wave functions. A high-accuracy implementation of these is available in the [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/) Python package , as the functions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are insufficient. This should be installed automatically when you install echosms, but note that `spheroidalwavefunctions` is currently only available for Linux and Windows on x86_64 CPU architectures (create an [issue](https://github.com/ices-tools-dev/echoSMs/issues) if you want it on a system that is not currently supported).
 
 ## Versions
 
@@ -117,7 +117,7 @@ When passing a DataFrame to a model, you can choose whether the TS results are r
 
 Some models use parameters that are not sensibly duplicated across rows in a DataFrame or as a dimension in a DataArray (e.g., the data that specifies the three-dimensional shape of a fish swimbladder). EchoSMs allows for this with the concept of _non-expandable_ parameters - these are not expanded into DataFrame columns or DataArray dimensions. Non-expandable parameter names are available from the models' `no_expand_parameters` attribute.
 
-But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as DataFrame or DataArray attributes. Due to a bug in the DataFrame implementation, the parameters are stored as a nested dictionary under a `parameters` attribute. An example of this is the `PTDWBAModel`:
+But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as a dict in the DataFrame or DataArray attributes. An example of this is the `PTDWBAModel`:
 
 ```py
     from echosms import PTDWBAModel, as_dataframe
@@ -278,7 +278,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
     bm.freq_dataset  # the TS as a function of frequency
 ```
 
-The TS and frequency values for a particular benchmark are available with normal Pandas DataFrame indexing syntax. The DataFrame columns names are the same as the ReferenceModels names. For example:
+The TS and frequency values for a particular benchmark are available with normal Pandas DataFrame indexing syntax. The DataFrame column names are the same as the ReferenceModels names. For example:
 
 ```py
     bm.freq_dataset['weakly scattering sphere']

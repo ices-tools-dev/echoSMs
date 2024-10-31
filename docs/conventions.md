@@ -2,7 +2,7 @@
 
 ## Units
 
-We use SI units for the model parameters, except for angles (we use degrees instead of radians) and target strength (we use deciBels).  All model code must accept inputs and produce results using the units below. If the model calculations use different units internally, the code should internally convert between them.
+We use SI units for the model parameters, except for angles (degrees instead of radians) and target strength (deciBels).  All model code must accept inputs and produce results using the units below. If the model calculations use different units internally, the code should internally convert between them.
 
 | Parameter | Units | Notes |
 |-----------|-------|--|
