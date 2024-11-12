@@ -22,7 +22,7 @@ diameter = "m"
 # between a parameter value and its' unit.
 [parameters]
 # These values are from Jech at al, 2015.
-medium_sound_speed = 1477.4
+medium_sound_speed = 1477.3
 medium_density = 1026.8
 target_gas_density = 1.24
 target_gas_sound_speed = 345.0
