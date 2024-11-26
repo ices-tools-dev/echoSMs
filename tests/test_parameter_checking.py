@@ -1,7 +1,7 @@
 """Functions to test that models check their input parameters."""
 import pytest
 import echosms
-from echosms import ReferenceModels, BenchmarkData
+from echosms import ReferenceModels, BenchmarkData, theoretical_Sa
 
 
 @pytest.fixture
@@ -29,6 +29,11 @@ def models():
 
 
 # These are more playing around with tests than real or comprehensive...
+
+def test_theoretical_sa():
+    with pytest.raises(ValueError):
+        theoretical_Sa(-45.0, 20.1, 10)
+        theoretical_Sa(-45.0, -20.1, 0.0)
 
 
 def test_test_instance(models):
