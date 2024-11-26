@@ -11,6 +11,48 @@ swf_t = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc'
                            'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
 
 
+def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)\
+                   -> float | np.ndarray:
+    """Theoretical area backscattering strength (Sₐ) of a target.
+
+    Parameters
+    ----------
+    ts :
+        The target strength of the object [dB re 1 m²].
+    eba :
+        The equivalent beam angle of the transducer [dB re 1 sr].
+    r :
+        The range from the transducer to the target [m]. Used for acoustic beam spreading.
+    nautical :
+        If `True`, the nautical area scattering strength (S<sub>A</sub>) is returned instead of the
+        area backscattering strength (Sₐ).
+
+    Returns
+    -------
+    :
+        The theoretical Sₐ [dB re 1 m² m⁻²] or S<sub>A</sub> [dB re 1 m² nmi⁻²] of the input `ts`.
+
+    Raises
+    ------
+    ValueError
+        If an input value is out of bounds.
+
+    Notes
+    -----
+    While the calclation is valid for any target, the theoretical area strengths are most relevant
+    when calibrating an echosounder using a sphere. The difference between
+    the theoretical and measured can be used to calculate the calibration gain for an
+    echosounder (when the sphere is on-axis).
+    """
+    if eba > 0.0:
+        raise ValueError('A positive eba value is not supported.')
+    if r <= 0.0:
+        raise ValueError('An r value less than or equal to 0 is not supported.')
+
+    factor = 10.0*np.log10(4.0*np.pi*1852.0**2) if nautical else 0.0
+    return ts - eba - 20.0*np.log10(r) + factor
+
+
 def Neumann(m: int) -> int:
     """Neumann number.
 
