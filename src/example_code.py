@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import trimesh
 
-from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel
+from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
@@ -335,3 +335,21 @@ ts = mod.calculate_ts(m)
 bm_ts = bmf[name][~np.isnan(bmf[name])]
 
 plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
+
+# %% ###################################################
+# Test of the DWBA model
+mod = DWBAModel()
+
+# Simple model for testing that model runs
+a = [.01, .01, .01, .01]
+
+r_pos = list(np.array([[0, 0, 0], [0.1, 0, 0], [0.2, 0, 0], [0.3, 0, 0]]))
+r_tan = list(np.array([[1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 0, 0]]))
+
+p = {'medium_c': 1500, 'medium_rho': 1000,
+     'theta': 90, 'phi': 0, 'f': 38000,
+     'target_c': 1501, 'target_rho': 1001,
+     'a': a, 'rv_pos': r_pos, 'rv_tan': r_tan}
+
+mod.calculate_ts_single(**p)
+
