@@ -39,7 +39,7 @@ def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)
 
     Notes
     -----
-    While the calclation is valid for any target, the theoretical area strengths are most relevant
+    While the calculation is valid for any target, the theoretical area strengths are most relevant
     when calibrating an echosounder using a sphere. The difference between
     the theoretical and measured can be used to calculate the calibration gain for an
     echosounder (when the sphere is on-axis).
