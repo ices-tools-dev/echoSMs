@@ -219,8 +219,8 @@ class ScatterModelBase(abc.ABC):
         for name in names:
             if name not in p:
                 raise KeyError(f"Models require a '{name}' parameter.")
-            if None in p[name]:
-                raise ValueError(f"Model parameter '{name}' must not contain None values.")
+            if p[name] is None:
+                raise ValueError(f"Model parameter '{name}' must not be None.")
             if np.min(p[name]) <= 0:
                 raise ValueError(f"Model parameter '{name}' must be greater than zero.")
 
