@@ -30,9 +30,10 @@ Currently, the following models are available in echoSMs:
 |Kirchhoff approximation|KAModel|Surfaces that are mainly convex|
 |Modal series solution|MSSModel|Spheres with various boundary conditions, including shells|
 |Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
-|Phase-tracking distorted wave Born approximation|PTDWBAModel|Weakly scattering objects of any shape with inhomogeneous interiors|
+|Distorted-wave Born approximation|DWBAModel|Weakly scattering objects with piecewise circular cross-sections and homogenous interiors|
+|Phase-tracking distorted-wave Born approximation|PTDWBAModel|Weakly scattering objects of any shape with inhomogeneous interiors|
 
-Future models will include more types of DWBA models, the Kirchhoff-ray-mode model, the Fourier matching method, and potentially finite element and boundary element models.
+Future models will include the SDWBA model, the Kirchhoff-ray-mode model, the Fourier matching method, and potentially finite element and boundary element models.
 
 ## Running a model
 
