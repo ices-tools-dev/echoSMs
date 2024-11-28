@@ -16,6 +16,12 @@ Each type of model is contained in a separate Python class (with name ending in 
 
 There are several models that use the distorted-wave Born approximation, documented below:
 
+### Utilities
+
+::: echosms.utilsdwba
+    options:
+        heading_level: 4
+
 ### DWBA
 
 ::: echosms.DWBAModel
@@ -61,5 +67,3 @@ There are several models that use the distorted-wave Born approximation, documen
 ## Utilities
 
 ::: echosms.utils
-
-::: echosms.utilsdwba
