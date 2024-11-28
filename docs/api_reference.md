@@ -61,3 +61,5 @@ There are several models that use the distorted-wave Born approximation, documen
 ## Utilities
 
 ::: echosms.utils
+
+::: echosms.utilsdwba
