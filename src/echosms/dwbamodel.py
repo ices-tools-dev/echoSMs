@@ -13,9 +13,8 @@ import warnings
 class DWBAModel(ScatterModelBase):
     """Distorted-wave Born approximation scattering model.
 
-    Note
-    ----
-    The DWBA model is not yet functional.
+    This class calculates acoustic scatter from piecewise cylrindical shapes with weakly
+    scattering material contrasts.
     """
 
     def __init__(self):
@@ -24,8 +23,9 @@ class DWBAModel(ScatterModelBase):
         self.short_name = 'dwba'
         self.analytical_type = 'approximate'
         self.boundary_types = ['weakly scattering']
-        self.shapes = ['any']
+        self.shapes = ['piecewise cylindical']
         self.max_ka = 20
+        # The distorted wave Born approximation is increasingly inaccurate outside these limits:
         self.g_range = [0.95, 1.05]
         self.h_range = [0.95, 1.05]
         self.no_expand_parameters = ['a', 'rv_pos', 'rv_tan']
@@ -51,7 +51,7 @@ class DWBAModel(ScatterModelBase):
             raise ValueError('All vectors in rv_tan must be of unit length.')
 
     def calculate_ts_single(self, medium_c, medium_rho, theta, phi, f, target_c, target_rho,
-                            a, rv_pos, rv_tan, validate_parameters=True):
+                            a, rv_pos, rv_tan, validate_parameters=True, **kwargs) -> float:
         """Distorted-wave Born approximation scattering model.
 
         Implements the distorted-wave Born approximation
@@ -81,8 +81,8 @@ class DWBAModel(ScatterModelBase):
             The radii of the discs that define the target shape [m].
         rv_pos : iterable[np.ndarray]
             An interable of vectors of the 3D positions of the centre of each disc that
-            defines the target shape [m]. Each vector should have three values corresponding to
-            the _x_, _y_, and _z_ coordinates of the disc centre.
+            defines the target shape. Each vector should have three values corresponding to
+            the _x_, _y_, and _z_ coordinates [m] of the disc centre.
         rv_tan : iterable[np.ndarray]
             An interable of unit vectors of the tangent to the target body axis at
             the points given in `rv_pos`. Each vector should have three values corresponding to
@@ -102,8 +102,8 @@ class DWBAModel(ScatterModelBase):
         offset centres.
 
         The DWBA model density and sound speed values are often specified as ratios of the medium
-        and target values (g & h). However, the echoSMs implementation requires actual densities
-        and sound speeds to maintain compatibility with other echoSMs model input parameters.
+        and target values (g & h). However, to maintain compatibility with other echoSMs models
+        this implementation requires actual densities and sound speeds.
 
         References
         ----------
@@ -129,9 +129,9 @@ class DWBAModel(ScatterModelBase):
         # Calculate the distance between each disc using the disc position vectors. The Euclidean
         # distance is the L2 norm so use np.norm(). Could also use
         # scipy.spatial.distance.euclidean(), but that is apparently a lot slower.
-        dist = np.array([np.linalg.norm(r1-r0) for r1, r0 in zip(rv_pos[0:-1], rv_pos[1:])])  # [m]
+        dist = np.array([np.linalg.norm(r1-r0) for r0, r1 in zip(rv_pos[0:-1], rv_pos[1:])])  # [m]
 
-        # thickness of each disc based on the distance between discs. The first and last
+        # Thickness of each disc based on the distance between discs. The first and last
         # discs are treated differently.
         d_rv_pos = np.hstack((dist[0], dist[0:-1]/2 + dist[1:]/2, dist[-1]))  # [m]
 
@@ -140,13 +140,13 @@ class DWBAModel(ScatterModelBase):
         # we keep the body stationary and change the incident vector.
         rot = R.from_euler('ZYX', (0, theta-90, -phi), degrees=True)
         k_hat_i = rot.apply([0, 0, 1])  # needs to be a unit vector
-        k_i2 = k_hat_i * k2  # incident wavenumber vector inside the target
+        k_i2 = k_hat_i * k2  # incident vector with magnitude equal to wavenumber inside the target
 
-        # This is the integration in Eqn (5)
+        # This is the integral part of Eqn (5)
         integral = 0.0
         for a_, r_pos, d_r_pos, r_tan in zip(a, rv_pos, d_rv_pos, rv_tan):
             # The round() is here because sometimes the dot product gets values slightly outside
-            # the range [-1, 1] due to floating point inaccuracies.
+            # the [-1, 1] range (due to floating point inaccuracies) and cos will complain.
             beta_tilt = pi/2 - acos(round(k_hat_i @ r_tan, 8))  # from list of symbols in the paper.
 
             integral += (gamma_k-gamma_rho) * exp(2j*(k_i2@r_pos))\
