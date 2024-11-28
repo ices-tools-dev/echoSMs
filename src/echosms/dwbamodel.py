@@ -11,7 +11,7 @@ import warnings
 
 
 class DWBAModel(ScatterModelBase):
-    """Distorted-wave Born approximation scattering model.
+    """Distorted-wave Born approximation (DWBA) scattering model.
 
     This class calculates acoustic scatter from piecewise cylrindical shapes with weakly
     scattering material contrasts.
