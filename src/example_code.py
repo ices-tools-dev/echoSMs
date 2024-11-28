@@ -4,12 +4,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import trimesh
-from copy import deepcopy
 
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
+from echosms import create_dwba_spheroid, create_dwba_cylinder
 
 # Load the reference model defintiions
 rm = ReferenceModels()
@@ -149,9 +149,6 @@ for name in models:
             mod = DCMModel()
         case _:
             pass
-    # Get the model parameters used in Jech et al. (2015) for a particular model.
-    s = rm.specification(name)
-    m = rm.parameters(name)
 
     # Add frequencies and angle to the model parameters
     m['f'] = 38000  # [Hz]
@@ -161,6 +158,95 @@ for name in models:
     ts = mod.calculate_ts(m)
 
     plot_compare_angle(m['theta'], ts, 'echoSMs', m['theta'], bmt[name], 'Benchmark', name)
+
+# %% ###############################################################################################
+# Run non-benchmark models and compare to the relevant benchmark results.
+####################################################################################################
+
+# %% ##################################################
+# Test the KAModel
+# mesh = trimesh.load(r'..\docs\resources\herring.stl')
+# mesh = trimesh.creation.cylinder(radius=0.01, height=0.07, sections=500)
+
+name = 'fixed rigid sphere'
+s = rm.specification(name)
+
+mesh = trimesh.creation.icosphere(radius=s['a'], subdivisions=4)
+m = {}
+m['medium_c'] = s['medium_c']
+m['f'] = bmf['frequency (kHz)'][~np.isnan(bmf[name])]*1e3  # [Hz]
+m['phi'] = 0
+m['theta'] = 90.0
+m['mesh'] = mesh
+m['boundary_type'] = 'pressure release'
+
+mod = KAModel()
+
+# and run the models
+ts = mod.calculate_ts(m)
+
+# Get the benchmark TS values
+bm_ts = bmf[name][~np.isnan(bmf[name])]
+
+plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
+
+# %% ###################################################
+# Run the DWBA model and compare to the benchmark results
+
+model_names = ['weakly scattering sphere', 'weakly scattering prolate spheroid',
+               'weakly scattering finite cylinder']
+for name in model_names:
+
+    m = rm.parameters(name)
+
+    match rm.specification(name)['shape']:
+        case 'prolate spheroid':
+            rv_pos, rv_tan, a = create_dwba_spheroid(m['a'], m['b'])
+        case 'sphere':
+            rv_pos, rv_tan, a = create_dwba_spheroid(m['a'], m['a'])
+        case 'finite cylinder':
+            rv_pos, rv_tan, a = create_dwba_cylinder(m['a'], m['b'])
+
+    m.pop('boundary_type')
+    m.pop('b', None)
+    f = bmf['frequency (kHz)']*1e3
+
+    m |= {'theta': 90, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan, 'f': f}
+
+    mod = DWBAModel()
+    ts_dwba = mod.calculate_ts(m)
+
+    # Get benchmark model for comparison
+    bm_ts = bmf[name]
+    plot_compare_freq(f, bm_ts, 'benchmark', f, ts_dwba, 'dwba', name)
+
+#########################################################
+# And then compare to the angle varying benchmark results
+models = ['weakly scattering prolate spheroid', 'weakly scattering finite cylinder']
+
+for name in models:
+    s = rm.specification(name)
+    m = rm.parameters(name)
+
+    match rm.specification(name)['shape']:
+        case 'prolate spheroid':
+            rv_pos, rv_tan, a = create_dwba_spheroid(m['a'], m['b'])
+        case 'finite cylinder':
+            rv_pos, rv_tan, a = create_dwba_cylinder(m['a'], m['b'])
+
+    m.pop('boundary_type')
+    m.pop('b', None)
+    theta = bmt['angle (deg)']
+
+    m |= {'theta': theta, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan, 'f': 38000}
+
+    mod = DWBAModel()
+    ts_dwba = mod.calculate_ts(m)
+
+    ts = mod.calculate_ts(m)
+
+    plot_compare_angle(m['theta'], ts, 'DWBA', m['theta'], bmt[name], 'Benchmark', name)
+
 
 # %% ###############################################################################################
 # Use the ES model on a calibration sphere
@@ -309,66 +395,3 @@ pt = PTDWBAModel()
 dwba_ts = pt.calculate_ts(m, multiprocess=True)
 
 plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bmf[name], 'Benchmark', name)
-
-# %% ##################################################
-# Test the KAModel
-# mesh = trimesh.load(r'..\docs\resources\herring.stl')
-# mesh = trimesh.creation.cylinder(radius=0.01, height=0.07, sections=500)
-
-name = 'fixed rigid sphere'
-s = rm.specification(name)
-
-mesh = trimesh.creation.icosphere(radius=s['a'], subdivisions=4)
-m = {}
-m['medium_c'] = s['medium_c']
-m['f'] = bmf['frequency (kHz)'][~np.isnan(bmf[name])]*1e3  # [Hz]
-m['phi'] = 0
-m['theta'] = 90.0
-m['mesh'] = mesh
-m['boundary_type'] = 'pressure release'
-
-mod = KAModel()
-
-# and run the models
-ts = mod.calculate_ts(m)
-
-# Get the benchmark TS values
-bm_ts = bmf[name][~np.isnan(bmf[name])]
-
-plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
-
-# %% ###################################################
-# Test of the DWBA model
-
-m = rm.parameters('weakly scattering sphere')
-f = bmf['frequency (kHz)']*1e3
-m['f'] = f
-
-# create a number of discs to represent a sphere
-spacing = 0.0001  # [m]
-
-# List of disc positon vectors
-r_pos_x = np.linspace(0, 2*m['a'], int(round(2*m['a']/spacing)))
-rv_pos = [np.array([x, 0, 0]) for x in r_pos_x]
-
-# List of tangent vectors to sphere axis (all the same)
-rv_tan = [np.array([1, 0, 0])] * len(r_pos_x)
-
-# radius of each disc along r_pos_x
-theta = np.arccos((r_pos_x - m['a'])/m['a'])
-a = m['a'] * np.sin(theta)
-
-# Setup parameters for the DWBA model
-p = deepcopy(m)
-p.pop('boundary_type')
-p |= {'theta': 90, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan}
-
-mod = DWBAModel()
-ts_dwba = mod.calculate_ts(p)
-
-# Run MSS model for comparison
-m['boundary_type'] = 'fluid filled'
-mss = MSSModel()
-ts_mss = mss.calculate_ts(m)
-
-plot_compare_freq(f, ts_mss, 'mss', f, ts_dwba, 'dwba', 'Weakly scattering sphere')
