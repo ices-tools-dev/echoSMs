@@ -2,7 +2,7 @@
 
 from .scattermodelbase import ScatterModelBase
 from .utils import wavenumber
-from math import log10, cos, acos, pi
+from math import log10, cos, acos, pi, isclose
 from cmath import exp
 from scipy.spatial.transform import Rotation as R
 import numpy as np
@@ -28,26 +28,27 @@ class DWBAModel(ScatterModelBase):
         self.max_ka = 20
         self.g_range = [0.95, 1.05]
         self.h_range = [0.95, 1.05]
-        self.no_expand_paramters = ['a', 'rv_pos', 'rv_tan']
+        self.no_expand_parameters = ['a', 'rv_pos', 'rv_tan']
 
     def validate_parameters(self, p):
         """Validate the model parameters.
 
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
+        return
         super()._present_and_positive(p, ['medium_rho', 'medium_c', 'target_rho', 'target_c', 'f'])
-        g = abs(p['target_rho'] / p['medium_rho'])
-        h = abs(p['target_c'] / p['medium_c'])
+        g = p['target_rho'] / p['medium_rho']
+        h = p['target_c'] / p['medium_c']
 
-        if (g < self.g_range[0]) or (g > self.g_range[1]):
+        if (np.any(g < self.g_range[0])) or np.any((g > self.g_range[1])):
             warnings.warn('Ratio of target and medium densities (g) is outside the DWBA limits.')
 
-        if (h < self.h_range[0]) or (h > self.h_range[1]):
+        if (np.any(h < self.h_range[0])) or np.any((h > self.h_range[1])):
             warnings.warn('Ratio of target and medium sound speeds (h) are '
                           'outside the DWBA limits.')
 
-        # make sure that rv_tan contains unit vectors
-        # TODO
+        if not np.all([isclose(1.0, np.linalg.norm(v)) for v in p['rv_tan']]):
+            raise ValueError('All vectors in rv_tan must be of unit length.')
 
     def calculate_ts_single(self, medium_c, medium_rho, theta, phi, f, target_c, target_rho,
                             a, rv_pos, rv_tan, validate_parameters=True):
@@ -83,7 +84,7 @@ class DWBAModel(ScatterModelBase):
             defines the target shape [m]. Each vector should have three values corresponding to
             the _x_, _y_, and _z_ coordinates of the disc centre.
         rv_tan : iterable[np.ndarray]
-            An interable of vectors of the tangent to the target body axis at
+            An interable of unit vectors of the tangent to the target body axis at
             the points given in `rv_pos`. Each vector should have three values corresponding to
             the _x_, _y_, and _z_ components of the tangent vector.
         validate_parameters : bool
@@ -132,7 +133,7 @@ class DWBAModel(ScatterModelBase):
 
         # thickness of each disc based on the distance between discs. The first and last
         # discs are treated differently.
-        d_rv_pos = np.hstack((dist[0], dist[0:-2]/2 + dist[1:]/2, dist[-1]))  # [m]
+        d_rv_pos = np.hstack((dist[0], dist[0:-1]/2 + dist[1:]/2, dist[-1]))  # [m]
 
         # Calculate direction of incident wave given theta and phi. The echoSMs convention
         # has the target rotating and the incident vector always being (0,0,1), but for the DWBA
@@ -148,7 +149,7 @@ class DWBAModel(ScatterModelBase):
             # the range [-1, 1] due to floating point inaccuracies.
             beta_tilt = pi/2 - acos(round(k_hat_i @ r_tan, 8))  # from list of symbols in the paper.
 
-            integral += (gamma_k - gamma_rho) * exp(2j*(k_i2@r_pos))\
+            integral += (gamma_k-gamma_rho) * exp(2j*(k_i2@r_pos))\
                 * a_*j1(2*k2*a_*cos(beta_tilt)) / cos(beta_tilt) * abs(d_r_pos)
 
         return 20*log10(abs(k1/4.0*integral))

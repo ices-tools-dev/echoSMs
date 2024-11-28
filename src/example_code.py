@@ -4,6 +4,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import trimesh
+from copy import deepcopy
 
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
 from echosms import BenchmarkData
@@ -338,18 +339,36 @@ plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
 
 # %% ###################################################
 # Test of the DWBA model
+
+m = rm.parameters('weakly scattering sphere')
+f = bmf['frequency (kHz)']*1e3
+m['f'] = f
+
+# create a number of discs to represent a sphere
+spacing = 0.0001  # [m]
+
+# List of disc positon vectors
+r_pos_x = np.linspace(0, 2*m['a'], int(round(2*m['a']/spacing)))
+rv_pos = [np.array([x, 0, 0]) for x in r_pos_x]
+
+# List of tangent vectors to sphere axis (all the same)
+rv_tan = [np.array([1, 0, 0])] * len(r_pos_x)
+
+# radius of each disc along r_pos_x
+theta = np.arccos((r_pos_x - m['a'])/m['a'])
+a = m['a'] * np.sin(theta)
+
+# Setup parameters for the DWBA model
+p = deepcopy(m)
+p.pop('boundary_type')
+p |= {'theta': 90, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan}
+
 mod = DWBAModel()
+ts_dwba = mod.calculate_ts(p)
 
-# Simple model for testing that model runs
-a = [.01, .01, .01, .01]
+# Run MSS model for comparison
+m['boundary_type'] = 'fluid filled'
+mss = MSSModel()
+ts_mss = mss.calculate_ts(m)
 
-r_pos = list(np.array([[0, 0, 0], [0.1, 0, 0], [0.2, 0, 0], [0.3, 0, 0]]))
-r_tan = list(np.array([[1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 0, 0]]))
-
-p = {'medium_c': 1500, 'medium_rho': 1000,
-     'theta': 90, 'phi': 0, 'f': 38000,
-     'target_c': 1501, 'target_rho': 1001,
-     'a': a, 'rv_pos': r_pos, 'rv_tan': r_tan}
-
-mod.calculate_ts_single(**p)
-
+plot_compare_freq(f, ts_mss, 'mss', f, ts_dwba, 'dwba', 'Weakly scattering sphere')
