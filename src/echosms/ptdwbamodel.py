@@ -25,7 +25,6 @@ class PTDWBAModel(ScatterModelBase):
         
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
-
         p = as_dict(params)
 
     def calculate_ts_single(self, volume, theta, phi, f, voxel_size, rho, c,

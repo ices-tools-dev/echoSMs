@@ -30,7 +30,6 @@ class PSMSModel(ScatterModelBase):
         
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
-
         p = as_dict(params)
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_c', 'medium_rho', 'a', 'b', 'f'])

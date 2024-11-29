@@ -26,7 +26,6 @@ class SDWBAModel(ScatterModelBase):
         
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
-
         p = as_dict(params)
 
     def calculate_ts_single(self, theta, phi, f, target_rho, target_c, validate_parameters=True):

@@ -1,7 +1,7 @@
 """The distorted-wave Born approximation model."""
 
 from .scattermodelbase import ScatterModelBase
-from .utils import wavenumber
+from .utils import wavenumber, as_dict
 from math import log10, cos, acos, pi, isclose
 from cmath import exp
 from scipy.spatial.transform import Rotation as R
@@ -30,13 +30,14 @@ class DWBAModel(ScatterModelBase):
         self.h_range = [0.95, 1.05]
         self.no_expand_parameters = ['a', 'rv_pos', 'rv_tan']
 
-    def validate_parameters(self, p):
+    def validate_parameters(self, params):
         """Validate the model parameters.
 
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
-        return
+        p = as_dict(params)
         super()._present_and_positive(p, ['medium_rho', 'medium_c', 'target_rho', 'target_c', 'f'])
+
         g = p['target_rho'] / p['medium_rho']
         h = p['target_c'] / p['medium_c']
 

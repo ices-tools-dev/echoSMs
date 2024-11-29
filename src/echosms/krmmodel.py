@@ -14,6 +14,7 @@ class KRMModel(ScatterModelBase):
     ----
     The KRM model is not yet functional.
     """
+
     def __init__(self):
         super().__init__()
         self.long_name = 'Kirchhoff ray mode'
@@ -29,7 +30,6 @@ class KRMModel(ScatterModelBase):
 
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
-
         p = as_dict(params)
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_c', 'f'])

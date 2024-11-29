@@ -158,13 +158,13 @@ class ScatterModelBase(abc.ABC):
         return self.calculate_ts_single(**p, validate_parameters=False)
 
     @abc.abstractmethod
-    def validate_parameters(self, p):
+    def validate_parameters(self, p: dict | pd.DataFrame | xr.DataArray):
         """Validate the model parameters.
 
         Parameters
         ----------
-        p : dict
-            Dict containing the model parameters.
+        p :
+            The model parameters.
 
         Raises
         ------

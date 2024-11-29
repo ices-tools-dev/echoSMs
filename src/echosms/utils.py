@@ -287,7 +287,8 @@ def as_dict(params: dict | pd.DataFrame | xr.DataArray) -> dict:
     if isinstance(params, xr.DataArray):
         return dict(zip(params.coords, params.indexes.values())) | p
     elif isinstance(params, pd.DataFrame):
-        return params.to_dict(orient='list') | p
+        # params.attrs = {}  # otherwise to_dict() exposes a bug in pandas?
+        return params.to_dict(orient='series') | p
 
     raise TypeError('Only dict, DataFrame, or DataArray are accepted.')
 
