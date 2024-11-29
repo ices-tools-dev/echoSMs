@@ -27,6 +27,7 @@ Currently, the following models are available in echoSMs:
 |----------|----------|-----------|
 |Deformed cylinder model|DCMModel|Truncated cylinders with various boundary conditions|
 |Elastic sphere|ESModel|Elastic spheres, such as echosounder calibration spheres|
+|High-pass fluid sphere model|HPModel|Simple approximate model for fluid spheres|
 |Kirchhoff approximation|KAModel|Surfaces that are mainly convex|
 |Modal series solution|MSSModel|Spheres with various boundary conditions, including shells|
 |Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
