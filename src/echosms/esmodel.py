@@ -76,11 +76,7 @@ class ESModel(ScatterModelBase):
         for Scotland.
         """
         if validate_parameters:
-            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'f': f,
-                 'target_longitudinal_c': target_longitudinal_c,
-                 'target_transverse_c': target_transverse_c,
-                 'target_rho': target_rho}
-            self.validate_parameters(p)
+            self.validate_parameters(locals())
 
         q = wavenumber(medium_c, f)*a
         q1 = q*medium_c/target_longitudinal_c

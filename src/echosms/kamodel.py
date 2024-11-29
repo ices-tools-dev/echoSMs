@@ -83,8 +83,7 @@ class KAModel(ScatterModelBase):
 
         """
         if validate_parameters:
-            p = {'medium_c': medium_c, 'theta': theta, 'phi': phi, 'f': f, 'mesh': mesh}
-            self.validate_parameters(p)
+            self.validate_parameters(locals())
 
         if boundary_type not in self.boundary_types:
             raise ValueError(f'The {self.long_name} model does not support '

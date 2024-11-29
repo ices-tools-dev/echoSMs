@@ -82,7 +82,6 @@ class SDWBAModel(ScatterModelBase):
         <https://doi.org/10.1016/j.icesjms.2006.02.007>
         """
         if validate_parameters:
-            p = {'theta': theta, 'phi': phi, 'f': f, 'target_rho': f, 'target_c': target_c}
-            self.validate_parameters(p)
+            self.validate_parameters(locals())
 
         return None

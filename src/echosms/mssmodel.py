@@ -104,10 +104,7 @@ class MSSModel(ScatterModelBase):
         <https://doi.org/10.1121/1.4937607>
         """
         if validate_parameters:
-            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'f': f,
-                 'boundary_type': boundary_type, 'target_c': target_c, 'target_rho': target_rho,
-                 'shell_c': shell_c, 'shell_rho': shell_rho, 'shell_thickness': shell_thickness}
-            self.validate_parameters(p)
+            self.validate_parameters(locals())
 
         k0 = wavenumber(medium_c, f)
         ka = k0*a

@@ -98,9 +98,7 @@ class PTDWBAModel(ScatterModelBase):
         125(1), 73-88. <https://doi.org/10.1121/1.3021298>
         """
         if validate_parameters:
-            p = {'volume': volume, 'theta': theta, 'phi': phi, 'f': f,
-                 'voxel_size': voxel_size, 'rho': rho, 'c': c}
-            self.validate_parameters(p)
+            self.validate_parameters(locals())
 
         # Make sure things are numpy arrays
         rho = np.atleast_1d(rho)

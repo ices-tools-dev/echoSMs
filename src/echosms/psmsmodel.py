@@ -90,10 +90,7 @@ class PSMSModel(ScatterModelBase):
             model,” Fish. Sci., 60, 261-265.
         """
         if validate_parameters:
-            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'b': b,
-                 'theta': theta, 'f': f, 'boundary_type': boundary_type,
-                 'target_c': target_c, 'target_rho': target_rho}
-            self.validate_parameters(p)
+            self.validate_parameters(locals())
 
         if boundary_type not in self.boundary_types:
             raise ValueError(f'The {self.long_name} model does not support '
