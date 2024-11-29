@@ -15,10 +15,11 @@ from .dwbamodel import DWBAModel
 from .sdwbamodel import SDWBAModel
 from .kamodel import KAModel
 from .krmmodel import KRMModel
+from .hpmodel import HPModel
 
 __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'MSSModel', 'PSMSModel', 'DCMModel', 'ESModel', 'PTDWBAModel',
-           'DWBAModel', 'SDWBAModel', 'KAModel', 'KRMModel',
+           'DWBAModel', 'SDWBAModel', 'KAModel', 'KRMModel', 'HPModel',
            'wavenumber', 'wavelength', 'Neumann', 'h1', 'spherical_jnpp', 'prolate_swf',
            'theoretical_Sa',
            'pro_rad1', 'pro_rad2', 'pro_ang1',
