@@ -1,26 +1,25 @@
 """A class that provides a high-pass fluid sphere scattering model."""
 
-from math import log10, sin, atan, fsum
-from cmath import exp
-from warnings import warn
-from scipy.special import spherical_jn, spherical_yn
-from .utils import wavenumber, spherical_jnpp, as_dict
+from math import log10, pi, sin, cos, exp
+from .utils import wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase
 
 
 class HPModel(ScatterModelBase):
-    """High-pass fluid sphere (HP) scattering model.
+    """High-pass (HP) scattering model.
 
-    This class calculates backscatter from elastic shelled spheres.
+    Notes
+    -----
+    This model is not yet functional.
     """
 
     def __init__(self):
         super().__init__()
-        self.long_name = 'elastic sphere'
+        self.long_name = 'high pass'
         self.short_name = 'hp'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['elastic shelled sphere']
-        self.shapes = ['sphere']
+        self.boundary_types = ['fluid filled', 'elastic', 'rigid fixed']
+        self.shapes = ['sphere', 'prolate spheroid', 'cylinder', 'bent cylinder']
         self.max_ka = 20  # [1]
 
     def validate_parameters(self, params):
@@ -29,34 +28,53 @@ class HPModel(ScatterModelBase):
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
         p = as_dict(params)
-        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_rho', 'medium_c', 'a', 'f',
-                                          'target_longitudinal_c',
-                                          'target_transverse_c', 'target_rho'])
+                                          'target_c', 'target_rho'])
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, f,
-                            target_longitudinal_c, target_transverse_c, target_rho,
-                            validate_parameters=True,
-                            **kwargs) -> float:
+        if p['shape'] not in self.shapes:
+            raise ValueError('The shape parameter must be one of: ' + ', '.join(self.shapes))
+
+        if p['boundary_type'] not in self.boundary_types:
+            raise ValueError('The boundary_type parameter must be one of: ' +
+                             ', '.join(self.boundary_types))
+
+    def calculate_ts_single(self, shape, medium_c, medium_rho, target_c, target_rho,
+                            a, f, boundary_type,
+                            theta=None,
+                            L=None, rho_c=None,
+                            irregular=False,
+                            validate_parameters=True, **kwargs) -> float:
         """
-        Calculate the backscatter from an elastic shelled sphere for one set of parameters.
+        Calculate the backscatter using the high pass model for one set of parameters.
 
         Parameters
         ----------
+        shape : str
+            The shape to model. Must of the shapes given in the `shapes` variable.
         medium_c : float
-            Sound speed in the fluid medium surrounding the sphere [m/s].
+            Sound speed in the fluid medium surrounding the target [m/s].
         medium_rho : float
-            Density of the fluid medium surrounding the sphere [kg/m³].
+            Density of the fluid medium surrounding the target [kg/m³].
+        target_c : float
+            Longitudinal sound speed in the material inside the target [m/s].
+        target_rho : float
+            Density of the material inside the target [kg/m³].
         a : float
-            Radius of the sphere [m].
+            Radius of the sphere, length of semi-minor axis of the prolate spheriod, or cylindrical
+            radius of the straight or bent cylinder [m].
         f : float
             Frequency to calculate the scattering at [Hz].
-        target_longitudinal_c : float
-            Longitudinal sound speed in the material inside the sphere [m/s].
-        target_transverse_c : float
-            Transverse sound speed in the material inside the sphere [m/s].
-        target_rho : float
-            Density of the material inside the sphere [kg/m³].
+        boundary_type : str
+            The boundary type for the model.
+        theta : float
+            XXXX. Only required for the cylinder shape.
+        L : float
+            Total length of the prolate spheroid and straight cylinder, or arc length of
+            the bent cylinder [m]. Only required for prolate spheroid, cylinder, and bent cylinder
+            shapes.
+        rho_c : float
+            Radius of curvature of the axis of the bent cylinder [m]. Only required for the
+            bent cylinder shape.
         validate_parameters : bool
             Whether to validate the model parameters.
 
@@ -67,58 +85,96 @@ class HPModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the high-pass fluid sphere model in Lavery et al. (2007)
-        and Stanton (1989)
+        The class implements the high-pass model in Stanton (1989) for spheres, prolate spheroids,
+        cylinders, and bent cylinders with fluid filled, elastic, and rigid fixed boundary
+        conditions.
+
+        Stanton (1989) also provides parameters for gas-filled shapes, but more
+        a prior knowledge is required about the gas for useful results (e.g., damping
+        characteristics of the gas and medium) and these have not been implemented here. There
+        are many other models available that accurately model gas-filled shapes such that the
+        lack of a high-pass gas-filled model should not be missed.
 
         References
         ----------
-        Lavery, A. C., Wiebe, P. H., Stanton, T. K., Lawson, G. L., Benfield, M. C., &
-        Copley, N. (2007). Determining dominant scatterers of sound in mixed zooplankton
-        populations. The Journal of the Acoustical Society of America, 122(6), 3304–3326.
-        <https://doi.org/10.1121/1.2793613>
-        
         Stanton, T. K. (1989). Simple approximate formulas for backscattering of sound
         by spherical and elongated objects. The Journal of the Acoustical Society of
-        America, 86(4), 1499–1510.
+        America, 86(4), 1499-1510.
         <https://doi.org/10.1121/1.398711>
         """
         if validate_parameters:
-            p = {'medium_c': medium_c, 'medium_rho': medium_rho, 'a': a, 'f': f,
-                 'target_longitudinal_c': target_longitudinal_c,
-                 'target_transverse_c': target_transverse_c,
-                 'target_rho': target_rho}
-            self.validate_parameters(p)
+            self.validate_parameters(locals())
 
-        q = wavenumber(medium_c, f)*a
-        q1 = q*medium_c/target_longitudinal_c
-        q2 = q*medium_c/target_transverse_c
-        alpha = 2. * (target_rho/medium_rho) * (target_transverse_c/medium_c)**2
-        beta = (target_rho/medium_rho) * (target_longitudinal_c/medium_c)**2 - alpha
+        g = target_rho/medium_rho
+        h = target_c/medium_c
+        k = wavenumber(medium_c, f)
 
-        # Use n instead of l (ell) because l looks like 1.
-        def S(n):
-            A2 = (n**2 + n-2) * spherical_jn(n, q2) + q2**2 * spherical_jnpp(n, q2)
-            A1 = 2*n*(n+1) * (q1*spherical_jn(n, q1, True) - spherical_jn(n, q1))
-            B2 = A2*q1**2 * (beta*spherical_jn(n, q1) - alpha*spherical_jnpp(n, q1))\
-                - A1*alpha * (spherical_jn(n, q2) - q2*spherical_jn(n, q2, True))
-            B1 = q * (A2*q1*spherical_jn(n, q1, True) - A1*spherical_jn(n, q2))
-            eta_n = atan(-(B2*spherical_jn(n, q, True) - B1*spherical_jn(n, q))
-                         / (B2*spherical_yn(n, q, True) - B1*spherical_yn(n, q)))
+        G = 1.0
+        F = 1.0
 
-            return (-1)**n * (2*n+1) * sin(eta_n) * exp(1j*eta_n)
+        def alpha_pic(g, h):
+            return (1-g*h*h)/(2*g*h*h) + (1-g)/(1+g)
 
-        # Estimate the number of terms to use in the summation
-        n_max = round(q+10)
-        tol = 1e-10  # somewhat arbitrary
-        while abs(S(n_max)) > tol:
-            n_max += 10
+        match shape:
+            case 'sphere':
+                alpha_pis = (1-g*h*h)/(3*g*h*h) + (1-g)/(1+2*g)
+                R = (g*h-1)/(g*h+1)
+                if irregular:
+                    match boundary_type:
+                        case 'fluid filled':
+                            F = 40 * (k*a)**(-0.4)
+                            G = 1-0.8*exp(-2.5*(k*a-2.25)**2)
+                        case 'elastic':
+                            F = 15 * (k*a)**(1.9)
+                        case 'rigid fixed':
+                            F = 15 * (k*a)**(-1.9)
 
-        if n_max > 200:
-            warn('TS results may be inaccurate because the modal series required a large '
-                 f'number ({n_max}) of terms to converge.')
+                sigma_bs = a*a * (k*a)**4 * alpha_pis**2 * G\
+                    / (1 + 4*(k*a)**4 * alpha_pis**2/(R**2 * F))
+            case 'prolate spheroid':
+                a_pic = alpha_pic(g, h)
+                if irregular:
+                    match boundary_type:
+                        case 'fluid filled':
+                            F = 2.5 * (k*a)**(1.65)
+                            G = 1-0.8*exp(-2.5*(k*a-2.3)**2)
+                        case 'elastic':
+                            F = 1.8 * (k*a)**(-0.4)
+                        case 'rigid fixed':
+                            F = 1.8 * (k*a)**(0.4)
 
-        n = range(n_max)
+                sigma_bs = 1/9 * L*L * (k*a)**4 * a_pic**2 * G\
+                    / (1 + 16/9*(k*a)**4 * a_pic**2/(R**2 * F))
+            case 'cylinder':
+                a_pic = alpha_pic(g, h)
+                s = sin(k*L*cos(theta)) / (k*L*cos(theta))
+                Ka = k*sin(theta)*a
+                if irregular:
+                    match boundary_type:
+                        case 'fluid filled':
+                            F = 3 * (k*a)**(0.65)
+                            G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
+                        case 'elastic':
+                            F = 3.5 * (k*a)**(1.0)
+                        case 'rigid fixed':
+                            F = 3.5 * (k*a)**(1.0)
 
-        f_inf = -2.0/q * sum(map(S, n))
+                sigma_bs = 0.25 * L*L * (Ka)**4 * a_pic**2 * s*s * G\
+                    / (1 + pi*(Ka)**4 * a_pic**2/(R**2 * F))
+            case 'bent cylinder':
+                a_pic = alpha_pic(g, h)
+                H = 1.
+                if irregular:
+                    match boundary_type:
+                        case 'fluid filled':
+                            F = 3.0 * (k*a)**(0.65)
+                            G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
+                        case 'elastic':
+                            F = 2.5 * (k*a)**(1.0)
+                        case 'rigid fixed':
+                            F = 2.5 * (k*a)**(-1.0)
 
-        return 10*log10(a**2 * abs(f_inf)**2 / 4.0)
+                sigma_bs = 0.25 * L*L * (k*a)**4 * a_pic**2 * H*H*G\
+                    / (1 + L*L*(k*a)**4 * a_pic**2 * H*H/(rho_c*a*R**2 * F))
+
+        return 10*log10(sigma_bs)
