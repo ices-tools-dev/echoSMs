@@ -18,7 +18,7 @@ class HPModel(ScatterModelBase):
         self.long_name = 'high pass'
         self.short_name = 'hp'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['fluid filled', 'elastic', 'rigid fixed']
+        self.boundary_types = ['fluid filled', 'elastic', 'fixed rigid']
         self.shapes = ['sphere', 'prolate spheroid', 'cylinder', 'bent cylinder']
         self.max_ka = 20  # [1]
 
@@ -28,18 +28,17 @@ class HPModel(ScatterModelBase):
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
         p = as_dict(params)
-        super()._present_and_positive(p, ['medium_rho', 'medium_c', 'a', 'f',
-                                          'target_c', 'target_rho'])
+        super()._present_and_positive(p, ['medium_c', 'a', 'f'])
 
-        if p['shape'] not in self.shapes:
+        if not p['shape'].isin(self.shapes).all():
             raise ValueError('The shape parameter must be one of: ' + ', '.join(self.shapes))
 
-        if p['boundary_type'] not in self.boundary_types:
+        if not p['boundary_type'].isin(self.boundary_types).all():
             raise ValueError('The boundary_type parameter must be one of: ' +
                              ', '.join(self.boundary_types))
 
-    def calculate_ts_single(self, shape, medium_c, medium_rho, target_c, target_rho,
-                            a, f, boundary_type,
+    def calculate_ts_single(self, shape, medium_c, a, f, boundary_type, medium_rho=None,
+                            target_c=None, target_rho=None,
                             theta=None,
                             L=None, rho_c=None,
                             irregular=False,
@@ -50,15 +49,18 @@ class HPModel(ScatterModelBase):
         Parameters
         ----------
         shape : str
-            The shape to model. Must of the shapes given in the `shapes` variable.
+            The shape to model. Must be one of the shapes given in the `shapes` variable.
         medium_c : float
             Sound speed in the fluid medium surrounding the target [m/s].
         medium_rho : float
-            Density of the fluid medium surrounding the target [kg/m³].
+            Density of the fluid medium surrounding the target [kg/m³]. Not required when
+            `boundary_type` is `fixed rigid`.
         target_c : float
-            Longitudinal sound speed in the material inside the target [m/s].
+            Longitudinal sound speed in the material inside the target [m/s]. Not required when
+            `boundary_type` is `fixed rigid`.
         target_rho : float
-            Density of the material inside the target [kg/m³].
+            Density of the material inside the target [kg/m³]. Not required when
+            `boundary_type` is `fixed rigid`.
         a : float
             Radius of the sphere, length of semi-minor axis of the prolate spheriod, or cylindrical
             radius of the straight or bent cylinder [m].
@@ -67,7 +69,9 @@ class HPModel(ScatterModelBase):
         boundary_type : str
             The boundary type for the model.
         theta : float
-            XXXX. Only required for the cylinder shape.
+            Pitch angle to calculate the scattering as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°]. Only required for the straight cylinder shape.
         L : float
             Total length of the prolate spheroid and straight cylinder, or arc length of
             the bent cylinder [m]. Only required for prolate spheroid, cylinder, and bent cylinder
@@ -75,6 +79,9 @@ class HPModel(ScatterModelBase):
         rho_c : float
             Radius of curvature of the axis of the bent cylinder [m]. Only required for the
             bent cylinder shape.
+        irregular :
+            Set to `True` if the modelled object is not exactly a sphere, prolate spheroid,
+            straight or uniformly beny cylinder.
         validate_parameters : bool
             Whether to validate the model parameters.
 
@@ -87,13 +94,18 @@ class HPModel(ScatterModelBase):
         -----
         The class implements the high-pass model in Stanton (1989) for spheres, prolate spheroids,
         cylinders, and bent cylinders with fluid filled, elastic, and rigid fixed boundary
-        conditions.
+        conditions. There are several restrictions on valid input parameters, so a careful
+        reading of Stanton (1989) is recommended.
+
+        The theta angle convention used in Stanton (1989) is the same as the echoSMs
+        [coordinate system convention](https://ices-tools-dev.github.io/echoSMs/
+        conventions/#coordinate-systems).
 
         Stanton (1989) also provides parameters for gas-filled shapes, but more
-        a prior knowledge is required about the gas for useful results (e.g., damping
+        prior knowledge is required about the gas for useful results (e.g., damping
         characteristics of the gas and medium) and these have not been implemented here. There
         are many other models available that accurately model gas-filled shapes such that the
-        lack of a high-pass gas-filled model should not be missed.
+        lack of the high-pass gas-filled model should not be missed.
 
         References
         ----------
@@ -105,8 +117,14 @@ class HPModel(ScatterModelBase):
         if validate_parameters:
             self.validate_parameters(locals())
 
-        g = target_rho/medium_rho
-        h = target_c/medium_c
+        if boundary_type == 'fixed rigid':
+            # just need something large
+            g = 1e20
+            h = 1e20
+        else:
+            g = target_rho/medium_rho
+            h = target_c/medium_c
+
         k = wavenumber(medium_c, f)
 
         G = 1.0
@@ -114,6 +132,13 @@ class HPModel(ScatterModelBase):
 
         def alpha_pic(g, h):
             return (1-g*h*h)/(2*g*h*h) + (1-g)/(1+g)
+
+        # Note: the equations in Table II of Stanton (1989) for F are of a fairly low scan
+        # resolution and it seems like the exponents to ka are missing negative signs in some
+        # cases. The implementation of these equations below has the comment 'negative assumed'
+        # for these uncertain ones. The implementation of the high pass model in the hydrac
+        # package (https://bitbucket.org/fromantgu/hydrac/src/master/hydrac/model/scattering/hp.py)
+        # uses negative signs for all ka exponents in the F equations.
 
         match shape:
             case 'sphere':
@@ -125,7 +150,7 @@ class HPModel(ScatterModelBase):
                             F = 40 * (k*a)**(-0.4)
                             G = 1-0.8*exp(-2.5*(k*a-2.25)**2)
                         case 'elastic':
-                            F = 15 * (k*a)**(1.9)
+                            F = 15 * (k*a)**(-1.9)  # negative assumed
                         case 'rigid fixed':
                             F = 15 * (k*a)**(-1.9)
 
@@ -141,7 +166,7 @@ class HPModel(ScatterModelBase):
                         case 'elastic':
                             F = 1.8 * (k*a)**(-0.4)
                         case 'rigid fixed':
-                            F = 1.8 * (k*a)**(0.4)
+                            F = 1.8 * (k*a)**(-0.4)  # negative assumed
 
                 sigma_bs = 1/9 * L*L * (k*a)**4 * a_pic**2 * G\
                     / (1 + 16/9*(k*a)**4 * a_pic**2/(R**2 * F))
@@ -155,9 +180,9 @@ class HPModel(ScatterModelBase):
                             F = 3 * (k*a)**(0.65)
                             G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
                         case 'elastic':
-                            F = 3.5 * (k*a)**(1.0)
+                            F = 3.5 * (k*a)**(-1.0)  # negative assumed
                         case 'rigid fixed':
-                            F = 3.5 * (k*a)**(1.0)
+                            F = 3.5 * (k*a)**(-1.0)  # negative assumed
 
                 sigma_bs = 0.25 * L*L * (Ka)**4 * a_pic**2 * s*s * G\
                     / (1 + pi*(Ka)**4 * a_pic**2/(R**2 * F))
@@ -170,7 +195,7 @@ class HPModel(ScatterModelBase):
                             F = 3.0 * (k*a)**(0.65)
                             G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
                         case 'elastic':
-                            F = 2.5 * (k*a)**(1.0)
+                            F = 2.5 * (k*a)**(-1.0)  # negative assumed
                         case 'rigid fixed':
                             F = 2.5 * (k*a)**(-1.0)
 
