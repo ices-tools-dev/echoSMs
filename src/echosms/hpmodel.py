@@ -6,12 +6,7 @@ from .scattermodelbase import ScatterModelBase
 
 
 class HPModel(ScatterModelBase):
-    """High-pass (HP) scattering model.
-
-    Notes
-    -----
-    This model is not yet functional.
-    """
+    """High-pass (HP) scattering model."""
 
     def __init__(self):
         super().__init__()
