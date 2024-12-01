@@ -6,6 +6,7 @@ import numpy as np
 import trimesh
 
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
+from echosms import HPModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
@@ -271,6 +272,26 @@ plt.xlabel('Freq [kHz]')
 plt.ylabel('TS re 1 m$^2$ [dB] ')
 plt.title('WC12 calibration sphere')
 plt.show()
+
+# %% ###############################################################################################
+# Try the high-pass model
+mod = HPModel()
+p = {'boundary_type': 'fixed rigid', 'shape': 'sphere', 'medium_c': 1500, 'a': 0.01,
+     'f': np.arange(1, 400, 1)*1e3}
+fixed_rigid = mod.calculate_ts(p)
+p['boundary_type'] = 'elastic'
+p |= {'medium_rho': 1024, 'target_c': 1600, 'target_rho': 1600}
+elastic = mod.calculate_ts(p)
+p['boundary_type'] = 'fluid filled'
+p |= {'medium_rho': 1024, 'target_c': 1510, 'target_rho': 1025}
+fluid = mod.calculate_ts(p)
+
+plt.semilogx(p['f']/1e3, fixed_rigid, label='fixed rigid')
+plt.semilogx(p['f']/1e3, elastic, label='elastic')
+plt.semilogx(p['f']/1e3, fluid, label='fluid filled')
+plt.legend()
+plt.xlabel('Frequency [kHz]')
+plt.ylabel('TS re 1m$2$ [dB]')
 
 # %% ###############################################################################################
 # Some other ways to run models.
