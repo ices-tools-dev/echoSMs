@@ -128,13 +128,6 @@ class HPModel(ScatterModelBase):
         def alpha_pic(g, h):
             return (1-g*h*h)/(2*g*h*h) + (1-g)/(1+g)
 
-        # Note: the equations in Table II of Stanton (1989) for F are of a fairly low scan
-        # resolution and it seems like the exponents to ka are missing negative signs in some
-        # cases. The implementation of these equations below has the comment 'negative assumed'
-        # for these uncertain ones. The implementation of the high pass model in the hydrac
-        # package (https://bitbucket.org/fromantgu/hydrac/src/master/hydrac/model/scattering/hp.py)
-        # uses negative signs for all ka exponents in the F equations.
-
         match shape:
             case 'sphere':
                 alpha_pis = (1-g*h*h)/(3*g*h*h) + (1-g)/(1+2*g)
@@ -145,7 +138,7 @@ class HPModel(ScatterModelBase):
                             F = 40 * (k*a)**(-0.4)
                             G = 1-0.8*exp(-2.5*(k*a-2.25)**2)
                         case 'elastic':
-                            F = 15 * (k*a)**(-1.9)  # negative assumed
+                            F = 15 * (k*a)**(-1.9)
                         case 'rigid fixed':
                             F = 15 * (k*a)**(-1.9)
 
@@ -161,7 +154,7 @@ class HPModel(ScatterModelBase):
                         case 'elastic':
                             F = 1.8 * (k*a)**(-0.4)
                         case 'rigid fixed':
-                            F = 1.8 * (k*a)**(-0.4)  # negative assumed
+                            F = 1.8 * (k*a)**(-0.4)
 
                 sigma_bs = 1/9 * L*L * (k*a)**4 * a_pic**2 * G\
                     / (1 + 16/9*(k*a)**4 * a_pic**2/(R**2 * F))
@@ -175,9 +168,9 @@ class HPModel(ScatterModelBase):
                             F = 3 * (k*a)**(0.65)
                             G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
                         case 'elastic':
-                            F = 3.5 * (k*a)**(-1.0)  # negative assumed
+                            F = 3.5 * (k*a)**(-1.0)
                         case 'rigid fixed':
-                            F = 3.5 * (k*a)**(-1.0)  # negative assumed
+                            F = 3.5 * (k*a)**(-1.0)
 
                 sigma_bs = 0.25 * L*L * (Ka)**4 * a_pic**2 * s*s * G\
                     / (1 + pi*(Ka)**4 * a_pic**2/(R**2 * F))
@@ -190,7 +183,7 @@ class HPModel(ScatterModelBase):
                             F = 3.0 * (k*a)**(0.65)
                             G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
                         case 'elastic':
-                            F = 2.5 * (k*a)**(-1.0)  # negative assumed
+                            F = 2.5 * (k*a)**(-1.0)
                         case 'rigid fixed':
                             F = 2.5 * (k*a)**(-1.0)
 
