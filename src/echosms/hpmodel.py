@@ -1,6 +1,6 @@
 """A class that provides a high-pass fluid sphere scattering model."""
 
-from math import log10, pi, sin, cos, exp
+from math import log10, pi, sin, cos, exp, radians
 from .utils import wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase
 
@@ -159,6 +159,7 @@ class HPModel(ScatterModelBase):
                 sigma_bs = 1/9 * L*L * (k*a)**4 * a_pic**2 * G\
                     / (1 + 16/9*(k*a)**4 * a_pic**2/(R**2 * F))
             case 'cylinder':
+                theta = radians(theta)
                 a_pic = alpha_pic(g, h)
                 s = sin(k*L*cos(theta)) / (k*L*cos(theta))
                 Ka = k*sin(theta)*a
