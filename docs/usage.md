@@ -26,15 +26,16 @@ Currently, the following models are available in echoSMs:
 |Model type|Python class name|Description|
 |----------|----------|-----------|
 |Deformed cylinder|DCMModel|Truncated cylinders with various boundary conditions|
+|Distorted-wave Born approximation|DWBAModel|Weakly scattering objects with piecewise circular cross-sections and homogenous interiors|
 |Elastic sphere|ESModel|Elastic spheres, such as echosounder calibration spheres|
 |High-pass|HPModel|Approximate models for simple shapes|
 |Kirchhoff approximation|KAModel|Surfaces that are mainly convex|
+|Kirchhoff ray mode|KRMModel|A fish body and swimbladder model for high and low frequencies|
 |Modal series solution|MSSModel|Spheres with various boundary conditions, including shells|
 |Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
-|Distorted-wave Born approximation|DWBAModel|Weakly scattering objects with piecewise circular cross-sections and homogenous interiors|
 |Phase-tracking distorted-wave Born approximation|PTDWBAModel|Weakly scattering objects of any shape with inhomogeneous interiors|
 
-Future models will include the SDWBA model, the Kirchhoff-ray-mode model, the Fourier matching method, and potentially finite element and boundary element models. We welcome contributions of additional models.
+Future models will include the SDWBA model, the Fourier matching method, and potentially finite element and boundary element models. We welcome contributions of additional models.
 
 ## Running a model
 
