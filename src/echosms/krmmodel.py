@@ -54,7 +54,7 @@ class KRMModel(ScatterModelBase):
                             theta, f, body, swimbladder,
                             validate_parameters=True, **kwargs) -> float:
         """
-        Calculate the scatter using the krm model for one set of parameters.
+        Calculate the scatter using the kirchhoff ray mode model for one set of parameters.
 
         Parameters
         ----------
@@ -71,7 +71,7 @@ class KRMModel(ScatterModelBase):
         swimbladder_rho : float
             Density in the swimbladder [kg/m³].
         theta : float
-            Pitch angle to calculate the scattering as per the echoSMs
+            Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
             conventions/#coordinate-systems) [°].
         f : float
@@ -81,7 +81,7 @@ class KRMModel(ScatterModelBase):
 
             - `x`
             - `w`
-            - 'z_U`
+            - `z_U`
             - `z_L`
 
         swimbladder : namedtuple(KRMshape)
@@ -90,7 +90,7 @@ class KRMModel(ScatterModelBase):
 
             - `x`
             - `w`
-            - 'z_U`
+            - `z_U`
             - `z_L`
 
         validate_parameters : bool
@@ -103,8 +103,7 @@ class KRMModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the code in Clay & Horne (1994). Backscatter when ka < 0.15 are
-        as per Clay (1992).
+        The class implements the code in Clay & Horne (1994) and when ka < 0.15 as per Clay (1992).
 
         References
         ----------
@@ -147,11 +146,11 @@ class KRMModel(ScatterModelBase):
             # Do the mode solution for the swimbladder (and ignore the body?)
             mode_sl = self._mode_solution(swimbladder)
             return 20*log10(abs(mode_sl))
-        else:
-            # Do the Kirchhoff-ray approximation for the swimbladder and body
-            soft_sl = self._soft_KA(swimbladder, k, k_b, R_bc, TwbTbw, theta)
-            fluid_sl = self._fluid_KA(body, k, k_b, R_wb, TwbTbw, theta)
-            return 20*log10(abs(soft_sl + fluid_sl))
+
+        # Do the Kirchhoff-ray approximation for the swimbladder and body
+        soft_sl = self._soft_KA(swimbladder, k, k_b, R_bc, TwbTbw, theta)
+        fluid_sl = self._fluid_KA(body, k, k_b, R_wb, TwbTbw, theta)
+        return 20*log10(abs(soft_sl + fluid_sl))
 
     def _volume(self, shape):
         """Volume of the object."""
