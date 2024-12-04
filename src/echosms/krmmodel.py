@@ -4,6 +4,7 @@ from math import log10, pi, sqrt, cos, sin, radians
 import numpy as np
 from .utils import wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase
+from .krmdata import KRMfish, KRMshape
 
 
 def _u(x, z, theta):
@@ -32,7 +33,7 @@ class KRMModel(ScatterModelBase):
         self.boundary_types = ['fluid filled']
         self.shapes = ['closed surfaces']
         self.max_ka = 20  # [1]
-        self.no_expand_parameters = ['body', 'swimbladder']
+        self.no_expand_parameters = ['bodies']
 
     def validate_parameters(self, params):
         """Validate the model parameters.
@@ -49,9 +50,7 @@ class KRMModel(ScatterModelBase):
         # if np.any(ka_s <= 0.15):
         #     warnings.warn('Some ka_s is below the limit.')
 
-    def calculate_ts_single(self, medium_c, medium_rho, target_c, target_rho,
-                            swimbladder_c, swimbladder_rho,
-                            theta, f, body, swimbladder,
+    def calculate_ts_single(self, medium_c, medium_rho, theta, f, bodies,
                             validate_parameters=True, **kwargs) -> float:
         """
         Calculate the scatter using the kirchhoff ray mode model for one set of parameters.
@@ -62,37 +61,17 @@ class KRMModel(ScatterModelBase):
             Sound speed in the fluid medium surrounding the target [m/s].
         medium_rho : float
             Density in the fluid medium surrounding the target [kg/m³]
-        target_c : float
-            Sound speed in the target body [m/s].
-        target_rho : float
-            Density in the target body [kg/m³]
-        swimbladder_c : float
-            Sound speed in the swimbladder [m/s].
-        swimbladder_rho : float
-            Density in the swimbladder [kg/m³].
         theta : float
             Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
             conventions/#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
-        body : namedtuple(KRMshape)
-            The target body. This parameter must provide numpy.ndarray attributes with names of:
-
-            - `x`
-            - `w`
-            - `z_U`
-            - `z_L`
-
-        swimbladder : namedtuple(KRMshape)
-            The target internal body (e.g., fish swimbladder). This parameter must provide
-            numpy.ndarray attributes with names of:
-
-            - `x`
-            - `w`
-            - `z_U`
-            - `z_L`
-
+        bodies: KRMfish
+            The body shapes that make up the model. Currently, `bodies` should contain only two
+            shapes, one of which should have a boundary of `fluid` (aka, the fish body) and the
+            other a boundary of `soft` (aka, the swimbladder). KRMfish.shapes[0] should be the
+            fish body and KRMfish.shapes[1] the swimbladder.
         validate_parameters : bool
             Whether to validate the model parameters.
 
@@ -120,6 +99,15 @@ class KRMModel(ScatterModelBase):
             self.validate_parameters(locals())
 
         theta = radians(theta)
+
+        # Interim setup - eventual plan is to accept multiple shapes, but need to sort out
+        # correct reflection coefficient calculations to do that.
+        body = bodies.shapes[0]
+        target_rho = body.rho
+        target_c = body.c
+        swimbladder = bodies.shapes[1]
+        swimbladder_rho = swimbladder.rho
+        swimbladder_c = swimbladder.c
 
         k = wavenumber(medium_c, f)
         k_b = wavenumber(target_c, f)

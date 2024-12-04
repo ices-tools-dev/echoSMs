@@ -75,3 +75,14 @@ There are several models that use the distorted-wave Born approximation, documen
 ## Utilities
 
 ::: echosms.utils
+
+## KRMData
+::: echosms.KRMdata
+
+## KRMfish
+
+::: echosms.KRMfish
+
+## KRMshape
+
+::: echosms.KRMshape
