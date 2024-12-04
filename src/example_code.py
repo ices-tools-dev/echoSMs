@@ -3,14 +3,16 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import trimesh
 
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
-from echosms import HPModel
+from echosms import HPModel, KRMModel
 from echosms import BenchmarkData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
 from echosms import create_dwba_spheroid, create_dwba_cylinder
+from echosms import KRMdata
 
 # Load the reference model defintiions
 rm = ReferenceModels()
@@ -292,6 +294,32 @@ plt.semilogx(p['f']/1e3, fluid, label='fluid filled')
 plt.legend()
 plt.xlabel('Frequency [kHz]')
 plt.ylabel('TS re 1m$2$ [dB]')
+
+# %% ###############################################################################################
+# Try the KRM model and compare to the NOAA online KRM calculator results
+mod = KRMModel()
+
+fishes = ['Sardine', 'Cod', 'Bocaccio', 'SkipjackTuna_46.54cm']
+
+for fname in fishes:
+    fish = KRMdata().model(fname)
+
+    for s in fish.shapes:
+        plt.plot(s.x, s.z_U, s.x, s.z_L, c='black' if s.boundary == 'fluid' else 'grey')
+    plt.gca().set_aspect('equal')
+    plt.title(fname)
+    plt.show()
+
+    # Create the dict that echoSMs models use and add required parameters
+    p = {'medium_c': 1490, 'medium_rho': 1030, 'bodies': fish, 'theta': 90,
+         'f': np.arange(12, 121, 1)*1e3}
+
+    krm_ts = mod.calculate_ts(p)
+
+    # Get the TS from the NOAA KRM webpage (cached locally)
+    noaa_ts = KRMdata.ts(fname)
+    plot_compare_freq(p['f'], krm_ts,
+                      'KRM echoSMs', p['f'], noaa_ts[' TS (dB).1'], 'KRM NOAA', fname)
 
 # %% ###############################################################################################
 # Some other ways to run models.
