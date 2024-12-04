@@ -43,9 +43,10 @@ class KRMModel(ScatterModelBase):
         p = as_dict(params)
         super()._present_and_positive(p, ['medium_c', 'f'])
 
-        # p['theta'] >= 65 and p['theta'] <= 115
+        if np.any(np.atleast_1d(p['theta']) < 65) or np.any(np.atleast_1d(p['theta']) > 115):
+            raise KeyError('Incidence angle(s) (theta) are outside 65 to 115°')
 
-        # k = wavenumber(medium_c, f)
+        # k = wavenumber(p['medium_c'], p['f'])
         # a = np.array((swimbladder.w[0:-1] + swimbladder.w[1:])/4)  # Eqn (12)
         # if np.any(ka_s <= 0.15):
         #     warnings.warn('Some ka_s is below the limit.')
@@ -138,6 +139,7 @@ class KRMModel(ScatterModelBase):
         # Do the Kirchhoff-ray approximation for the swimbladder and body
         soft_sl = self._soft_KA(swimbladder, k, k_b, R_bc, TwbTbw, theta)
         fluid_sl = self._fluid_KA(body, k, k_b, R_wb, TwbTbw, theta)
+
         return 20*log10(abs(soft_sl + fluid_sl))
 
     def _volume(self, shape):
