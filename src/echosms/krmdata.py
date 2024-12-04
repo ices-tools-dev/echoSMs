@@ -1,11 +1,10 @@
-"""
-
-"""
+"""Classes to help store KRM model data."""
 
 import sys
 from pathlib import Path
 from typing import List
 import numpy as np
+import pandas as pd
 from dataclasses import dataclass
 if sys.version_info >= (3, 11):
     import tomllib
@@ -119,3 +118,27 @@ class KRMdata():
             return self.krm_models[name]
         except KeyError:
             return None
+
+    @staticmethod
+    def ts(name: str) -> np.ndarray:
+        """KRM model ts with requested name.
+
+        Parameters
+        ----------
+        name :
+            The name of a KRM model shape.
+
+        Returns
+        -------
+        :
+            The TS (re 1 m²) for some default model parameters [dB] or None of no TS data exist.
+
+        """
+        # Sometimes there will be TS results for the model (available for testing of the
+        # model), so load them in if present.
+        tsfile = Path(__file__).parent/Path('resources')/Path('NOAA_KRM_ts_' + name + '.csv')
+
+        if tsfile.exists():
+            return pd.read_csv(tsfile)
+
+        return None
