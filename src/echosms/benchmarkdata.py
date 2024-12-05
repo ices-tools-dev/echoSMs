@@ -20,7 +20,7 @@ class BenchmarkData:
     Notes
     -----
     The column names in the source benchmark files have been changed to be the same as those used
-    in the [ReferenceModels][referencemodels] model definitions.
+    in the [referencemodels] model definitions.
 
     References
     ----------

@@ -5,8 +5,7 @@ The benchmark data for the acoustic scattering models in [Jech et al. (2015)](ht
 - Model runs over a range of frequencies
 - Model runs over a range of incident angles at a frequency of 38 kHz
 
-These are provided as text files (see below), or as Pandas DataFrames via the
-[BenchmarkData][benchmarkdata] class.
+These are provided as text files (see below), or as Pandas DataFrames via the [benchmarkdata] class.
 
 ## TS(f)
 

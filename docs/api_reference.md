@@ -4,85 +4,39 @@ This is the API reference for the echoSMs package.
 
 Each type of model is contained in a separate Python class (with name ending in ``Model``), but with common calling signatures across all model classes, as defined in ``ScatterModelBase``. There are also classes to provide ready access to the benchmark models and reference model definitions. There are also utility functions.
 
-## ScatterModelBase
+## ::: echosms.ScatterModelBase
 
-::: echosms.ScatterModelBase
-
-## DCMModel
-
-::: echosms.DCMModel
+## ::: echosms.DCMModel
 
 ## DWBA models
 
-There are several models that use the distorted-wave Born approximation, documented below:
-
-### DWBA
+There are several models that use the distorted-wave Born approximation, documented below. There are also some functions to
+make cylinder and spheroid shapes for use in the DWBA models.
 
 ::: echosms.DWBAModel
-    options:
-        heading_level: 4
-
-### PT-DWBA
-
 ::: echosms.PTDWBAModel
-    options:
-        heading_level: 4
-
-### SDWBA
-
 ::: echosms.SDWBAModel
-    options:
-        heading_level: 4
+::: echosms.dwbautils
 
-### Utilities
+## ::: echosms.ESModel
 
-::: echosms.utilsdwba
-    options:
-        heading_level: 4
+## ::: echosms.HPModel
 
-## ESModel
+## ::: echosms.KAModel
 
-::: echosms.ESModel
-
-## HPModel
-
-::: echosms.HPModel
-
-## KAModel
-
-::: echosms.KAModel
-
-## KRMModel
+## KRM model & utilities
 
 ::: echosms.KRMModel
+::: echosms.KRMdata
+::: echosms.KRMorganism
+::: echosms.KRMshape
 
-## MSSModel
+## ::: echosms.MSSModel
 
-::: echosms.MSSModel
-
-## PSMSModel
-
-::: echosms.PSMSModel
-
-## ReferenceModels
-
-::: echosms.ReferenceModels
-
-## BenchmarkData
-
-::: echosms.BenchmarkData
+## ::: echosms.PSMSModel
 
 ## Utilities
 
+::: echosms.BenchmarkData
+::: echosms.ReferenceModels
 ::: echosms.utils
-
-## KRMData
-::: echosms.KRMdata
-
-## KRMfish
-
-::: echosms.KRMfish
-
-## KRMshape
-
-::: echosms.KRMshape

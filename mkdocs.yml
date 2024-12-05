@@ -61,7 +61,7 @@ plugins:
                     merge_init_into_class: true
                     show_bases: true
                     inherited_members: true
-                    show_root_heading: false
+                    show_root_heading: true
                     show_root_toc_entry: false
                     show_source: true
                     heading_level: 3
