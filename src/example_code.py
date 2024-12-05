@@ -303,14 +303,16 @@ fishes = ['Sardine', 'Cod', 'Bocaccio', 'SkipjackTuna_46.54cm']
 for fname in fishes:
     fish = KRMdata().model(fname)
 
-    for s in fish.shapes:
-        plt.plot(s.x, s.z_U, s.x, s.z_L, c='black' if s.boundary == 'fluid' else 'grey')
+    # Plot the shapes
+    plt.plot(fish.body.x, fish.body.z_U, fish.body.x, fish.body.z_L, c='black')
+    for s in fish.inclusions:
+        plt.plot(s.x, s.z_U, s.x, s.z_L, c='C0' if s.boundary == 'fluid' else 'C1')
     plt.gca().set_aspect('equal')
     plt.title(fname)
     plt.show()
 
     # Create the dict that echoSMs models use and add required parameters
-    p = {'medium_c': 1490, 'medium_rho': 1030, 'bodies': fish, 'theta': 90,
+    p = {'medium_c': 1490, 'medium_rho': 1030, 'organism': fish, 'theta': 90,
          'f': np.arange(12, 121, 1)*1e3}
 
     krm_ts = mod.calculate_ts(p)

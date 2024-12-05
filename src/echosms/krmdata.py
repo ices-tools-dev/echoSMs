@@ -75,13 +75,16 @@ class KRMorganism():
         A name for the organism.
     source :
         A link to or description of the source of the organism data.
-    shapes :
-        The shapes that make up the organism.
+    body :
+        The shape that represents the organism's body.
+    inclusions :
+        The shapes that are internal to the organism (e.g., swimbladder, backbone, etc)
     """
 
     name: str
     source: str
-    shapes: List[KRMshape]
+    body: KRMshape
+    inclusions: List[KRMshape]
 
 
 class KRMdata():
@@ -106,7 +109,7 @@ class KRMdata():
             swimbladder = KRMshape('soft', np.array(s['x_sb']), np.array(s['w_sb']),
                                    np.array(s['z_sbU']), np.array(s['z_sbL']),
                                    s['swimbladder_c'], s['swimbladder_rho'])
-            self.krm_models[s['name']] = KRMorganism(s['name'], s['source'], [body, swimbladder])
+            self.krm_models[s['name']] = KRMorganism(s['name'], s['source'], body, [swimbladder])
 
     def names(self):
         """Available KRM model names."""

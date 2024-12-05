@@ -53,7 +53,7 @@ class KRMModel(ScatterModelBase):
         # if np.any(ka_s <= 0.15):
         #     warnings.warn('Some ka_s is below the limit.')
 
-    def calculate_ts_single(self, medium_c, medium_rho, theta, f, bodies,
+    def calculate_ts_single(self, medium_c, medium_rho, theta, f, organism,
                             validate_parameters=True, **kwargs) -> float:
         """
         Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
@@ -74,11 +74,9 @@ class KRMModel(ScatterModelBase):
             conventions/#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
-        bodies: KRMorganism
-            The body shapes that make up the model. Currently, `bodies` should contain only two
-            shapes, one of which should have a boundary of `fluid` (aka, the fish body) and the
-            other a boundary of `soft` (aka, the swimbladder). KRMorganism.shapes[0] should be the
-            fish body and KRMorganism.shapes[1] the swimbladder.
+        organism: KRMorganism
+            The shapes that make up the model. This is typically a shape for the body and zero or
+            more enclosed shapes that repesent internal parts of the organism.
         validate_parameters : bool
             Whether to validate the model parameters.
 
@@ -107,47 +105,45 @@ class KRMModel(ScatterModelBase):
 
         theta = radians(theta)
 
-        # Interim setup - eventual plan is to accept multiple shapes, but need to sort out
-        # correct reflection coefficient calculations to do that.
-        body = bodies.shapes[0]
-        target_rho = body.rho
-        target_c = body.c
-        swimbladder = bodies.shapes[1]
-        swimbladder_rho = swimbladder.rho
-        swimbladder_c = swimbladder.c
+        body = organism.body
 
         k = wavenumber(medium_c, f)
-        k_b = wavenumber(target_c, f)
+        k_b = wavenumber(body.c, f)
 
         # Reflection coefficient between water and body
-        R_wb = (target_rho*target_c - medium_rho*medium_c)\
-            / (target_rho*target_c + medium_rho*medium_c)
+        R_wb = (body.rho*body.c - medium_rho*medium_c)\
+            / (body.rho*body.c + medium_rho*medium_c)
         TwbTbw = 1-R_wb**2  # Eqn (15)
 
-        # Reflection coefficient: between body and swimbladder
-        # The paper gives R_bc in terms of g & h, but it can also be done in the
-        # same manner as R_wb above.
-        gp = swimbladder_rho / target_rho  # p is 'prime' to fit with paper notation
-        hp = swimbladder_c / target_c
-        R_bc = (gp*hp-1) / (gp*hp+1)  # Eqn (9)
+        sl = []  # scattering lengths for inclusions
+        for incl in organism.inclusions:
+            # Reflection coefficient between body and inclusion
+            # The paper gives R_bc in terms of g & h, but it can also be done in the
+            # same manner as R_wb above.
+            gp = incl.rho / body.rho  # p is 'prime' to fit with paper notation
+            hp = incl.c / body.c
+            R_bc = (gp*hp-1) / (gp*hp+1)  # Eqn (9)
 
-        # Equivalent radius of swimbladder (as per Part A of paper)
-        a_e = sqrt(swimbladder.volume() / (pi * swimbladder.length()))
+            # Equivalent radius of inclusion (as per Part A of paper)
+            a_e = sqrt(incl.volume() / (pi * incl.length()))
 
-        # Choose which modelling approach to use
-        if k*a_e < 0.15:
-            # Do the mode solution for the swimbladder (and ignore the body?)
-            # TODO: need to check if it should be target or medium for the numerators
-            g = target_rho / swimbladder_rho
-            h = target_c / target_c
-            mode_sl = self._mode_solution(swimbladder, g, h, k, a_e, swimbladder.length(), theta)
-            return 20*log10(abs(mode_sl))
+            # Choose which modelling approach to use
+            if k*a_e < 0.15:  # Do the mode solution for the inclusion
+                # TODO: need to check if it should be body or incl for the numerators
+                g = body.rho / incl.rho
+                h = body.c / incl.c
+                sl.append(self._mode_solution(incl, g, h, k, a_e, incl.length(), theta))
+            elif incl.boundary == 'soft':
+                sl.append(self._soft_KA(incl, k, k_b, R_bc, TwbTbw, theta))
+            elif incl.boundary == 'fluid':
+                sl.append(self._fluid_KA(incl, k, k_b, R_bc, TwbTbw, theta))
+            else:
+                raise ValueError(f'Unsupported boundary of "{incl.boundary}" for KRM inclusion')
 
-        # Do the Kirchhoff-ray approximation for the swimbladder and body
-        soft_sl = self._soft_KA(swimbladder, k, k_b, R_bc, TwbTbw, theta)
-        fluid_sl = self._fluid_KA(body, k, k_b, R_wb, TwbTbw, theta)
+        # Do the Kirchhoff-ray approximation for the body. This is always done as a fluid.
+        body_sl = self._fluid_KA(body, k, k_b, R_wb, TwbTbw, theta)
 
-        return 20*log10(abs(soft_sl + fluid_sl))
+        return 20*log10(abs(body_sl + sum(sl)))
 
     def _mode_solution(self, swimbladder: KRMshape, g: float, h: float,
                        k: float, a: float, L_e: float, theta: float) -> float:
@@ -197,22 +193,46 @@ class KRMModel(ScatterModelBase):
 
         return S_M
 
-    def _soft_KA(self, swimbladder, k, k_b, R_bc, TwbTbw, theta):
-        """Backscatter from a soft object using the Kirchhoff approximation."""
+    def _soft_KA(self, shape: KRMshape, k: float, k_b: float, R_bc: float,
+                 TwbTbw: float, theta: float) -> float:
+        """Backscatter from a soft object using the Kirchhoff approximation.
+
+        Parameters
+        ----------
+        shape:
+            The shape.
+        k:
+            Wavenumber in the fluid surrounding the object.
+        k_b:
+            Wavenumber in the object.
+        R_bc:
+            Reflection coefficient between surrounding fluid and the object.
+        TwbTbw:
+            Transmission coefficient between external media (e.g., water) and the body.
+        theta:
+            Pitch angle to calculate the scattering at, as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
+
+        Returns
+        -------
+        :
+            The scattering length [m].
+        """
         # Not low-ka model
         # Reflection coefficient: between water and body
 
         # The paper's notation gets confusing here - eqn (10) uses a_s and Eqn (11) uses a,
         # but they are the same quantity (radius of swimbladder for each short cylinder)
-        a = np.array((swimbladder.w[0:-1] + swimbladder.w[1:])/4)  # Eqn (12)
+        a = np.array((shape.w[0:-1] + shape.w[1:])/4)  # Eqn (12)
         ka_s = k * a
         A_sb = ka_s / (ka_s + 0.083)  # Eqn (10)
         psi_p = ka_s / (40 + ka_s) - 1.05  # Eqn (10)
 
-        v_sU = _v(swimbladder.x, swimbladder.z_U, theta)
+        v_sU = _v(shape.x, shape.z_U, theta)
         v = (v_sU[0:-1] + v_sU[1:])/2  # Eqn (13)
 
-        deltau = _deltau(swimbladder.x, theta)
+        deltau = _deltau(shape.x, theta)
 
         # Swimbladder backscatter
         # Note - the paper has k_b rather than k in this formula, but in the text after Eqn (13)
@@ -228,23 +248,47 @@ class KRMModel(ScatterModelBase):
 
         return soft_sl
 
-    def _fluid_KA(self, body, k, k_b, R_wb, TwbTbw, theta):
-        """Backscatter from a fluid object using the Kirchhoff approximation."""
-        # Body backscatter
-        a = (body.w[0:-1] + body.w[1:])/4  # Eqn (12) but for the body, not swimbladder
+    def _fluid_KA(self, shape, k, k_b, R_wb, TwbTbw, theta):
+        """Backscatter from a fluid object using the Kirchhoff approximation.
+
+        Parameters
+        ----------
+        shape:
+            The shape.
+        k:
+            Wavenumber in the fluid surrounding the object.
+        k_b:
+            Wavenumber in the object.
+        R_wb:
+            Reflection coefficient between surrounding fluid and the object.
+        TwbTbw:
+            Transmission coefficient between external media (e.g., water) and the surrounding fluid.
+        theta:
+            Pitch angle to calculate the scattering at, as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
+
+        Returns
+        -------
+        :
+            The scattering length [m].
+        """
+        # shape backscatter
+        a = (shape.w[0:-1] + shape.w[1:])/4  # Eqn (12)
 
         # This isn't stated in the paper but seems approrpiate - is in the NOAA KRM code
-        z_U = (body.z_U[0:-1] + body.z_U[1:])/2
+        z_U = (shape.z_U[0:-1] + shape.z_U[1:])/2
 
         psi_b = -pi*k_b*z_U / (2*(k_b*z_U + 0.4))
 
-        v_bU = _v(body.x, body.z_U, theta)
-        v_bL = _v(body.x, body.z_L, theta)
+        v_bU = _v(shape.x, shape.z_U, theta)
+        v_bL = _v(shape.x, shape.z_L, theta)
         v_U = (v_bU[0:-1] + v_bU[1:])/2
         v_L = (v_bL[0:-1] + v_bL[1:])/2
 
+        # Eqn (16)
         fluid_sl = -1j*R_wb/(2*sqrt(pi))\
-            * np.sum(np.sqrt(k*a) * _deltau(body.x, theta)
+            * np.sum(np.sqrt(k*a) * _deltau(shape.x, theta)
                      * (np.exp(-2j*k*v_U)
                         - TwbTbw*np.exp(-2j*k*v_U + 2j*k_b*(v_U-v_L) + 1j*psi_b)))
 
