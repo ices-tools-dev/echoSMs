@@ -1,10 +1,12 @@
 """A class that provides the Kirchhoff ray mode scattering model."""
 
 from math import log10, pi, sqrt, cos, sin, radians
+from cmath import exp
 import numpy as np
+from scipy.special import j0, y0, jvp, yvp
 from .utils import wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase
-from .krmdata import KRMfish, KRMshape
+from .krmdata import KRMshape
 
 
 def _u(x, z, theta):
@@ -54,7 +56,11 @@ class KRMModel(ScatterModelBase):
     def calculate_ts_single(self, medium_c, medium_rho, theta, f, bodies,
                             validate_parameters=True, **kwargs) -> float:
         """
-        Calculate the scatter using the kirchhoff ray mode model for one set of parameters.
+        Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
+
+        Warning
+        --------
+        The low _ka_ part of this model has not yet been verified to give correct results.
 
         Parameters
         ----------
@@ -68,11 +74,11 @@ class KRMModel(ScatterModelBase):
             conventions/#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
-        bodies: KRMfish
+        bodies: KRMorganism
             The body shapes that make up the model. Currently, `bodies` should contain only two
             shapes, one of which should have a boundary of `fluid` (aka, the fish body) and the
-            other a boundary of `soft` (aka, the swimbladder). KRMfish.shapes[0] should be the
-            fish body and KRMfish.shapes[1] the swimbladder.
+            other a boundary of `soft` (aka, the swimbladder). KRMorganism.shapes[0] should be the
+            fish body and KRMorganism.shapes[1] the swimbladder.
         validate_parameters : bool
             Whether to validate the model parameters.
 
@@ -83,7 +89,7 @@ class KRMModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the code in Clay & Horne (1994) and when ka < 0.15 as per Clay (1992).
+        The class implements the code in Clay & Horne (1994) and when ka < 0.15 uses Clay (1992).
 
         References
         ----------
@@ -126,14 +132,15 @@ class KRMModel(ScatterModelBase):
         R_bc = (gp*hp-1) / (gp*hp+1)  # Eqn (9)
 
         # Equivalent radius of swimbladder (as per Part A of paper)
-        a_e = sqrt(self._volume(swimbladder)
-                   / (pi * (np.max(swimbladder.x) - np.min(swimbladder.x))))
-        a_e = 10
+        a_e = sqrt(swimbladder.volume() / (pi * swimbladder.length()))
 
         # Choose which modelling approach to use
         if k*a_e < 0.15:
             # Do the mode solution for the swimbladder (and ignore the body?)
-            mode_sl = self._mode_solution(swimbladder)
+            # TODO: need to check if it should be target or medium for the numerators
+            g = target_rho / swimbladder_rho
+            h = target_c / target_c
+            mode_sl = self._mode_solution(swimbladder, g, h, k, a_e, swimbladder.length(), theta)
             return 20*log10(abs(mode_sl))
 
         # Do the Kirchhoff-ray approximation for the swimbladder and body
@@ -142,13 +149,53 @@ class KRMModel(ScatterModelBase):
 
         return 20*log10(abs(soft_sl + fluid_sl))
 
-    def _volume(self, shape):
-        """Volume of the object."""
-        return 1.0
+    def _mode_solution(self, swimbladder: KRMshape, g: float, h: float,
+                       k: float, a: float, L_e: float, theta: float) -> float:
+        """Backscatter from a soft swimbladder at low ka.
 
-    def _mode_solution(self, swimbladder):
-        """Backscatter from a soft swimbladder at low ka."""
-        return -1.
+        Parameters
+        ----------
+        swimbladder :
+            The shape.
+        g :
+            Ratio of medium density over swimbladder density.
+        h :
+            Ratio of medium sound speed over swimbladder sound speed.
+        k :
+            The wavenumber in the medium surrounding the swimbladder.
+        a :
+            Equivalent radius of swimbladder [m].
+        L_e :
+            Equivalent length of swimbladder [m].
+        theta :
+            Pitch angle to calculate the scattering at, as per the echoSMs
+            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+            conventions/#coordinate-systems) [°].
+
+        Returns
+        -------
+        :
+            The scattering length [m].
+        """
+        # Note: equation references in this function are to Clay (1992)
+        if h == 0.0:
+            raise ValueError('Ratio of sound speeds (h) cannot be zero for low ka solution.')
+
+        # Chi is approximately this. More accurate equations are in Appendix B of Clay (1992)
+        chi = -pi/4  # Eqn (B10) and paragraph below that equation
+
+        ka = k*a
+        kca = ka/h
+
+        C_0 = (jvp(0, kca)*y0(ka) - g*h*yvp(0, ka)*j0(kca))\
+            / (jvp(0, kca)*j0(ka) - g*h*jvp(0, ka)*j0(kca))  # Eqn (A1) with m=0
+        b_0 = -1 / (1+1j*C_0)  # Also Eqn (A1)
+
+        delta = k*L_e*cos(theta)  # Eqn (4)
+
+        S_M = (exp(1j*(chi - pi/4)) * L_e)/pi * sin(delta)/delta * b_0  # Eqn (15)
+
+        return S_M
 
     def _soft_KA(self, swimbladder, k, k_b, R_bc, TwbTbw, theta):
         """Backscatter from a soft object using the Kirchhoff approximation."""
