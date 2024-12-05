@@ -2,7 +2,7 @@
 from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_jnpp
 from .utils import pro_rad1, pro_rad2, pro_ang1
 from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_Sa
-from .utilsdwba import create_dwba_spheroid, create_dwba_cylinder
+from .dwbautils import create_dwba_spheroid, create_dwba_cylinder
 from .scattermodelbase import ScatterModelBase
 from .benchmarkdata import BenchmarkData
 from .referencemodels import ReferenceModels
