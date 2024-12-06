@@ -129,10 +129,7 @@ class KRMModel(ScatterModelBase):
 
             # Choose which modelling approach to use
             if k*a_e < 0.15:  # Do the mode solution for the inclusion
-                # TODO: need to check if it should be body or incl for the numerators
-                g = body.rho / incl.rho
-                h = body.c / incl.c
-                sl.append(self._mode_solution(incl, g, h, k, a_e, incl.length(), theta))
+                sl.append(self._mode_solution(1/gp, 1/hp, k, a_e, incl.length(), theta))
             elif incl.boundary == 'soft':
                 sl.append(self._soft_KA(incl, k, k_b, R_bc, TwbTbw, theta))
             elif incl.boundary == 'fluid':
@@ -145,24 +142,22 @@ class KRMModel(ScatterModelBase):
 
         return 20*log10(abs(body_sl + sum(sl)))
 
-    def _mode_solution(self, swimbladder: KRMshape, g: float, h: float,
-                       k: float, a: float, L_e: float, theta: float) -> float:
-        """Backscatter from a soft swimbladder at low ka.
+    def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float,
+                       theta: float) -> float:
+        """Backscatter from a soft shape at low ka.
 
         Parameters
         ----------
-        swimbladder :
-            The shape.
         g :
-            Ratio of medium density over swimbladder density.
+            Ratio of medium density over shape density.
         h :
-            Ratio of medium sound speed over swimbladder sound speed.
+            Ratio of medium sound speed over shape sound speed.
         k :
-            The wavenumber in the medium surrounding the swimbladder.
+            The wavenumber in the medium surrounding the shape.
         a :
-            Equivalent radius of swimbladder [m].
+            Equivalent radius of shape [m].
         L_e :
-            Equivalent length of swimbladder [m].
+            Equivalent length of shape [m].
         theta :
             Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
@@ -199,17 +194,17 @@ class KRMModel(ScatterModelBase):
 
         Parameters
         ----------
-        shape:
+        shape :
             The shape.
-        k:
+        k :
             Wavenumber in the fluid surrounding the object.
-        k_b:
+        k_b :
             Wavenumber in the object.
-        R_bc:
+        R_bc :
             Reflection coefficient between surrounding fluid and the object.
-        TwbTbw:
+        TwbTbw :
             Transmission coefficient between external media (e.g., water) and the body.
-        theta:
+        theta :
             Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
             conventions/#coordinate-systems) [°].
@@ -253,17 +248,17 @@ class KRMModel(ScatterModelBase):
 
         Parameters
         ----------
-        shape:
+        shape :
             The shape.
-        k:
+        k :
             Wavenumber in the fluid surrounding the object.
-        k_b:
+        k_b :
             Wavenumber in the object.
-        R_wb:
+        R_wb :
             Reflection coefficient between surrounding fluid and the object.
-        TwbTbw:
+        TwbTbw :
             Transmission coefficient between external media (e.g., water) and the surrounding fluid.
-        theta:
+        theta :
             Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
             conventions/#coordinate-systems) [°].
@@ -273,13 +268,12 @@ class KRMModel(ScatterModelBase):
         :
             The scattering length [m].
         """
-        # shape backscatter
         a = (shape.w[0:-1] + shape.w[1:])/4  # Eqn (12)
 
         # This isn't stated in the paper but seems approrpiate - is in the NOAA KRM code
         z_U = (shape.z_U[0:-1] + shape.z_U[1:])/2
 
-        psi_b = -pi*k_b*z_U / (2*(k_b*z_U + 0.4))
+        psi_b = -pi*k_b*z_U / (2*(k_b*z_U + 0.4))  # Eqn (15)
 
         v_bU = _v(shape.x, shape.z_U, theta)
         v_bL = _v(shape.x, shape.z_L, theta)
@@ -289,7 +283,6 @@ class KRMModel(ScatterModelBase):
         # Eqn (16)
         fluid_sl = -1j*R_wb/(2*sqrt(pi))\
             * np.sum(np.sqrt(k*a) * _deltau(shape.x, theta)
-                     * (np.exp(-2j*k*v_U)
-                        - TwbTbw*np.exp(-2j*k*v_U + 2j*k_b*(v_U-v_L) + 1j*psi_b)))
+                     * (np.exp(-2j*k*v_U) - TwbTbw*np.exp(-2j*k*v_U + 2j*k_b*(v_U-v_L) + 1j*psi_b)))
 
         return fluid_sl
