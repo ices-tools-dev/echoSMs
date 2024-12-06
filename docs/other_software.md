@@ -11,6 +11,10 @@ Other software that provides source code for acoustic scattering models of relev
 - [Liquid spheroid](https://github.com/elavia/liquid_spheroid): Julia and C++ code to calculate the scattering by fluid prolate and oblate spheroids.
 - [scatmod](https://github.com/SvenGastauer/scatmod): Open source acoustic scattering models for fisheries acoustics. Python and R code for fluid spheres.
 - [SDWBA Model](https://www.fisheries.noaa.gov/data-tools/sdwba-model): A web page that uses the SDWBA model to estimate the TS of predefined shapes over a range of input parameters.
+- [SDWBA packages](https://github.com/ElOceanografo/SDWBA): Provides krill model data
+- [SDWBA.jl](https://github.com/ElOceanografo/SDWBA.jl): Julia code that implements the SDWBA model
+- [SDWBA.py](https://github.com/ElOceanografo/SDWBA.py): Unfinished Python code to implement the SDWBA model.
+- [SDWBA.R](https://github.com/ElOceanografo/SDWBA.R): Untested R code that implements the SDWBA model.
 - [SDWBA_TS](https://github.com/ccamlr/SDWBA_TS): Matlab code that implements the SDWBA model for Antarctic krill.
 - [sphereTS](https://github.com/gavinmacaulay/SphereTS): Python code to calculate the TS of calibration spheres.
 - [Standard sphere target strength calculator](https://www.fisheries.noaa.gov/data-tools/standard-sphere-target-strength-calculator): A web page that calculates the TS of calibration spheres.
