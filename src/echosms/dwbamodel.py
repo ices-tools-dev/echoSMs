@@ -110,7 +110,7 @@ class DWBAModel(ScatterModelBase):
         ----------
         Stanton, T. K., Chu, D., & Wiebe, P. H. (1998). Sound scattering by several zooplankton
         groups. II. Scattering models. The Journal of the Acoustical Society of America, 103(1),
-        236–253. <https://doi.org/10.1121/1.421110>
+        236-253. <https://doi.org/10.1121/1.421110>
         """
         if validate_parameters:
             self.validate_parameters(locals())
