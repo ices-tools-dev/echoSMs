@@ -1,5 +1,12 @@
 """Miscellaneous functions for the DWBA models."""
 import numpy as np
+from pathlib import Path
+import sys
+from dataclasses import dataclass
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 
 def create_dwba_spheroid(major_radius: float, minor_radius: float, spacing: float = 0.0001):
@@ -80,3 +87,87 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
     a = [radius] * len(pos)
 
     return rv_pos, rv_tan, a
+
+
+@dataclass
+class SDWBAorganism():
+    """SDWBA shape and property class to represent an organism.
+
+    Attributes
+    ----------
+    x :
+        The _x_-axis coordinates [m].
+    y :
+        XXX.
+    z :
+        XXX
+    a :
+        XXX
+    g :
+        XXXX
+    h :
+        XXXX
+
+    """
+
+    x: np.ndarray
+    y: np.ndarray
+    z: np.ndarray
+    a: np.ndarray
+    g: np.ndarray
+    h: np.ndarray
+
+
+class SDWBAdata():
+    """Example datasets for the SDWBA and DWBA models."""
+
+    def __init__(self):
+        # Load in the shapes data
+        self.file = Path(__file__).parent/Path('resources')/Path('SDWBA_shapes.toml')
+        with open(self.file, 'rb') as f:
+            try:
+                shapes = tomllib.load(f)
+            except tomllib.TOMLDecodeError as e:
+                raise SyntaxError(f'Error while parsing file "{self.defs_filename.name}"') from e
+
+        # Put the shapes into a dict of SDWBAorganism().
+        self.sdwba_models = {}
+        for s in shapes['shape']:
+            organism = SDWBAorganism(np.array(s['x']), np.array(s['y']), np.array(s['z']),
+                                     np.array(s['a']), np.array(s['g']), np.array(s['h']))
+            self.sdwba_models[s['name']] = organism
+
+    def names(self):
+        """Available SDWBA model names."""
+        return [*self.sdwba_models]
+
+    def as_dict(self) -> dict:
+        """SDWBA model shapes as a dict.
+
+        Returns
+        -------
+        :
+            All the SDWBA model shapes. The dataset name is the dict key and the value is an
+            instance of `SDWBAorganism`.
+
+        """
+        return self.sdwba_models
+
+    def model(self, name: str) -> SDWBAorganism:
+        """SDWBA model shape with requested name.
+
+        Parameters
+        ----------
+        name :
+            The name of a SDWBA model shape.
+
+        Returns
+        -------
+        :
+            An instance of `SDWBAorganism` or None if there is no model with `name`.
+
+        """
+        try:
+            return self.sdwba_models[name]
+        except KeyError:
+            return None
