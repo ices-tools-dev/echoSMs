@@ -90,24 +90,27 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
 
 
 @dataclass
-class SDWBAorganism():
-    """SDWBA shape and property class to represent an organism.
+class DWBAorganism():
+    """DWBA shape and property class to represent an organism.
 
     Attributes
     ----------
     x :
         The _x_-axis coordinates [m].
     y :
-        XXX.
+        The _y_-axis coordinates [m].
     z :
-        XXX
+        The _z_-axis coordinates [m].
     a :
-        XXX
+        The radii [m].
     g :
-        XXXX
+        The density contrast between medium and organism (organism divied by medium).
     h :
-        XXXX
-
+        The sound speed contrast betwwen medium and organism (organism divied by medium).
+    source :
+        A link to the source of the data.
+    note :
+        Information about the data.
     """
 
     x: np.ndarray
@@ -116,14 +119,16 @@ class SDWBAorganism():
     a: np.ndarray
     g: np.ndarray
     h: np.ndarray
+    source: str = ''
+    note: str = ''
 
 
-class SDWBAdata():
+class DWBAdata():
     """Example datasets for the SDWBA and DWBA models."""
 
     def __init__(self):
         # Load in the shapes data
-        self.file = Path(__file__).parent/Path('resources')/Path('SDWBA_shapes.toml')
+        self.file = Path(__file__).parent/Path('resources')/Path('DWBA_shapes.toml')
         with open(self.file, 'rb') as f:
             try:
                 shapes = tomllib.load(f)
@@ -131,43 +136,44 @@ class SDWBAdata():
                 raise SyntaxError(f'Error while parsing file "{self.defs_filename.name}"') from e
 
         # Put the shapes into a dict of SDWBAorganism().
-        self.sdwba_models = {}
+        self.dwba_models = {}
         for s in shapes['shape']:
-            organism = SDWBAorganism(np.array(s['x']), np.array(s['y']), np.array(s['z']),
-                                     np.array(s['a']), np.array(s['g']), np.array(s['h']))
-            self.sdwba_models[s['name']] = organism
+            organism = DWBAorganism(np.array(s['x']), np.array(s['y']), np.array(s['z']),
+                                    np.array(s['a']), np.array(s['g']), np.array(s['h']),
+                                    s.get('source', ''), s.get('note', ''))
+            self.dwba_models[s['name']] = organism
 
     def names(self):
-        """Available SDWBA model names."""
-        return [*self.sdwba_models]
+        """Available DWBA model names."""
+        return [*self.dwba_models]
 
     def as_dict(self) -> dict:
-        """SDWBA model shapes as a dict.
+        """DWBA model shapes as a dict.
 
         Returns
         -------
         :
-            All the SDWBA model shapes. The dataset name is the dict key and the value is an
-            instance of `SDWBAorganism`.
+            All the DWBA model shapes. The dataset name is the dict key and the value is an
+            instance of `DWBAorganism`.
 
         """
-        return self.sdwba_models
+        return self.dwba_models
 
-    def model(self, name: str) -> SDWBAorganism:
-        """SDWBA model shape with requested name.
+    def model(self, name: str) -> DWBAorganism:
+        """DWBA model shape with requested name.
 
         Parameters
         ----------
         name :
-            The name of a SDWBA model shape.
+            The name of a DWBA model shape.
 
         Returns
         -------
         :
-            An instance of `SDWBAorganism` or None if there is no model with `name`.
+            An instance of `DWBAorganism` or None if there is no model with `name`.
 
         """
         try:
-            return self.sdwba_models[name]
+            return self.dwba_models[name]
         except KeyError:
             return None

@@ -15,7 +15,6 @@ make cylinder and spheroid shapes for use in the DWBA models.
 
 ::: echosms.DWBAModel
 ::: echosms.PTDWBAModel
-::: echosms.SDWBAModel
 ::: echosms.dwbautils
 
 ## ::: echosms.ESModel
