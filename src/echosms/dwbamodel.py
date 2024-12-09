@@ -184,7 +184,7 @@ class DWBAModel(ScatterModelBase):
                 cbeta_tilt = cos(pi/2 - acos(round(k_hat_i @ r_tan, 8)))
 
                 # This is the integral part of Eqn (5) with addition of
-                # Eqn (4) from Demer & Conti (2003)
+                # Eqn (4) from Demer & Conti (2003) for the SDWBA part
                 integral += (gamma_k-gamma_rho) * exp(2j*(k_i2@r_pos))\
                     * a_*j1(2*k2*a_*cbeta_tilt) / cbeta_tilt * abs(d_r_pos) * p
             runs.append(integral)
