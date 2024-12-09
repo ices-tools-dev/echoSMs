@@ -116,13 +116,14 @@ class DWBAorganism():
         An interable of unit vectors of the tangent to the body axis at
         the points given by (_x_, _y_, _z_). Each vector has three values corresponding to
         the _x_, _y_, and _z_ components of the tangent vector [m]. If not given, unit
-        vectors along the positive _x_-axis are used.
+        vectors pointing along the positive _x_-axis are used.
     """
 
     rv_pos: np.ndarray
     a: np.ndarray
     g: np.ndarray
     h: np.ndarray
+    name: str
     source: str = ''
     note: str = ''
     rv_tan: np.ndarray = None
@@ -130,13 +131,21 @@ class DWBAorganism():
     def plot(self):
         """Do a simple plot of the DWBA model data."""
         import matplotlib.pyplot as plt
+        fig, axs = plt.subplots(2, 1)
+        x = self.rv_pos[:, 0]*1e3
+        axs[0].plot(x, -self.rv_pos[:, 1]*1e3, '.-', c='C0')
+        axs[0].plot(x, (-self.rv_pos[:, 1]+self.a/2)*1e3, c='C1')
+        axs[0].plot(x, (-self.rv_pos[:, 1]-self.a/2)*1e3, c='C1')
+        axs[0].set_title('Dorsal', loc='left', fontsize=8)
+        axs[0].set_aspect('equal')
 
-        fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-        ax.plot(self.rv_pos[:, 0], self.rv_pos[:, 1], self.rv_pos[:, 2], '.')
-        ax.quiver(self.rv_pos[:, 0], self.rv_pos[:, 1], self.rv_pos[:, 2],
-                  self.rv_tan[:, 0], self.rv_tan[:, 1], self.rv_tan[:, 2], length=0.005)
-        # ax.set_aspect('equal')
-        ax.set(xlabel='x', ylabel='y', zlabel='z')
+        axs[1].plot(x, -self.rv_pos[:, 2]*1e3, '.-', c='C0')
+        axs[1].plot(x, (-self.rv_pos[:, 2]+self.a/2)*1e3, c='C1')
+        axs[1].plot(x, (-self.rv_pos[:, 2]-self.a/2)*1e3, c='C1')
+        axs[1].set_title('Lateral', loc='left', fontsize=8)
+        axs[1].set_aspect('equal')
+
+        plt.suptitle(self.name)
         plt.show()
 
 
@@ -155,17 +164,7 @@ class DWBAdata():
         # Put the shapes into a dict of SDWBAorganism().
         self.dwba_models = {}
         for s in shapes['shape']:
-            # Some datasets have the x data listed from largest to smallest, but things work
-            # better with the reverse (particularily calculating rv_tan), so sort that.
-            if s['x'][0] > s['x'][-1]:
-                s['x'].reverse()
-                s['y'].reverse()
-                s['z'].reverse()
-                s['a'].reverse()
-                s['g'].reverse()
-                s['h'].reverse()
-
-            # Estimate rv_tan from a spline through (x,y,z,).
+            # Estimate rv_tan from a spline through (x,y,z).
             tck, u = splprep([s['x'], s['y'], s['z']])
             rv_tan = np.vstack(splev(u, tck, der=1))
             # Make sure rv_tan holds only unit vectors
@@ -176,7 +175,7 @@ class DWBAdata():
             rv_pos = np.vstack((np.array(s['x']), np.array(s['y']), np.array(s['z']))).T
 
             organism = DWBAorganism(rv_pos, np.array(s['a']), np.array(s['g']), np.array(s['h']),
-                                    s.get('source', ''), s.get('note', ''), rv_tan)
+                                    s['name'], s.get('source', ''), s.get('note', ''), rv_tan)
             self.dwba_models[s['name']] = organism
 
     def names(self):
