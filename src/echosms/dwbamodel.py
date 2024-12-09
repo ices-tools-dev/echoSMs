@@ -132,15 +132,7 @@ class DWBAModel(ScatterModelBase):
         if validate_parameters:
             self.validate_parameters(locals())
 
-        # If these are present, run as the stochastic DWBA. These are not mentioned in the
-        # docstring because it is intended for a derived class to be the public interface for
-        # SDWBA models.
-        do_sdwba = False
-        num_runs = 1  # DWBA
-        if ('num_runs' in kwargs) and ('phase_sd' in kwargs):  # SDWBA
-            do_sdwba = True
-            phase_sd = kwargs.get('phase_sd')
-            num_runs = int('num_runs')  # FYI, this truncates floating point numbers
+        do_sdwba = False if phase_sd == 0.0 else True
 
         # The structure of this code follows closely the formulae in Stanton et al (1998). Where
         # relevant, the equation numbers from that paper are given.
@@ -173,7 +165,8 @@ class DWBAModel(ScatterModelBase):
         # This code is a little complex because it does both the DWBA and SDWBA
         phase_factors = np.ones(len(a))  # for DWBA
         runs = []
-        for run in range(num_runs):  # is only ever 1 run for the DWBA
+
+        for run in range(int(num_runs)):  # is only ever 1 run for the DWBA
             if do_sdwba:
                 phase_factors = np.exp(1j*self.rng.normal(scale=phase_sd, size=len(a)))
 
