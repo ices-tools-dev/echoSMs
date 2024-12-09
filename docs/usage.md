@@ -25,7 +25,7 @@ To upgrade echosms to the latest version use:
 
 ## Model overview
 
-Currently, the following models are available in echoSMs:
+The following models are available in echoSMs:
 
 |Model type|Python class name|Description|
 |----------|----------|-----------|
@@ -39,7 +39,7 @@ Currently, the following models are available in echoSMs:
 |Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
 |Phase-tracking distorted-wave Born approximation|PTDWBAModel|Weakly scattering objects of any shape with inhomogeneous interiors|
 
-Future models will include the Fourier matching method, and potentially finite element and boundary element models. We welcome contributions of additional models.
+Future models will include the Fourier matching method and potentially the finite element and boundary element models. We welcome contributions or suggestions of additional models.
 
 ## Running a model
 
