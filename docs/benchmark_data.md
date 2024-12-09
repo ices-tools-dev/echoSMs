@@ -9,7 +9,7 @@ These are provided as text files (see below), or as Pandas DataFrames via the [b
 
 ## TS(f)
 
-This dataset contains target strength (TS re 1 m² [dB]) as a function of acoustic frequency. The data file, [Benchmark_Frequency_TS.csv](https://github.com/ices-tools-dev/echoSMs/blob/main/BenchMark_Data/Benchmark_Frequency_TS.csv), is formatted as comma-separated TS values given to a precision of two decimal places (i.e., 0.01 dB). The first row in the file contains column labels, indicating the model type for that column. NA represents TS values that were not computed.
+This dataset contains target strength (TS re 1 m² [dB]) as a function of acoustic frequency. The data file, [Benchmark_Frequency_TS.csv](https://github.com/ices-tools-dev/echoSMs/tree/main/src/echosms/resources/BenchMark_Data/Benchmark_Frequency_TS.csv), is formatted as comma-separated TS values given to a precision of two decimal places (i.e., 0.01 dB). The first row in the file contains column labels, indicating the model type for that column. NA represents TS values that were not computed.
 
 The column names and descriptions are:
 
