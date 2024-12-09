@@ -12,6 +12,7 @@ from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
 from echosms import create_dwba_spheroid, create_dwba_cylinder
 from echosms import KRMdata
+from echosms import DWBAdata
 
 # Load the reference model defintiions
 rm = ReferenceModels()
@@ -245,10 +246,30 @@ for name in models:
     mod = DWBAModel()
     ts_dwba = mod.calculate_ts(m)
 
-    ts = mod.calculate_ts(m)
-
     plot_compare_angle(m['theta'], ts, 'DWBA', m['theta'], bmt[name], 'Benchmark', name)
 
+##########################################################
+# And the DWBA on a real shape
+dd = DWBAdata()
+
+krill = dd.model('Generic krill (McGehee 1998)')
+
+m = {'medium_c': 1500, 'medium_rho': 1024, 'phi': 0,
+     'target_c': 1501, 'target_rho': 1025, 'a': krill.a, 'rv_pos': krill.rv_pos,
+     'rv_tan': krill.rv_tan}
+
+# m |= {'f': np.arange(12000, 120000, 1000), 'theta': 90}
+m |= {'f': 38000, 'theta': np.arange(0, 360, 1)}
+mod = DWBAModel()
+dwba_ts = mod.calculate_ts(m)
+
+# and then a SDWBA version of the same
+m |= {'phase_sd': 20*np.pi/180, 'num_runs': 100}
+sdwba_ts = mod.calculate_ts(m)
+
+plt.plot(m['theta'], sdwba_ts, label='sdwba')
+plt.plot(m['theta'], dwba_ts, label='dwba')
+plt.legend()
 
 # %% ###############################################################################################
 # Use the ES model on a calibration sphere
