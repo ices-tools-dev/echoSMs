@@ -43,7 +43,7 @@ issues with the html so for the moment a 2D image is used.
 Some models use an incident wave vector instead of rotating the target. The appropriate
 vector for a given echoSMs yaw, pitch, and roll can be calculated using this Python code:
 
-```
+```py
 from scipy.spatial.transform import Rotation as R
 rot = R.from_euler('ZYX', (yaw, theta-90, -phi), degrees=True)  # angles in degrees
 incident_vector = rot.apply([0, 0, 1])
