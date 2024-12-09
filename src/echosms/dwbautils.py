@@ -165,14 +165,15 @@ class DWBAdata():
                 s['g'].reverse()
                 s['h'].reverse()
 
-            rv_pos = np.vstack((np.array(s['x']), np.array(s['y']), np.array(s['z']))).T
-
-            # Estimate rv_tan from a spline through rv_pos.
+            # Estimate rv_tan from a spline through (x,y,z,).
             tck, u = splprep([s['x'], s['y'], s['z']])
             rv_tan = np.vstack(splev(u, tck, der=1))
-            # Make sure the rv_tan are unit vectors
+            # Make sure rv_tan holds only unit vectors
             n = np.linalg.norm(np.vstack(rv_tan), axis=0)
             rv_tan = (rv_tan / n).T
+
+            # Convert the x, y, z lists into a 2D array with one row for each (x,y,z) point
+            rv_pos = np.vstack((np.array(s['x']), np.array(s['y']), np.array(s['z']))).T
 
             organism = DWBAorganism(rv_pos, np.array(s['a']), np.array(s['g']), np.array(s['h']),
                                     s.get('source', ''), s.get('note', ''), rv_tan)
