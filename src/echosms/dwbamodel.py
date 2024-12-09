@@ -2,7 +2,7 @@
 
 from .scattermodelbase import ScatterModelBase
 from .utils import wavenumber, as_dict
-from math import log10, cos, acos, pi, isclose
+from math import log10, cos, acos, pi, isclose, radians
 from cmath import exp
 from scipy.spatial.transform import Rotation as R
 import numpy as np
@@ -94,7 +94,7 @@ class DWBAModel(ScatterModelBase):
         phase_sd : float
             If non-zero, this model becomes the SDWBA (stochastic DWBA). A random phase is
             applied to each term in the DWBA integral, obtained from a Gaussian distribution
-            centered on 0 with standard deviation of `phase_sd` [rad].
+            centered on 0 with standard deviation of `phase_sd` [°].
         num_runs : int
             The number of times to run the SDWBA model. The mean TS (calculated in the
             linear domain) is returned. Intended to be used in conjunction with `phase_sd`.
@@ -168,7 +168,7 @@ class DWBAModel(ScatterModelBase):
 
         for run in range(int(num_runs)):  # is only ever 1 run for the DWBA
             if do_sdwba:
-                phase_factors = np.exp(1j*self.rng.normal(scale=phase_sd, size=len(a)))
+                phase_factors = np.exp(1j*self.rng.normal(scale=radians(phase_sd), size=len(a)))
 
             integral = 0.0
             for a_, r_pos, d_r_pos, r_tan, p in zip(a, rv_pos, d_rv_pos, rv_tan, phase_factors):

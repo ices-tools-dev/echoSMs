@@ -264,7 +264,7 @@ mod = DWBAModel()
 dwba_ts = mod.calculate_ts(m)
 
 # and then a SDWBA version of the same
-m |= {'phase_sd': 20*np.pi/180, 'num_runs': 100}
+m |= {'phase_sd': 20, 'num_runs': 100}
 sdwba_ts = mod.calculate_ts(m)
 
 plt.plot(m['theta'], sdwba_ts, label='sdwba')
