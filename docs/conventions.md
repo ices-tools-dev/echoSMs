@@ -38,6 +38,17 @@ issues with the html so for the moment a 2D image is used.
 ![The coordinate system](resources/coordinate_system_light.svg#only-light)
 ![The coordinate system](resources/coordinate_system_dark.svg#only-dark)
 
+### Coordinate conversions
+
+Some models use an incident wave vector instead of rotating the target. The appropriate
+vector for a given echoSMs yaw, pitch, and roll can be calculated using this Python code:
+
+```
+from scipy.spatial.transform import Rotation as R
+rot = R.from_euler('ZYX', (yaw, theta-90, -phi), degrees=True)  # angles in degrees
+incident_vector = rot.apply([0, 0, 1])
+```
+
 ## Code style
 
 Contributions of code should follow standardised or community-agreed styles and be provided in (or added to) a structure suitable for packaging and uploading to package libraries. For Python this includes `pip` and/or `conda`, for R this would be `CRAN`, for Matlab this would be a toolbox on the MATLAB File Exchange, etc.
