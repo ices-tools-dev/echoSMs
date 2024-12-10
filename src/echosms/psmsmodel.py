@@ -10,7 +10,7 @@ class PSMSModel(ScatterModelBase):
     """Prolate spheroidal modal series (PSMS) scattering model.
 
     Note
-    -------
+    ----
     The fluid filled boundary type implementation is currently only accurate
     for weakly scattering interiors. Support for strongly scattering
     (e.g., gas-filled) will come later.
@@ -27,7 +27,7 @@ class PSMSModel(ScatterModelBase):
 
     def validate_parameters(self, params):
         """Validate the model parameters.
-        
+
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
         p = as_dict(params)
@@ -169,7 +169,7 @@ class PSMSModel(ScatterModelBase):
     @staticmethod
     def _fluidfilled_exact(m, n, hm, ht, xim, g, theta_inc):
         """Calculate Amn for fluid filled prolate spheroids."""
-        # This is conplicated!
+        # This is complicated!
 
         # Setup the system of simultaneous equations to solve for Amn.
 
