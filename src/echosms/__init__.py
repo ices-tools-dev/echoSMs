@@ -5,6 +5,7 @@ from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_
 from .dwbautils import create_dwba_spheroid, create_dwba_cylinder, DWBAorganism, DWBAdata
 from .scattermodelbase import ScatterModelBase
 from .benchmarkdata import BenchmarkData
+from .jechetaldata import JechEtAlData
 from .referencemodels import ReferenceModels
 from .esmodel import ESModel
 from .mssmodel import MSSModel
@@ -22,7 +23,7 @@ __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'DWBAModel', 'SDWBAModel', 'KAModel', 'KRMModel', 'HPModel',
            'wavenumber', 'wavelength', 'Neumann', 'h1', 'spherical_jnpp', 'prolate_swf',
            'theoretical_Sa', 'KRMdata', 'KRMorganism', 'KRMshape',
-           'DWBAorganism', 'DWBAdata',
+           'DWBAorganism', 'DWBAdata', 'JechEtAlData',
            'pro_rad1', 'pro_rad2', 'pro_ang1',
            'as_dataframe', 'as_dataarray', 'as_dict', 'split_dict',
            'create_dwba_spheroid', 'create_dwba_cylinder']

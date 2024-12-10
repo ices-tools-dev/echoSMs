@@ -38,4 +38,5 @@ make cylinder and spheroid shapes for use in the DWBA models.
 
 ::: echosms.BenchmarkData
 ::: echosms.ReferenceModels
+::: echosms.JechEtAlData
 ::: echosms.utils
