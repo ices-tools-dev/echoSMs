@@ -7,7 +7,7 @@ import trimesh
 
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
 from echosms import HPModel, KRMModel
-from echosms import BenchmarkData
+from echosms import BenchmarkData, JechEtAlData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray
 from echosms import create_dwba_spheroid, create_dwba_cylinder
@@ -193,6 +193,29 @@ bm_ts = bmf[name][~np.isnan(bmf[name])]
 
 plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
 
+#############################################################
+# Now compare the echoSMs KA to the KA result in the paper
+jetal = JechEtAlData()
+ka_ts = jetal.data['Figure_01_Rigid-sphere']['Francis_Kirchhoff_TS']
+plot_compare_freq(m['f'], ts, 'KA echoSMs', m['f'], ka_ts, 'KA paper', name)
+
+# and again for a finite cylinder
+name = 'fixed rigid finite cylinder'
+s = rm.specification(name)
+ka_ts = jetal.data['Figure_06_Rigid-Cylinder']['Francis_Kirchhoff_TS']
+
+# default cylinder from trimesh lies along the z axis, so need to rotate it to lie along the x axis,
+# hence the transform.
+mesh = trimesh.creation.cylinder(
+    radius=s['a'], height=s['b'],
+    transform=trimesh.transformations.rotation_matrix(np.pi/2, [0, 1, 0], [0, 0, 0]))
+mesh = mesh.subdivide().subdivide()  # needed for better accuracy at higher frequencies
+m['mesh'] = mesh
+# m['mesh'].export('cylinder.stl')  # to view in a separate package (e.g., MeshLab)
+
+ts = mod.calculate_ts(m)
+plot_compare_freq(m['f'], ts, 'KA echoSMs', m['f'], ka_ts, 'KA paper', name)
+
 # %% ###################################################
 # Run the DWBA model and compare to the benchmark results
 
@@ -249,7 +272,7 @@ for name in models:
     plot_compare_angle(m['theta'], ts, 'DWBA', m['theta'], bmt[name], 'Benchmark', name)
 
 ##########################################################
-# And the DWBA on a real shape
+# And the DWBA and SDWBA on a real shape
 dd = DWBAdata()
 
 krill = dd.model('Generic krill (McGehee 1998)')
