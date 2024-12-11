@@ -10,6 +10,22 @@ The echoSMs [source code](https://github.com/ices-tools-dev/echoSMs) is kept on 
 
     https://github.com/ices-tools-dev/echoSMs.git
 
+## Coding guidelines
+
+We want echoSMs to be a software package that is easy to maintain, understand, use, and to have lasting value. To help achieve this we aim for the following:
+
+- clear and complete documentation
+- good example code to help learn how to use echoSMs
+- scattering model code that closely follows the terminology and structure of the papers that the models are implemented from
+- a preference for clear code over computational efficiency
+- minimial dependencies on other software (e.g., other Python packages)
+
+### Style
+
+Contributions of code should follow standardised or community-agreed styles and be provided in (or added to) a structure suitable for packaging and uploading to package libraries. For Python this includes `pip` and/or `conda`, for R this would be `CRAN`, for Matlab this would be a toolbox on the MATLAB File Exchange, etc.
+
+Python code should follow [PEP8](https://peps.python.org/pep-0008) and docstrings should use [PEP257](https://peps.python.org/pep-0257/) with the contents following the [numpydoc style](https://numpydoc.readthedocs.io/en/latest/format.html). An exception to PEP8 is made to allow lines of up to 100 characters.
+
 ## Generating packages for PyPI
 
 EchoSMs is a pure Python package. The build configuration is done via a [pyproject.toml](https://github.com/ices-tools-dev/echoSMs/blob/main/pyproject.toml) file and [`hatchling`](https://hatch.pypa.io/latest/) is used to produce packages.

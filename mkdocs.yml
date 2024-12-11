@@ -2,10 +2,10 @@ site_name: echoSMs
 nav:
     - Introduction: index.md
     - Using echoSMs: usage.md
+    - Developing echoSMs: developing.md
     - Conventions: conventions.md
     - Benchmarks: benchmark_data.md
     - API reference: api_reference.md
-    - Developing echoSMs: developing.md
     - Other software: other_software.md
 
 theme: 
