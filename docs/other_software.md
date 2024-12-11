@@ -9,6 +9,7 @@ Other software that provides source code for acoustic scattering models of relev
 - [KRM Model](https://www.fisheries.noaa.gov/data-tools/krm-model): A web page that uses the KRM model to estimate the TS of predefined or user-supplied shapes over a range of input parameters.
 - [KRMr](https://github.com/SvenGastauer/KRMr): KRM model for fish in R.
 - [Liquid spheroid](https://github.com/elavia/liquid_spheroid): Julia and C++ code to calculate the scattering by fluid prolate and oblate spheroids.
+- [Prol_Spheroid](https://github.com/CRIMAC-WP4-Machine-learning/Prol_Spheroid): Python and Fortran code to calculate the scattering from liquid and gas-filled prolate spheroids.
 - [scatmod](https://github.com/SvenGastauer/scatmod): Open source acoustic scattering models for fisheries acoustics. Python and R code for fluid spheres.
 - [SDWBA Model](https://www.fisheries.noaa.gov/data-tools/sdwba-model): A web page that uses the SDWBA model to estimate the TS of predefined shapes over a range of input parameters.
 - [SDWBA packages](https://github.com/ElOceanografo/SDWBA): Provides krill model data
