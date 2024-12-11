@@ -96,7 +96,7 @@ class PSMSModel(ScatterModelBase):
             raise ValueError(f'The {self.long_name} model does not support '
                              f'a model type of "{boundary_type}".')
 
-        xim = (1.0 - (b/a)**2)**(-.5)
+        xim = (1.0 - (b/a)**2)**(-0.5)
         q = a/xim  # semi-focal length
 
         km = wavenumber(medium_c, f)
@@ -105,6 +105,12 @@ class PSMSModel(ScatterModelBase):
         if boundary_type == 'fluid filled':
             g = target_rho / medium_rho
             ht = wavenumber(target_c, f)*q
+            # Note: we can implement simpler equations if impedances are
+            # similar between the medium and the target. The simplified
+            # equations are quicker, so it is worth to do.
+            simplified = False
+            if (abs(1.0-target_c/medium_c) <= 0.01) and (abs(1.0-g) <= 0.01):
+                simplified = True
 
         # Phi, the port/starboard angle is fixed for this code
         phi_inc = np.pi  # incident direction
@@ -135,11 +141,7 @@ class PSMSModel(ScatterModelBase):
 
                 match boundary_type:
                     case 'fluid filled':
-                        # Note: we can implement the simpler equations if impedances are
-                        # similar between the medium and the target. The gas-filled
-                        # condition does not meet that, so we have two paths here. The simplified
-                        # equations are quicker, so it is worth to do.
-                        if (abs(1.0-target_c/medium_c) <= 0.01) and (abs(1.0-g) <= 0.01):
+                        if simplified:
                             Amn = PSMSModel._fluidfilled_approx(m, n, hm, ht, xim, g)
                         else:
                             Amn = PSMSModel._fluidfilled_exact(m, n, hm, ht, xim, g, theta_inc)
@@ -154,7 +156,7 @@ class PSMSModel(ScatterModelBase):
 
     @staticmethod
     def _fluidfilled_approx(m, n, hm, ht, xim, g):
-
+        """Calculate Amn for fluid filled prolate spheroids when ht is approximately equal to hm."""
         R1m, dR1m = pro_rad1(m, n, hm, xim)
         R2m, dR2m = pro_rad2(m, n, hm, xim)
 
