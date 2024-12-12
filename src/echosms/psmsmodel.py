@@ -1,8 +1,8 @@
 """A class that provides the prolate spheroidal modal series scattering model."""
 
 import numpy as np
-from math import factorial
 from .scattermodelbase import ScatterModelBase
+import scipy.integrate as integrate
 from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict
 
 
@@ -11,9 +11,8 @@ class PSMSModel(ScatterModelBase):
 
     Note
     ----
-    The fluid filled boundary type implementation is currently only accurate
-    for weakly scattering interiors. Support for strongly scattering
-    (e.g., gas-filled) will come later.
+    The fluid filled boundary type implementation is under development and is of limited use
+    at the moment.
     """
 
     def __init__(self):
@@ -100,17 +99,28 @@ class PSMSModel(ScatterModelBase):
         q = a/xim  # semi-focal length
 
         km = wavenumber(medium_c, f)
+        kt = wavenumber(target_c, f)
         hm = km*q
 
         if boundary_type == 'fluid filled':
             g = target_rho / medium_rho
             ht = wavenumber(target_c, f)*q
-            # Note: we can implement simpler equations if impedances are
+            simplified = False
+            # Note: we can implement simpler equations if sound speeds are
             # similar between the medium and the target. The simplified
             # equations are quicker, so it is worth to do.
-            simplified = False
-            if (abs(1.0-target_c/medium_c) <= 0.01) and (abs(1.0-g) <= 0.01):
-                simplified = True
+            # But, it appears that target_c/medium_c is not the only requirement for
+            # the simplification to work well - see section 4.1.1 in:
+            #
+            # Gonzalez, J. D., Lavia, E. F., Blanc, S., & Prario, I. (2016).
+            # Acoustic scattering by prolate and oblate liquid spheroids.
+            # Proceedings of the 22nd International Congress on Acoustics.
+            # Acoustics for the 21st Century, Buenos Aires.
+            #
+            # So, for the moment the simplification is turned off.
+
+            # if (1.0-target_c/medium_c) <= 0.01:
+            #    simplified = True
 
         # Phi, the port/starboard angle is fixed for this code
         phi_inc = np.pi  # incident direction
@@ -119,22 +129,33 @@ class PSMSModel(ScatterModelBase):
         theta_inc = np.deg2rad(theta)  # incident direction
         theta_sca = np.pi - theta_inc  # scattered direction
 
-        # Approximate limits on the summations
-        m_max = int(np.ceil(2*km*b))
-        n_max = int(m_max + np.ceil(hm/2))
+        # Approximate limits on the summations. These come from Furusawa (1988), but other
+        # implementations of this code use more complex functions to calculate the maximum orders
+        # of spheroidal wave functions to calculate. It is also feasible to work to a defined
+        # convergence level. This is a potenital future improvement.
+        m_max = int(np.ceil(2*km*b))+1
+        n_max = int(m_max + np.ceil(hm/2))+3
 
         f_sca = 0.0
         for m in range(m_max+1):
             epsilon_m = Neumann(m)
             cos_term = np.cos(m*(phi_sca - phi_inc))
+
+            if boundary_type == 'fluid filled' and not simplified:
+                Am = PSMSModel._fluidfilled(m, n_max, hm, ht, xim, g, theta_inc)
+
             for n in range(m, n_max+1):
-                Smn_inc, _ = pro_ang1(m, n, hm, np.cos(theta_inc))
-                Smn_sca, _ = pro_ang1(m, n, hm, np.cos(theta_sca))
-                # The Meixner-Schäfke normalisation scheme for the angular function of the first
-                # kind. Refer to eqn 21.7.11 in Abramowitz, M., and Stegun, I. A. (1964).
-                # Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables
-                # (Dover, New York), 10th ed.
-                N_mn = 2/(2*n+1) * factorial(n+m) / factorial(n-m)
+                # Use the normalisation offered by spheroidalwavefunctions.pro_ang1() because
+                # it removes the need to calculate a normalisation factor (N_mn in Furusawa, 1998).
+                # This is because the pro_ang1() norm is unity.
+                Smn_inc, _ = pro_ang1(m, n, hm, np.cos(theta_inc), norm=True)
+                Smn_sca, _ = pro_ang1(m, n, hm, np.cos(theta_sca), norm=True)
+
+                # FYI, the code used to use the Meixner-Schäfke normalisation scheme for the
+                # angular function of the first kind (eqn 21.7.11 in Abramowitz, M., and Stegun,
+                # I. A. (1964). Handbook of Mathematical Functions with Formulas, Graphs, and
+                # Mathematical Tables # (Dover, New York), 10th ed.
+                # N_mn = 2/(2*n+1) * factorial(n+m) / factorial(n-m)
 
                 R1m, dR1m = pro_rad1(m, n, hm, xim)
                 R2m, dR2m = pro_rad2(m, n, hm, xim)
@@ -142,40 +163,72 @@ class PSMSModel(ScatterModelBase):
                 match boundary_type:
                     case 'fluid filled':
                         if simplified:
-                            Amn = PSMSModel._fluidfilled_approx(m, n, hm, ht, xim, g)
+                            E1, E3 = PSMSModel._fluidfilled_Emn(m, n, n, hm, ht, xim, g)
+                            Amn = -E1/E3
                         else:
-                            Amn = PSMSModel._fluidfilled_exact(m, n, hm, ht, xim, g, theta_inc)
+                            Amn = Am[n-m]
                     case 'pressure release':
                         Amn = -R1m/(R1m + 1j*R2m)
                     case 'fixed rigid':
                         Amn = -dR1m/(dR1m + 1j*dR2m)
 
-                f_sca += epsilon_m * (Smn_inc / N_mn) * Smn_sca * Amn * cos_term
+                f_sca += epsilon_m * Smn_inc * Amn * Smn_sca * cos_term
 
-        return 20*np.log10(np.abs(-2j / km * f_sca))
-
-    @staticmethod
-    def _fluidfilled_approx(m, n, hm, ht, xim, g):
-        """Calculate Amn for fluid filled prolate spheroids when ht is approximately equal to hm."""
-        R1m, dR1m = pro_rad1(m, n, hm, xim)
-        R2m, dR2m = pro_rad2(m, n, hm, xim)
-
-        R1t, dR1t = pro_rad1(m, n, ht, xim)
-        R3m = R1m + 1j*R2m
-        dR3m = dR1m + 1j*dR2m
-
-        E1 = R1m - g * R1t / dR1t * dR1m
-        E3 = R3m - g * R1t / dR1t * dR3m
-        return -E1/E3
+        return 20*np.log10(np.abs(-2j / km * f_sca))[0]
 
     @staticmethod
-    def _fluidfilled_exact(m, n, hm, ht, xim, g, theta_inc):
+    def _fluidfilled_Emn(m, n, ell, hm, ht, xim, g):
+        """Calculate Emn_i values where i = 1 and 3."""
+        R1mn_w, dR1mn_w = pro_rad1(m, n, hm, xim)
+        R2mn_w, dR2mn_w = pro_rad2(m, n, hm, xim)
+        R1ml_t, dR1ml_t = pro_rad1(m, ell, ht, xim)
+
+        R3mn_w = R1mn_w + 1j*R2mn_w
+        dR3mn_w = dR1mn_w + 1j*dR2mn_w
+
+        E1 = R1mn_w - g * R1ml_t / dR1ml_t * dR1mn_w
+        E3 = R3mn_w - g * R1ml_t / dR1ml_t * dR3mn_w
+
+        return E1, E3
+
+    @staticmethod
+    def _fluidfilled(m, n_max, hm, ht, xim, g, theta_inc):
         """Calculate Amn for fluid filled prolate spheroids."""
-        # This is complicated!
+        # Rather than implement eqn (4) in Furusawa (1988), use an alternative form that
+        # I found easier to understand. This is eqns 5, 6, 7, and 8 in:
+        #
+        # Gonzalez, J. D., Lavia, E. F., Blanc, S., & Prario, I. (2016).
+        # Acoustic scattering by prolate and oblate liquid spheroids.
+        # Proceedings of the 22nd International Congress on Acoustics.
+        # Acoustics for the 21st Century, Buenos Aires.
 
-        # Setup the system of simultaneous equations to solve for Amn.
+        def alpha_int(eta):
+            """Eqn (8) in Gonzalez et al (2016) ready for integration with respect to eta.
+
+            The denominator in eqn (8) is not necessary because of the norm=True
+            option in the pro_ang1 calls.
+            """
+            return pro_ang1(m, n, hm, eta, norm=True)[0]\
+                * pro_ang1(m, ell, ht, eta, norm=True)[0]
+
+        # n = m to n_max
+        # l = m to n_max (though it could be different?)
+        l_max = n_max
+        Q = np.full((n_max-m+1, l_max-m+1), 0j)
+        f = np.full((n_max-m+1, 1), 0j)
+
+        # TODO : this can be optimised somewhat for speed
+        for ell in range(m, l_max+1):
+            for n in range(m, n_max+1):
+                alpha_nl = integrate.quad(alpha_int, -1, 1)[0]
+                Smn_w_inc, _ = pro_ang1(m, n, hm, np.cos(theta_inc), norm=True)
+                E1, E3 = PSMSModel._fluidfilled_Emn(m, n, ell, hm, ht, xim, g)
+
+                # By using norm=True when calculating Smn_w_inc, dividing
+                # by a norm is not necessary, so the equations below differ from
+                # those in Gonzalezx et al - they don't have the Nmn division.
+                Q[ell-m, n-m] = 1j**n * alpha_nl * Smn_w_inc * -E3
+                f[ell-m] += 1j**n * alpha_nl * Smn_w_inc * E1
 
         # Solve for Amn
-        Amn = 1.0
-
-        return Amn
+        return np.linalg.lstsq(Q, f, rcond=None)[0]
