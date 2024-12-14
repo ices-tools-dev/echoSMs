@@ -133,8 +133,8 @@ models = ['fixed rigid finite cylinder',
           'weakly scattering finite cylinder',
           'fixed rigid prolate spheroid',
           'pressure release prolate spheroid',
-          # Gas filled is not yet supported
-          # 'gas filled prolate spheroid',
+          # Gas filled is not yet tested to be correct
+          'gas filled prolate spheroid',
           'weakly scattering prolate spheroid']
 
 for name in models:
@@ -158,7 +158,7 @@ for name in models:
     m['theta'] = bmt['angle (deg)']
 
     # and run these
-    ts = mod.calculate_ts(m)
+    ts = mod.calculate_ts(m, progress=True)
 
     plot_compare_angle(m['theta'], ts, 'echoSMs', m['theta'], bmt[name], 'Benchmark', name)
 
