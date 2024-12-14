@@ -4,6 +4,7 @@ import abc
 import pandas as pd
 import xarray as xr
 import numpy as np
+from tqdm import tqdm
 from .utils import as_dataframe
 
 
@@ -58,7 +59,7 @@ class ScatterModelBase(abc.ABC):
         s += '\n'.join(['\t' + str(k) + ' = ' + str(v) for k, v in vars(self).items()])
         return s
 
-    def calculate_ts(self, data, expand=False, inplace=False, multiprocess=False):
+    def calculate_ts(self, data, expand=False, inplace=False, multiprocess=False, progress=False):
         """Calculate the target strength (TS) for many parameters.
 
         Parameters
@@ -91,6 +92,9 @@ class ScatterModelBase(abc.ABC):
             Only applicable if `data` is a DataFrame. If `True`, the results
             will be added to the input DataFrame in a column named `ts`. If a `ts` column
             already exists, it is overwritten.
+
+        progress : bool
+            If `True`, will produce a progress bar while running models
 
         Returns
         -------
@@ -131,7 +135,13 @@ class ScatterModelBase(abc.ABC):
             from mapply.mapply import mapply
             ts = mapply(data_df, self.__ts_helper, args=(p,), axis=1)
         else:  # this uses just one CPU
-            ts = data_df.apply(self.__ts_helper, args=(p,), axis=1)
+            if progress:
+                tqdm.pandas(desc=self.short_name,
+                            bar_format='{l_bar}{bar} [{n_fmt}/{total_fmt}; {rate_fmt}]',
+                            unit='model', colour='#ff9124')
+                ts = data_df.progress_apply(self.__ts_helper, args=(p,), axis=1)
+            else:
+                ts = data_df.apply(self.__ts_helper, args=(p,), axis=1)
 
         match data:
             case dict() if expand:

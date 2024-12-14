@@ -114,7 +114,7 @@ for name in models:
     m['theta'] = 90.0  # not needed for the mss model
 
     # and run the models
-    ts = mod.calculate_ts(m)
+    ts = mod.calculate_ts(m, progress=True)
 
     # Get the benchmark TS values
     bm_ts = bmf[name][~np.isnan(bmf[name])]
