@@ -99,7 +99,6 @@ class PSMSModel(ScatterModelBase):
         q = a/xim  # semi-focal length
 
         km = wavenumber(medium_c, f)
-        kt = wavenumber(target_c, f)
         hm = km*q
 
         if boundary_type == 'fluid filled':
@@ -109,7 +108,7 @@ class PSMSModel(ScatterModelBase):
             # Note: we can implement simpler equations if sound speeds are
             # similar between the medium and the target. The simplified
             # equations are quicker, so it is worth to do.
-            # But, it appears that target_c/medium_c is not the only requirement for
+            # But, it appears that target_c ≈ medium_c is not the only requirement for
             # the simplification to work well - see section 4.1.1 in:
             #
             # Gonzalez, J. D., Lavia, E. F., Blanc, S., & Prario, I. (2016).
@@ -117,12 +116,12 @@ class PSMSModel(ScatterModelBase):
             # Proceedings of the 22nd International Congress on Acoustics.
             # Acoustics for the 21st Century, Buenos Aires.
             #
-            # So, for the moment the simplification is turned off.
+            # So, for the moment, the simplification is turned off.
 
-            # if (1.0-target_c/medium_c) <= 0.01:
+            # if abs(1.0-target_c/medium_c) <= 0.01:
             #    simplified = True
 
-        # Phi, the port/starboard angle is fixed for this code
+        # Phi, the roll angle is fixed for this implementation
         phi_inc = np.pi  # incident direction
         phi_sca = np.pi + phi_inc  # scattered direction
 
@@ -133,8 +132,8 @@ class PSMSModel(ScatterModelBase):
         # implementations of this code use more complex functions to calculate the maximum orders
         # of spheroidal wave functions to calculate. It is also feasible to work to a defined
         # convergence level. This is a potenital future improvement.
-        m_max = int(np.ceil(2*km*b))+1
-        n_max = int(m_max + np.ceil(hm/2))+3
+        m_max = int(np.ceil(2*km*b))  # +1
+        n_max = int(m_max + np.ceil(hm/2))  # +3
 
         f_sca = 0.0
         for m in range(m_max+1):
@@ -144,10 +143,10 @@ class PSMSModel(ScatterModelBase):
             if boundary_type == 'fluid filled' and not simplified:
                 Am = PSMSModel._fluidfilled(m, n_max, hm, ht, xim, g, theta_inc)
 
-            for n in range(m, n_max+1):
+            for n_i, n in enumerate(range(m, n_max+1)):
                 # Use the normalisation offered by spheroidalwavefunctions.pro_ang1() because
                 # it removes the need to calculate a normalisation factor (N_mn in Furusawa, 1998).
-                # This is because the pro_ang1() norm is unity.
+                # This is because the pro_ang1(norm=True) norm is unity.
                 Smn_inc, _ = pro_ang1(m, n, hm, np.cos(theta_inc), norm=True)
                 Smn_sca, _ = pro_ang1(m, n, hm, np.cos(theta_sca), norm=True)
 
@@ -166,7 +165,7 @@ class PSMSModel(ScatterModelBase):
                             E1, E3 = PSMSModel._fluidfilled_Emn(m, n, n, hm, ht, xim, g)
                             Amn = -E1/E3
                         else:
-                            Amn = Am[n-m]
+                            Amn = Am[n_i][0]
                     case 'pressure release':
                         Amn = -R1m/(R1m + 1j*R2m)
                     case 'fixed rigid':
@@ -174,7 +173,7 @@ class PSMSModel(ScatterModelBase):
 
                 f_sca += epsilon_m * Smn_inc * Amn * Smn_sca * cos_term
 
-        return 20*np.log10(np.abs(-2j / km * f_sca))[0]
+        return 20*np.log10(np.abs(-2j / km * f_sca))
 
     @staticmethod
     def _fluidfilled_Emn(m, n, ell, hm, ht, xim, g):
@@ -202,33 +201,31 @@ class PSMSModel(ScatterModelBase):
         # Proceedings of the 22nd International Congress on Acoustics.
         # Acoustics for the 21st Century, Buenos Aires.
 
-        def alpha_int(eta):
-            """Eqn (8) in Gonzalez et al (2016) ready for integration with respect to eta.
+        Q = np.full((n_max+1-m, n_max+1-m), 0+0j)
+        f = np.full((n_max+1-m, 1), 0+0j)
 
-            The denominator in eqn (8) is not necessary because of the norm=True
-            option in the pro_ang1 calls.
-            """
-            return pro_ang1(m, n, hm, eta, norm=True)[0]\
-                * pro_ang1(m, ell, ht, eta, norm=True)[0]
-
-        # n = m to n_max
-        # l = m to n_max (though it could be different?)
-        l_max = n_max
-        Q = np.full((n_max-m+1, l_max-m+1), 0j)
-        f = np.full((n_max-m+1, 1), 0j)
-
-        # TODO : this can be optimised somewhat for speed
-        for ell in range(m, l_max+1):
+        for ell in range(m, n_max+1):
             for n in range(m, n_max+1):
-                alpha_nl = integrate.quad(alpha_int, -1, 1)[0]
                 Smn_w_inc, _ = pro_ang1(m, n, hm, np.cos(theta_inc), norm=True)
-                E1, E3 = PSMSModel._fluidfilled_Emn(m, n, ell, hm, ht, xim, g)
 
-                # By using norm=True when calculating Smn_w_inc, dividing
-                # by a norm is not necessary, so the equations below differ from
-                # those in Gonzalezx et al - they don't have the Nmn division.
-                Q[ell-m, n-m] = 1j**n * alpha_nl * Smn_w_inc * -E3
-                f[ell-m] += 1j**n * alpha_nl * Smn_w_inc * E1
+                if not Smn_w_inc == 0.0:  # reduces CPU effort as this happens often
+                    E1, E3 = PSMSModel._fluidfilled_Emn(m, n, ell, hm, ht, xim, g)
+
+                    alpha_nl = integrate.quad(PSMSModel._alpha_int, -1, 1, (m, n, ell, hm, ht))[0]
+                    # By using norm=True when calculating Smn_w_inc, dividing
+                    # by a norm is not necessary, so the equations below differ from
+                    # those in Gonzalez et al - they don't have the Nmn division.
+                    Q[ell-m, n-m] = 1j**n * alpha_nl * Smn_w_inc * -E3
+                    f[ell-m] += 1j**n * alpha_nl * Smn_w_inc * E1
 
         # Solve for Amn
         return np.linalg.lstsq(Q, f, rcond=None)[0]
+
+    @staticmethod
+    def _alpha_int(eta, m, n, ell, hm, ht):
+        """Eqn (8) in Gonzalez et al (2016) ready for integration with respect to eta.
+
+        The denominator in eqn (8) is not necessary because of the norm=True
+        option in the pro_ang1 calls.
+        """
+        return pro_ang1(m, n, hm, eta, norm=True)[0] * pro_ang1(m, ell, ht, eta, norm=True)[0]

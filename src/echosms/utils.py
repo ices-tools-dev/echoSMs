@@ -1,4 +1,5 @@
 """Miscellaneous utility functions."""
+import sys
 from collections.abc import Iterable
 import numpy as np
 import xarray as xr
@@ -348,10 +349,16 @@ def pro_ang1(m: int, n: int, c: float, eta: float, norm=False) -> tuple[float, f
     a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=0.0, ioprad=0, iopang=2,
                            iopnorm=int(norm), arg=[eta])
     p = swf_t._make(a)
-    s = p.s1c * np.float_power(10.0, p.is1e)
-    sp = p.s1dc * np.float_power(10.0, p.is1de)
+    if np.isnan(p.s1c[n-m]) or np.isnan(p.s1dc[n-m]):
+        # print('Root - trying again.')
+        a = prolate_swf.profcn(c=c, m=m, lnum=n-m+2, x1=0.0, ioprad=0, iopang=2,
+                               iopnorm=int(norm), arg=[eta+sys.float_info.epsilon])
+        p = swf_t._make(a)
 
-    return s[n-m][0], sp[n-m][0]
+    s = p.s1c[n-m] * np.float_power(10.0, p.is1e[n-m])
+    sp = p.s1dc[n-m] * np.float_power(10.0, p.is1de[n-m])
+
+    return s[0], sp[0]
 
 
 def pro_rad1(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
