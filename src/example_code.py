@@ -269,7 +269,7 @@ for name in models:
     mod = DWBAModel()
     ts_dwba = mod.calculate_ts(m)
 
-    plot_compare_angle(m['theta'], ts, 'DWBA', m['theta'], bmt[name], 'Benchmark', name)
+    plot_compare_angle(m['theta'], ts_dwba, 'DWBA', m['theta'], bmt[name], 'Benchmark', name)
 
 ##########################################################
 # And the DWBA and SDWBA on a real shape
