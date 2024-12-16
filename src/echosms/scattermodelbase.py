@@ -136,9 +136,8 @@ class ScatterModelBase(abc.ABC):
             ts = mapply(data_df, self.__ts_helper, args=(p,), axis=1)
         else:  # this uses just one CPU
             if progress:
-                tqdm.pandas(desc=self.short_name,
-                            bar_format='{l_bar}{bar} [{n_fmt}/{total_fmt}; {rate_noinv_fmt}]',
-                            unit='model')
+                tqdm.pandas(desc=self.short_name, unit=' models',
+                            bar_format='{l_bar}{bar} [{n_fmt}/{total_fmt}; {rate_noinv_fmt}]')
                 ts = data_df.progress_apply(self.__ts_helper, args=(p,), axis=1)
             else:
                 ts = data_df.apply(self.__ts_helper, args=(p,), axis=1)
