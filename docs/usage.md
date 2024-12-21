@@ -170,7 +170,7 @@ returns the same results as
 
 _This is an experimental feature._
 
-The `multiprocess = True` parameter in the call to `calculate_ts` will cause echoSMs to divide the requested model runs over as many cores as your computer has. Total solution time will decrease almost linearly with the number of models runs.
+The `multiprocess = True` parameter in the call to `calculate_ts` will cause echoSMs to divide the requested model runs over as many cores as your computer has. Total solution time will decrease almost linearly with the number of cores.
 
 ## Reference model definitions
 
