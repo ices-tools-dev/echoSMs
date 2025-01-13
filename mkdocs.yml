@@ -6,6 +6,7 @@ nav:
     - Conventions: conventions.md
     - Benchmarks: benchmark_data.md
     - API reference: api_reference.md
+    - Historical notes: historical_notes.md
     - Other software: other_software.md
 
 theme: 
