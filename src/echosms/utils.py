@@ -2,6 +2,7 @@
 import sys
 from collections.abc import Iterable
 import numpy as np
+from math import pi as π
 import xarray as xr
 import pandas as pd
 from scipy.special import spherical_jn, spherical_yn
@@ -50,7 +51,7 @@ def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)
     if r <= 0.0:
         raise ValueError('An r value less than or equal to 0 is not supported.')
 
-    factor = 10.0*np.log10(4.0*np.pi*1852.0**2) if nautical else 0.0
+    factor = 10.0*np.log10(4.0*π*1852.0**2) if nautical else 0.0
     return ts - eba - 20.0*np.log10(r) + factor
 
 
@@ -88,7 +89,7 @@ def wavenumber(c: float, f: float) -> float:
     :
         The acoustic wavenumber [m⁻¹].
     """
-    return 2*np.pi*f/c
+    return 2*π*f/c
 
 
 def wavelength(c: float, f: float) -> float:
