@@ -150,12 +150,8 @@ class KRMModel(ScatterModelBase):
             # Reflection coefficient between body and inclusion
             # The paper gives R_bc in terms of g & h, but it can also be done in the
             # same manner as R_wb above.
-            if low_ka_medium == 'body':
-                gp = incl.rho / body.rho  # p is 'prime' to fit with paper notation
-                hp = incl.c / body.c
-            else:  # 'water'
-                gp = incl.rho / medium_rho
-                hp = incl.c / medium_c
+            gp = incl.rho / body.rho  # p is 'prime' to fit with paper notation
+            hp = incl.c / body.c
 
             R_bc = (gp*hp-1) / (gp*hp+1)  # Eqn (9)
 
@@ -164,6 +160,9 @@ class KRMModel(ScatterModelBase):
 
             # Choose which modelling approach to use
             if k*a_e < 0.15:  # Do the mode solution for the inclusion
+                if low_ka_medium != 'body':
+                    gp = incl.rho / medium_rho
+                    hp = incl.c / medium_c
                 sl.append(self._mode_solution(1/gp, 1/hp, k, a_e, incl.length(), theta))
             elif incl.boundary == 'soft':
                 kk = k_b if high_ka_medium == 'body' else k
