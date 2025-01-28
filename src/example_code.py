@@ -357,7 +357,14 @@ for fname in fishes:
 
     # Create the dict that echoSMs models use and add required parameters
     p = {'medium_c': 1490, 'medium_rho': 1030, 'organism': fish, 'theta': 90,
-         'f': np.arange(12, 121, 1)*1e3}
+         'f': np.arange(12, 121, 1)*1e3,
+         'high_ka_medium': 'water', 'low_ka_medium': 'water'}
+    # Note 'water' is used for the high_ka_medium and low_ka_medium parameters to
+    # match the TS in the available from KRMdata() class (which came from the
+    # online NOAA KRM calculator). To see the results when 'body' is used, uncomment these two
+    # lines:
+    # p['high_ka_medium'] = 'body'
+    # p['low_ka_medium'] = 'body'
 
     krm_ts = mod.calculate_ts(p)
 

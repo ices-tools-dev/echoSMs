@@ -1,4 +1,4 @@
-"""A class that provides the Kirchhoff ray mode scattering model."""
+"""A class that implements the Kirchhoff ray mode scattering model."""
 
 from math import log10, pi, sqrt, cos, sin, radians
 from cmath import exp
@@ -54,13 +54,15 @@ class KRMModel(ScatterModelBase):
         #     warnings.warn('Some ka_s is below the limit.')
 
     def calculate_ts_single(self, medium_c, medium_rho, theta, f, organism,
+                            high_ka_medium='body', low_ka_medium='body',
                             validate_parameters=True, **kwargs) -> float:
         """
         Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
 
         Warning
         --------
-        The low _ka_ part of this model has not yet been verified to give correct results.
+        The mode solution (low _ka_) part of this model has not yet been verified to give
+        correct results.
 
         Parameters
         ----------
@@ -77,6 +79,21 @@ class KRMModel(ScatterModelBase):
         organism: KRMorganism
             The shapes that make up the model. This is typically a shape for the body and zero or
             more enclosed shapes that repesent internal parts of the organism.
+        high_ka_medium:
+            If set to `body` the sound speed and density of the organism body is used for
+            the fluid surrounding any inclusions. If set to anything else (e.g., `water`)
+            the sound speed and density given by `medium_c` and `medium_rho` are used.
+            This parameter applies to the Kirchhoff approximation part of
+            the model (i.e., high _ka_) and corresponds to the use (or not) of the
+            approximation given in Clay & Horne (1994) on the line immediately below Eqn (13):
+            _k_b ≈ k at low contrast_.
+        low_ka_medium:
+            If set to `body` the sound speed and density of the organism body is used for
+            the fluid surrounding any inclusions. If set to anything else (e.g., `water`)
+            the sound speed and density given by `medium_c` and `medium_rho` are used.
+            This parameter applies to the mode solution part of the model (i.e., low _ka_)
+            and corresponds to the use (or not) of the approximation given in Clay & Horne (1994)
+            on the line immediately below Eqn (13): _k_b ≈ k at low contrast_.
         validate_parameters : bool
             Whether to validate the model parameters.
 
@@ -87,18 +104,31 @@ class KRMModel(ScatterModelBase):
 
         Notes
         -----
-        The class implements the code in Clay & Horne (1994) and when ka < 0.15 uses Clay (1992).
+        The class implements the code in Clay & Horne (1994) and when _ka_ < 0.15 uses Clay (1992).
+
+        The `high_ka_medium` and `low_ka_medium` parameters allow the user to select which
+        medium surrounds the inclusions (e.g., the swimbladder) - the fish body or
+        the water surrounding the fish body. The equations in Clay & Horne (1994) used the body
+        but included a sentence saying that the water could be used at low contrast
+        (between the water and the body). A later paper
+        (Horne & Jech, 1999) used water for low _ka_ (the mode solution) and the body for
+        higher _ka_ (the Kirchhoff approximation). Some open-source KRM model codes always
+        use the water.
 
         References
         ----------
-        Clay, C. S., & Horne, J. K. (1994). Acoustic models of fish: The Atlantic cod
-        (_Gadus morhua_). The Journal of the Acoustical Society of America, 96(3), 1661–1668.
-        <https://doi.org/10.1121/1.410245>
-
         Clay, C. S. (1992). Composite ray-mode approximations for backscattered sound from
         gas-filled cylinders and swimbladders. The Journal of the Acoustical Society of
         America, 92(4), 2173–2180.
         <https://doi.org/10.1121/1.405211>
+
+        Clay, C. S., & Horne, J. K. (1994). Acoustic models of fish: The Atlantic cod
+        (_Gadus morhua_). The Journal of the Acoustical Society of America, 96(3), 1661–1668.
+        <https://doi.org/10.1121/1.410245>
+
+        Horne, J. K., & J. M. Jech. (1999). Multi–frequency estimates of fish abundance:
+        constraints of rather high frequencies. ICES Journal of Marine Science, 56 (2), 184–199.
+        <https://doi.org/10.1006/jmsc.1998.0432>
         """
         if validate_parameters:
             self.validate_parameters(locals())
@@ -120,8 +150,13 @@ class KRMModel(ScatterModelBase):
             # Reflection coefficient between body and inclusion
             # The paper gives R_bc in terms of g & h, but it can also be done in the
             # same manner as R_wb above.
-            gp = incl.rho / body.rho  # p is 'prime' to fit with paper notation
-            hp = incl.c / body.c
+            if low_ka_medium == 'body':
+                gp = incl.rho / body.rho  # p is 'prime' to fit with paper notation
+                hp = incl.c / body.c
+            else:  # 'water'
+                gp = incl.rho / medium_rho
+                hp = incl.c / medium_c
+
             R_bc = (gp*hp-1) / (gp*hp+1)  # Eqn (9)
 
             # Equivalent radius of inclusion (as per Part A of paper)
@@ -131,9 +166,11 @@ class KRMModel(ScatterModelBase):
             if k*a_e < 0.15:  # Do the mode solution for the inclusion
                 sl.append(self._mode_solution(1/gp, 1/hp, k, a_e, incl.length(), theta))
             elif incl.boundary == 'soft':
-                sl.append(self._soft_KA(incl, k, k_b, R_bc, TwbTbw, theta))
+                kk = k_b if high_ka_medium == 'body' else k
+                sl.append(self._soft_KA(incl, k, kk, R_bc, TwbTbw, theta))
             elif incl.boundary == 'fluid':
-                sl.append(self._fluid_KA(incl, k, k_b, R_bc, TwbTbw, theta))
+                kk = k_b if high_ka_medium == 'body' else k
+                sl.append(self._fluid_KA(incl, k, kk, R_bc, TwbTbw, theta))
             else:
                 raise ValueError(f'Unsupported boundary of "{incl.boundary}" for KRM inclusion')
 
@@ -197,11 +234,11 @@ class KRMModel(ScatterModelBase):
         shape :
             The shape.
         k :
-            Wavenumber in the fluid surrounding the object.
+            Wavenumber in the fluid surrounding the organism body.
         k_b :
-            Wavenumber in the object.
+            Wavenumber to use for the fluid surrounding the object.
         R_bc :
-            Reflection coefficient between surrounding fluid and the object.
+            Reflection coefficient between the object and the surrounding fluid.
         TwbTbw :
             Transmission coefficient between external media (e.g., water) and the body.
         theta :
@@ -229,17 +266,10 @@ class KRMModel(ScatterModelBase):
 
         deltau = _deltau(shape.x, theta)
 
-        # Swimbladder backscatter
-        # Note - the paper has k_b rather than k in this formula, but in the text after Eqn (13)
-        # states that "k_b ≈ k at low contrast". Two other implementations of the KRM use k
-        # here instead of k_b, so we follow that in this code too.
-        # But, if k_b is used instead of k with the fish properties in the paper, the final TS
-        # can be a dB or so different.
-
         # This is Eqn (11)
         soft_sl = -1j*R_bc*TwbTbw/(2*sqrt(pi))\
-            * np.sum(A_sb * (np.sqrt((k*a+1)*sin(theta))
-                             * np.exp(-1j*(2*k*v+psi_p))*deltau))
+            * np.sum(A_sb * (np.sqrt((k_b*a+1)*sin(theta))
+                             * np.exp(-1j*(2*k_b*v+psi_p))*deltau))
 
         return soft_sl
 
@@ -250,12 +280,13 @@ class KRMModel(ScatterModelBase):
         ----------
         shape :
             The shape.
+
         k :
-            Wavenumber in the fluid surrounding the object.
+            Wavenumber in the fluid surrounding the organism body.
         k_b :
-            Wavenumber in the object.
+            Wavenumber to use for the fluid surrounding the object.
         R_wb :
-            Reflection coefficient between surrounding fluid and the object.
+            Reflection coefficient between the object and the surrounding fluid.
         TwbTbw :
             Transmission coefficient between external media (e.g., water) and the surrounding fluid.
         theta :

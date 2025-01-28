@@ -67,7 +67,7 @@ class KRMshape():
 
 @dataclass
 class KRMorganism():
-    """KRM body and swimbladder model shape.
+    """KRM body and inclusion shape(s).
 
     Attributes
     ----------
@@ -148,7 +148,7 @@ class KRMdata():
 
     @staticmethod
     def ts(name: str) -> np.ndarray:
-        """KRM model ts from model `name`.
+        """KRM model TS from model `name`.
 
         Parameters
         ----------
