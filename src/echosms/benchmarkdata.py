@@ -9,14 +9,6 @@ class BenchmarkData:
 
     This dataset contains the TS results from Jech et al. (2015).
 
-    Attributes
-    ----------
-    angle_dataset : Pandas DataFrame
-        The angle dataset from the benchmark model runs.
-
-    freq_dataset : Pandas DataFrame
-        The frequency dataset from the benchmark model runs.
-
     Notes
     -----
     The column names in the source benchmark files have been changed to be the same as those used
@@ -29,13 +21,16 @@ class BenchmarkData:
     Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
     Journal of the Acoustical Society of America 138, 3742-3764. <https://doi.org/10.1121/1.4937607>
     """
+
     f_rename = {'Sphere_WeaklyScattering': 'weakly scattering sphere',
                 'Sphere_Rigid': 'fixed rigid sphere',
                 'Sphere_PressureRelease': 'pressure release sphere',
                 'Sphere_Gas': 'gas filled sphere',
-                'ShellSphere_PressureRelease': 'spherical fluid shell with pressure release interior',
+                'ShellSphere_PressureRelease':
+                    'spherical fluid shell with pressure release interior',
                 'ShellSphere_Gas': 'spherical fluid shell with gas interior',
-                'ShellSphere_WeaklyScattering': 'spherical fluid shell with weakly scattering interior',
+                'ShellSphere_WeaklyScattering':
+                    'spherical fluid shell with weakly scattering interior',
                 'Cylinder_Rigid': 'fixed rigid finite cylinder',
                 'Cylinder_PressureRelease': 'pressure release finite cylinder',
                 'Cylinder_Gas': 'gas filled finite cylinder',
@@ -69,3 +64,82 @@ class BenchmarkData:
         # Change the column names to match the reference model names used in ReferenceModels
         self.angle_dataset.rename(columns=BenchmarkData.a_rename, inplace=True)
         self.freq_dataset.rename(columns=BenchmarkData.f_rename, inplace=True)
+
+        self.angle_dataset.set_index('angle (deg)', inplace=True)
+        self.freq_dataset.set_index('frequency (kHz)', inplace=True)
+
+    def angle_names(self) -> list:
+        """Provide the model names for the angle benchmark data.
+
+        Returns
+        -------
+        :
+            List of model names.
+
+        """
+        return self.angle_dataset.columns.values.tolist()
+
+    def freq_names(self) -> list:
+        """Provide the model names for the frequency benchmark data.
+
+        Returns
+        -------
+        :
+            List of model names.
+        """
+        return self.freq_dataset.columns.values.tolist()
+
+    def freq_data(self, name: str) -> tuple:
+        """Provide TS for a given frequency benchmark model.
+
+        Parameters
+        ----------
+        name :
+            The name of the benchmark model (available from `freq_names()`).
+
+        Returns
+        -------
+        :
+            Tuple containing the frequencies (kHz) and TS (dB) for the requested benchmark model.
+        """
+        if name not in self.freq_names():
+            raise ValueError(f'The requested model ({name}) '
+                             'is not in the frequency benchmark dataset.')
+        return (self.freq_dataset.index.values, self.freq_dataset[name].values)
+
+    def angle_data(self, name: str) -> tuple:
+        """Provide TS for a given angle benchmark model.
+
+        Parameters
+        ----------
+        name :
+            The name of the benchmark model (available from `angle_names()`).
+
+        Returns
+        -------
+        :
+            Tuple containing the angles (°) and TS (dB) for the requested benchmark model.
+        """
+        if name not in self.angle_names():
+            raise ValueError(f'The requested model ({name}) is not in the angle benchmark dataset.')
+        return (self.angle_dataset.index.values, self.angle_dataset[name].values)
+
+    def angle_as_dataframe(self) -> pd.DataFrame:
+        """Provide the angle benchmark dataset.
+
+        Returns
+        -------
+        :
+            Dataframe containing the benchmark data.
+        """
+        return self.angle_dataset
+
+    def freq_as_dataframe(self) -> pd.DataFrame:
+        """Provide the frequency benchmark dataset.
+
+        Returns
+        -------
+        :
+            Dataframe containing the benchmark data.
+        """
+        return self.freq_dataset
