@@ -21,8 +21,6 @@ print('\n'.join(rm.names()))
 
 # Load the benchmark data (from Jech et al., 2015)
 bm = BenchmarkData()
-bmf = bm.freq_dataset
-bmt = bm.angle_dataset
 
 
 def plot_compare_freq(f1, ts1, label1, f2, ts2, label2, title):
@@ -105,7 +103,11 @@ for name in models:
             pass
 
     # Add frequencies that have non nan benchmark TS values to the model parameters
-    m['f'] = bmf['frequency (kHz)'][~np.isnan(bmf[name])]*1e3  # [Hz]
+    bm_f, bm_ts = bm.freq_data(name)
+    not_nan = ~np.isnan(bm_ts)
+
+    m['f'] = bm_f[not_nan]*1e3  # [Hz]
+    bm_ts = bm_ts[not_nan]
 
     # No benchmark TS is available for this model, so add some sensible frequencies in
     if name == 'gas filled prolate spheroid':
@@ -115,9 +117,6 @@ for name in models:
 
     # and run the models
     ts = mod.calculate_ts(m, progress=True)
-
-    # Get the benchmark TS values
-    bm_ts = bmf[name][~np.isnan(bmf[name])]
 
     # Cope with there being no benchmark TS for this model
     if name == 'gas filled prolate spheroid':
@@ -155,12 +154,13 @@ for name in models:
 
     # Add frequencies and angle to the model parameters
     m['f'] = 38000  # [Hz]
-    m['theta'] = bmt['angle (deg)']
+    bm_angle, bm_ts = bm.angle_data(name)
+    m['theta'] = bm_angle
 
     # and run these
     ts = mod.calculate_ts(m, progress=True)
 
-    plot_compare_angle(m['theta'], ts, 'echoSMs', m['theta'], bmt[name], 'Benchmark', name)
+    plot_compare_angle(m['theta'], ts, 'echoSMs', m['theta'], bm_ts, 'Benchmark', name)
 
 # %% ###############################################################################################
 # Run non-benchmark models and compare to the relevant benchmark results.
@@ -177,19 +177,22 @@ s = rm.specification(name)
 mesh = trimesh.creation.icosphere(radius=s['a'], subdivisions=4)
 m = {}
 m['medium_c'] = s['medium_c']
-m['f'] = bmf['frequency (kHz)'][~np.isnan(bmf[name])]*1e3  # [Hz]
 m['phi'] = 0
 m['theta'] = 90.0
 m['mesh'] = mesh
 m['boundary_type'] = 'pressure release'
 
+# Get the benchmark TS values
+m_f, bm_ts = bm.freq_data(name)
+not_nan = ~np.isnan(bm_ts)
+
+m['f'] = bm_f[not_nan]*1e3  # [Hz]
+bm_ts = bm_ts[not_nan]
+
 mod = KAModel()
 
 # and run the models
 ts = mod.calculate_ts(m)
-
-# Get the benchmark TS values
-bm_ts = bmf[name][~np.isnan(bmf[name])]
 
 plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
 
@@ -235,15 +238,16 @@ for name in model_names:
 
     m.pop('boundary_type')
     m.pop('b', None)
-    f = bmf['frequency (kHz)']*1e3
+
+    # Get benchmark model for comparison
+    bm_f, bm_ts = bm.freq_data(name)
+    f = bm_f * 1e3
 
     m |= {'theta': 90, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan, 'f': f}
 
     mod = DWBAModel()
     ts_dwba = mod.calculate_ts(m)
 
-    # Get benchmark model for comparison
-    bm_ts = bmf[name]
     plot_compare_freq(f, bm_ts, 'benchmark', f, ts_dwba, 'dwba', name)
 
 #########################################################
@@ -262,14 +266,14 @@ for name in models:
 
     m.pop('boundary_type')
     m.pop('b', None)
-    theta = bmt['angle (deg)']
+    theta, bm_ts = bm.angle_data(name)
 
     m |= {'theta': theta, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan, 'f': 38000}
 
     mod = DWBAModel()
     ts_dwba = mod.calculate_ts(m)
 
-    plot_compare_angle(m['theta'], ts_dwba, 'DWBA', m['theta'], bmt[name], 'Benchmark', name)
+    plot_compare_angle(theta, ts_dwba, 'DWBA', theta, bm_ts, 'Benchmark', name)
 
 ##########################################################
 # And the DWBA and SDWBA on a real shape
@@ -450,25 +454,27 @@ m['theta'] = 90
 m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
-m['f'] = bmf['frequency (kHz)']*1e3
+bm_f, bm_ts = bm.freq_data(name)
+m['f'] = bm_f * 1e3  # [Hz]
 # remove unneeded parameters
 m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
 
 pt = PTDWBAModel()
-dwba_ts = pt.calculate_ts(m)
+dwba_ts = pt.calculate_ts(m, progress=True)
 
-plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bmf[name], 'Benchmark', name)
+plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bm_ts, 'Benchmark', name)
 
 # So, this PT_DWBA on a weakly scattering sphere is also different from the benchmark
 # TS values. Hmmmm. Now look at the difference between the PT-DWBA and MSS model runs...
 
 mss = MSSModel()
 mm = rm.parameters(name)
-mm['f'] = bmf['Frequency_kHz']*1e3
+bm_f, bm_ts = bm.freq_data(name)
+mm['f'] = bm_f * 1e3  # [Hz]
 mm['theta'] = 90.0
 
-mss_ts = mss.calculate_ts(mm)
+mss_ts = mss.calculate_ts(mm, progress=True)
 
 plot_compare_freq(mm['f'], dwba_ts, 'PT-DWBA', mm['f'], mss_ts, 'MSS', name)
 
@@ -487,12 +493,13 @@ m['theta'] = 90
 m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
-m['f'] = bmf['frequency (kHz)']*1e3
+bm_f, bm_ts = bm.freq_data(name)
+m['f'] = bm_f * 1e3  # [Hz]
 # remove unneeded parameters
 m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'b', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
 
 pt = PTDWBAModel()
-dwba_ts = pt.calculate_ts(m, multiprocess=True)
+dwba_ts = pt.calculate_ts(m, progress=True)
 
-plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bmf[name], 'Benchmark', name)
+plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bm_ts, 'Benchmark', name)
