@@ -7,12 +7,12 @@ import pandas as pd
 class BenchmarkData:
     """Convenient interface to the benchmark dataset.
 
-    This dataset contains the TS results from Jech et al. (2015).
+    This dataset contains the benchmark TS results from Jech et al. (2015).
 
     Notes
     -----
     The column names in the source benchmark files have been changed to be the same as those used
-    in the [referencemodels] model definitions.
+    in the [ReferenceModels][echosms.ReferenceModels] model definitions.
 
     References
     ----------
@@ -90,7 +90,7 @@ class BenchmarkData:
         return self.freq_dataset.columns.values.tolist()
 
     def freq_data(self, name: str) -> tuple:
-        """Provide TS for a given frequency benchmark model.
+        """Provide the benchmark TS values verses frequency for the `name` model.
 
         Parameters
         ----------
@@ -108,7 +108,7 @@ class BenchmarkData:
         return (self.freq_dataset.index.values, self.freq_dataset[name].values)
 
     def angle_data(self, name: str) -> tuple:
-        """Provide TS for a given angle benchmark model.
+        """Provide the benchmark TS values verses angle for the `name` model.
 
         Parameters
         ----------
@@ -125,7 +125,7 @@ class BenchmarkData:
         return (self.angle_dataset.index.values, self.angle_dataset[name].values)
 
     def angle_as_dataframe(self) -> pd.DataFrame:
-        """Provide the angle benchmark dataset.
+        """Provide the angle benchmark dataset as a Pandas DataFrame.
 
         Returns
         -------
@@ -135,11 +135,11 @@ class BenchmarkData:
         return self.angle_dataset
 
     def freq_as_dataframe(self) -> pd.DataFrame:
-        """Provide the frequency benchmark dataset.
+        """Provide the frequency benchmark dataset as a Pandas DataFrame.
 
         Returns
         -------
         :
-            Dataframe containing the benchmark data.
+            Dataframe containing the benchmark data. 
         """
         return self.freq_dataset
