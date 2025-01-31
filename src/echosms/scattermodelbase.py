@@ -133,7 +133,7 @@ class ScatterModelBase(abc.ABC):
 
         if multiprocess:
             from mapply.mapply import mapply
-            ts = mapply(data_df, self.__ts_helper, args=(p,), axis=1)
+            ts = mapply(data_df, self.__ts_helper, args=(p,), axis=1, progressbar=progress)
         else:  # this uses just one CPU
             if progress:
                 tqdm.pandas(desc=self.short_name, unit=' models',
