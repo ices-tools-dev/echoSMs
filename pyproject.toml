@@ -25,6 +25,7 @@ dependencies = [
   'trimesh',
   'spheroidalwavefunctions',
   'tqdm',
+  'mapply',
 ]
 classifiers = [
     'Development Status :: 3 - Alpha',
