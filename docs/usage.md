@@ -171,9 +171,11 @@ returns the same results as
 _This is an experimental feature._
 
 EchoSMs can use more than one CPU to run models. Internally, echoSMs uses a Pandas DataFrame to store
-the parameters for each model run (one row per parameter set) and the multiprocessing is achieved with a package that parallelises DataFrames onto separate CPUs. This is enabled with the `multiprocess = True` parameter in the call to `calculate_ts()`. The total solution time will decrease almost linearly with the number of cores. A progress bar can be shown via the `progress = True` option, but note that this tends to not work correctly in some Python terminals (e.g. the Spyder terminal).
+the parameters for each model run (one row per parameter set) and the multiprocessing is achieved with a package that runs an echoSMs model on each row in the DataFrame, split across separate CPUs. This is enabled with the `multiprocess = True` parameter in the call to `calculate_ts()`. The total solution time will decrease almost linearly with the number of CPUs.
 
-EchoSMs' currently uses the [mapply](https://github.com/ddelange/mapply) package to distribute the model runs. Mapply is limited to CPUs on the one computer and does not support multiprocessing across multiple computers. A different multiprocessing package would be needed to support running on multiple computers.
+A progress bar can be shown via the `progress = True` option, but note that this tends to not work correctly in some Python terminals (e.g. the Spyder terminal). The progress bar shows the number of chunks that the DataFame has been split into and the number of chunks completed (in contrast, the non-multiprocessing progress bar shows the number of model runs completed).
+
+EchoSMs' currently uses the [mapply](https://github.com/ddelange/mapply) package to distribute the model runs. Mapply is limited to CPUs on the one computer - it does not support multiprocessing across multiple computers. A different multiprocessing package would be needed to support running on multiple computers.
 
 ## Reference model definitions
 
