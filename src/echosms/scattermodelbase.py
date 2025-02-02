@@ -77,7 +77,7 @@ class ScatterModelBase(abc.ABC):
 
         multiprocess : bool
             Split the ts calculation across CPU cores. Multiprocessing is currently provided by
-            [mapply](https://github.com/ddelange/mapply) with little customisation. For more
+            [mapply](https://github.com/ddelange/mapply). For more
             sophisticated uses it may be preferred to use a multiprocessing package of your choice
             directly on the `calculate_ts_single()` method. See the code in this method
             (`calculate_ts()`) for an example.
@@ -184,7 +184,7 @@ class ScatterModelBase(abc.ABC):
         """
 
     def _present_and_in(self, p: dict, names: list, valid_values: list):
-        """Check that that parameters are present and are in the given iterable.
+        """Check that that parameters are present and contains values in `valid_values`.
 
         Parameters
         ----------
@@ -202,13 +202,18 @@ class ScatterModelBase(abc.ABC):
         KeyError
             If any required model parameters are not present.
         """
+
+        # The values in p can be any iterable or scalar variable. This function has to cope
+        # with all of these. A simple way to deal with this is to use np.atleast_1d() to
+        # get a consistent type type to work with.
+
         for name in names:
             if name not in p:
                 raise KeyError(f"Models require a '{name}' parameter.")
-            if not all(True for x in np.atleast_1d(p[name]) if x in valid_values):
+            if not all(x in valid_values for x in np.unique(np.atleast_1d(p[name]))):
                 raise ValueError(f"Model parameter '{name}' contains 1 or more invalid values.")
 
-    def _present_and_positive(self, p: dict, names: list):
+    def _present_and_positive(self, p: dict, names: list, mask=None):
         """Check that that parameters are present and have a positive value.
 
         Parameters
@@ -217,6 +222,8 @@ class ScatterModelBase(abc.ABC):
             Model parameters
         name :
             Model parameter names to validate.
+        mask : np.array | None
+            When checking for positive values, only check those where the mask is True.
 
         Raises
         ------
@@ -225,12 +232,19 @@ class ScatterModelBase(abc.ABC):
         KeyError
             If any required model parameters are not present.
         """
+
+        # The values in p can be any iterable or scalar variable. This function has to cope
+        # with all of these. A simple way to deal with this is to use np.atleast_1d() to
+        # get a consistent type type to work with.
+
         for name in names:
             if name not in p:
                 raise KeyError(f"Models require a '{name}' parameter.")
             if p[name] is None:
                 raise ValueError(f"Model parameter '{name}' must not be None.")
-            if np.min(p[name]) <= 0:
+            if mask is None:
+                mask = np.full(len(p[name]), True)
+            if np.min(np.atleast_1d(p[name])[mask]) <= 0:
                 raise ValueError(f"Model parameter '{name}' must be greater than zero.")
 
     @abc.abstractmethod

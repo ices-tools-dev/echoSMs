@@ -37,15 +37,20 @@ class MSSModel(ScatterModelBase):
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_rho', 'a', 'f'])
 
-        for bt in np.atleast_1d(p['boundary_type']):
+        # This loop iterates over every boundary_type entry one by one and is very slow
+        # for large numbers of runs. It needs to be improved!!!!!
+        types = np.unique(np.atleast_1d(p['boundary_type']))
+        for bt in types:
+            mask = p['boundary_type'] == bt
             match bt:
                 case 'fluid filled':
-                    super()._present_and_positive(p, ['target_c', 'target_rho'])
+                    super()._present_and_positive(p, ['target_c', 'target_rho'], mask=mask)
                 case 'fluid shell fluid interior':
                     super()._present_and_positive(p, ['target_c', 'target_rho', 'shell_c',
-                                                      'shell_rho', 'shell_thickness'])
+                                                      'shell_rho', 'shell_thickness'], mask=mask)
                 case 'fluid shell pressure release interior':
-                    super()._present_and_positive(p, ['shell_c', 'shell_rho', 'shell_thickness'])
+                    super()._present_and_positive(p, ['shell_c', 'shell_rho', 'shell_thickness'],
+                                                  mask=mask)
 
     def calculate_ts_single(self, medium_c, medium_rho, a, f, boundary_type,
                             target_c=None, target_rho=None,
