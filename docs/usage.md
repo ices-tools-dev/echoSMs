@@ -281,25 +281,18 @@ Note that the `parameters()` call does not return all of the parameters needed b
 
 ## Benchmark model TS
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchMarkData`](api_reference.md#echosms.BenchmarkData) class. This class is a simple wrapper around code that reads the CSV-formatted file of benchmark values into a Pandas DataFrame, whereupon they can be accessed like this:
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchmarkData`](api_reference.md#echosms.BenchmarkData) class. This class reads the CSV-formatted file of benchmark values. Methods in the `BenchmarkData` class provide a list of the benchmark names, access to individual TS and frequency/angle datasets, and also the frequency and angle datasets as Pandas DataFrames.
 
 ```py
     from echosms import BenchmarkData
     bm = BenchmarkData()
-    bm.angle_dataset  # the TS as a function of angle at 38 kHz
-    bm.freq_dataset  # the TS as a function of frequency
-```
 
-The TS and frequency values for a particular benchmark are available with normal Pandas DataFrame indexing syntax. The DataFrame column names are the same as the ReferenceModels names. For example:
+    bm.freq_names()
+    bm.angle_names()
 
-```py
-    bm.freq_dataset['weakly scattering sphere']
-    bm.freq_dataset['frequency (kHz)']
-```
+    f, ts = bm.freq_data('fixed rigid sphere')
+    theta, ts = bm.angle_data('fixed rigid prolate spheroid')
 
-or for the angle dataset:
-
-```py
-    bm.angle_dataset['weakly scattering sphere']
-    bm.angle_dataset['angle (deg)']
+    bm.angle_as_dataframe()
+    bm.freq_as_dataframe()
 ```
