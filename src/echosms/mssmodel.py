@@ -37,8 +37,6 @@ class MSSModel(ScatterModelBase):
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_rho', 'a', 'f'])
 
-        # This loop iterates over every boundary_type entry one by one and is very slow
-        # for large numbers of runs. It needs to be improved!!!!!
         types = np.unique(np.atleast_1d(p['boundary_type']))
         for bt in types:
             mask = p['boundary_type'] == bt

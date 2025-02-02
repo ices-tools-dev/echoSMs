@@ -33,10 +33,11 @@ class PSMSModel(ScatterModelBase):
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_c', 'medium_rho', 'a', 'b', 'f'])
 
-        for bt in np.atleast_1d(p['boundary_type']):
-            match bt:
-                case 'fluid filled':
-                    super()._present_and_positive(p, ['target_c', 'target_rho'])
+        types = np.unique(np.atleast_1d(p['boundary_type']))
+        for bt in types:
+            if bt == 'fluid filled':
+                super()._present_and_positive(p, ['target_c', 'target_rho'],
+                                              mask=p['boundary_type'] == bt)
 
     def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type,
                             target_c=None, target_rho=None, validate_parameters=True):
