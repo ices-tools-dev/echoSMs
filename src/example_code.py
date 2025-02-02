@@ -192,7 +192,7 @@ bm_ts = bm_ts[not_nan]
 mod = KAModel()
 
 # and run the models
-ts = mod.calculate_ts(m)
+ts = mod.calculate_ts(m, progress=True)
 
 plot_compare_freq(m['f'], ts, 'KA', m['f'], bm_ts, 'Benchmark', name)
 
@@ -216,7 +216,7 @@ mesh = mesh.subdivide().subdivide()  # needed for better accuracy at higher freq
 m['mesh'] = mesh
 # m['mesh'].export('cylinder.stl')  # to view in a separate package (e.g., MeshLab)
 
-ts = mod.calculate_ts(m)
+ts = mod.calculate_ts(m, progress=True)
 plot_compare_freq(m['f'], ts, 'KA echoSMs', m['f'], ka_ts, 'KA paper', name)
 
 # %% ###################################################
@@ -246,7 +246,7 @@ for name in model_names:
     m |= {'theta': 90, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan, 'f': f}
 
     mod = DWBAModel()
-    ts_dwba = mod.calculate_ts(m)
+    ts_dwba = mod.calculate_ts(m, progress=True)
 
     plot_compare_freq(f, bm_ts, 'benchmark', f, ts_dwba, 'dwba', name)
 
@@ -271,7 +271,7 @@ for name in models:
     m |= {'theta': theta, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan, 'f': 38000}
 
     mod = DWBAModel()
-    ts_dwba = mod.calculate_ts(m)
+    ts_dwba = mod.calculate_ts(m, progress=True)
 
     plot_compare_angle(theta, ts_dwba, 'DWBA', theta, bm_ts, 'Benchmark', name)
 
@@ -292,7 +292,7 @@ dwba_ts = mod.calculate_ts(m)
 
 # and then a SDWBA version of the same
 m |= {'phase_sd': 20, 'num_runs': 100}
-sdwba_ts = mod.calculate_ts(m)
+sdwba_ts = mod.calculate_ts(m, progress=True)
 
 plt.plot(m['theta'], sdwba_ts, label='sdwba')
 plt.plot(m['theta'], dwba_ts, label='dwba')
@@ -305,7 +305,7 @@ p = rm.parameters(name)
 p['f'] = np.arange(10, 100, 0.05) * 1e3  # [kHz]
 
 es = ESModel()
-ts = es.calculate_ts(p)
+ts = es.calculate_ts(p, progress=True)
 
 plt.plot(p['f']*1e-3, ts)
 plt.xlabel('Freq [kHz]')
@@ -370,7 +370,7 @@ for fname in fishes:
     # p['high_ka_medium'] = 'body'
     # p['low_ka_medium'] = 'body'
 
-    krm_ts = mod.calculate_ts(p)
+    krm_ts = mod.calculate_ts(p, progress=True)
 
     # Get the TS from the NOAA KRM webpage (cached locally)
     noaa_ts = KRMdata.ts(fname)
@@ -394,7 +394,7 @@ models_df = as_dataframe(m, mss.no_expand_parameters)
 
 print(f'Running {len(models_df)} models')
 # and run. This will return a Series
-ts = mss.calculate_ts(models_df, multiprocess=False)
+ts = mss.calculate_ts(models_df, multiprocess=True, progress=True)
 models_df['ts'] = ts
 
 # Alternatively, the ts results can be added to the dataframe that is passed in:
@@ -431,7 +431,7 @@ print(f'Running {np.prod(params_xa.shape)} models!')
 
 # and is called the same way as for the dataframe. Use multiprocessing for this one as there
 # are a lot of models to run.
-mss.calculate_ts(params_xa, multiprocess=True)
+mss.calculate_ts(params_xa, multiprocess=True, progress=False)
 
 # Xarray selections and dimenions names can then be used
 plt.plot(params_xa.f, params_xa.sel(theta=90, medium_rho=1000, medium_c=1600))
@@ -500,6 +500,6 @@ m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'b', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
 
 pt = PTDWBAModel()
-dwba_ts = pt.calculate_ts(m, progress=True)
+dwba_ts = pt.calculate_ts(m, multiprocess=False, progress=True)
 
 plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bm_ts, 'Benchmark', name)
