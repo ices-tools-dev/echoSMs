@@ -65,6 +65,8 @@ class BenchmarkData:
         self.angle_dataset.rename(columns=BenchmarkData.a_rename, inplace=True)
         self.freq_dataset.rename(columns=BenchmarkData.f_rename, inplace=True)
 
+        self.freq_dataset *= 1e3  # want Hz not kHz
+
         self.angle_dataset.set_index('angle (deg)', inplace=True)
         self.freq_dataset.set_index('frequency (kHz)', inplace=True)
 
@@ -100,7 +102,7 @@ class BenchmarkData:
         Returns
         -------
         :
-            Tuple containing the frequencies (kHz) and TS (dB) for the requested benchmark model.
+            Tuple containing the frequencies (Hz) and TS (dB) for the requested benchmark model.
         """
         if name not in self.freq_names():
             raise ValueError(f'The requested model ({name}) '
