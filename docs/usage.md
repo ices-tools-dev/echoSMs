@@ -175,7 +175,7 @@ the parameters for each model run (one row per parameter set) and the multiproce
 
 A progress bar can be shown via the `progress = True` option, but note that this tends to not work correctly in some Python terminals (e.g. the Spyder terminal). The progress bar shows the number of chunks that the DataFame has been split into and the number of chunks completed (in contrast, the non-multiprocessing progress bar shows the number of model runs completed).
 
-EchoSMs' currently uses the [mapply](https://github.com/ddelange/mapply) package to distribute the model runs. Mapply is limited to CPUs on the one computer - it does not support multiprocessing across multiple computers. A different multiprocessing package would be needed to support running on multiple computers (e.g. clusters of computers).
+EchoSMs currently uses the [mapply](https://github.com/ddelange/mapply) package to distribute the model runs. Mapply is limited to CPUs on the one computer - it does not support multiprocessing across multiple computers. A different multiprocessing package would be needed to support running on multiple computers (e.g. clusters of computers).
 
 ## Reference model definitions
 
