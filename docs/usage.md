@@ -281,7 +281,7 @@ Note that the `parameters()` call does not return all of the parameters needed b
 
 ## Benchmark model TS
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchmarkData`](api_reference.md#echosms.BenchmarkData) class. This class reads the CSV-formatted file of benchmark values. Methods in the `BenchmarkData` class provide a list of the benchmark names, access to individual TS and frequency/angle datasets, and also the frequency and angle datasets as Pandas DataFrames.
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchmarkData`](api_reference.md#echosms.BenchmarkData) class. This class reads the CSV-formatted files of benchmark values and provides methods that list the benchmark names, return individual TS and frequency/angle datasets, and also provide the entire datasets as Pandas DataFrames.
 
 ```py
     from echosms import BenchmarkData

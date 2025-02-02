@@ -67,8 +67,12 @@ class BenchmarkData:
 
         self.freq_dataset['frequency (kHz)'] *= 1e3  # want Hz not kHz
 
-        self.angle_dataset.set_index('angle (deg)', inplace=True)
-        self.freq_dataset.set_index('frequency (kHz)', inplace=True)
+        # Remove units from the column names (we have the echoSMs units convention instead)
+        self.freq_dataset.rename(columns={'frequency (kHz)': 'frequency'}, inplace=True)
+        self.angle_dataset.rename(columns={'angle (deg)': 'angle'}, inplace=True)
+
+        self.angle_dataset.set_index('angle', inplace=True)
+        self.freq_dataset.set_index('frequency', inplace=True)
 
     def angle_names(self) -> list:
         """Provide the model names for the angle benchmark data.
@@ -142,6 +146,6 @@ class BenchmarkData:
         Returns
         -------
         :
-            Dataframe containing the benchmark data. 
+            Dataframe containing the benchmark data.
         """
         return self.freq_dataset

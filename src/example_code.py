@@ -106,7 +106,7 @@ for name in models:
     bm_f, bm_ts = bm.freq_data(name)
     not_nan = ~np.isnan(bm_ts)
 
-    m['f'] = bm_f[not_nan]*1e3  # [Hz]
+    m['f'] = bm_f[not_nan]
     bm_ts = bm_ts[not_nan]
 
     # No benchmark TS is available for this model, so add some sensible frequencies in
@@ -186,7 +186,7 @@ m['boundary_type'] = 'pressure release'
 m_f, bm_ts = bm.freq_data(name)
 not_nan = ~np.isnan(bm_ts)
 
-m['f'] = bm_f[not_nan]*1e3  # [Hz]
+m['f'] = bm_f[not_nan]
 bm_ts = bm_ts[not_nan]
 
 mod = KAModel()
@@ -240,8 +240,7 @@ for name in model_names:
     m.pop('b', None)
 
     # Get benchmark model for comparison
-    bm_f, bm_ts = bm.freq_data(name)
-    f = bm_f * 1e3
+    f, bm_ts = bm.freq_data(name)
 
     m |= {'theta': 90, 'phi': 0, 'a': a, 'rv_pos': rv_pos, 'rv_tan': rv_tan, 'f': f}
 
@@ -455,7 +454,7 @@ m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
 bm_f, bm_ts = bm.freq_data(name)
-m['f'] = bm_f * 1e3  # [Hz]
+m['f'] = bm_f
 # remove unneeded parameters
 m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
@@ -471,7 +470,7 @@ plot_compare_freq(m['f'], dwba_ts, 'PT-DWBA', m['f'], bm_ts, 'Benchmark', name)
 mss = MSSModel()
 mm = rm.parameters(name)
 bm_f, bm_ts = bm.freq_data(name)
-mm['f'] = bm_f * 1e3  # [Hz]
+mm['f'] = bm_f
 mm['theta'] = 90.0
 
 mss_ts = mss.calculate_ts(mm, progress=True)
@@ -494,7 +493,7 @@ m['phi'] = 0
 m['rho'] = [m['medium_rho'], m['target_rho']]
 m['c'] = [m['medium_c'], m['target_c']]
 bm_f, bm_ts = bm.freq_data(name)
-m['f'] = bm_f * 1e3  # [Hz]
+m['f'] = bm_f
 # remove unneeded parameters
 m = {k: v for k, v in m.items()
      if k not in ['boundary_type', 'a', 'b', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
