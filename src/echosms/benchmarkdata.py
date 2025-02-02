@@ -65,7 +65,7 @@ class BenchmarkData:
         self.angle_dataset.rename(columns=BenchmarkData.a_rename, inplace=True)
         self.freq_dataset.rename(columns=BenchmarkData.f_rename, inplace=True)
 
-        self.freq_dataset *= 1e3  # want Hz not kHz
+        self.freq_dataset['frequency (kHz)'] *= 1e3  # want Hz not kHz
 
         self.angle_dataset.set_index('angle (deg)', inplace=True)
         self.freq_dataset.set_index('frequency (kHz)', inplace=True)
