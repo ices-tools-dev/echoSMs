@@ -281,18 +281,23 @@ Note that the `parameters()` call does not return all of the parameters needed b
 
 ## Benchmark model TS
 
-[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _benchmark_ model runs for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchmarkData`](api_reference.md#echosms.BenchmarkData) class. This class reads the CSV-formatted files of benchmark values and provides methods that list the benchmark names, return individual TS and frequency/angle datasets, and also provide the entire datasets as Pandas DataFrames.
+[Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented benchmark TS values for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchmarkData`](api_reference.md#echosms.BenchmarkData) class. This class reads the CSV-formatted files of benchmark values and provides methods that list the benchmark names, returns TS as a function of frequency and angle for each benchmark model. For more complex uses of the benchmark data, they are also available as Pandas DataFrames.
 
 ```py
     from echosms import BenchmarkData
     bm = BenchmarkData()
 
+    # Lists of the benchmark model names
     bm.freq_names()
     bm.angle_names()
 
+    # TS as a function of frequency for a model
     f, ts = bm.freq_data('fixed rigid sphere')
+
+    # TS as a function of angle for a model
     theta, ts = bm.angle_data('fixed rigid prolate spheroid')
 
-    bm.angle_as_dataframe()
+    # As Pandas DataFrames
     bm.freq_as_dataframe()
+    bm.angle_as_dataframe()
 ```
