@@ -31,7 +31,7 @@ def test_mssmodel(rm, reference_model, f, ts):
     m = rm.parameters(reference_model)
     m['f'] = f
 
-    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), f"Incorrect TS value"
+    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
 
 ###########################################################
@@ -63,7 +63,7 @@ def test_psmsmodel(rm, reference_model, f, theta, ts):
     m['f'] = f
     m['theta'] = theta
 
-    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), f"Incorrect TS value"
+    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
 
 ###########################################################
@@ -76,7 +76,7 @@ def test_esmodel(rm, reference_model, f, ts):
     m = rm.parameters(reference_model)
     m['f'] = f
     print(mod.calculate_ts(m))
-    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), f"Incorrect TS value"
+    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
 
 ###########################################################
@@ -90,12 +90,23 @@ def test_krmmodel(rm, fname, f, ts):
          'f': f, 'high_ka_medium': 'water', 'low_ka_medium': 'water'}
     mod = echosms.KRMModel()
     print(mod.calculate_ts(m))
-    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), f"Incorrect TS value"
+    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
 
 ###########################################################
 # KAModel
 
+def test_kamodel(rm):
+    import trimesh
+    name = 'fixed rigid sphere'
+    s = rm.specification(name)
+
+    p = {'medium_c': s['medium_c'], 'phi': 0, 'theta': 90.0,
+         'mesh': trimesh.creation.icosphere(radius=s['a'], subdivisions=4),
+         'boundary_type': 'pressure release', 'f': 38e3}
+
+    mod = echosms.KAModel()
+    assert np.allclose(mod.calculate_ts(p), -44.4474, atol=0.0001), "Incorrect TS value"
 
 ###########################################################
 # HPModel
@@ -108,24 +119,59 @@ def test_hpmodel(model, f, ts):
     p = {'boundary_type': model, 'shape': 'sphere', 'medium_c': 1500, 'a': 0.01, 'f': f}
     match model:
         case 'fixed rigid':
-            print(mod.calculate_ts(p))
-            assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), f"Incorrect TS value"
+            assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
         case 'elastic':
             p |= {'medium_rho': 1024, 'target_c': 1600, 'target_rho': 1600}
-            print(mod.calculate_ts(p))
-            assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), f"Incorrect TS value"
+            assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
         case 'fluid filled':
             p |= {'medium_rho': 1024, 'target_c': 1510, 'target_rho': 1025}
-            print(mod.calculate_ts(p))
-            assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), f"Incorrect TS value"
+            assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
 
 
 ###########################################################
 # PTDWBAModel
+def test_ptdwbamodel(rm):
+    name = 'weakly scattering sphere'
+    p = rm.parameters(name)
+
+    # make a 3d matrix of 0's and 1's and set to 1 for the sphere
+    # and 0 for not the sphere
+    p['voxel_size'] = (0.0001, 0.0001, 0.0001)  # [m]
+    x = np.arange(-p['a'], p['a'], p['voxel_size'][0])
+    (X, Y, Z) = np.meshgrid(x, x, x)
+
+    p['volume'] = (np.sqrt(X**2 + Y**2 + Z**2) <= p['a']).astype(int)
+    p['theta'] = 90
+    p['phi'] = 0
+    p['rho'] = [p['medium_rho'], p['target_rho']]
+    p['c'] = [p['medium_c'], p['target_c']]
+    p['f'] = 38e3
+
+    # remove unneeded parameters
+    p = {k: v for k, v in p.items()
+         if k not in ['boundary_type', 'a', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
+
+    mod = echosms.PTDWBAModel()
+    print(mod.calculate_ts(p))
+    assert np.allclose(mod.calculate_ts(p), -94.0733, atol=0.0001), "Incorrect TS value"
 
 
 ###########################################################
-# SDWBAModel
+# Stochastic option on the DWBAModel
+def test_sdwbamodel():
+    krill = echosms.DWBAdata().model('Generic krill (McGehee 1998)')
+
+    p = {'medium_c': 1500, 'medium_rho': 1024, 'phi': 0,
+         'target_c': 1501, 'target_rho': 1025, 'a': krill.a, 'rv_pos': krill.rv_pos,
+         'rv_tan': krill.rv_tan, 'f': 38000, 'theta': 90,
+         'phase_sd': 20, 'num_runs': 100}
+
+    mod = echosms.DWBAModel()
+    print(mod.calculate_ts(p))
+
+    # Need wider bounds on the closeness check here because of the stochastic 
+    # part of the SDWBA model.
+    assert np.allclose(mod.calculate_ts(p), -115.7, atol=0.5), "Incorrect TS value"
 
 
 ###########################################################
@@ -150,4 +196,4 @@ def test_dwbamodel(rm, reference_model, f, theta, ts):
 
     mod = echosms.DWBAModel()
 
-    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), f"Incorrect TS value"
+    assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
