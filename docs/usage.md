@@ -30,7 +30,7 @@ The following models are available in echoSMs:
 |Model type|Python class name(s)|Description|
 |----------|----------|-----------|
 |Deformed cylinder|DCMModel|Truncated cylinders with various boundary conditions|
-|Distorted-wave Born approximation|DWBAModel & SDWBAModel|Weakly scattering objects with piecewise circular cross-sections and homogenous interiors with an optional stochastic variant (the SDWBA)|
+|Distorted-wave Born approximation|DWBAModel|Weakly scattering objects with piecewise circular cross-sections and homogenous interiors with an optional stochastic variant (the SDWBA)|
 |Elastic sphere|ESModel|Elastic spheres, such as echosounder calibration spheres|
 |High-pass|HPModel|Approximate models for simple shapes|
 |Kirchhoff approximation|KAModel|Surfaces that are mainly convex|
