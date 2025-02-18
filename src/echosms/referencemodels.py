@@ -76,27 +76,27 @@ class ReferenceModels:
         """
         return [n['name'] for n in self.definitions['target']]
 
-    def specification(self, name):
+    def specification(self, name: str) -> dict:
         """Model definitions for a particular model.
 
         Parameters
         ----------
-        name : str
+        name :
             The name of a model in the ``target definitions.toml`` file.
 
         Returns
         -------
-        : dict
-            The model definitions for the requested model or an empty set if no model
+        :
+            The model definitions for the requested model or an empty dict if no model
             with that name.
         """
         s = [t for t in self.definitions['target'] if t['name'] == name]
         if not s:
-            return s
+            return {}
 
         return s[0]
 
-    def parameters(self, name):
+    def parameters(self, name: str) -> dict:
         """Model parameters for a particular model.
 
         Model parameters are a subset of the model specification where the metadata items have
@@ -104,19 +104,20 @@ class ReferenceModels:
 
         Parameters
         ----------
-        name : str
+        name :
             The name of a model in the ``target definitions.toml`` file.
 
         Returns
         -------
-        : dict
-            The model parameters for the requested model or an empty set if no model with that name.
+        :
+            The model parameters for the requested model or an empty dict if no model with
+            that name.
 
         """
         s = self.specification(name)
 
         if not s:
-            return []
+            return {}
 
         # Remove the entries that are not parameters
         p = s.copy()
