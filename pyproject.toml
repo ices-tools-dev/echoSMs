@@ -56,7 +56,8 @@ dev = [
   "mkdocstrings[python]",
   "matplotlib",
   "twine",
-  "pytest"
+  "pytest",
+  "coverage"
 ]
 
 
