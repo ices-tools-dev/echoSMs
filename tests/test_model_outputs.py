@@ -13,7 +13,7 @@ def rm():
 # Test that models return correct TS values. 
 
 # Generally, each model is run for it's various boundary conditions at one size and frequency. 
-# This is likely to be sufficient to pick up when changes to model code change the output.
+# This is likely to be sufficient to pick up when changes to model code changes the output.
 
 
 ###########################################################
@@ -95,7 +95,6 @@ def test_krmmodel(rm, fname, f, ts):
 
 ###########################################################
 # KAModel
-
 def test_kamodel(rm):
     import trimesh
     name = 'fixed rigid sphere'
@@ -107,6 +106,7 @@ def test_kamodel(rm):
 
     mod = echosms.KAModel()
     assert np.allclose(mod.calculate_ts(p), -44.4474, atol=0.0001), "Incorrect TS value"
+
 
 ###########################################################
 # HPModel
@@ -157,24 +157,6 @@ def test_ptdwbamodel(rm):
 
 
 ###########################################################
-# Stochastic option on the DWBAModel
-def test_sdwbamodel():
-    krill = echosms.DWBAdata().model('Generic krill (McGehee 1998)')
-
-    p = {'medium_c': 1500, 'medium_rho': 1024, 'phi': 0,
-         'target_c': 1501, 'target_rho': 1025, 'a': krill.a, 'rv_pos': krill.rv_pos,
-         'rv_tan': krill.rv_tan, 'f': 38000, 'theta': 90,
-         'phase_sd': 20, 'num_runs': 100}
-
-    mod = echosms.DWBAModel()
-    print(mod.calculate_ts(p))
-
-    # Need wider bounds on the closeness check here because of the stochastic 
-    # part of the SDWBA model.
-    assert np.allclose(mod.calculate_ts(p), -115.7, atol=0.5), "Incorrect TS value"
-
-
-###########################################################
 # DWBAModel
 @pytest.mark.parametrize("reference_model, f, theta, ts",
                          [('weakly scattering sphere', 38e3, 90, -94.0910),
@@ -197,3 +179,21 @@ def test_dwbamodel(rm, reference_model, f, theta, ts):
     mod = echosms.DWBAModel()
 
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
+
+
+###########################################################
+# Stochastic option on the DWBAModel
+def test_sdwbamodel():
+    krill = echosms.DWBAdata().model('Generic krill (McGehee 1998)')
+
+    p = {'medium_c': 1500, 'medium_rho': 1024, 'phi': 0,
+         'target_c': 1501, 'target_rho': 1025, 'a': krill.a, 'rv_pos': krill.rv_pos,
+         'rv_tan': krill.rv_tan, 'f': 38000, 'theta': 90,
+         'phase_sd': 20, 'num_runs': 100}
+
+    mod = echosms.DWBAModel()
+    print(mod.calculate_ts(p))
+
+    # Need wider bounds on the closeness check here because of the stochastic
+    # part of the SDWBA model.
+    assert np.allclose(mod.calculate_ts(p), -115.7, atol=0.5), "Incorrect TS value"
