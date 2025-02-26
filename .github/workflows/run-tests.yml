@@ -22,7 +22,4 @@ jobs:
           python -m pip install .[dev]
       - name: Run pytest tests
         run: |
-          coverage run -m pytest -v -s
-      - name: Generate Coverage Report  
-        run: |
-          coverage report -m
+          python -m pytest -v -s
