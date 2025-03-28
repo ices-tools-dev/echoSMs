@@ -16,8 +16,8 @@ The changelogs for echoSMs are listed [here](https://github.com/ices-tools-dev/e
 
 The installed version of echosms can be printed with this Python code:
 
-    import importlib
-    print(importlib.metadata.version('echosms'))
+    from importlib.metadata import version
+    version('echosms')
 
 To upgrade echosms to the latest version use:
 
