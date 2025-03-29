@@ -10,6 +10,7 @@ We use SI units for the model parameters, except for angles (degrees instead of 
 |density|kg/m³||
 |sound speed|m/s||
 |angle|°|See [Coordinate systems][coordinate-systems]|
+|solid angle|sr||
 |frequency|Hz||
 |target strength|dB|reference value is 1 m²|
 

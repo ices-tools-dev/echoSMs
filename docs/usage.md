@@ -17,14 +17,14 @@ The changelogs for echoSMs are listed [here](https://github.com/ices-tools-dev/e
 The installed version of echosms can be printed with this Python code:
 
 ```py
-    from importlib.metadata import version
-    version('echosms')
+from importlib.metadata import version
+version('echosms')
 ```
 
 To upgrade echosms to the latest version use:
 
 ```py
-    pip install echosms --upgrade
+pip install echosms --upgrade
 ```
 
 ## Model overview
@@ -66,48 +66,48 @@ To use a model, you need to know what parameters it requires. These are document
 The simplest way to provide these to the model is a dictionary:
 
 ```py
-    p = {'medium_rho': 1026.8,
-         'medium_c': 1477.4,
-         'a': 0.01, 
-         'boundary_type': 'pressure release',
-         'f': 38000}
+p = {'medium_rho': 1026.8,
+     'medium_c': 1477.4,
+     'a': 0.01, 
+     'boundary_type': 'pressure release',
+     'f': 38000}
 ```
 
 An instance of the model can then be created and the `calculate_ts` function called with these parameters:
 
 ```py
-    from echosms import MSSModel
-    model = MSSModel()
-    model.calculate_ts(p)
+from echosms import MSSModel
+model = MSSModel()
+model.calculate_ts(p)
 ```
 
 This will return one TS value corresponding to the parameters given. If you want to run the model for a range of parameters, the relevant dictionary items can contain multiple values:
 
 ```py hl_lines="6"
-        import numpy as np
-        p = {'medium_rho': 1026.8,
-             'medium_c': 1477.4,
-             'a': 0.01,
-             'boundary_type': 'pressure release',
-             'f', np.arange(10, 100, 1)*1000}  # [Hz]
-        model.calculate_ts(p)
+import numpy as np
+p = {'medium_rho': 1026.8,
+     'medium_c': 1477.4,
+     'a': 0.01,
+     'boundary_type': 'pressure release',
+     'f', np.arange(10, 100, 1)*1000}  # [Hz]
+model.calculate_ts(p)
 ```
 
 It is also fine to have multiple items with multiple values:
 
 ```py hl_lines="3 4 5"
-        p = {'medium_rho': 1026.8,
-             'medium_c': 1477.4,
-             'a': np.arange(0.01, 0.02, 0.001),  # [m]
-             'boundary_type': ['pressure release', 'fixed rigid'],
-             'f': np.arange(10, 100, 1)*1000}  # [Hz]
-        model.calculate_ts(p)
+p = {'medium_rho': 1026.8,
+     'medium_c': 1477.4,
+     'a': np.arange(0.01, 0.02, 0.001),  # [m]
+     'boundary_type': ['pressure release', 'fixed rigid'],
+     'f': np.arange(10, 100, 1)*1000}  # [Hz]
+model.calculate_ts(p)
 ```
 
 The TS will be calculated for all combinations of the parameters. To do this, echoSMs expands the parameters into a Pandas DataFrame with one column for each parameter and one row for each of the combinations. It then runs the model on each row of the DataFrame. That DataFrame, with the TS included, can be returned instead of a list of TS values by using the `expand` option:
 
 ```py
-        model.calculate_ts(p, expand=True)
+model.calculate_ts(p, expand=True)
 ```
 
 An introductory [Jupyter notebook](https://github.com/ices-tools-dev/echoSMs/blob/main/docs/tutorial.ipynb) is available that covers the above concepts and a Python script that covers this and more is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/src/example_code.py).
@@ -131,27 +131,29 @@ Some models use parameters that are not sensibly duplicated across rows in a Dat
 But, as it is very convenient to have all the model parameters in one data structure, echoSMs will store the non-expandable parameters as a dict in the DataFrame or DataArray attributes. An example of this is the `PTDWBAModel`:
 
 ```py
-    from echosms import PTDWBAModel, as_dataframe
-    import numpy as np
+from echosms import PTDWBAModel, as_dataframe
+import numpy as np
 
-    model = PTDWBAModel()
-    m = {'volume': np.full((5,5,5), 0),
-         'f': np.arange(10, 100, 1)*1000,
-         'rho': [1024, 1025],  
-         'c': [1500, 1501],
-         'voxel_size': (0.001, 0.001, 0.001),
-         'theta': 90,
-         'phi': 0}
-    m['volume'][3,3,3] = 1  # something to produce scatter
-    p = as_dataframe(m, model.no_expand_parameters)
-    model.calculate_ts(p, inplace=True)
-    print(p)
+model = PTDWBAModel()
+
+m = {'volume': np.full((5,5,5), 0),
+     'f': np.arange(10, 100, 1)*1000,
+     'rho': [1024, 1025],  
+     'c': [1500, 1501],
+     'voxel_size': (0.001, 0.001, 0.001),
+     'theta': 90,
+     'phi': 0}
+m['volume'][3,3,3] = 1  # something to produce scatter
+
+p = as_dataframe(m, model.no_expand_parameters)
+model.calculate_ts(p, inplace=True)
+print(p)
 ```
 
 For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains three columns (`theta`, `phi`, and `ts`). The remaining parameters are available via:
 
 ```py
-    p.attrs['parameters']
+p.attrs['parameters']
 ```
 
 Note that while `rho` and `c` look like parameters that would be expanded, they are in the list of non-expandable parameters, so are not expanded. This is because the structure of the PTDWBA model means that it it not sensible to have variable parameters for `rho` and `c`. 
@@ -159,20 +161,18 @@ Note that while `rho` and `c` look like parameters that would be expanded, they 
 If you pass the dictionary form of the parameters to a model, this treatment of non-expanding parameters is done automatically, where
 
 ```py
-    model.calculate_ts(m, expand=True)
+model.calculate_ts(m, expand=True)
 ```
 
 returns the same results as
 
 ```py
-    p = as_dataframe(m, model.no_expand_parameters)
-    model.calculate_ts(p, inplace=True)`
-    print(p)
+p = as_dataframe(m, model.no_expand_parameters)
+model.calculate_ts(p, inplace=True)`
+print(p)
 ```
 
 ## Multiprocessing
-
-_This is an experimental feature._
 
 EchoSMs can use more than one CPU to run models. Internally, echoSMs uses a Pandas DataFrame to store
 the parameters for each model run (one row per parameter set) and the multiprocessing is achieved with a package that runs an echoSMs model on each row in the DataFrame, split across separate CPUs. This is enabled with the `multiprocess = True` parameter in the call to `calculate_ts()`. The total solution time will decrease almost linearly with the number of CPUs.
@@ -186,9 +186,9 @@ EchoSMs currently uses the [mapply](https://github.com/ddelange/mapply) package 
 [Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented _reference_ models for a range of scattering objects: spheres, spherical shells, prolate spheroids, and finite cylinders for several boundary conditions (fixed rigid, pressure release, fluid-filled) and parameters (backscatter as a function of frequency and incident angle). These model definitions are included in echoSMs via the [`ReferenceModels`](api_reference.md#echosms.ReferenceModels) class, along with other objects, such as calibration spheres. For example, the names of all the model definitions are available with:
 
 ```py
-    from echosms import ReferenceModels
-    rm = ReferenceModels()
-    rm.names()
+from echosms import ReferenceModels
+rm = ReferenceModels()
+rm.names()
 ```
 
 which returns:
@@ -230,7 +230,7 @@ which returns:
 and the specification for a particular model is given by:
 
 ```py
-    rm.specification('spherical fluid shell with weakly scattering interior')
+rm.specification('spherical fluid shell with weakly scattering interior')
 ```
 
 which returns:
@@ -255,8 +255,8 @@ which returns:
 Note that the specification contains more information that the model itself needs, so the subset needed for running a model is available via:
 
 ```py
-    m = rm.parameters('spherical fluid shell with weakly scattering interior')
-    print(m)
+m = rm.parameters('spherical fluid shell with weakly scattering interior')
+print(m)
 ```
 
 which returns:
@@ -276,11 +276,11 @@ which returns:
 Note that the `parameters()` call does not return all of the parameters needed by a model. For example, `f` is not there and needs to be added before running a model:
 
 ```py
-    m['f'] = [38000, 40000, 42000]
+m['f'] = [38000, 40000, 42000]
 
-    from echosms import MSSModel
-    model = MSSModel()
-    model.calculate_ts(m)
+from echosms import MSSModel
+model = MSSModel()
+model.calculate_ts(m)
 ```
 
 ## Benchmark model TS
@@ -288,20 +288,20 @@ Note that the `parameters()` call does not return all of the parameters needed b
 [Jech et al., (2015)](https://doi.org/10.1121/1.4937607) presented benchmark TS values for the reference models. The TS results from these benchmarks are available in echoSMs via the [`BenchmarkData`](api_reference.md#echosms.BenchmarkData) class. This class reads the CSV-formatted files of benchmark values and provides methods that list the benchmark names, returns TS as a function of frequency and angle for each benchmark model. For more complex uses of the benchmark data, they are also available as Pandas DataFrames.
 
 ```py
-    from echosms import BenchmarkData
-    bm = BenchmarkData()
+from echosms import BenchmarkData
+bm = BenchmarkData()
 
-    # Lists of the benchmark model names
-    bm.freq_names()
-    bm.angle_names()
+# Lists of the benchmark model names
+bm.freq_names()
+bm.angle_names()
 
-    # TS as a function of frequency for a model
-    f, ts = bm.freq_data('fixed rigid sphere')
+# TS as a function of frequency for a model
+f, ts = bm.freq_data('fixed rigid sphere')
 
-    # TS as a function of angle for a model
-    theta, ts = bm.angle_data('fixed rigid prolate spheroid')
+# TS as a function of angle for a model
+theta, ts = bm.angle_data('fixed rigid prolate spheroid')
 
-    # As Pandas DataFrames
-    bm.freq_as_dataframe()
-    bm.angle_as_dataframe()
+# As Pandas DataFrames
+bm.freq_as_dataframe()
+bm.angle_as_dataframe()
 ```
