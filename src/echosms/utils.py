@@ -22,7 +22,8 @@ def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)
     ts :
         The target strength of the object [dB re 1 m²].
     eba :
-        The equivalent beam angle of the transducer [dB re 1 sr].
+        Ten times the logarithm to the base 10 of the transducer's equivalent two-way beam angle (ψ, sr), 
+        in formula form, eba = 10 log<sub>10</sub>(ψ) dB (re 1 sr).
     r :
         The range from the transducer to the target [m]. Used for acoustic beam spreading.
     nautical :
