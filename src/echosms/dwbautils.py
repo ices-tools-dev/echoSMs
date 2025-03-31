@@ -131,19 +131,19 @@ class DWBAorganism():
     def plot(self):
         """Do a simple plot of the DWBA model data."""
         import matplotlib.pyplot as plt
-        fig, axs = plt.subplots(2, 1)
+        fig, axs = plt.subplots(2, 1, layout='compressed')
         x = self.rv_pos[:, 0]*1e3
         axs[0].plot(x, -self.rv_pos[:, 1]*1e3, '.-', c='C0')
         axs[0].plot(x, (-self.rv_pos[:, 1]+self.a/2)*1e3, c='C1')
         axs[0].plot(x, (-self.rv_pos[:, 1]-self.a/2)*1e3, c='C1')
         axs[0].set_title('Dorsal', loc='left', fontsize=8)
-        axs[0].set_aspect('equal')
+        axs[0].axis('scaled')
 
         axs[1].plot(x, -self.rv_pos[:, 2]*1e3, '.-', c='C0')
         axs[1].plot(x, (-self.rv_pos[:, 2]+self.a/2)*1e3, c='C1')
         axs[1].plot(x, (-self.rv_pos[:, 2]-self.a/2)*1e3, c='C1')
         axs[1].set_title('Lateral', loc='left', fontsize=8)
-        axs[1].set_aspect('equal')
+        axs[1].axis('scaled')
 
         plt.suptitle(self.name)
         plt.show()

@@ -85,14 +85,14 @@ class KRMorganism():
     source: str
     body: KRMshape
     inclusions: List[KRMshape]
-    
-    def plot(self):
-        """Simple plot of organism shape."""
 
-        import matplotlib.pyplot as plt        
-        plt.plot(self.body.x, self.body.z_U, self.body.x, self.body.z_L, c='black')
+    def plot(self):
+        """Plot of organism shape."""
+        import matplotlib.pyplot as plt
+        plt.plot(self.body.x*1e3, self.body.z_U*1e3, self.body.x*1e3, self.body.z_L*1e3, c='black')
         for s in self.inclusions:
-            plt.plot(s.x, s.z_U, s.x, s.z_L, c='C0' if s.boundary == 'fluid' else 'C1')
+            plt.plot(s.x*1e3, s.z_U*1e3, s.x*1e3, s.z_L*1e3, c='C0'
+                     if s.boundary == 'fluid' else 'C1')
         plt.gca().set_aspect('equal')
         plt.title(self.name)
         plt.show()
