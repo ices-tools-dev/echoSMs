@@ -111,7 +111,7 @@ class KRMdata():
 
     def __init__(self):
         # Load in the NOAA KRM shapes data
-        self.file = Path(__file__).parent/Path('resources')/Path('NOAA_KRM_shapes.toml')
+        self.file = Path(__file__).parent/Path('resources')/Path('KRM_shapes.toml')
         with open(self.file, 'rb') as f:
             try:
                 shapes = tomllib.load(f)
