@@ -102,6 +102,7 @@ class KRMorganism():
                 plt.plot([s.x[i]*1e3]*2, [s.z_U[i]*1e3, s.z_L[i]*1e3], c=c)
 
         plt.gca().set_aspect('equal')
+        plt.gca().xaxis.set_inverted(True)
         plt.title(self.name)
         plt.show()
 
@@ -124,12 +125,13 @@ class KRMdata():
         for s in shapes['shape']:
             # These KRM data have the head pointing in the -ve x direction, 
             # opposite to the echoSMs coordinate convetion, so fix the 
-            # x-coordinates here when ingesting the data.
+            # x-coordinates here when ingesting the data. And set the posterior end
+            # of the organism to have x=0
             m = max(s['x_b'])
-            body = KRMshape('fluid', m-np.array(s['x_b']), np.array(s['w_b']),
+            body = KRMshape('fluid', -np.array(s['x_b']), np.array(s['w_b']),
                             np.array(s['z_bU']), np.array(s['z_bL']),
                             s['body_c'], s['body_rho'])
-            swimbladder = KRMshape('soft', m-np.array(s['x_sb']), np.array(s['w_sb']),
+            swimbladder = KRMshape('soft', -np.array(s['x_sb']), np.array(s['w_sb']),
                                    np.array(s['z_sbU']), np.array(s['z_sbL']),
                                    s['swimbladder_c'], s['swimbladder_rho'])
             self.krm_models[s['name']] = KRMorganism(s['name'], s['source'], body, [swimbladder])

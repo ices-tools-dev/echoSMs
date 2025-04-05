@@ -138,12 +138,14 @@ class DWBAorganism():
         axs[0].plot(x, (-self.rv_pos[:, 1]-self.a/2)*1e3, c='C1')
         axs[0].set_title('Dorsal', loc='left', fontsize=8)
         axs[0].axis('scaled')
+        axs[0].xaxis.set_inverted(True)
 
         axs[1].plot(x, -self.rv_pos[:, 2]*1e3, '.-', c='C0')
         axs[1].plot(x, (-self.rv_pos[:, 2]+self.a/2)*1e3, c='C1')
         axs[1].plot(x, (-self.rv_pos[:, 2]-self.a/2)*1e3, c='C1')
         axs[1].set_title('Lateral', loc='left', fontsize=8)
         axs[1].axis('scaled')
+        axs[1].xaxis.set_inverted(True)
 
         plt.suptitle(self.name)
         plt.show()
@@ -164,6 +166,8 @@ class DWBAdata():
         # Put the shapes into a dict of SDWBAorganism().
         self.dwba_models = {}
         for s in shapes['shape']:
+            mx = max(s['x'])
+            s['x'] = np.array(s['x'])-mx  # put head at x=0
             # Estimate rv_tan from a spline through (x,y,z).
             tck, u = splprep([s['x'], s['y'], s['z']])
             rv_tan = np.vstack(splev(u, tck, der=1))
