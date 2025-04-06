@@ -183,7 +183,7 @@ m['mesh'] = mesh
 m['boundary_type'] = 'pressure release'
 
 # Get the benchmark TS values
-m_f, bm_ts = bm.freq_data(name)
+bm_f, bm_ts = bm.freq_data(name)
 not_nan = ~np.isnan(bm_ts)
 
 m['f'] = bm_f[not_nan]
