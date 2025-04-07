@@ -89,7 +89,7 @@ p = {'medium_rho': 1026.8,
      'medium_c': 1477.4,
      'a': 0.01,
      'boundary_type': 'pressure release',
-     'f', np.arange(10, 100, 1)*1000}  # [Hz]
+     'f': np.arange(10, 100, 1)*1000}  # [Hz]
 model.calculate_ts(p)
 ```
 
