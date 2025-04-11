@@ -154,8 +154,7 @@ def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
     # An example of flipping left to right to match the echoSMS coordinate system
     s['x'] = max(s['x']) - s['x']
 
-    shape = create_dwba_from_xyza(s['x'], s['y'], s['z'], s['a'],
-                                  name=Path(filepath).stem, g=1.05, h=1.05)
+    shape = create_dwba_from_xyza(s['x'], s['y'], s['z'], s['a'], name=filepath, g=1.05, h=1.05)
 
     ```
     """
