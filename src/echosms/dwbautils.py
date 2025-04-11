@@ -90,6 +90,92 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
     return rv_pos, rv_tan, a
 
 
+def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
+                          source: str = '', note: str = ''):
+    """Create a DWBAorganism instance from shape data.
+
+    Converts a centreline and radius definiton of the DWBA shape into
+    that required by the echoSMs implementation of the DWBA (centreline, tangential, and
+    radii vectors).
+
+    Parameters
+    ----------
+    x : Iterable[float]
+        x-coordinates [m] of the centreline of the DWBA shape as per the echoSMs
+        [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+        conventions/#coordinate-systems).
+    y : Iterable[float]
+        y-coordinates [m] of the centreline of the DWBA shape as per the echoSMs
+        [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+        conventions/#coordinate-systems).
+    z : Iterable[float]
+        z-coordinates [m] of the centreline of the DWBA shape as per the echoSMs
+        [coordinate system](https://ices-tools-dev.github.io/echoSMs/
+        conventions/#coordinate-systems).
+    a : Iterable[float]
+        radius [m] of the DWBA shape at each centreline (x,y,z) position.
+    name :
+        A name for the organism.
+    source :
+        A link/URL/DOI or description for the source of the data.
+    note :
+        Notes about the organism or data.
+    g :
+        A single value of g, the ratio of organism density divided by the
+        medium density. This is applied to all parts of the shape.
+    h :
+        A single value of h, the ratio of organism sound speed divided by
+        the medium sound speed. This is applied to all parts of the shape.
+
+    Returns
+    -------
+        An instance of DWBAorganism.
+
+    Notes
+    -----
+    Here is an example of how to use this function to read in .sat files
+    from the ZooScatR package and convert them into the format required
+    by the echoSMs DWBA model.
+
+    ```py
+    import pandas as pd
+    from echosms import create_dwba_from_xyza
+
+    filepath = 'shape.sat'
+
+    s = pd.read_csv(filepath, delimiter=' ', names=['y', 'x', 'a'])
+
+    # Adjust the data to match the echoSMs units
+    s /= 1000  # convert mm to m
+
+    # .sat files don't have a z coordinate but echoSMs requires it
+    s['z'] = 0.0
+
+    # An example of flipping left to right to match the echoSMS coordinate system
+    s['x'] = max(s['x']) - s['x']
+
+    shape = create_dwba_from_xyza(s['x'], s['y'], s['z'], s['a'],
+                                  name=Path(filepath).stem, g=1.05, h=1.05)
+
+    ```
+    """
+
+    # Estimate rv_tan from a spline through (x,y).
+    tck, u = splprep([x, y, z])
+    rv_tan = np.vstack(splev(u, tck, der=1))
+    # Make sure rv_tan holds only unit vectors
+    n = np.linalg.norm(np.vstack(rv_tan), axis=0)
+    rv_tan = (rv_tan / n).T
+
+    # Convert the x, y, and z into a 2D array and get one row for each (x,y,z) point.
+    rv_pos = np.vstack((x, y, z)).T
+
+    gg = np.full((1, rv_pos.shape[0]), g)
+    hh = np.full((1, rv_pos.shape[0]), h)
+
+    return DWBAorganism(rv_pos, a, gg, hh, name, source, note, rv_tan)
+
+
 @dataclass
 class DWBAorganism():
     """DWBA shape and property class to represent an organism.
@@ -163,7 +249,7 @@ class DWBAdata():
             except tomllib.TOMLDecodeError as e:
                 raise SyntaxError(f'Error while parsing file "{self.defs_filename.name}"') from e
 
-        # Put the shapes into a dict of SDWBAorganism().
+        # Put the shapes into a dict of DWBAorganism().
         self.dwba_models = {}
         for s in shapes['shape']:
             mx = max(s['x'])

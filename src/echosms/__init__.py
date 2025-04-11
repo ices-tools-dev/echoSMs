@@ -2,7 +2,7 @@
 from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_jnpp
 from .utils import pro_rad1, pro_rad2, pro_ang1
 from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_Sa
-from .dwbautils import create_dwba_spheroid, create_dwba_cylinder, DWBAorganism, DWBAdata
+from .dwbautils import create_dwba_spheroid, create_dwba_cylinder, create_dwba_from_xyza, DWBAorganism, DWBAdata
 from .scattermodelbase import ScatterModelBase
 from .benchmarkdata import BenchmarkData
 from .jechetaldata import JechEtAlData
@@ -26,4 +26,4 @@ __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'DWBAorganism', 'DWBAdata', 'JechEtAlData',
            'pro_rad1', 'pro_rad2', 'pro_ang1',
            'as_dataframe', 'as_dataarray', 'as_dict', 'split_dict',
-           'create_dwba_spheroid', 'create_dwba_cylinder']
+           'create_dwba_spheroid', 'create_dwba_cylinder', 'create_dwba_from_xyza']
