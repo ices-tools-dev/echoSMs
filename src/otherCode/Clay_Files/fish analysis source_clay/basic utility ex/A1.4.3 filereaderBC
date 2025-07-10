@@ -1,0 +1,1 @@
+ rem	A1.4.3 filereaderBC   rem 	example of a file reader prgm  	dim y(100)  	print"give file name":input n$	open n$ for input as #1 	input #1, n1		for i=0 to n1	    input #1,y(i)	next i   	close #1 rem	print the file 	for i=0 to n1	    print i,y(i)	next i 	input q$: rem pause		end

@@ -1,0 +1,1 @@
+dp = 100dt = 1'PRINT "input delta t";:INPUT dt'PRINT "input dp";:INPUT dp20 PRINT"input t,w(t)";:INPUT t,wtwp = ABS(wt*dt/(LOG(10)*10^(t/20)*dp))p = INT(100000&*10^(t/20)+.5)/100PRINT t;TAB(8);p;TAB(18);INT(wp+.5)INPUT q$GOTO 20

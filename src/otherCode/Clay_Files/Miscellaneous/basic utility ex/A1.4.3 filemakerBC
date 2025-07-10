@@ -1,0 +1,1 @@
+rem	A1.4.3 filemakerBCrem	example of a file maker prgm BASIC complier  	dim y(100)	n1=10		for i=0 to n1      	    y(i)=exp(-i/20)            print i,y(i)        next i   rem       make file 	print"give file name":input n$	open n$ for output as #1 	write #1, n1		for i=0 to n1	    write #1,y(i)	next i   	close #1 	end
