@@ -312,8 +312,7 @@ REM TOOL BOX CALLS REQUIRE INTEGERS. % INDICATES INTEGER
 REM     CALCULATE X% AND Y% AND THEN PLOT TO X1% AND Y1%.
 
 CLS: REM CLS clears the screen
- PICTURE ON  : REM PICTURE ON puts screen graphics in storage.
- SHOWPEN     : REM SHOWPEN also puts graphics on the screen 
+SCREEN 9  ' mode for drawing the graph
 
    FOR n = n1 TO n2-1
      x = n*df
@@ -358,7 +357,7 @@ REM PUT TICS ON THE X-AXIS
      y1% = INT (ya +5)
      LINE (x%,y%) - (x%,y1%)         :' draw tics
      num = INT(100*n*df+.1)/100000&
-     CALL MOVETO (x%-9,260) : PRINT num : ' moveto and print N
+    _PRINTSTRING (x% - 9, 260), STR$(num)
  NEXT n
  
  x% = INT (X0)
@@ -377,24 +376,29 @@ REM PUT TICS ON THE X-AXIS
 
  END IF
 
- CALL MOVETO (20,16): PRINT g$;gp$;" theta =";thetad;"z=";zd;" step sFL/lamda=";sFL/lamda;"f in kHz"
- CALL MOVETO (20,280)
-  IF gc$="p" THEN PRINT name2$;" ";s$;" y-tics=";.2/af;"sfL=";sFL;"den f,w=";rhof;rhow;"c f,w=";cfb;cw
-  IF gc$="y" THEN PRINT name2$;" ";s$;" dB ref=";dbr;"sfL=";sFL;"den f,w=";rhof;rhow;"c f,w=";cfb;cw
- 
- PICTURE OFF : REM PICTURE OFF ends graphics operations.
+txt$ = g$ + gp$ + " theta =" + STR$(thetad) + "z=" + STR$(zd) + " step sFL/lamda=" + STR$(sFL / lamda) + "f in kHz"
+_PRINTSTRING (20, 16), txt$
+IF gc$ = "p" THEN
+    txt$ = name2$ + " " + s$ + " y-tics=" + ltrim$(Str$(.2 / af)) + " sfL=" + ltrim$(Str$(sFL)) + " den f,w="_
+     + ltrim$(Str$(rhof)) + "," + ltrim$(Str$(rhow)) + " c f,w=" + ltrim$(Str$(cfb)) + "," + ltrim$(Str$(cw))
+    _PRINTSTRING (20, 280), txt$
+END IF
+IF gc$ = "y" THEN
+    txt$ = name2$ + " " + s$ + " dB ref=" + ltrim$(Str$(dbr)) + " sfL=" + ltrim$(Str$(sFL)) + " den f,w="_
+     + ltrim$(Str$(rhof)) + "," + ltrim$(Str$(rhow)) + " c f,w=" + ltrim$(Str$(cfb)) + "," + ltrim$(Str$(cw))
+    _PRINTSTRING (20, 280), txt$
+END IF
+
  INPUT q$
  
- CALL MOVETO (20,280)   
-   PRINT " input 'mf' to make a file "
+ _PrintString (20, 280), " input 'mf' to make a file "
     INPUT q$
  IF q$ <> "mf" GOTO 520
 
  pic$ = PICTURE$          :REM PICTURE$ is name of stored picture.
  
- CALL MOVETO (50, 25)     :REM name the file 
- PRINT  "I've got the picture in pic$ ("; LEN (pic$); ")"
- pictFile$ = FILES$ (0, "Enter name for PICT file:")
+ _PrintString (20, 280), " input 'mf' to make a file "
+ Input "Enter name for PICT file: ", pictFile$
  PRINT "PICT file name is:"; pictFile$
  
 REM SAVE FILE IN 'PICT' FORMATE.
@@ -411,14 +415,11 @@ REM FOR-NEXT LOOP MAKES A HEADER FOR PICT FILE FORMATE.
  
 REM CHANGE THE FILE TYPE FROM TEXT TO PICT
 
- NAME pictFile$ AS pictFile$, "PICT"
  
 REM USE MacDraw TO READ THE FILE. THEN, 
 REM IT CAN BE SAVED AS A MacDraw DRAWING.
  
 520  CLS    :REM clear screen and clean memory
-PICTURE ON
-PICTURE OFF
        
 GOTO 12
 
