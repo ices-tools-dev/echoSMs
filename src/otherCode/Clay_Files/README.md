@@ -1,6 +1,6 @@
 # Clay files
 
-This directory contains code by Clarence Clay that implements
+This directory contains code by [Clarence Clay](https://en.wikipedia.org/wiki/Clarence_S._Clay_Jr.) that implements
 the acoustic scattering models in [Clay & Horne (1992)](https://doi.org/10.1121/1.404903), along with other work associated with the KRM scattering models.
 
 It is provided as a historical record of the code and data behind a commonly-used scattering model that is still used today (over 30 years later).
