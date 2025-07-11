@@ -312,69 +312,69 @@ REM TOOL BOX CALLS REQUIRE INTEGERS. % INDICATES INTEGER
 REM     CALCULATE X% AND Y% AND THEN PLOT TO X1% AND Y1%.
 
 CLS: REM CLS clears the screen
-SCREEN 9  ' mode for drawing the graph
+SCREEN 9 ' mode for drawing the graph
 
-   FOR n = n1 TO n2-1
-     x = n*df
-     x1 = (n+1)*df
-          x% =  INT (XS * x + X0)    
-          x1% =  INT (XS * x1 + X0)
-  IF gc$ = "p"  THEN
-           py =  afp*YS*p(n)
-          py1 = afp*YS*p(n+1)
-          y% = INT (y0 - py)
-          y1% = INT (y0 -py1)
-      LINE (x%,y%)-(x1%,y1%)
-   END IF
+FOR n = n1 TO n2 - 1
+    x = n * df
+    x1 = (n + 1) * df
+    x% = INT(XS * x + X0)
+    x1% = INT(XS * x1 + X0)
+    IF gc$ = "p" THEN
+        py = afp * YS * p(n)
+        py1 = afp * YS * p(n + 1)
+        y% = INT(y0 - py)
+        y1% = INT(y0 - py1)
+        LINE (x%, y%)-(x1%, y1%)
+    END IF
    
-    IF gc$ = "y"   THEN
-         y% = INT (YU - YS *(p(n)-dbr))
-         y1% =INT (YU- YS *(p(n + 1)-dbr))
-         LINE (x%,y%)-(x1%,y1%)
-   END IF
+    IF gc$ = "y" THEN
+        y% = INT(YU - YS * (p(n) - dbr))
+        y1% = INT(YU - YS * (p(n + 1) - dbr))
+        LINE (x%, y%)-(x1%, y1%)
+    END IF
    
-   NEXT n
+NEXT n
 
 REM PUT TICS ON THE X-AXIS
 
- x% = INT (X0) : x1% = INT (XS*f2 + X0)
- y% = y0
- YU% = YU
- YL% = YL
- np = sika/(df)
+x% = INT(X0): x1% = INT(XS * f2 + X0)
+y% = y0
+YU% = YU
+YL% = YL
+np = sika / (df)
  
- ya = y0
- IF gc$ = "y" THEN ya = YU +70*YS
- ya% = ya
+ya = y0
+IF gc$ = "y" THEN ya = YU + 70 * YS
+ya% = ya
 
- LINE (x%,ya%) - (x1%,ya%)            :REM draw axis
- LINE (x%,YL%) - (x%,YU%)
+LINE (x%, ya%)-(x1%, ya%): REM draw axis
+LINE (x%, YL%)-(x%, YU%)
 
- FOR n = 0 TO n2 STEP np
-      x = n*df
-     x% =  INT (XS * x + X0)             :' locate tics
-     y% = INT (ya )                         :' make tics
-     y1% = INT (ya +5)
-     LINE (x%,y%) - (x%,y1%)         :' draw tics
-     num = INT(100*n*df+.1)/100000&
+FOR n = 0 TO n2 STEP np
+    x = n * df
+    x% = INT(XS * x + X0): ' locate tics
+    y% = INT(ya): ' make tics
+    y1% = INT(ya + 5)
+    LINE (x%, y%)-(x%, y1%): ' draw tics
+    num = INT(100 * n * df + .1) / 100000&
     _PRINTSTRING (x% - 9, 260), STR$(num)
- NEXT n
+NEXT n
  
- x% = INT (X0)
+x% = INT(X0)
 
- IF gc$ = "p" THEN
- FOR m = -5 TO 5
-      y% = INT(y0 - m*YS/5)
-      LINE (x%,y%) - (x%+5,y%)
- NEXT m
+IF gc$ = "p" THEN
+    FOR m = -5 TO 5
+        y% = INT(y0 - m * YS / 5)
+        LINE (x%, y%)-(x% + 5, y%)
+    NEXT m
 
- ELSE 
- FOR m = 0 TO 8
-      y% = INT(YU + m*YS*10)
-      LINE (x%,y%) - (x%+5,y%)
- NEXT m
+ELSE
+    FOR m = 0 TO 8
+        y% = INT(YU + m * YS * 10)
+        LINE (x%, y%)-(x% + 5, y%)
+    NEXT m
 
- END IF
+END IF
 
 txt$ = g$ + gp$ + " theta =" + STR$(thetad) + "z=" + STR$(zd) + " step sFL/lamda=" + STR$(sFL / lamda) + "f in kHz"
 _PRINTSTRING (20, 16), txt$
@@ -389,102 +389,102 @@ IF gc$ = "y" THEN
     _PRINTSTRING (20, 280), txt$
 END IF
 
- INPUT q$
+INPUT q$
  
- _PrintString (20, 280), " input 'mf' to make a file "
-    INPUT q$
- IF q$ <> "mf" GOTO 520
+_PRINTSTRING (20, 280), " input 'mf' to make a file "
+INPUT q$
+IF q$ <> "mf" GOTO 520
 
- pic$ = PICTURE$          :REM PICTURE$ is name of stored picture.
+pic$ = PICTURE$: REM PICTURE$ is name of stored picture.
  
- _PrintString (20, 280), " input 'mf' to make a file "
- Input "Enter name for PICT file: ", pictFile$
- PRINT "PICT file name is:"; pictFile$
+_PRINTSTRING (20, 280), " input 'mf' to make a file "
+INPUT "Enter name for PICT file: ", pictFile$
+PRINT "PICT file name is:"; pictFile$
  
 REM SAVE FILE IN 'PICT' FORMATE.
 
- OPEN pictFile$ FOR OUTPUT AS #1
+OPEN pictFile$ FOR OUTPUT AS #1
  
 REM FOR-NEXT LOOP MAKES A HEADER FOR PICT FILE FORMATE.
 
- FOR i = 1 TO 512 : PRINT  #1, CHR$ (0); : NEXT
+FOR i = 1 TO 512: PRINT #1, CHR$(0);: NEXT
  
- PRINT  #1, pic$
+PRINT #1, pic$
  
- CLOSE  :REM the picture 'pic$' is stored as a text file.
+CLOSE: REM the picture 'pic$' is stored as a text file.
  
 REM CHANGE THE FILE TYPE FROM TEXT TO PICT
 
  
-REM USE MacDraw TO READ THE FILE. THEN, 
+REM USE MacDraw TO READ THE FILE. THEN,
 REM IT CAN BE SAVED AS A MacDraw DRAWING.
  
-520  CLS    :REM clear screen and clean memory
+520 CLS: REM clear screen and clean memory
        
 GOTO 12
 
-4000  PRINT "make a spectrum file for IFFT" 
- PRINT "   complex data is in fr(n) and fi(n)."
- PRINT "   n2, number of data in calc = ";n2
- PRINT "choose the number of frequency coefficients, nt = 2^n"
- PRINT "max nt = 4200. input nt =";:INPUT nt
- PRINT "file maker constructs the the coefficients from nt/2 to nt."
+4000 PRINT "make a spectrum file for IFFT"
+PRINT "   complex data is in fr(n) and fi(n)."
+PRINT "   n2, number of data in calc = "; n2
+PRINT "choose the number of frequency coefficients, nt = 2^n"
+PRINT "max nt = 4200. input nt =";: INPUT nt
+PRINT "file maker constructs the the coefficients from nt/2 to nt."
 
- FOR n = 0 TO nt/2-1
-    fr(nt-n)= fr(n)
-    fi(nt-n) = -fi(n)
- NEXT n
- fr(nt/2) = 0
- fi(nt/2) = 0
+FOR n = 0 TO nt / 2 - 1
+    fr(nt - n) = fr(n)
+    fi(nt - n) = -fi(n)
+NEXT n
+fr(nt / 2) = 0
+fi(nt / 2) = 0
 
- PRINT"give file name":INPUT n3$
- OPEN n3$ FOR OUTPUT AS #3
+PRINT "give file name": INPUT n3$
+OPEN n3$ FOR OUTPUT AS #3
  
- WRITE #3, nt 
+WRITE #3, nt
  
-     FOR n = 0 TO nt
-         WRITE #3,fr(n),fi(n)
-     NEXT n
+FOR n = 0 TO nt
+    WRITE #3, fr(n), fi(n)
+NEXT n
  
- WRITE #3, dka     :'delta ka
- WRITE #3, a       :' nominal radius
- WRITE #3, pw      :'water density
- WRITE #3, cw      :'sound vel water
- WRITE #3, pcyli   :'density in cylinder
- WRITE #3, ccyl    :'sound speed in cylinder
- WRITE #3, zd       :'depth
- WRITE #3, delta    :'deflection of cyl in a
+WRITE #3, dka: 'delta ka
+WRITE #3, a: ' nominal radius
+WRITE #3, pw: 'water density
+WRITE #3, cw: 'sound vel water
+WRITE #3, pcyli: 'density in cylinder
+WRITE #3, ccyl: 'sound speed in cylinder
+WRITE #3, zd: 'depth
+WRITE #3, delta: 'deflection of cyl in a
  
- CLOSE #3
+CLOSE #3
  
- GOTO 12
+GOTO 12
  
 5000 ' read data file in 'fish data file maker' format
-PRINT"read file ";:INPUT name2$
-  OPEN name2$ FOR INPUT AS #2
- INPUT #2, ftype$
- INPUT #2, words1$,fL
- INPUT #2, words2$,mfb
- INPUT #2,Jfb
- INPUT #2,words7$
- INPUT #2,words5$
+PRINT "read file ";: INPUT name2$
+OPEN name2$ FOR INPUT AS #2
+INPUT #2, ftype$
+INPUT #2, words1$, fL
+INPUT #2, words2$, mfb
+INPUT #2, Jfb
+INPUT #2, words7$
+INPUT #2, words5$
  
- FOR j = 0 TO Jfb
-    INPUT #2,xfb(j),zufb(j),zlfb(j),wfb(j)
- NEXT j
+FOR j = 0 TO Jfb
+    INPUT #2, xfb(j), zufb(j), zlfb(j), wfb(j)
+NEXT j
  
- INPUT #2, words6$
+INPUT #2, words6$
  
-  INPUT #2, Jsb
-  FOR j = 0 TO Jsb
-    INPUT #2,xsb(j),zusb(j),zlsb(j),wsb(j)
- NEXT j
+INPUT #2, Jsb
+FOR j = 0 TO Jsb
+    INPUT #2, xsb(j), zusb(j), zlsb(j), wsb(j)
+NEXT j
  
- INPUT #2,words8$
- CLOSE #2
+INPUT #2, words8$
+CLOSE #2
  
 4500 ' compute equivalent cylinders
-'convert initial fish dimensions in mm to m 
+'convert initial fish dimensions in mm to m
 ' fish body ---   dxf(50),mxf(50),mzf(50),eaf(50)
 ' swimbladder --- dxs(50),mxs(50),mzs(50),eas(50)
 
@@ -501,88 +501,88 @@ PRINT"read file ";:INPUT name2$
 ' ma(j) is the mean half width of the upper face
 ' bu(j) is the slope of the upper face
 ' du(j) is the length
-PRINT" fish length = ";fL;" mm"
-sbL =xsb(Jsb)-xsb(0)
-PRINT" swimbladder length = ";sbL;" mm"
-PRINT" scale length = 150 mm lets L/lamda = 1 correspond to 10 kHz."
+PRINT " fish length = "; fL; " mm"
+sbL = xsb(Jsb) - xsb(0)
+PRINT " swimbladder length = "; sbL; " mm"
+PRINT " scale length = 150 mm lets L/lamda = 1 correspond to 10 kHz."
 PRINT "  input scale fish length =";: INPUT sFL
-PRINT "  old theta =";theta*180/pi;" new=";: INPUT thetad
-theta = thetad*pi/180
-sF = sFL/fL
-sfLm = sFL/1000
-PRINT "scale fish length =";sF*fL
-PRINT "scale swimbladder =";sF*sbL
+PRINT "  old theta ="; theta * 180 / pi; " new=";: INPUT thetad
+theta = thetad * pi / 180
+sF = sFL / fL
+sfLm = sFL / 1000
+PRINT "scale fish length ="; sF * fL
+PRINT "scale swimbladder ="; sF * sbL
 
 
 'geometry for breathing mode volume dv(j) and scatter from upper face
-snth=SIN(theta)
+snth = SIN(theta)
 csth = COS(theta)
 'PRINT "ma(j)", "vu(j)", "bu(j)", "u(j)"
-FOR j = 0 TO Jsb-1
-    z0 = sF*(zusb(j)-zlsb(j))/2000
-    z1 = sF*(zusb(j+1)-zlsb(j+1))/2000
-    y0 = sF*wsb(j)/2000
-    y1 = sF*wsb(j+1)/2000
-    dx = sF*(xsb(j+1)-xsb(j))/1000
+FOR j = 0 TO Jsb - 1
+    z0 = sF * (zusb(j) - zlsb(j)) / 2000
+    z1 = sF * (zusb(j + 1) - zlsb(j + 1)) / 2000
+    y0 = sF * wsb(j) / 2000
+    y1 = sF * wsb(j + 1) / 2000
+    dx = sF * (xsb(j + 1) - xsb(j)) / 1000
     dxs(j) = dx
-    xm = sF*(xsb(j)/1000 + dx/2 )
-    duz = sF*(zusb(j+1)-zusb(j))/1000
-    zm = sF*(zusb(j)+zlsb(j) + zusb(j+1)+zlsb(j+1) ) /4000
-    zus = sF*(zusb(j) + zusb(j+1)) /2000
-    yb = (y1-y0)/dx
-    dv(j) = pi*ABS( (z0*y0*dx + (zb*y0+yb*z0)*dx^2/2 + zb*yb*dx^3/3 ) )
-    eas(j) = SQR(dv(j)/(pi*dx))
-    u(j) = xm*snth - zm*csth
-    vm(j) = xm*csth+zm*snth
-    vu(j) = xm*csth + zus*snth
-    ma(j) =  (y0 + y1)/2
-    du(j) = dx*snth
-    IF du(j)<>0 THEN bu(j) = (dx*csth+duz*snth)/du(j)
+    xm = sF * (xsb(j) / 1000 + dx / 2)
+    duz = sF * (zusb(j + 1) - zusb(j)) / 1000
+    zm = sF * (zusb(j) + zlsb(j) + zusb(j + 1) + zlsb(j + 1)) / 4000
+    zus = sF * (zusb(j) + zusb(j + 1)) / 2000
+    yb = (y1 - y0) / dx
+    dv(j) = pi * ABS((z0 * y0 * dx + (zb * y0 + yb * z0) * dx ^ 2 / 2 + zb * yb * dx ^ 3 / 3))
+    eas(j) = SQR(dv(j) / (pi * dx))
+    u(j) = xm * snth - zm * csth
+    vm(j) = xm * csth + zm * snth
+    vu(j) = xm * csth + zus * snth
+    ma(j) = (y0 + y1) / 2
+    du(j) = dx * snth
+    IF du(j) <> 0 THEN bu(j) = (dx * csth + duz * snth) / du(j)
     
     'PRINT ma(j),vu(j),bu(j),u(j)
 NEXT j
 'INPUT q$
  
 'PRINT "ma(j)", "vu(j)", "bu(j)", "u(j)"
-FOR j = 0 TO Jfb-1
-    z0 = sF*(zufb(j)-zlfb(j))/2000
-    z1 = sF*(zufb(j+1)-zlfb(j+1))/2000
-    y0 = sF*wfb(j)/2000
-    y1 = sF*wfb(j+1)/2000
-    dx = sF*(xfb(j+1)-xfb(j))/1000
-    xm = sF*(xfb(j)/1000 + dx/2 )
-    duz = sF*(zufb(j+1)-zufb(j))/1000
-    zm = sF*(zufb(j)+zlfb(j) + zufb(j+1)+zlfb(j+1) ) /4000
-    zus = sF*(zufb(j) + zufb(j+1)) /2000
-    yb = (y1-y0)/dx
-    uf(j) = xm*snth - zm*csth
-    vmf(j) = xm*csth+zm*snth
-    vuf(j) = xm*csth + zus*snth
-    maf(j) =  (y0 + y1)/2
-    duf(j) = dx*snth
-    IF duf(j)<>0 THEN buf(j) = (dx*csth+duz*snth)/duf(j)
+FOR j = 0 TO Jfb - 1
+    z0 = sF * (zufb(j) - zlfb(j)) / 2000
+    z1 = sF * (zufb(j + 1) - zlfb(j + 1)) / 2000
+    y0 = sF * wfb(j) / 2000
+    y1 = sF * wfb(j + 1) / 2000
+    dx = sF * (xfb(j + 1) - xfb(j)) / 1000
+    xm = sF * (xfb(j) / 1000 + dx / 2)
+    duz = sF * (zufb(j + 1) - zufb(j)) / 1000
+    zm = sF * (zufb(j) + zlfb(j) + zufb(j + 1) + zlfb(j + 1)) / 4000
+    zus = sF * (zufb(j) + zufb(j + 1)) / 2000
+    yb = (y1 - y0) / dx
+    uf(j) = xm * snth - zm * csth
+    vmf(j) = xm * csth + zm * snth
+    vuf(j) = xm * csth + zus * snth
+    maf(j) = (y0 + y1) / 2
+    duf(j) = dx * snth
+    IF duf(j) <> 0 THEN buf(j) = (dx * csth + duz * snth) / duf(j)
     'PRINT maf(j),vuf(j),buf(j),uf(j)
 NEXT j
 'INPUT q$
 
 'PRINT "ma(j)", "vu(j)", "bu(j)", "u(j)"
-FOR j = 0 TO Jfb-1
-    z0 = sF*(zlfb(j)-zlfb(j))/2000
-    z1 = sF*(zlfb(j+1)-zlfb(j+1))/2000
-    y0 = sF*wfb(j)/2000
-    y1 = sF*wfb(j+1)/2000
-    dx = sF*(xfb(j+1)-xfb(j))/1000
-    xm = sF*(xfb(j)/1000 + dx/2 )
-    dlz = sF*(zlfb(j+1)-zlfb(j))/1000
-    zm = sF*(zufb(j)+zlfb(j) + zufb(j+1)+zlfb(j+1) ) /4000
-    zls = sF*(zlfb(j) + zlfb(j+1)) /2000
-    yb = (y1-y0)/dx
-    vlf(j) = xm*csth + zls*snth
-    IF duf(j)<>0 THEN blf(j) = (dx*csth+dlz*snth)/duf(j)    
+FOR j = 0 TO Jfb - 1
+    z0 = sF * (zlfb(j) - zlfb(j)) / 2000
+    z1 = sF * (zlfb(j + 1) - zlfb(j + 1)) / 2000
+    y0 = sF * wfb(j) / 2000
+    y1 = sF * wfb(j + 1) / 2000
+    dx = sF * (xfb(j + 1) - xfb(j)) / 1000
+    xm = sF * (xfb(j) / 1000 + dx / 2)
+    dlz = sF * (zlfb(j + 1) - zlfb(j)) / 1000
+    zm = sF * (zufb(j) + zlfb(j) + zufb(j + 1) + zlfb(j + 1)) / 4000
+    zls = sF * (zlfb(j) + zlfb(j + 1)) / 2000
+    yb = (y1 - y0) / dx
+    vlf(j) = xm * csth + zls * snth
+    IF duf(j) <> 0 THEN blf(j) = (dx * csth + dlz * snth) / duf(j)
     'PRINT maf(j),vlf(j),blf(j),uf(j)
 NEXT j
 'INPUT q$
- GOTO 12
+GOTO 12
 
 6000 END
  
