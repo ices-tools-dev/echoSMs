@@ -389,35 +389,16 @@ IF gc$ = "y" THEN
     _PRINTSTRING (20, 280), txt$
 END IF
 
-INPUT q$
- 
-_PRINTSTRING (20, 280), " input 'mf' to make a file "
+_PRINTSTRING (20, 1), "Input 'mf' to make a file: "
+LOCATE 1, 30
 INPUT q$
 IF q$ <> "mf" GOTO 520
 
-pic$ = PICTURE$: REM PICTURE$ is name of stored picture.
- 
-_PRINTSTRING (20, 280), " input 'mf' to make a file "
-INPUT "Enter name for PICT file: ", pictFile$
-PRINT "PICT file name is:"; pictFile$
- 
-REM SAVE FILE IN 'PICT' FORMATE.
+_PRINTSTRING (20, 1), "Enter name for image file: "
+LOCATE 1, 30
+INPUT pictFile$
+_SAVEIMAGE pictFile$
 
-OPEN pictFile$ FOR OUTPUT AS #1
- 
-REM FOR-NEXT LOOP MAKES A HEADER FOR PICT FILE FORMATE.
-
-FOR i = 1 TO 512: PRINT #1, CHR$(0);: NEXT
- 
-PRINT #1, pic$
- 
-CLOSE: REM the picture 'pic$' is stored as a text file.
- 
-REM CHANGE THE FILE TYPE FROM TEXT TO PICT
-
- 
-REM USE MacDraw TO READ THE FILE. THEN,
-REM IT CAN BE SAVED AS A MacDraw DRAWING.
  
 520 CLS: REM clear screen and clean memory
        
