@@ -1,9 +1,7 @@
 """A class that provides the model series deformed cylinder scattering model."""
 
-from math import sin, cos, nan, pi, log10, fsum
+from math import sin, cos, nan, pi, log10
 from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
-# from mapply.mapply import mapply
-# import swifter
 import numpy as np
 from .utils import Neumann, wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase

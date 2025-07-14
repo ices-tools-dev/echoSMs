@@ -1,6 +1,6 @@
 """A class that provides the elastic scattering model."""
 
-from math import log10, sin, atan, fsum
+from math import log10, sin, atan
 from cmath import exp
 from warnings import warn
 from scipy.special import spherical_jn, spherical_yn
