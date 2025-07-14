@@ -2,8 +2,6 @@
 
 from math import log10
 import numpy as np
-# from mapply.mapply import mapply
-# import swifter
 from scipy.special import spherical_jn, spherical_yn
 from .utils import h1, wavenumber, as_dict
 from .scattermodelbase import ScatterModelBase
