@@ -84,7 +84,7 @@ PRINT "name new file";:INPUT name1$
  NEXT n
  
  WRITE #1, words6$
-  WRITE#1, Nsb
+  WRITE #1, Nsb
   FOR n = 0 TO Nsb
     WRITE #1,INT(tt*sF*xsb(n))/kk,INT(tt*sF*zusb(n))/kk,INT(tt*sF*zlsb(n))/kk,INT(tt*sF*wsb(n))/kk
  NEXT n
@@ -101,8 +101,7 @@ PRINT "name new file";:INPUT name1$
  zw = 3*G3/4
  
  CLS         : ' CLS clears the screen
- PICTURE ON  : ' PICTURE ON puts screen graphics in storage.
- SHOWPEN     : ' SHOWPEN also puts graphics on the screen 
+SCREEN 9 'mode for drawing
 
 LINE (G0,G2) - (G1,G2)
 LINE (G0,G3) - (G1,G3)
@@ -180,54 +179,31 @@ LINE (G1,G2) - (G1,G3)
  NEXT n
 
 'print file names etc
-CALL MOVETO (G0,280)
- PRINT name1$;"-";ftype$;" fish L =";fL
-      INPUT q$
+txt$ = name1$ + "-" + ftype$ + " fish L =" + STR$(fL)
+_PRINTSTRING (G0, 280), txt$
+INPUT q$
 
   330 'end of graph operation
  pic$ = PICTURE$ 
- PICTURE OFF
-    INPUT q$
+INPUT q$
 
      ' make pict file
  PRINT "make a PICT file, y or n ?";:INPUT pf$
  IF pf$ = "y"  GOTO 340
 
    CLS    :REM clear screen and clean pict memory
-  PICTURE ON
-  PICTURE OFF
 
    GOTO 20
 
 340 'make pict file
 
- CALL MOVETO (50, 25)  
- PRINT  "The picture is in pic$ ("; LEN (pic$); ")"
- pictFile$ = FILES$ (0, "Enter name for PICT file:")
- PRINT "PICT file name is:"; pictFile$
- 
-REM SAVE FILE IN 'PICT' FORMATE.
+_PRINTSTRING (50, 25), "Enter name for image file:"
+LOCATE 1, 30
+INPUT pictFile$
+_SAVEIMAGE pictFile$
 
- OPEN pictFile$ FOR OUTPUT AS #4
- 
-REM FOR-NEXT LOOP MAKES A HEADER FOR PICT FILE FORMATE.
- FOR i = 1 TO 512
-   PRINT  #4, CHR$ (0); 
- NEXT i
- 
- PRINT  #4, pic$
- 
- CLOSE  :REM the picture 'pic$' is stored as a text file.
- 
-REM CHANGE THE FILE TYPE FROM TEXT TO PICT
-
- NAME pictFile$ AS pictFile$, "PICT"
- 
-REM USE MacDraw TO READ THE FILE. THEN, IT CAN BE SAVED AS A MacDraw DRAWING.
  
   CLS    :REM clear screen and clean pict memory
- PICTURE ON
- PICTURE OFF: 'clean memory
  
 GOTO 20
 
