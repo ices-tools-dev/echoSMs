@@ -2,7 +2,7 @@
 # Looking to the future, each entry here includes a 'source' key to indicate where the data came from.
 [[shape]]
 name = "Cod A"
-source = "https://doi.org/10.1121/1.404903"
+source = "https://doi.org/10.1121/1.410245"
 swimbladder_rho = 1.24
 swimbladder_c = 345
 body_rho = 1070
@@ -18,7 +18,7 @@ z_sbL = [0.0017,-0.0009,-0.0045,-0.0054,-0.0071,-0.008,-0.0071]
 
 [[shape]]
 name = "Cod B"
-source = "https://doi.org/10.1121/1.404903"
+source = "https://doi.org/10.1121/1.410245"
 swimbladder_rho = 1.24
 swimbladder_c = 345
 body_rho = 1070
@@ -34,7 +34,7 @@ z_sbL = [0.0007,-0.0008,-0.0024,-0.0047,-0.0063,-0.0055,-0.0047]
 
 [[shape]]
 name = "Cod C"
-source = "https://doi.org/10.1121/1.404903"
+source = "https://doi.org/10.1121/1.410245"
 swimbladder_rho = 1.24
 swimbladder_c = 345
 body_rho = 1070
@@ -50,7 +50,7 @@ z_sbL = [0,-0.0034,-0.0068,-0.0068,-0.0068,-0.0051,-0.0051]
 
 [[shape]]
 name = "Cod D"
-source = "https://doi.org/10.1121/1.404903"
+source = "https://doi.org/10.1121/1.410245"
 swimbladder_rho = 1.24
 swimbladder_c = 345
 body_rho = 1070
