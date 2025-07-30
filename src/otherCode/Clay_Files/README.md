@@ -11,7 +11,7 @@ The original commit of the files in this directory are the original files provid
 
 ## Programs
 
-There are several directories of programs and data under this directory but to date, only one that has been updated to run with QB64 PE.
+There are several directories of programs and data under this directory, two of which have been updated to run with QB64 PE.
 
 ### Directory `acoustic models clay 10_13_`
 
