@@ -29,7 +29,7 @@ def plot_compare_freq(f1, ts1, label1, f2, ts2, label2, title):
     # Plot the mss model and benchmark results
     fig, axs = plt.subplots(2, 1, sharex=True)
     axs[0].plot(f1/1e3, ts1, label=label1)
-    axs[0].plot(f2/1e3, ts2, label=label2)
+    axs[0].plot(f2/1e3, ts2, '+', label=label2)
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
     axs[0].legend(frameon=False, fontsize=6)
 
@@ -50,7 +50,7 @@ def plot_compare_angle(theta1, ts1, label1, theta2, ts2, label2, title):
     # Plot the mss model and benchmark results
     fig, axs = plt.subplots(2, 1, sharex=True)
     axs[0].plot(theta1, ts1, label=label1)
-    axs[0].plot(theta2, ts2, label=label2)
+    axs[0].plot(theta2, ts2, '+', label=label2)
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
     axs[0].legend(frameon=False, fontsize=6)
 
