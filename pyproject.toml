@@ -55,6 +55,7 @@ addopts = ["--import-mode=importlib",]
 dev = [
   "mkdocstrings[python]",
   "matplotlib",
+  "mkdocs-material",
   "twine",
   "pytest",
 ]
