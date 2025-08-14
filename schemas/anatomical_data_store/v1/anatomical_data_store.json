@@ -249,6 +249,12 @@
                             "total length",
                             "fork length",
                             "standard length",
+                            "lower jaw fork length",
+                            "total width",
+                            "carapace length",
+                            "curved fork length",
+                            "disc width",
+                            "stretched total length",
                             "other"
                         ]
                     },
@@ -257,7 +263,7 @@
                         "type": "array",
                         "items": {
                             "type": "object",
-                            "required": ["type", "name", "boundary"],
+                            "required": ["type", "name"],
                             "properties": {
 								"type": {
 									"description": "Type of shape representation.",
@@ -270,19 +276,11 @@
                                 "name": {
 									"description": "Name of the shape, typically 'body', 'swimbladder', etc",
                                     "type": "string"
-                                },
-                                "boundary": {
-									"description": "Type of reflecting boundary for this shape",
-                                    "enum": [
-                                        "hard",
-                                        "soft",
-                                        "fluid"
-                                    ]
                                 }
                             },
                             "oneOf": [
                                 {
-                                    "required": ["x", "y", "z", "height", "width"],
+                                    "required": ["x", "y", "z", "height", "width", "boundary"],
                                     "properties": {
                                         "type": {"const": "outline"},
                                         "x": {
@@ -332,11 +330,12 @@
                                         "sound_speed_shear": {"$ref": "#/$defs/sound_speed_shear"},
                                         "mass_density_ratio": {"$ref": "#/$defs/mass_density_ratio"},
                                         "sound_speed_ratio": {"$ref": "#/$defs/sound_speed_ratio"},
-                                        "youngs_modulus": {"$ref": "#/$defs/youngs_modulus"}
+                                        "youngs_modulus": {"$ref": "#/$defs/youngs_modulus"},
+                                        "boundary": {"$ref": "#/$defs/boundary"}
                                     }
 								},
                                 {
-                                    "required": ["x", "y", "z", "facets", "normals"],
+                                    "required": ["x", "y", "z", "facets", "normals", "boundary"],
                                     "properties": {
                                         "type": {"const": "surface"},
                                         "x": {
@@ -395,7 +394,8 @@
                                         "sound_speed_shear": {"$ref": "#/$defs/sound_speed_shear"},
                                         "mass_density_ratio": {"$ref": "#/$defs/mass_density_ratio"},
                                         "sound_speed_ratio": {"$ref": "#/$defs/sound_speed_ratio"},
-                                        "youngs_modulus": {"$ref": "#/$defs/youngs_modulus"}
+                                        "youngs_modulus": {"$ref": "#/$defs/youngs_modulus"},
+                                        "boundary": {"$ref": "#/$defs/boundary"}
                                     }
                                 },
                                 {
@@ -486,6 +486,14 @@
             "description": "Young's modulus, E, of the shape (Pa)",
             "type": "number",
             "minimum": 0.0
+        },
+        "boundary": {
+            "description": "Type of reflecting boundary for this shape",
+            "enum": [
+                "hard",
+                "soft",
+                "fluid"
+            ]
         }
     }
 }
