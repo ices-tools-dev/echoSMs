@@ -55,12 +55,12 @@
         "date_first_added": {
             "type": "string",
             "format": "date",
-            "description": "The date when these metadata were first created in RFC9557 format"
+            "description": "The date when these metadata were first created, in RFC9557 format"
         },
         "date_last_modified": {
             "type": "string",
             "format": "date",
-            "description": "The date when these metadata were last modified in RFC9557 format"
+            "description": "The date when these metadata were last modified, in RFC9557 format"
         },
         "aphiaID": {
             "type": "integer",
@@ -218,7 +218,7 @@
             "type": "array",
             "items": {
                 "type": "object",
-				"required": ["specimen_id", "specimen_condition", "shapes", "length", "length_type"],
+				"required": ["specimen_id", "specimen_condition", "shapes", "length", "length_type", "shape_type"],
                 "properties": {
                     "specimen_id": {
 						"description": "An identifying name that uniquely identifies each specimen in a dataset",
@@ -258,21 +258,21 @@
                             "other"
                         ]
                     },
+                    "shape_type": {
+                        "description": "Type of shape data used for this specimen",
+                        "enum": [
+                            "outline",
+                            "surface",
+                            "voxels"
+                        ]
+                    },
                     "shapes": {
 						"description": "Shape data",
                         "type": "array",
                         "items": {
                             "type": "object",
-                            "required": ["type", "name"],
+                            "required": ["name"],
                             "properties": {
-								"type": {
-									"description": "Type of shape representation.",
-                                    "enum": [
-                                        "outline",
-                                        "surface",
-                                        "voxels"
-                                    ]
-								},
                                 "name": {
 									"description": "Name of the shape, typically 'body', 'swimbladder', etc",
                                     "type": "string"
