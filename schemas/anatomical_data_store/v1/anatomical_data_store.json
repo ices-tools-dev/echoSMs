@@ -34,8 +34,9 @@
             "enum": [
                 "tissue",
                 "organ",
-                "organ_system",
-                "organism"
+                "organ system",
+                "organism",
+                "other"
             ]
         },
         "anatomical_features": {
@@ -185,7 +186,8 @@
             "enum": [
                 "density to sound speed relationship",
                 "time-of-flight",
-                "literature"
+                "literature",
+                "other"
             ]
         },
         "mass_density_method": {
@@ -193,7 +195,8 @@
             "enum": [
                 "CT density",
                 "liquid displacement",
-                "literature"
+                "literature",
+                "other"
             ]
         },
         "shape_data_types": {
