@@ -94,7 +94,8 @@ The API endpoints are:
 
 - `v1/models` Returns metadata, model ids, and dataset ids. Allow query parameters for some of the metadata (e.g., species, common_name, aphiaID, imaging_method, shape_data_type, anatomical_category, anatomical_feature)
 - `/v1/{model-id}/definition` Given a model id, return the model's data (shapes and parameters)
+- `/v1/{model-id}/plot` Given a model id, return a plot of the model's shape data
 - `/v1/{dataset-id}/rawdata` Return a zip file of a dataset's data. This could be quite large as some data sets will be several GiB
-- `/v1/{dataset-id}/rawdatauri` Return a URI to a dataset’s data (i.e., a browsable directory hierarchy of files) 
+- `/v1/{dataset-id}/rawdatauri` Return a URI to a dataset’s data (i.e., a browsable directory hierarchy of files)
 
 An API to modify the data store is less important at this stage – the data store could be manually loaded separately from the API given the relatively low rate of expected model uploading. However, two endpoints, one to load a .zip file of the model’s data store and the other to load the metadata would be sufficient. These endpoints could also be used to update an existing data set.
