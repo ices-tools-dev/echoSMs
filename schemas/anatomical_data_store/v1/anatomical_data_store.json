@@ -202,8 +202,8 @@
         "shape_data_types": {
 			"description": "Shape data types in this dataset.",
             "type": "array",
+            "minItems": 1,
             "items": {
-                "minItems": 1,
                 "enum": [
                     "surface",
                     "voxels",
@@ -283,48 +283,48 @@
                             },
                             "oneOf": [
                                 {
-                                    "required": ["x", "y", "z", "height", "width", "boundary"],
+                                    "required": ["x", "y", "z", "height", "width", "boundary", "type"],
                                     "properties": {
                                         "type": {"const": "outline"},
                                         "x": {
                                             "description": "x-coordinate of shape centreline (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
-                                                "type": "number",
-                                                "minItems": 1
+                                                "type": "number"
                                             }
                                         },
                                         "y": {
                                             "description": "y-coordinate of shape centreline (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
-                                                "type": "number",
-                                                "minItems": 1
+                                                "type": "number"
                                             }
                                         },
                                         "z": {
                                             "description": "z-coordinate of shape centreline (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
-                                                "type": "number",
-                                                "minItems": 1
+                                                "type": "number"
                                             }
                                         },
                                         "height": {
                                             "description": "Height of the shape at each centreline point (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                                 "items": {
                                                     "type": "number",
-                                                    "minItems": 1,
                                                     "minimum": 0
                                                 }
                                         },
                                         "width": {
                                             "description": "Width of the shape at each centreline point (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
                                                 "type": "number",
-                                                "minItems": 1,
                                                 "minimum": 0
                                             }
                                         },
@@ -338,57 +338,57 @@
                                     }
 								},
                                 {
-                                    "required": ["x", "y", "z", "facets", "normals", "boundary"],
+                                    "required": ["x", "y", "z", "facets", "normals", "boundary", "type"],
                                     "properties": {
                                         "type": {"const": "surface"},
                                         "x": {
                                             "description": "x-coordinates of surface nodes (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
-                                                "type": "number",
-                                                "minItems": 1
+                                                "type": "number"
                                             }
                                         },
                                         "y": {
                                             "description": "y-coordinates of surface nodes (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
-                                                "type": "number",
-                                                "minItems": 1
+                                                "type": "number"
                                             }
                                         },
                                         "z": {
                                             "description": "z-coordinates of surface nodes (m).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
-                                                "type": "number",
-                                                "minItems": 1
+                                                "type": "number"
                                             }
                                         },
                                         "facets": {
                                             "description": "Zero-based indices into x, y, and z that define the nodes that make up each surface triangle.",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
                                                 "type": "array",
-                                                "minItems": 1,
+                                                "minItems": 3,
+                                                "maxItems": 3,
                                                 "items": {
                                                     "type": "integer",
-                                                    "minimum": 0,
-                                                    "minItems": 3,
-                                                    "maxItems": 3
+                                                    "minimum": 0
                                                 }
                                             }
                                         },
                                         "normals": {
                                             "description": "Normal vectors for each facet that point outwards from the surface.",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
                                                 "type": "array",
-                                                "minItems": 1,
+                                                "minItems": 3,
+                                                "maxItems": 3,
                                                 "items": {
-                                                    "type": "number",
-                                                    "minItems": 3,
-                                                    "maxItems": 3
+                                                    "type": "number"
                                                 }
                                             }
                                         },
@@ -402,22 +402,23 @@
                                     }
                                 },
                                 {
-                                    "required": ["voxel_size", "mass_density", "sound_speed_compressional"],
+                                    "required": ["voxel_size", "mass_density", "sound_speed_compressional", "type"],
                                     "properties": {
                                         "type": {"const": "voxels"},
                                         "voxel_size": {
                                             "description": "Voxel size, ordered x, y, z (m).",
                                             "type": "array",
+                                            "minItems": 3,
+                                            "maxItems": 3,
                                             "items": {
                                                 "type": "number",
-                                                "minimum": 0,
-                                                "minItems": 3,
-                                                "maxItems": 3
+                                                "minimum": 0
                                             }
                                         },
                                         "mass_density": {
                                             "description": "Mass density of voxels (kg/m³).",
                                             "type": "array",
+                                            "minItems": 1,
                                             "items": {
                                                 "type": "array",
                                                 "minItems": 1,
@@ -426,7 +427,6 @@
                                                     "minItems": 1,
                                                     "items": {
                                                         "type": "number",
-                                                        "minItems": 1,
                                                         "minimum": 0
                                                     }
                                                 }
@@ -444,7 +444,6 @@
                                                     "minItems": 1,
                                                     "items": {
                                                         "type": "number",
-                                                        "minItems": 1,
                                                         "minimum": 0
                                                     }
                                                 }
