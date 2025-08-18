@@ -1,6 +1,5 @@
 """Make a markdown version of the anatomical datastore JSON schema."""
 
-import os
 from pathlib import Path
 from mkdocs.structure.files import File
 from json_schema_for_humans.generate import generate_from_filename
@@ -11,7 +10,7 @@ def on_files(files, config):
     """Create the schema markdown file."""
     schema_file = Path('schemas')/'anatomical_data_store'/'v1'/'anatomical_data_store.json'
     schema_md_dir = Path(config["site_dir"])/'schema'
-    schema_md_dir.mkdir(exist_ok=True)
+    schema_md_dir.mkdir(exist_ok=True, parents=True)
     schema_md_file = schema_md_dir/'anatomical_data_store_schema.md'
 
     # make doc from the JSON schema
