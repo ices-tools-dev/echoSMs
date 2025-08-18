@@ -283,7 +283,7 @@
                             },
                             "oneOf": [
                                 {
-                                    "required": ["x", "y", "z", "height", "width", "boundary", "type"],
+                                    "required": ["x", "y", "z", "height", "width", "boundary"],
                                     "properties": {
                                         "type": {"const": "outline"},
                                         "x": {
@@ -338,7 +338,7 @@
                                     }
 								},
                                 {
-                                    "required": ["x", "y", "z", "facets", "normals", "boundary", "type"],
+                                    "required": ["x", "y", "z", "facets", "normals", "boundary"],
                                     "properties": {
                                         "type": {"const": "surface"},
                                         "x": {
@@ -402,7 +402,7 @@
                                     }
                                 },
                                 {
-                                    "required": ["voxel_size", "mass_density", "sound_speed_compressional", "type"],
+                                    "required": ["voxel_size", "mass_density", "sound_speed_compressional"],
                                     "properties": {
                                         "type": {"const": "voxels"},
                                         "voxel_size": {
