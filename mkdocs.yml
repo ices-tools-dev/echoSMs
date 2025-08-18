@@ -7,8 +7,8 @@ nav:
     - Benchmarks: benchmark_data.md
     - API reference: api_reference.md
     - Historical notes: historical_notes.md
-    - Anatomical data store: anatomical_data_store.md
     - Other software: other_software.md
+    - Anatomical data store: anatomical_data_store.md
 
 theme: 
     name: material 

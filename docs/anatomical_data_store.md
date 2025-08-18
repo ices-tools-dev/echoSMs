@@ -40,6 +40,10 @@ A dataset ready for uploading should contain the following files and directory s
 |/|specimen*.toml|Specimen and model data in one or more TOML-formatted files. File names must start with ‘specimen’ and have a suffix of .toml. These files are simply appended to the metadata.toml file when reading the dataset data.|
 |/data|Any|Raw and processing files in user-supplied directory hierarchy|
 
+### Validation
+
+The contents of a metadata.toml file can be validated using the data store schema. There are many online tools that can do this, and an offline version in Python will be provided (_to do_). It is also likely that it will be automatically validated when uploading a new data set.
+
 ## Data formats
 
 ### Dataset and model data
@@ -65,6 +69,10 @@ Specialisations of the `outline` shape are:
 - KRM: non-circular cross-sections along a straight centreline
 - DWBA: circular cross-sections along a curved centreline
 - DCM: circular cross-sections along a straight or curved centreline
+
+### Shape data structure
+
+The format of model shape data is specified in the echoSMs anatomical data store schema, but some additional explanatory notes and examples are provided here (_to do_). Code is also provided in the echoSMs python package to make it easy to convert data to the schema format (_to do_).
 
 ### Raw files
 
