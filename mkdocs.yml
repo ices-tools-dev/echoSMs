@@ -7,6 +7,7 @@ nav:
     - Benchmarks: benchmark_data.md
     - API reference: api_reference.md
     - Historical notes: historical_notes.md
+    - Anatomical data store: anatomical_data_store.md
     - Other software: other_software.md
 
 theme: 
@@ -71,6 +72,10 @@ plugins:
 
 watch:
     - src/echosms
+    - schemas/anatomical_data_store/v1
+
+hooks:
+    - docs/src/make_datastore_schema_md.py
 
 markdown_extensions:
     - attr_list
@@ -83,3 +88,6 @@ markdown_extensions:
     - pymdownx.inlinehilite
     - pymdownx.snippets
     - pymdownx.superfences
+    - admonition
+    - pymdownx.details
+  

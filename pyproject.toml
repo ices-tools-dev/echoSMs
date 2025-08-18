@@ -54,6 +54,7 @@ addopts = ["--import-mode=importlib",]
 [project.optional-dependencies]
 dev = [
   "mkdocstrings[python]",
+  "json-schema-for-humans",
   "matplotlib",
   "mkdocs-material",
   "twine",
