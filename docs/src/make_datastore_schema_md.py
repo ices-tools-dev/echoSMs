@@ -30,10 +30,11 @@ def on_files(files, config):
                    use_directory_urls=config["use_directory_urls"])
 
     files.append(mkdfile)
-    
+
     # Add the schema page immediately after the 'Anatomical data store' nav
     # link if present
-    idx = [link[0] for link in enumerate(config['nav']) if list(link[1].keys())[0] == 'Anatomical data store']
+    idx = [link[0] for link in enumerate(config['nav'])
+           if list(link[1].keys())[0] == 'Anatomical data store']
 
     if idx:
         config['nav'].insert(idx[0]+1, {'Schema': mkdfile.src_path})
