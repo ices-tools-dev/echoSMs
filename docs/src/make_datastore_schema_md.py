@@ -10,7 +10,7 @@ from json_schema_for_humans.generation_configuration import GenerationConfigurat
 def on_files(files, config):
     """Create the schema markdown file."""
     schema_file = Path('schemas')/'anatomical_data_store'/'v1'/'anatomical_data_store.json'
-    schema_md_dir = Path('.')/'site'/'schema'
+    schema_md_dir = Path(config["site_dir"])/'schema'
     schema_md_dir.mkdir(exist_ok=True)
     schema_md_file = schema_md_dir/'anatomical_data_store_schema.md'
 
@@ -26,7 +26,7 @@ def on_files(files, config):
 
     # Add to Files object
     mkdfile = File(path=f'schema/{schema_md_file.name}',
-                   src_dir=f"{os.getcwd()}/site",
+                   src_dir=config["site_dir"],
                    dest_dir=config["site_dir"],
                    use_directory_urls=config["use_directory_urls"])
 
