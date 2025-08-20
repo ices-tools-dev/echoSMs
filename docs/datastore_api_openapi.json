@@ -8,7 +8,7 @@
     "/v1/datasets": {
       "get": {
         "summary": "Get metadata for all datasets",
-        "description": "Dataset metadata and shapes with optional filtering.",
+        "description": "Returns dataset metadata and shapes with optional filtering.",
         "operationId": "get_datasets_v1_datasets_get",
         "parameters": [
           {
