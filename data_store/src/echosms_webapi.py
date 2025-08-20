@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 from typing import Annotated
-from pathlib import Path as p
+from pathlib import Path as pp
 import json
 import pandas as pd
 
 
-base_dir = p(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
-             r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
+base_dir = pp(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
+              r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
 datasets_dir = base_dir/'datasets'
 
 with open(datasets_dir/'datasets-automatically-generated.json', 'r') as f:
