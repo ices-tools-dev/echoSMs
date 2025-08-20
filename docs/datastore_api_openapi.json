@@ -1,14 +1,16 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "FastAPI",
+    "title": "The echoSMs web API",
     "version": "0.1.0"
   },
   "paths": {
     "/v1/datasets": {
       "get": {
-        "summary": "Get metadata for all datasets",
-        "description": "Returns dataset metadata and shapes with optional filtering.",
+        "tags": [
+          "get"
+        ],
+        "summary": "Get dataset_ids with optional filtering",
         "operationId": "get_datasets_v1_datasets_get",
         "parameters": [
           {
@@ -79,14 +81,14 @@
                 }
               ],
               "title": "AphiaID",
-              "description": "The aphiaID of this dataset"
+              "description": "The [aphiaID](https://www.marinespecies.org/aphia.php)"
             },
-            "description": "The aphiaID of this dataset"
+            "description": "The [aphiaID](https://www.marinespecies.org/aphia.php)"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "A list of dataset_ids",
             "content": {
               "application/json": {
                 "schema": {}
@@ -108,8 +110,10 @@
     },
     "/v1/dataset/{dataset_id}": {
       "get": {
-        "summary": "Get Dataset",
-        "description": "Return dataset given a dataset id.",
+        "tags": [
+          "get"
+        ],
+        "summary": "Get the dataset with the given dataset_id",
         "operationId": "get_dataset_v1_dataset__dataset_id__get",
         "parameters": [
           {
@@ -138,7 +142,49 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "A dataset structured as per the echoSMs data store [schema](https://ices-tools-dev.github.io/echoSMs/schema/data_store_schema/)",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/specimens/{dataset_id}": {
+      "get": {
+        "tags": [
+          "get"
+        ],
+        "summary": "Get the specimen_ids from the dataset with the given dataset_id",
+        "operationId": "get_specimens_v1_specimens__dataset_id__get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The dataset ID",
+              "title": "Dataset Id"
+            },
+            "description": "The dataset ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of specimen_ids",
             "content": {
               "application/json": {
                 "schema": {}
@@ -160,8 +206,10 @@
     },
     "/v1/specimen/{dataset_id}/{specimen_id}": {
       "get": {
-        "summary": "Get Specimen",
-        "description": "Return specimen data given the dataset id and specimen id.",
+        "tags": [
+          "get"
+        ],
+        "summary": "Get specimen data with the given dataset_id and specimen_id",
         "operationId": "get_specimen_v1_specimen__dataset_id___specimen_id__get",
         "parameters": [
           {
@@ -189,7 +237,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "A specimen dataset structured as per the echoSMs data store [schema](https://ices-tools-dev.github.io/echoSMs/schema/data_store_schema/)",
             "content": {
               "application/json": {
                 "schema": {}
@@ -211,8 +259,10 @@
     },
     "/v1/specimen_image/{dataset_id}/{specimen_id}": {
       "get": {
-        "summary": "Get Specimen Image",
-        "description": "Return a plot of the specimen shape given the dataset id and specimen id.",
+        "tags": [
+          "get"
+        ],
+        "summary": "Get the specimen shape, as an image, with the given dataset_id and specimen_id",
         "operationId": "get_specimen_image_v1_specimen_image__dataset_id___specimen_id__get",
         "parameters": [
           {
@@ -240,11 +290,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "An image of the specimen shape",
             "content": {
-              "application/json": {
-                "schema": {}
-              }
+              "image/png": {}
             }
           },
           "422": {
@@ -310,5 +358,11 @@
         "title": "ValidationError"
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "get",
+      "description": "Calls that get information from the data store"
+    }
+  ]
 }
