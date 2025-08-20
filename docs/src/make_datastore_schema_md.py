@@ -7,11 +7,16 @@ from json_schema_for_humans.generation_configuration import GenerationConfigurat
 
 
 def on_files(files, config):
-    """Create the schema markdown file."""
-    schema_file = Path('schemas')/'anatomical_data_store'/'v1'/'anatomical_data_store.json'
+    """Create the schema markdown file.
+
+    This function is called when mkdocs is run and converts the echoSMs anatomical
+    data store schema json file into a markdown file, then adds that to the echoSMs
+    documentation that mkdocs generates.
+    """
+    schema_file = Path('data_store')/'schema'/'v1'/'anatomical_data_store.json'
     schema_md_dir = Path(config["site_dir"])/'schema'
     schema_md_dir.mkdir(exist_ok=True, parents=True)
-    schema_md_file = schema_md_dir/'anatomical_data_store_schema.md'
+    schema_md_file = schema_md_dir/'data_store_schema.md'
 
     # make doc from the JSON schema
     cc = gc(copy_css=True, expand_buttons=True, show_breadcrumbs=False,
@@ -31,14 +36,9 @@ def on_files(files, config):
 
     files.append(mkdfile)
 
-    # Add the schema page immediately after the 'Anatomical data store' nav
-    # link if present
-    idx = [link[0] for link in enumerate(config['nav'])
-           if list(link[1].keys())[0] == 'Anatomical data store']
-
-    if idx:
-        config['nav'].insert(idx[0]+1, {'Schema': mkdfile.src_path})
-    else:  # not found, so it goes at the end of the nav section
-        config['nav'].append({'Schema': mkdfile.src_path})
+    # Add the schema page in the 'Anatomical data store' section
+    for s in config['nav']:
+        if 'Anatomical data store' in s:
+            s['Anatomical data store'].append({'Schema': mkdfile.src_path})
 
     return files
