@@ -4,8 +4,6 @@
 
     This page contains the draft specification and documentation for the echoSMs anatomical data store. It is a work in progress and no data store has been set up yet.
 
-## Introduction
-
 The echoSMs anatomical data store aims to:
 
 1. Provide an accessible repository of anatomical fish and plankton data for use in acoustic scattering models
@@ -56,7 +54,7 @@ Associated with each dataset are one or more specimen datasets. These contain ba
 
 The type of shape data required by a scattering model falls into three main types: a three-dimensional triangulated closed surface, dorsal and ventral outlines, and a rectangular three-dimensional grid of voxels (see table below). The model data structure provides the means to store each of these. Some models have multiple shapes for a single specimen (e.g., a fish body and swimbladder) and this is achieved with multiple instances of the shape attributes per specimen.
 
-The structure and attributes required for the dataset metadata and model data are recorded as a [JSON schema](https://json-schema.org/) that is stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/schemas/anatomical_data_store/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, and is rendered into the echoSMs [documentation](schema/anatomical_data_store_schema.md). The schema can also used to validate incoming datasets.
+The structure and attributes required for the dataset metadata and model data are recorded as a [JSON schema](https://json-schema.org/) that is stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, and is rendered into the echoSMs [documentation](schema/data_store_schema.md). The schema can also used to validate incoming datasets.
 
 |Shape data name|Realisation|Models that use this|Notes|
 |---------------|-----------|--------------------|-----|
@@ -81,21 +79,3 @@ Raw data formats are not directly used by scattering models so do not need to be
 ### Processing files
 
 A preference for text file formats, then common binary formats (e.g, for images), then other binary formats with documentation. The aim here is to make the information readily accessible in the future without the use of specialised software.
-
-## API
-
-The data store API is implemented as a RESTful web API with calls to:
-
-1. Query dataset metadata
-1. Obtain specimen information and model definitions and parameters.
-1. Access the full dataset associated with a model (this includes the raw data, processing scripts, intermediate data, etc).
-
-The API endpoints are:
-
-- `v1/models` Returns metadata, model ids, and dataset ids. Allow query parameters for some of the metadata (e.g., species, common_name, aphiaID, imaging_method, shape_data_type, anatomical_category, anatomical_feature)
-- `/v1/{model-id}/definition` Given a model id, return the model's data (shapes and parameters)
-- `/v1/{model-id}/plot` Given a model id, return a plot of the model's shape data
-- `/v1/{dataset-id}/rawdata` Return a zip file of a dataset's data. This could be quite large as some data sets will be several GiB
-- `/v1/{dataset-id}/rawdatauri` Return a URI to a dataset’s data (i.e., a browsable directory hierarchy of files)
-
-An API to modify the data store is less important at this stage – the data store could be manually loaded separately from the API given the relatively low rate of expected model uploading. However, two endpoints, one to load a .zip file of the model’s data store and the other to load the metadata would be sufficient. These endpoints could also be used to update an existing data set.

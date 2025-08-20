@@ -8,7 +8,9 @@ nav:
     - API reference: api_reference.md
     - Historical notes: historical_notes.md
     - Other software: other_software.md
-    - Anatomical data store: anatomical_data_store.md
+    - Anatomical data store:
+        - Introduction: anatomical_data_store.md
+        - API: datastoreAPI.md
 
 theme: 
     name: material 
@@ -52,6 +54,7 @@ site_url: https://ices-tools-dev.github.io/echoSMs/
 plugins:
     - search
     - autorefs
+    - render_swagger
     - mkdocstrings:
         handlers:
             python:
@@ -72,7 +75,7 @@ plugins:
 
 watch:
     - src/echosms
-    - schemas/anatomical_data_store/v1
+    - data_store/schema/v1
 
 hooks:
     - docs/src/make_datastore_schema_md.py
