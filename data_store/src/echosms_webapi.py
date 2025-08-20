@@ -19,9 +19,10 @@ with open(datasets_dir/'datasets-automatically-generated.json', 'r') as f:
     all_datasets = json.load(f)
 
 # make a Pandas version of the dataset attributes that can be searched through easily
-searchable_attrs = ['dataset_id', 'species', 'imaging_method', 'model_type', 'aphiaID']
+searchable_attrs = ['dataset_id', 'species', 'imaging_method', 'model_type',
+                    'anatomical_category', 'shape_method', 'aphiaID']
 searchable_data = [{key: d[key] for key in searchable_attrs if key in d} for d in all_datasets]
-df = pd.DataFrame(searchable_data)
+df = pd.DataFrame(searchable_data).set_index('dataset_id')
 
 schema_url = 'https://ices-tools-dev.github.io/echoSMs/schema/data_store_schema/'
 
@@ -34,27 +35,33 @@ app = FastAPI(title='The echoSMs web API',
          summary="Get dataset_ids with optional filtering",
          response_description='A list of dataset_ids',
          tags=['get'])
-async def get_datasets(species: Annotated[str | None, Query(title='Species', description="The scientific species name")] = None,
-                       imaging_method: Annotated[str | None, Query(title='Imaging method', description="The imaging method used")] = None,
-                       model_type: Annotated[str | None, Query(title='Model type', description="The model type used")] = None,
-                       anatomical_category: Annotated[str | None, Query(title='Anatomical category', description="The anatomical category")] = None,
-                       shape_method: Annotated[str | None, Query(title='Shape method', description="The shape method")] = None,
-                       aphiaID: Annotated[int | None, Query(title='AphiaID', description='The [aphiaID](https://www.marinespecies.org/aphia.php)')] = None):
+async def get_datasets(species: Annotated[str | None, Query(
+                           title='Species',
+                           description="The scientific species name")] = None,
+                       imaging_method: Annotated[str | None, Query(
+                           title='Imaging method',
+                           description="The imaging method used")] = None,
+                       model_type: Annotated[str | None, Query(
+                           title='Model type',
+                           description="The model type used")] = None,
+                       anatomical_category: Annotated[str | None, Query(
+                           title='Anatomical category',
+                           description="The anatomical category")] = None,
+                       shape_method: Annotated[str | None, Query(
+                           title='Shape method',
+                           description="The shape method")] = None,
+                       aphiaID: Annotated[int | None, Query(
+                           title='AphiaID',
+                           description='The [aphiaID](https://www.marinespecies.org/aphia.php)')] = None):
 
-    def df_query(name, var, end=False):
-        return '' if var is None else f'{name} == @{name} & '
-
-    q = df_query('species', species)
-    q += df_query('imaging_method', imaging_method)
-    q += df_query('model_type', model_type)
-    q += df_query('anatomical_category', anatomical_category)
-    q += df_query('shape_method', shape_method)
-    q += df_query('aphiaID', aphiaID)
+    q = ''
+    for attr in searchable_attrs[1:]:  # excludes 'dataset_id'
+        q += '' if eval(attr) is None else f'{attr} == @{attr} & '
 
     if len(q) == 0:
-        return df['dataset_id'].tolist()
+        return df.index.tolist()
 
-    return df.query(q[:-3])['dataset_id'].tolist()
+    return df.query(q[:-3]).index.tolist()
 
 
 @app.get("/v1/dataset/{dataset_id}",
