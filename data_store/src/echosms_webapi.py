@@ -23,10 +23,17 @@ searchable_attrs = ['dataset_id', 'species', 'imaging_method', 'model_type', 'ap
 searchable_data = [{key: d[key] for key in searchable_attrs if key in d} for d in all_datasets]
 df = pd.DataFrame(searchable_data)
 
-app = FastAPI()
+schema_url = 'https://ices-tools-dev.github.io/echoSMs/schema/data_store_schema/'
+
+app = FastAPI(title='The echoSMs web API',
+              openapi_tags=[{'name': 'get', 
+                             'description': 'Calls that get information from the data store'},])
 
 
-@app.get("/v1/datasets", summary="Get metadata for all datasets")
+@app.get("/v1/datasets",
+         summary="Get dataset_ids with optional filtering",
+         response_description='A list of dataset_ids',
+         tags=['get'])
 async def get_datasets(species: Annotated[str | None, Query(
                             title='Species',
                             description="The scientific species name")] = None,
@@ -38,8 +45,8 @@ async def get_datasets(species: Annotated[str | None, Query(
                            description="The model type used")] = None,
                        aphiaID: Annotated[int | None, Query(
                            title='AphiaID',
-                           description='The aphiaID of this dataset')] = None):
-    """Return dataset metadata and shapes with optional filtering."""
+                           description='The [aphiaID](https://www.marinespecies.org/aphia.php)')] = None):
+
     def df_query(name, var, end=False):
         return '' if var is None else f'{name} == @{name} & '
 
@@ -49,55 +56,73 @@ async def get_datasets(species: Annotated[str | None, Query(
     q += df_query('aphiaID', aphiaID)
 
     if len(q) == 0:
-        return all_datasets
+        return df['dataset_id'].tolist()
 
-    return [ds for ds in all_datasets if ds['dataset_id'] in df.query(q[:-3])['dataset_id'].values]
-
-
-@app.get("/v1/dataset/{dataset_id}")
-async def get_dataset(dataset_id: Annotated[str, Path(
-                          description='The dataset ID')],
-                      full_data: Annotated[bool, Query(
-                          description='If true, all raw data for the dataset will '
-                                      'be returned as a zipped file')] = False):
-    """Return dataset given a dataset id."""
-    for ds in all_datasets:
-        if ds["dataset_id"] == dataset_id:
-            if not full_data:
-                return ds
-            else:  # zip up the dataset data and send
-                return {'message': 'not yet implemented'}
-    return {"message": "Specimen not found"}
+    return df.query(q[:-3])['dataset_id'].tolist()
 
 
-@app.get("/v1/specimen/{dataset_id}/{specimen_id}")
-async def get_specimen(dataset_id: Annotated[str, Path(
-                          description='The dataset ID')],
-                       specimen_id: Annotated[str, Path(
-                          description='The specimen ID')]):
-    """Return specimen data given the dataset id and specimen id."""
-    for ds in all_datasets:
-        if ds["dataset_id"] == dataset_id:
-            for specimen in ds['specimens']:
-                if specimen['specimen_id'] == specimen_id:
-                    return specimen
-    return {"message": "Specimen not found"}
+@app.get("/v1/dataset/{dataset_id}",
+         summary='Get the dataset with the given dataset_id',
+         response_description=f'A dataset structured as per the echoSMs data store [schema]({schema_url})',
+         tags=['get'])
+async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset ID')],
+                      full_data: Annotated[bool, Query(description='If true, all raw data for the dataset will '
+                                                                   'be returned as a zipped file')] = False):
+
+    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    if not ds:
+        return {"message": "Dataset not found"}
+    
+    if full_data:
+        # zip up the dataset and stream out
+        return {'message': 'Not yet implemented'}
+
+    return ds[0]
 
 
-@app.get("/v1/specimen_image/{dataset_id}/{specimen_id}")
-async def get_specimen_image(dataset_id: Annotated[str, Path(
-                                description='The dataset ID')],
-                             specimen_id: Annotated[str, Path(
-                                description='The specimen ID')]):
-    """Return a plot of the specimen shape given the dataset id and specimen id."""
-    for ds in all_datasets:
-        if ds["dataset_id"] == dataset_id:
-            for specimen in ds['specimens']:
-                if specimen['specimen_id'] == specimen_id:
-                    img = plot_specimen(specimen, dataset_id=dataset_id, stream=True)
-                    return Response(img, media_type="image/png")
-    return {"message": "Specimen not found"}
+@app.get("/v1/specimens/{dataset_id}",
+         summary='Get the specimen_ids from the dataset with the given dataset_id',
+         response_description='A list of specimen_ids',
+         tags=['get'])
+async def get_specimens(dataset_id: Annotated[str, Path(description='The dataset ID')]):
 
+    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    if not ds:
+        return {"message": "Dataset not found"}
+
+    return [s['specimen_id'] for s in ds[0]['specimens']]
+
+
+@app.get("/v1/specimen/{dataset_id}/{specimen_id}",
+         summary='Get specimen data with the given dataset_id and specimen_id',
+         response_description=f'A specimen dataset structured as per the echoSMs data store [schema]({schema_url})',
+         tags=['get'])
+async def get_specimen(dataset_id: Annotated[str, Path(description='The dataset ID')],
+                       specimen_id: Annotated[str, Path(description='The specimen ID')]):
+
+    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    if not ds:
+        return {"message": "Dataset not found"}
+
+    return [s for s in ds[0]['specimens'] if s['specimen_id'] == specimen_id]
+
+
+@app.get("/v1/specimen_image/{dataset_id}/{specimen_id}",
+         summary='Get the specimen shape, as an image, with the given dataset_id and specimen_id',
+         response_description='An image of the specimen shape',
+         tags=['get'],
+         response_class=Response,
+         responses = {200: {'content': {'image/png': {}}}})
+async def get_specimen_image(dataset_id: Annotated[str, Path(description='The dataset ID')],
+                             specimen_id: Annotated[str, Path(description='The specimen ID')]):
+
+    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    if ds:
+        s = [s for s in ds[0]['specimens'] if s['specimen_id'] == specimen_id]
+        if s:
+            img = plot_specimen(s[0], dataset_id=ds[0]['dataset_id'], stream=True)
+            return Response(img, media_type="image/png")
+        
 
 def plot_specimen(specimen, dataset_id='', stream=False):
     """Plot the specimen shape."""
