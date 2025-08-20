@@ -28,18 +28,18 @@ app = FastAPI()
 
 @app.get("/v1/datasets", summary="Get metadata for all datasets")
 async def get_datasets(species: Annotated[str | None, Query(
-                            title='Species', 
+                            title='Species',
                             description="The scientific species name")] = None,
                        imaging_method: Annotated[str | None, Query(
                            title='Imaging method',
                            description="The imaging method used")] = None,
                        model_type: Annotated[str | None, Query(
                            title='Model type',
-                           description="The model type used")]= None,
+                           description="The model type used")] = None,
                        aphiaID: Annotated[int | None, Query(
                            title='AphiaID',
-                           description='The aphiaID of this dataset')]= None):
-    """Returns dataset metadata and shapes with optional filtering."""
+                           description='The aphiaID of this dataset')] = None):
+    """Return dataset metadata and shapes with optional filtering."""
     def df_query(name, var, end=False):
         return '' if var is None else f'{name} == @{name} & '
 
@@ -59,7 +59,7 @@ async def get_dataset(dataset_id: Annotated[str, Path(
                           description='The dataset ID')],
                       full_data: Annotated[bool, Query(
                           description='If true, all raw data for the dataset will '
-                                      'be returned as a zipped file')]= False):
+                                      'be returned as a zipped file')] = False):
     """Return dataset given a dataset id."""
     for ds in all_datasets:
         if ds["dataset_id"] == dataset_id:
@@ -87,7 +87,7 @@ async def get_specimen(dataset_id: Annotated[str, Path(
 @app.get("/v1/specimen_image/{dataset_id}/{specimen_id}")
 async def get_specimen_image(dataset_id: Annotated[str, Path(
                                 description='The dataset ID')],
-                            specimen_id: Annotated[str, Path(
+                             specimen_id: Annotated[str, Path(
                                 description='The specimen ID')]):
     """Return a plot of the specimen shape given the dataset id and specimen id."""
     for ds in all_datasets:
