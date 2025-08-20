@@ -18,7 +18,7 @@ The SCTLIBV3 version of the program can read calculated eigenvalues from the `LF
 
 There is an HP98x6 emulator available for Windows computers that may be able to run the prolate spheroidal model code. This has not been tested, but some information and links are provided here in case someone wishes to try.
 
-The emulator is available [here](https://sites.google.com/site/olivier2smet2/hp_projects/hp98x6). There is some discussion about using it to run HP Basic programs [here](https://groups.io/g/HP-Agilent-Keysight-equipment/topic/hpbasic_for_windows/79258624?page=4) and a PDF with step-by-step instructions from a link in the 5th post of [this](https://groups.io/g/VintHPcom/topic/hp_98x6_emulator/102119518) discussion ([direct link](https://groups.io/g/VintHPcom/attachment/10443/0/HP%20Emulator%20guide_V1.2.pdf)).
+The emulator is [available](https://sites.google.com/site/olivier2smet2/hp_projects/hp98x6) and there is some discussion about using it to run HP Basic programs [here](https://groups.io/g/HP-Agilent-Keysight-equipment/topic/hpbasic_for_windows/79258624?page=4). There is also a PDF with step-by-step instructions from a link in the 5th post of [this](https://groups.io/g/VintHPcom/topic/hp_98x6_emulator/102119518) discussion ([direct link](https://groups.io/g/VintHPcom/attachment/10443/0/HP%20Emulator%20guide_V1.2.pdf)).
 
 Manuals for the HP 9000 series of computers and the HP Basic that ran on them are available on the Internet. Relevant titles include:
 
