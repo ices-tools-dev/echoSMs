@@ -69,7 +69,7 @@ async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset I
                       full_data: Annotated[bool, Query(description='If true, all raw data for the dataset will '
                                                                    'be returned as a zipped file')] = False):
 
-    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    ds = get_ds(dataset_id)
     if not ds:
         return {"message": "Dataset not found"}
     
@@ -86,7 +86,7 @@ async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset I
          tags=['get'])
 async def get_specimens(dataset_id: Annotated[str, Path(description='The dataset ID')]):
 
-    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    ds = get_ds(dataset_id)
     if not ds:
         return {"message": "Dataset not found"}
 
@@ -100,11 +100,11 @@ async def get_specimens(dataset_id: Annotated[str, Path(description='The dataset
 async def get_specimen(dataset_id: Annotated[str, Path(description='The dataset ID')],
                        specimen_id: Annotated[str, Path(description='The specimen ID')]):
 
-    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    ds = get_ds(dataset_id)
     if not ds:
         return {"message": "Dataset not found"}
 
-    return [s for s in ds[0]['specimens'] if s['specimen_id'] == specimen_id]
+    return get_sp(ds[0], specimen_id)
 
 
 @app.get("/v1/specimen_image/{dataset_id}/{specimen_id}",
@@ -116,13 +116,23 @@ async def get_specimen(dataset_id: Annotated[str, Path(description='The dataset 
 async def get_specimen_image(dataset_id: Annotated[str, Path(description='The dataset ID')],
                              specimen_id: Annotated[str, Path(description='The specimen ID')]):
 
-    ds = [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+    ds = get_ds(dataset_id)
     if ds:
-        s = [s for s in ds[0]['specimens'] if s['specimen_id'] == specimen_id]
+        s = get_sp(ds[0], specimen_id)
         if s:
             img = plot_specimen(s[0], dataset_id=ds[0]['dataset_id'], stream=True)
             return Response(img, media_type="image/png")
         
+
+def get_ds(dataset_id):
+    """Find datasets with given dataset_id."""
+    return [ds for ds in all_datasets if ds['dataset_id'] == dataset_id]
+
+
+def get_sp(ds, specimen_id):
+    """Find specimen with given specimen_id in the given dataset"""
+    return [s for s in ds['specimens'] if s['specimen_id'] == specimen_id]
+
 
 def plot_specimen(specimen, dataset_id='', stream=False):
     """Plot the specimen shape."""
