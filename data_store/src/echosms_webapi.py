@@ -26,7 +26,7 @@ df = pd.DataFrame(searchable_data)
 schema_url = 'https://ices-tools-dev.github.io/echoSMs/schema/data_store_schema/'
 
 app = FastAPI(title='The echoSMs web API',
-              openapi_tags=[{'name': 'get', 
+              openapi_tags=[{'name': 'get',
                              'description': 'Calls that get information from the data store'},])
 
 
@@ -67,7 +67,7 @@ async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset I
     ds = get_ds(dataset_id)
     if not ds:
         return {"message": "Dataset not found"}
-    
+
     if full_data:
         # zip up the dataset and stream out
         return {'message': 'Not yet implemented'}
@@ -117,7 +117,7 @@ async def get_specimen_image(dataset_id: Annotated[str, Path(description='The da
         if s:
             img = plot_specimen(s[0], dataset_id=ds[0]['dataset_id'], stream=True)
             return Response(img, media_type="image/png")
-        
+
 
 def get_ds(dataset_id):
     """Find datasets with given dataset_id."""
@@ -125,7 +125,7 @@ def get_ds(dataset_id):
 
 
 def get_sp(ds, specimen_id):
-    """Find specimen with given specimen_id in the given dataset"""
+    """Find specimen with given specimen_id in the given dataset."""
     return [s for s in ds['specimens'] if s['specimen_id'] == specimen_id]
 
 
