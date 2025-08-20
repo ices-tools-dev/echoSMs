@@ -8,7 +8,7 @@
     "/v1/datasets": {
       "get": {
         "summary": "Get metadata for all datasets",
-        "description": "Return dataset metadata with optional filtering.\n\n- **species**: The scientific species name\n- **imaging_method**: The imaging method used\n- **model_type**: The model type used\n- **aphiaID**: The aphiaID",
+        "description": "Dataset metadata and shapes with optional filtering.",
         "operationId": "get_datasets_v1_datasets_get",
         "parameters": [
           {
@@ -24,8 +24,10 @@
                   "type": "null"
                 }
               ],
-              "title": "Species"
-            }
+              "title": "Species",
+              "description": "The scientific species name"
+            },
+            "description": "The scientific species name"
           },
           {
             "name": "imaging_method",
@@ -40,8 +42,10 @@
                   "type": "null"
                 }
               ],
-              "title": "Imaging Method"
-            }
+              "title": "Imaging method",
+              "description": "The imaging method used"
+            },
+            "description": "The imaging method used"
           },
           {
             "name": "model_type",
@@ -56,8 +60,10 @@
                   "type": "null"
                 }
               ],
-              "title": "Model Type"
-            }
+              "title": "Model type",
+              "description": "The model type used"
+            },
+            "description": "The model type used"
           },
           {
             "name": "aphiaID",
@@ -72,8 +78,10 @@
                   "type": "null"
                 }
               ],
-              "title": "Aphiaid"
-            }
+              "title": "AphiaID",
+              "description": "The aphiaID of this dataset"
+            },
+            "description": "The aphiaID of this dataset"
           }
         ],
         "responses": {
@@ -101,7 +109,7 @@
     "/v1/dataset/{dataset_id}": {
       "get": {
         "summary": "Get Dataset",
-        "description": "Return dataset given a dataset id.\n\n- **dataset_id**: The dataset_id\n- **full_data**: If true, all raw data for the dataset are returned as a zipped file.\n    This can be several GiB - the dataset size is available in the dataset_size\n    attribute",
+        "description": "Return dataset given a dataset id.",
         "operationId": "get_dataset_v1_dataset__dataset_id__get",
         "parameters": [
           {
@@ -110,8 +118,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "The dataset ID",
               "title": "Dataset Id"
-            }
+            },
+            "description": "The dataset ID"
           },
           {
             "name": "full_data",
@@ -119,9 +129,11 @@
             "required": false,
             "schema": {
               "type": "boolean",
+              "description": "If true, all raw data for the dataset will be returned as a zipped file",
               "default": false,
               "title": "Full Data"
-            }
+            },
+            "description": "If true, all raw data for the dataset will be returned as a zipped file"
           }
         ],
         "responses": {
@@ -149,7 +161,7 @@
     "/v1/specimen/{dataset_id}/{specimen_id}": {
       "get": {
         "summary": "Get Specimen",
-        "description": "Return a specimen (aka model) given the dataset id and specimen id.",
+        "description": "Return specimen data given the dataset id and specimen id.",
         "operationId": "get_specimen_v1_specimen__dataset_id___specimen_id__get",
         "parameters": [
           {
@@ -158,8 +170,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "The dataset ID",
               "title": "Dataset Id"
-            }
+            },
+            "description": "The dataset ID"
           },
           {
             "name": "specimen_id",
@@ -167,8 +181,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "The specimen ID",
               "title": "Specimen Id"
-            }
+            },
+            "description": "The specimen ID"
           }
         ],
         "responses": {
@@ -205,8 +221,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "The dataset ID",
               "title": "Dataset Id"
-            }
+            },
+            "description": "The dataset ID"
           },
           {
             "name": "specimen_id",
@@ -214,8 +232,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "The specimen ID",
               "title": "Specimen Id"
-            }
+            },
+            "description": "The specimen ID"
           }
         ],
         "responses": {

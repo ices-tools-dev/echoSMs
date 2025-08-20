@@ -22,8 +22,9 @@ def on_pre_build(config):
 
         if r.status_code == 200:
             with open(Path(config["docs_dir"])/'datastore_api_openapi.json', 'w') as file:
+                print('== Generating openAPI JSON file (from FastAPI) ==')
                 json.dump(r.json(), file, indent=2)
         else:
-            print('Failed to get openAPI.json file, using existing.')
+            print('== Failed to get openAPI.json file, using existing ==')
     except requests.exceptions.ConnectionError:
-        print('Failed to connect to server. openAPI.json not updated.')
+        print('== Failed to connect to server. openAPI.json not updated ==')

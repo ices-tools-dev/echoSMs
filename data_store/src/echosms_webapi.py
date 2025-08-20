@@ -1,24 +1,24 @@
 """Proof of concept of echoSMs RESTful API using FastAPI."""
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, Path
 from fastapi.responses import Response
 import matplotlib.pyplot as plt
 import numpy as np
 import io
-# from typing import Union
-from pathlib import Path
+from typing import Annotated
+from pathlib import Path as p
 import json
 import pandas as pd
 
 
-base_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
-                r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
+base_dir = p(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
+             r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
 datasets_dir = base_dir/'datasets'
 
 with open(datasets_dir/'datasets-automatically-generated.json', 'r') as f:
     all_datasets = json.load(f)
 
-# make a Pandas version of the dataset attributes that can be searched for
+# make a Pandas version of the dataset attributes that can be searched through easily
 searchable_attrs = ['dataset_id', 'species', 'imaging_method', 'model_type', 'aphiaID']
 searchable_data = [{key: d[key] for key in searchable_attrs if key in d} for d in all_datasets]
 df = pd.DataFrame(searchable_data)
@@ -26,20 +26,20 @@ df = pd.DataFrame(searchable_data)
 app = FastAPI()
 
 
-@app.get("/v1/datasets",
-         summary="Get metadata for all datasets")
-async def get_datasets(species: str | None = None,
-                       imaging_method: str | None = None,
-                       model_type: str | None = None,
-                       aphiaID: int | None = None):
-    """Return dataset metadata with optional filtering.
-
-    - **species**: The scientific species name
-    - **imaging_method**: The imaging method used
-    - **model_type**: The model type used
-    - **aphiaID**: The aphiaID
-    """
-
+@app.get("/v1/datasets", summary="Get metadata for all datasets")
+async def get_datasets(species: Annotated[str | None, Query(
+                            title='Species', 
+                            description="The scientific species name")] = None,
+                       imaging_method: Annotated[str | None, Query(
+                           title='Imaging method',
+                           description="The imaging method used")] = None,
+                       model_type: Annotated[str | None, Query(
+                           title='Model type',
+                           description="The model type used")]= None,
+                       aphiaID: Annotated[int | None, Query(
+                           title='AphiaID',
+                           description='The aphiaID of this dataset')]= None):
+    """Returns dataset metadata and shapes with optional filtering."""
     def df_query(name, var, end=False):
         return '' if var is None else f'{name} == @{name} & '
 
@@ -55,14 +55,12 @@ async def get_datasets(species: str | None = None,
 
 
 @app.get("/v1/dataset/{dataset_id}")
-async def get_dataset(dataset_id: str, full_data: bool = False):
-    """Return dataset given a dataset id.
-
-    - **dataset_id**: The dataset_id
-    - **full_data**: If true, all raw data for the dataset are returned as a zipped file.
-        This can be several GiB - the dataset size is available in the dataset_size
-        attribute
-    """
+async def get_dataset(dataset_id: Annotated[str, Path(
+                          description='The dataset ID')],
+                      full_data: Annotated[bool, Query(
+                          description='If true, all raw data for the dataset will '
+                                      'be returned as a zipped file')]= False):
+    """Return dataset given a dataset id."""
     for ds in all_datasets:
         if ds["dataset_id"] == dataset_id:
             if not full_data:
@@ -73,8 +71,11 @@ async def get_dataset(dataset_id: str, full_data: bool = False):
 
 
 @app.get("/v1/specimen/{dataset_id}/{specimen_id}")
-async def get_specimen(dataset_id: str, specimen_id: str):
-    """Return a specimen (aka model) given the dataset id and specimen id."""
+async def get_specimen(dataset_id: Annotated[str, Path(
+                          description='The dataset ID')],
+                       specimen_id: Annotated[str, Path(
+                          description='The specimen ID')]):
+    """Return specimen data given the dataset id and specimen id."""
     for ds in all_datasets:
         if ds["dataset_id"] == dataset_id:
             for specimen in ds['specimens']:
@@ -84,7 +85,10 @@ async def get_specimen(dataset_id: str, specimen_id: str):
 
 
 @app.get("/v1/specimen_image/{dataset_id}/{specimen_id}")
-async def get_specimen_image(dataset_id: str, specimen_id: str):
+async def get_specimen_image(dataset_id: Annotated[str, Path(
+                                description='The dataset ID')],
+                            specimen_id: Annotated[str, Path(
+                                description='The specimen ID')]):
     """Return a plot of the specimen shape given the dataset id and specimen id."""
     for ds in all_datasets:
         if ds["dataset_id"] == dataset_id:
