@@ -19,6 +19,9 @@ def on_pre_build(config):
 
     r = requests.get(url)
 
+    # If the requests.get call fails, this will silently fail and fall over to the existing
+    # .json file in the docs_dir.
+
     if r.status_code == 200:
         with open(Path(config["docs_dir"])/'datastore_api_openapi.json', 'w') as file:
             json.dump(r.json(), file, indent=2)
