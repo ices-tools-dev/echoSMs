@@ -262,7 +262,7 @@
         "tags": [
           "get"
         ],
-        "summary": "Get the specimen shape, as an image, with the given dataset_id and specimen_id",
+        "summary": "Get an image of the specimen shape, with the given dataset_id and specimen_id",
         "operationId": "get_specimen_image_v1_specimen_image__dataset_id___specimen_id__get",
         "parameters": [
           {

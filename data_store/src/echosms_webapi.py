@@ -108,7 +108,7 @@ async def get_specimen(dataset_id: Annotated[str, Path(description='The dataset 
 
 
 @app.get("/v1/specimen_image/{dataset_id}/{specimen_id}",
-         summary='Get the specimen shape, as an image, with the given dataset_id and specimen_id',
+         summary='Get an image of the specimen shape, with the given dataset_id and specimen_id',
          response_description='An image of the specimen shape',
          tags=['get'],
          response_class=Response,

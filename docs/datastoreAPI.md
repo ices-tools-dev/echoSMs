@@ -2,7 +2,7 @@
 
 ???+ Note
 
-    This page contains the draft API specification and documentation for web access to the echoSMs anatomical data store. It is a work in progress and no web access store has been set up yet.
+    This page contains the draft API specification and documentation for web access to the echoSMs anatomical data store. It is a work in progress and no web access data store has been set up yet.
 
 The data store API is implemented as a RESTful web API with calls to:
 
