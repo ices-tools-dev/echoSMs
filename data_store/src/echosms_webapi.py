@@ -1,4 +1,4 @@
-"""Proof of concept of echoSMs RESTful API using FastAPI."""
+"""Proof of concept of echoSMs anatomical data store RESTful API using FastAPI."""
 
 from fastapi import FastAPI, Query, Path
 from fastapi.responses import Response
@@ -34,18 +34,12 @@ app = FastAPI(title='The echoSMs web API',
          summary="Get dataset_ids with optional filtering",
          response_description='A list of dataset_ids',
          tags=['get'])
-async def get_datasets(species: Annotated[str | None, Query(
-                            title='Species',
-                            description="The scientific species name")] = None,
-                       imaging_method: Annotated[str | None, Query(
-                           title='Imaging method',
-                           description="The imaging method used")] = None,
-                       model_type: Annotated[str | None, Query(
-                           title='Model type',
-                           description="The model type used")] = None,
-                       aphiaID: Annotated[int | None, Query(
-                           title='AphiaID',
-                           description='The [aphiaID](https://www.marinespecies.org/aphia.php)')] = None):
+async def get_datasets(species: Annotated[str | None, Query(title='Species', description="The scientific species name")] = None,
+                       imaging_method: Annotated[str | None, Query(title='Imaging method', description="The imaging method used")] = None,
+                       model_type: Annotated[str | None, Query(title='Model type', description="The model type used")] = None,
+                       anatomical_category: Annotated[str | None, Query(title='Anatomical category', description="The anatomical category")] = None,
+                       shape_method: Annotated[str | None, Query(title='Shape method', description="The shape method")] = None,
+                       aphiaID: Annotated[int | None, Query(title='AphiaID', description='The [aphiaID](https://www.marinespecies.org/aphia.php)')] = None):
 
     def df_query(name, var, end=False):
         return '' if var is None else f'{name} == @{name} & '
@@ -53,6 +47,8 @@ async def get_datasets(species: Annotated[str | None, Query(
     q = df_query('species', species)
     q += df_query('imaging_method', imaging_method)
     q += df_query('model_type', model_type)
+    q += df_query('anatomical_category', anatomical_category)
+    q += df_query('shape_method', shape_method)
     q += df_query('aphiaID', aphiaID)
 
     if len(q) == 0:
@@ -66,8 +62,7 @@ async def get_datasets(species: Annotated[str | None, Query(
          response_description=f'A dataset structured as per the echoSMs data store [schema]({schema_url})',
          tags=['get'])
 async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset ID')],
-                      full_data: Annotated[bool, Query(description='If true, all raw data for the dataset will '
-                                                                   'be returned as a zipped file')] = False):
+                      full_data: Annotated[bool, Query(description='If true, all raw data for the dataset will be returned as a zipped file')] = False):
 
     ds = get_ds(dataset_id)
     if not ds:
