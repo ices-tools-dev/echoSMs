@@ -1,18 +1,21 @@
 """Proof of concept of echoSMs anatomical data store RESTful API using FastAPI."""
 
-from fastapi import FastAPI, Query, Path
-from fastapi.responses import Response
+from fastapi import FastAPI, Query, Path as fPath
+from fastapi.responses import Response, StreamingResponse
 import matplotlib.pyplot as plt
 import numpy as np
 import io
 from typing import Annotated
-from pathlib import Path as pp
+from pathlib import Path
 import json
 import pandas as pd
+from datetime import datetime as dt
+from stat import S_IFDIR, S_IFREG
+from stream_zip import ZIP_64, stream_zip
 
 
-base_dir = pp(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
-              r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
+base_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
+                r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
 datasets_dir = base_dir/'datasets'
 
 with open(datasets_dir/'datasets-automatically-generated.json', 'r') as f:
@@ -68,7 +71,7 @@ async def get_datasets(species: Annotated[str | None, Query(
          summary='Get the dataset with the given dataset_id',
          response_description=f'A dataset structured as per the echoSMs data store [schema]({schema_url})',
          tags=['get'])
-async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset ID')],
+async def get_dataset(dataset_id: Annotated[str, fPath(description='The dataset ID')],
                       full_data: Annotated[bool, Query(description='If true, all raw data for the dataset will be returned as a zipped file')] = False):
 
     ds = get_ds(dataset_id)
@@ -77,8 +80,9 @@ async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset I
 
     if full_data:
         # zip up the dataset and stream out
-        return {'message': 'Not yet implemented'}
-
+        return StreamingResponse(stream_zip(get_dir_items(datasets_dir/dataset_id)),
+                                 media_type='application/zip',
+                                 headers={'Content-Disposition': f'attachment; filename={dataset_id}.zip'})
     return ds[0]
 
 
@@ -86,7 +90,7 @@ async def get_dataset(dataset_id: Annotated[str, Path(description='The dataset I
          summary='Get the specimen_ids from the dataset with the given dataset_id',
          response_description='A list of specimen_ids',
          tags=['get'])
-async def get_specimens(dataset_id: Annotated[str, Path(description='The dataset ID')]):
+async def get_specimens(dataset_id: Annotated[str, fPath(description='The dataset ID')]):
 
     ds = get_ds(dataset_id)
     if not ds:
@@ -99,8 +103,8 @@ async def get_specimens(dataset_id: Annotated[str, Path(description='The dataset
          summary='Get specimen data with the given dataset_id and specimen_id',
          response_description=f'A specimen dataset structured as per the echoSMs data store [schema]({schema_url})',
          tags=['get'])
-async def get_specimen(dataset_id: Annotated[str, Path(description='The dataset ID')],
-                       specimen_id: Annotated[str, Path(description='The specimen ID')]):
+async def get_specimen(dataset_id: Annotated[str, fPath(description='The dataset ID')],
+                       specimen_id: Annotated[str, fPath(description='The specimen ID')]):
 
     ds = get_ds(dataset_id)
     if not ds:
@@ -115,8 +119,8 @@ async def get_specimen(dataset_id: Annotated[str, Path(description='The dataset 
          tags=['get'],
          response_class=Response,
          responses={200: {'content': {'image/png': {}}}})
-async def get_specimen_image(dataset_id: Annotated[str, Path(description='The dataset ID')],
-                             specimen_id: Annotated[str, Path(description='The specimen ID')]):
+async def get_specimen_image(dataset_id: Annotated[str, fPath(description='The dataset ID')],
+                             specimen_id: Annotated[str, fPath(description='The specimen ID')]):
 
     ds = get_ds(dataset_id)
     if ds:
@@ -202,3 +206,20 @@ def plot_shape_surface(specimen, axs):
 def plot_shape_voxels(s, axs):
     """Plot the specimen's voxels."""
     pass
+
+
+def get_dir_items(base_path: Path):
+    """Create an iterable of file/directory info for use by stream-zip."""
+    for item in base_path.rglob('*'):
+        a_name = item.relative_to(base_path).as_posix() # path within the zip archive
+        # need a tuple of (archive_name, modified_time, mode, compression_method, data_source)
+        # For directories, data_source must be empty
+        if item.is_file():
+            with open(item, 'rb') as f:
+                yield (a_name, dt.fromtimestamp(item.stat().st_mtime),
+                    S_IFREG | 0o644,  # regular file with read/write permissions
+                    ZIP_64, (chunk for chunk in iter(lambda: f.read(65536*64), b'')))
+        elif item.is_dir():
+            yield (a_name + '/',  # trailing slash for directories
+                dt.fromtimestamp(item.stat().st_mtime), S_IFDIR | 0o755, ZIP_64, ())
+
