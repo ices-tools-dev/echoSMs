@@ -68,6 +68,42 @@
             "description": "The model type used"
           },
           {
+            "name": "anatomical_category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Anatomical category",
+              "description": "The anatomical category"
+            },
+            "description": "The anatomical category"
+          },
+          {
+            "name": "shape_method",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Shape method",
+              "description": "The shape method"
+            },
+            "description": "The shape method"
+          },
+          {
             "name": "aphiaID",
             "in": "query",
             "required": false,
