@@ -114,7 +114,7 @@ async def get_specimen(dataset_id: Annotated[str, Path(description='The dataset 
          response_description='An image of the specimen shape',
          tags=['get'],
          response_class=Response,
-         responses = {200: {'content': {'image/png': {}}}})
+         responses={200: {'content': {'image/png': {}}}})
 async def get_specimen_image(dataset_id: Annotated[str, Path(description='The dataset ID')],
                              specimen_id: Annotated[str, Path(description='The specimen ID')]):
 
