@@ -1,0 +1,6 @@
+fastapi[standard]
+matplotlib
+numpy
+pandas
+stream_zip
+
