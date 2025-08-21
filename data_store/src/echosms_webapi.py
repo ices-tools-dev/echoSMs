@@ -38,7 +38,7 @@ app = FastAPI(title='The echoSMs web API',
          summary="Get dataset_ids with optional filtering",
          response_description='A list of dataset_ids',
          tags=['get'])
-async def get_datasets(species: Annotated[str | None, Query(
+async def get_datasets(species: Annotated[str | None, Query(  # noqa
                            title='Species',
                            description="The scientific species name")] = None,
                        imaging_method: Annotated[str | None, Query(
@@ -55,7 +55,8 @@ async def get_datasets(species: Annotated[str | None, Query(
                            description="The shape method")] = None,
                        aphiaID: Annotated[int | None, Query(
                            title='AphiaID',
-                           description='The [aphiaID](https://www.marinespecies.org/aphia.php)')] = None):
+                           description='The [aphiaID](https://www.marinespecies.org/aphia.php)')]
+                               = None):
 
     q = ''
     for attr in searchable_attrs[1:]:  # excludes 'dataset_id'
@@ -69,10 +70,12 @@ async def get_datasets(species: Annotated[str | None, Query(
 
 @app.get("/v1/dataset/{dataset_id}",
          summary='Get the dataset with the given dataset_id',
-         response_description=f'A dataset structured as per the echoSMs data store [schema]({schema_url})',
+         response_description='A dataset structured as per the echoSMs data store '
+                              f'[schema]({schema_url})',
          tags=['get'])
-async def get_dataset(dataset_id: Annotated[str, fPath(description='The dataset ID')],
-                      full_data: Annotated[bool, Query(description='If true, all raw data for the dataset will be returned as a zipped file')] = False):
+async def get_dataset(dataset_id: Annotated[str, fPath(description='The dataset ID')], # noqa
+                      full_data: Annotated[bool, Query(description='If true, all raw data for the '
+                                    'dataset will be returned as a zipped file')] = False):
 
     ds = get_ds(dataset_id)
     if not ds:
@@ -82,7 +85,8 @@ async def get_dataset(dataset_id: Annotated[str, fPath(description='The dataset 
         # zip up the dataset and stream out
         return StreamingResponse(stream_zip(get_dir_items(datasets_dir/dataset_id)),
                                  media_type='application/zip',
-                                 headers={'Content-Disposition': f'attachment; filename={dataset_id}.zip'})
+                                 headers={'Content-Disposition':
+                                          f'attachment; filename={dataset_id}.zip'})
     return ds[0]
 
 
@@ -90,7 +94,7 @@ async def get_dataset(dataset_id: Annotated[str, fPath(description='The dataset 
          summary='Get the specimen_ids from the dataset with the given dataset_id',
          response_description='A list of specimen_ids',
          tags=['get'])
-async def get_specimens(dataset_id: Annotated[str, fPath(description='The dataset ID')]):
+async def get_specimens(dataset_id: Annotated[str, fPath(description='The dataset ID')]): # noqa
 
     ds = get_ds(dataset_id)
     if not ds:
@@ -101,9 +105,10 @@ async def get_specimens(dataset_id: Annotated[str, fPath(description='The datase
 
 @app.get("/v1/specimen/{dataset_id}/{specimen_id}",
          summary='Get specimen data with the given dataset_id and specimen_id',
-         response_description=f'A specimen dataset structured as per the echoSMs data store [schema]({schema_url})',
+         response_description='A specimen dataset structured as per the echoSMs data '
+                              f'store [schema]({schema_url})',
          tags=['get'])
-async def get_specimen(dataset_id: Annotated[str, fPath(description='The dataset ID')],
+async def get_specimen(dataset_id: Annotated[str, fPath(description='The dataset ID')], # noqa
                        specimen_id: Annotated[str, fPath(description='The specimen ID')]):
 
     ds = get_ds(dataset_id)
@@ -119,7 +124,7 @@ async def get_specimen(dataset_id: Annotated[str, fPath(description='The dataset
          tags=['get'],
          response_class=Response,
          responses={200: {'content': {'image/png': {}}}})
-async def get_specimen_image(dataset_id: Annotated[str, fPath(description='The dataset ID')],
+async def get_specimen_image(dataset_id: Annotated[str, fPath(description='The dataset ID')], # noqa
                              specimen_id: Annotated[str, fPath(description='The specimen ID')]):
 
     ds = get_ds(dataset_id)
@@ -211,15 +216,14 @@ def plot_shape_voxels(s, axs):
 def get_dir_items(base_path: Path):
     """Create an iterable of file/directory info for use by stream-zip."""
     for item in base_path.rglob('*'):
-        a_name = item.relative_to(base_path).as_posix() # path within the zip archive
+        a_name = item.relative_to(base_path).as_posix()  # path within the zip archive
         # need a tuple of (archive_name, modified_time, mode, compression_method, data_source)
         # For directories, data_source must be empty
         if item.is_file():
             with open(item, 'rb') as f:
                 yield (a_name, dt.fromtimestamp(item.stat().st_mtime),
-                    S_IFREG | 0o644,  # regular file with read/write permissions
-                    ZIP_64, (chunk for chunk in iter(lambda: f.read(65536*64), b'')))
+                       S_IFREG | 0o644,  # regular file with read/write permissions
+                       ZIP_64, (chunk for chunk in iter(lambda: f.read(65536*64), b'')))
         elif item.is_dir():
             yield (a_name + '/',  # trailing slash for directories
-                dt.fromtimestamp(item.stat().st_mtime), S_IFDIR | 0o755, ZIP_64, ())
-
+                   dt.fromtimestamp(item.stat().st_mtime), S_IFDIR | 0o755, ZIP_64, ())
