@@ -1,0 +1,146 @@
+#.schema https://github.com/ices-tools-dev/echoSMs/blob/main/schemas/anatomical_data_store/v1/anatomical_data_store.json
+dataset_id = ""  # populated by data storage system
+description = "Organisms used in Clay & Horne 1994 paper"
+anatomical_category = "organism"
+anatomical_features = ["body", "swimbladder"]
+date_first_added = "2025-07-21"
+date_last_modified = "2005-08-06"
+aphiaID = 126436
+class = "Teleostei"
+order = "Gadiformes"
+family = "Gadidae"
+genus = "Gadus"
+species = "Gadus morhua"
+vernacular_name = "Atlantic cod"
+reference = "doi:10.1121/1.410245"
+activity_name = ""
+location = ""
+# latitude = 
+# longitude = 
+# depth = 
+date_collection = "1970-01-01"
+date_image = "1970-01-01"
+investigators = ["Clarence Clay", "John Horne"]
+data_collection_description = ""
+# note = ""
+imaging_method = "radiograph"
+shape_method = "manual"
+shape_method_processing = "Body and swimbladder shapes manually derived from x-ray image contrast"
+model_type = "KRM"
+sound_speed_method = "literature"
+mass_density_method = "literature"
+shape_data_types = ["outline"]
+dataset_size = 0.0  # populated by data storage system
+
+[[specimens]]
+specimen_id = "A"
+specimen_condition = "fresh"
+length = 0.173
+weight = 0.048
+length_type = "standard length"
+shape_type = "outline"
+[[specimens.shapes]]
+name = "body"
+boundary = "fluid"
+x = [0.0, -0.0177, -0.0354, -0.0532, -0.0709, -0.0887, -0.1064, -0.1242, -0.1419, -0.1596, -0.173]
+y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+z = [-9.50e-04, 4.00e-04, -5.00e-05, -1.40e-03, -2.70e-03, -2.70e-03, -3.20e-03, -2.25e-03, -9.00e-04, -5.00e-05, -5.00e-04]
+height = [0.0071, 0.0222, 0.0319, 0.0364, 0.0372, 0.0302, 0.0204, 0.0169, 0.0124, 0.0089, 0.0026]
+width = [0.0062, 0.0221, 0.0221, 0.0239, 0.0239, 0.0177, 0.0106, 0.0062, 0.0044, 0.0026, 0.0008]
+mass_density = 1070
+sound_speed_compressional = 1570
+[[specimens.shapes]]
+name = "swimbladder"
+boundary = "soft"
+x = [-0.0487, -0.0532, -0.0621, -0.0709, -0.0798, -0.0887, -0.0958]
+y = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0]
+z = [0.0026, 0.00175, -0.0005, -0.0023, -0.0049, -0.0067, -0.0067]
+height = [0.0018, 0.0053, 0.008, 0.0062, 0.0044, 0.0026, 0.0008]
+width = [0.007, 0.0115, 0.0088, 0.007, 0.0053, 0.0035, 0.0008]
+mass_density = 1.24
+sound_speed_compressional = 345
+
+[[specimens]]
+specimen_id = "B"
+specimen_condition = "fresh"
+length = 0.156
+weight = 0.034
+length_type = "standard length"
+shape_type = "outline"
+[[specimens.shapes]]
+name = "body"
+boundary = "fluid"
+x = [ 0.0, -0.0156, -0.0312, -0.0468, -0.0625, -0.0781, -0.0937, -0.1093, -0.125, -0.1406, -0.15,]
+y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+z = [0.00075, 0.00075, -0.00045, -0.00315, -0.00395, -0.0016, -0.0008, -0.0016, -0.0008, -5.0e-05, 0.00035,]
+height = [ 0.0063, 0.0187, 0.0289, 0.0359, 0.0343, 0.0266, 0.0172, 0.014, 0.0094, 0.0079, 0.0023,]
+width = [ 0.0046, 0.0171, 0.0195, 0.0203, 0.0179, 0.0148, 0.0125, 0.0085, 0.0054, 0.0023, 0.0007,]
+mass_density = 1070
+sound_speed_compressional = 1570
+[[specimens.shapes]]
+name = "swimbladder"
+boundary = "soft"
+x = [ -0.0398, -0.0468, -0.0546, -0.0625, -0.0703, -0.0781, -0.082,]
+y = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+height = [ 0.0024, 0.0047, 0.0063, 0.0062, 0.0047, 0.0015, 0.0007,]
+width = [ 0.0054, 0.0085, 0.0078, 0.0062, 0.0046, 0.0031, 0.0015,]
+mass_density = 1.24
+sound_speed_compressional = 345
+z = [ 0.0019, 0.00155, 0.00075, -0.0016, -0.00395, -0.00475, -0.00435,]
+
+[[specimens]]
+specimen_id = "C"
+specimen_condition = "fresh"
+length = 0.323
+weight = 0.286
+length_type = "standard length"
+shape_type = "outline"
+[[specimens.shapes]]
+name = "body"
+boundary = "fluid"
+x = [ 0.0, -0.0336, -0.0672, -0.1009, -0.1345, -0.1682, -0.2018, -0.2355, -0.2691, -0.3028, -0.323,]
+y = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+height = [ 0.0185, 0.0437, 0.0555, 0.0588, 0.0571, 0.0471, 0.0354, 0.0252, 0.0185, 0.0135, 0.0017,]
+width = [ 0.01, 0.0285, 0.0386, 0.042, 0.0353, 0.0252, 0.0168, 0.0117, 0.0067, 0.0033, 0.0016,]
+mass_density = 1070
+sound_speed_compressional = 1570
+z = [ -0.00085, -0.00175, -0.00085, 0.0008, -5.0e-05, 0.00165, 0.0008, 0.0025, 0.00075, -5.0e-05, -0.00255,]
+
+[[specimens.shapes]]
+name = "swimbladder"
+boundary = "soft"
+x = [ -0.0874, -0.1009, -0.1177, -0.1345, -0.1514, -0.1682, -0.1732,]
+y = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+height = [ 0.0067, 0.0118, 0.0135, 0.0118, 0.0101, 0.0051, 0.0017,]
+width = [ 0.0117, 0.0201, 0.0185, 0.0134, 0.01, 0.0067, 0.0033,]
+mass_density = 1.24
+sound_speed_compressional = 345
+z = [ 0.00335, 0.0025, -5.0e-05, -0.0009, -0.00175, -0.00255, -0.00425,]
+
+[[specimens]]
+specimen_id = "D"
+specimen_condition = "fresh"
+length = 0.380
+weight = 0.544
+length_type = "standard length"
+shape_type = "outline"
+[[specimens.shapes]]
+name = "body"
+boundary = "fluid"
+x = [ 0.0, -0.041, -0.083, -0.124, -0.165, -0.206, -0.247, -0.29, -0.33, -0.37, -0.38,]
+y = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+height = [ 0.015, 0.045, 0.06, 0.075, 0.074, 0.063, 0.044, 0.03, 0.023, 0.018, 0.005,]
+width = [ 0.02, 0.045, 0.057, 0.06, 0.049, 0.035, 0.023, 0.012, 0.007, 0.003, 0.001,]
+mass_density = 1070
+sound_speed_compressional = 1570
+z = [ -0.0025, -0.0025, 0.0, -0.0075, -0.01, -0.0085, -0.007, -0.005, -0.0045, -0.004, -0.0025,]
+[[specimens.shapes]]
+name = "swimbladder"
+boundary = "soft"
+x = [ -0.103, -0.125, -0.144, -0.165, -0.186, -0.206,]
+y = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+height = [ 0.008, 0.014, 0.017, 0.017, 0.011, 0.0030,]
+width = [ 0.011, 0.025, 0.023, 0.018, 0.014, 0.007,]
+mass_density = 1.24
+sound_speed_compressional = 345
+z = [ -0.006, -0.009, -0.0115, -0.0145, -0.0155, -0.0175,]
