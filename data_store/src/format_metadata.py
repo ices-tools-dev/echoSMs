@@ -10,6 +10,7 @@ from pathlib import Path
 import tomllib
 import json
 import jsonschema
+from rich import print as rprint
 
 datastore_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd\Projects'
                      r'\2024-05 NOAA modelling\working\anatomical data store')
@@ -36,11 +37,11 @@ for path in datasets_dir.iterdir():
                 data = tomllib.load(f)
             data['dataset_id'] = path.name
             data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
-            print(f'Validating dataset in {mf}')
+            rprint(f'Validating dataset in [cyan]{path.name}')
             v = jsonschema.Draft202012Validator(schema)
             errored = False
             for error in sorted(v.iter_errors(data), key=str):
-                print(error.message + ' (at ' + error.json_path + ')')
+                rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
                 errored = True
 
             # write out a modified dataset file in json format
