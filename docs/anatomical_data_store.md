@@ -15,16 +15,16 @@ Objective 3 exists to facilitate access to datasets from scattering models runni
 
 ## Data store contents and structure
 
-Each dataset comprises the following:
+The data store will contain many datasets, where each dataset comprises the following:
 
 1. Metadata about a dataset
-1. Input data to scattering models (one or more files that specify material properties, 3D shapes, and other model parameters)
-1. Raw data files that were used to produce the scattering model input data (mostly binary files, such as x-ray and photographic images, MRI & CT scan files, etc)
-1. Processing files (programs, notes, intermediate data files, etc)
+1. Input data to scattering models (material properties, 3D shapes, and other model parameters)
+1. Optionally, raw data files that were used to produce the scattering model input data (mostly binary files, such as x-ray and photographic images, MRI & CT scan files, etc)
+1. Optionally, processing files (programs, notes, intermediate data files, etc)
 
 Each dataset may contain information about more than one organism (e.g., multiple fish shapes were used in an analysis) but is restricted to a single species per dataset.
 
-The dataset metadata and model data have prescribed formats and are structured for convenient access via a Web API, loading from formatted files, and inputting to scattering models. The raw data and processing file formats and layout are unconstrained and are accessible via a Web API as a zipped download and a browsable directory hierarchy.
+The dataset metadata and model data have prescribed formats and are structured for convenient access via a [RESTful](https://en.wikipedia.org/wiki/REST) API, loading from formatted files, and inputting to scattering models. The raw data and processing file formats and layout are unconstrained and are accessible via the RESTful API as a zipped download and a browsable directory hierarchy.
 
 Model outputs are not stored.
 
@@ -38,31 +38,27 @@ A dataset ready for uploading should contain the following files and directory s
 |/|specimen*.toml|Specimen and model data in one or more TOML-formatted files. File names must start with ‘specimen’ and have a suffix of .toml. These files are simply appended to the metadata.toml file when reading the dataset data.|
 |/data|Any|Raw and processing files in user-supplied directory hierarchy|
 
-### Validation
-
-The contents of a metadata.toml file can be validated using the data store schema. There are many online tools that can do this, and an offline version in Python will be provided (_to do_). It is also likely that it will be automatically validated when uploading a new data set.
-
 ## Data formats
 
 ### Dataset and model data
 
 The dataset metadata and model data structures have been designed as a hierarchical structure of key-value pairs that can be realised in many commonly used data file formats, including TOML, XML, YAML, JSON, HDF5, netCDF4, and Zarr. The data structures are also designed to be simple to instantiate in the programming languages that are commonly used for acoustic scattering models (e.g., Julia, Matlab, Python, and R).
 
-The dataset metadata requires information about the species, the collection and processing of specimens used in scattering models, links to published work, and other context. These are intended to provide information for users to assess the quality, usability, and suitability of a particular dataset for scattering models.
+The dataset metadata requires information about the species, the collection and processing of specimens used in scattering models, links to published work, and other context. These are intended to provide information for users to assess the quality, usability, and suitability of a particular dataset.
 
-Associated with each dataset are one or more specimen datasets. These contain basic information about the specimen(s) (e.g., length and weight), along with the three-dimensional shape information required by acoustic scattering models.
+Associated with each dataset are one or more specimen datasets. These contain basic information about the specimen(s) (e.g., length and weight), along with the three-dimensional shape information required by acoustic scattering models. A specimen is not necessarily a whole organisms - the data structure allows for a specimen to be some part of the organism (e.g., swimbladder, organs, etc)
 
-The type of shape data required by a scattering model falls into three main types: a three-dimensional triangulated closed surface, dorsal and ventral outlines, and a rectangular three-dimensional grid of voxels (see table below). The model data structure provides the means to store each of these. Some models have multiple shapes for a single specimen (e.g., a fish body and swimbladder) and this is achieved with multiple instances of the shape attributes per specimen.
+The type of shape data required by a scattering model falls into three main types: a three-dimensional triangulated closed surface, dorsal and ventral outlines, and a rectangular three-dimensional grid of voxels (see table below). The model data structure provides the means to store each of these. Some models have multiple shapes for a single specimen (e.g., a fish body and swimbladder) and this is achieved with multiple shapes per specimen.
 
-The structure and attributes required for the dataset metadata and model data are recorded as a [JSON schema](https://json-schema.org/) that is stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, and is rendered into the echoSMs [documentation](schema/data_store_schema.md). The schema can also used to validate incoming datasets.
+The structure and attributes required for the dataset metadata and model data are recorded as a [JSON schema](https://json-schema.org/) that is stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, and is rendered into the echoSMs [documentation](schema/data_store_schema.md). The schema can also used to validate incoming datasets (there are many online tools that can do this, and an offline version in Python will be provided).
 
-|Shape data name|Realisation|Models that use this|Notes|
+|Shape data type|Realisation|Models that use this|Notes|
 |---------------|-----------|--------------------|-----|
 |surface|3D triangular surface mesh|BEM, KA|ρ and c per shape|
 |voxels|3D rectangular grid with material properties for each voxel|PT-DWBA, FEM|ρ and c for each voxel|
 |outline|Dorsal and ventral outlines (widths and heights) along a curved centreline|KRM, DWBA, DCM|ρ and c per shape (KRM) or per section (DWBA)|
 
-Specialisations of the `outline` shape are:
+Specialisations of the outline shape are:
 
 - KRM: non-circular cross-sections along a straight centreline
 - DWBA: circular cross-sections along a curved centreline
