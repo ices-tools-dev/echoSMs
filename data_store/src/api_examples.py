@@ -31,6 +31,6 @@ if d.status_code == 200:
 
     obj = sns.scatterplot(data=df, x='length', y='weight',
                           hue='vernacular_name', style='imaging_method')
-    sns.move_legend(obj, 'upper right', bbox_to_anchor=(1.5, 1))
+    sns.move_legend(obj, 'upper right', bbox_to_anchor=(1.6, 1))
 
     print(df[['vernacular_name', 'model_type', 'shape_data_types']])
