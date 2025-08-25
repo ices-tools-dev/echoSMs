@@ -18,6 +18,8 @@ base_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aq
                 r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
 datasets_dir = base_dir/'datasets'
 
+datasets_dir = Path('.')/'data_store'/'resources'
+
 with open(datasets_dir/'all-datasets-automatically-generated.json', 'r') as f:
     all_datasets = json.load(f)
 
