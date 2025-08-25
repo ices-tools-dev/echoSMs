@@ -31,8 +31,9 @@ if d.status_code == 200:
 
         if r.status_code == 200:
             row = r.json()
-            print(f'  Got {dataset_id} dataset ({row["vernacular_name"]}) '
-                  f'with {len(row["specimens"])} specimens')
+            plural = '' if len(row['specimens']) == 1 else 's'
+            print(f'  Got {dataset_id} dataset ({row["vernacular_name"]})'
+                  f' with {len(row["specimens"])} specimen' + plural)
             # create a row for each specimen in the dataset
             to_copy = ['specimen_id', 'length', 'weight']
             for s in row['specimens']:
@@ -57,6 +58,7 @@ if d.status_code == 200:
 
     # Get an image of one of the shapes and show it locally (or put the URL
     # into a web browser manually)
+    print('Getting a specimen shape image...')
     r = requests.get(baseURI + 'v1/specimen_image/CLAY_HORNE/B')
 
     if r.status_code == 200:
