@@ -18,7 +18,7 @@ base_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aq
                 r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
 datasets_dir = base_dir/'datasets'
 
-with open(datasets_dir/'datasets-automatically-generated.json', 'r') as f:
+with open(datasets_dir/'all-datasets-automatically-generated.json', 'r') as f:
     all_datasets = json.load(f)
 
 # make a Pandas version of the dataset attributes that can be searched through easily

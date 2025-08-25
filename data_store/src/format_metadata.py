@@ -1,8 +1,8 @@
 """Misc data store work.
 
-1. Read all dataset metadata and populate dataset_id and dataset_size attributes
+1. Read all dataset metadata .TOML files and populate dataset_id and dataset_size attributes
 2. Validate all datasets against the JSON schema
-3. Create a single file that contains all dataset metadata for use in the web API server
+3. Create a single JSON file that contains all dataset metadata, for use in the web API server
 
 """
 # %%
@@ -23,6 +23,7 @@ schema_file = echosms_dir/'data_store'/'schema'/'v1'/'anatomical_data_store.json
 # json schema for the echoSMs anatomical data store
 with open(schema_file, 'rb') as f:
     schema = json.load(f)
+v = jsonschema.Draft202012Validator(schema)
 
 # Read in all .toml files that we can find, add/update the dataset_id and dataset_size
 # attributes and write out as a json file. Also create a single json file that contains
@@ -38,9 +39,10 @@ for path in datasets_dir.iterdir():
             data['dataset_id'] = path.name
             data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
             rprint(f'Validating dataset in [cyan]{path.name}')
-            v = jsonschema.Draft202012Validator(schema)
+
             errored = False
             for error in sorted(v.iter_errors(data), key=str):
+                # print(path.name)
                 rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
                 errored = True
 
@@ -52,5 +54,5 @@ for path in datasets_dir.iterdir():
 
 # Write the validated datasets out as a single JSON file
 print('Writing a combined metadata file (datasets.json)')
-with open(datasets_dir/'datasets-automatically-generated.json', 'w') as f:
+with open(datasets_dir/'all-datasets-automatically-generated.json', 'w') as f:
     json.dump(all_data, f, indent=2)
