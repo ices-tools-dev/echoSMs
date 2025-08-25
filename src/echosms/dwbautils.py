@@ -209,6 +209,9 @@ class DWBAorganism():
     g: np.ndarray
     h: np.ndarray
     name: str
+    aphiaid: str
+    length: float
+    vernacular_name: str
     source: str = ''
     note: str = ''
     rv_tan: np.ndarray = None
@@ -264,7 +267,8 @@ class DWBAdata():
             rv_pos = np.vstack((np.array(s['x']), np.array(s['y']), np.array(s['z']))).T
 
             organism = DWBAorganism(rv_pos, np.array(s['a']), np.array(s['g']), np.array(s['h']),
-                                    s['name'], s.get('source', ''), s.get('note', ''), rv_tan)
+                                    s['name'], s['aphiaid'], s['length'], s['vernacular'],
+                                    s.get('source', ''), s.get('note', ''), rv_tan)
             self.dwba_models[s['name']] = organism
 
     def names(self):
