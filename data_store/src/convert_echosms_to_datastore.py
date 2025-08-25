@@ -6,18 +6,26 @@ anatomical data store metadata and shape formats.
 import collections
 import copy
 import numpy as np
+from datetime import date
 from echosms import KRMdata, DWBAdata
-from plot_specimen import plot_specimen
 import tomli_w
+import requests
+from pathlib import Path
+
+
+datastore_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
+                     r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
+
+worms_url = 'https://www.marinespecies.org/rest/AphiaRecordByAphiaID/'
 
 # Datset template
-dataset_t = {'dataset_id': "",
+dataset_t = {  # 'dataset_id': "",
              'description': "",
-             'anatomical_category': "",
-             'anatomical_features': [],
-             'date_first_added': "",
-             'date_last_modified': "",
-             'aphiaID': np.nan,
+             'anatomical_category': "organism",
+             'anatomical_features': ['body', 'swimbladder', 'backbone'],
+             'date_first_added': date.today().strftime('%Y-%m-%d'),
+             'date_last_modified': date.today().strftime('%Y-%m-%d'),
+             'aphiaID': 1,
              'class': "",
              'order': "",
              'family': "",
@@ -25,74 +33,99 @@ dataset_t = {'dataset_id': "",
              'species': "",
              'vernacular_name': "",
              'reference': '',
-             'activity_name': "",
-             'location': "",
-             'latitude': np.nan,
-             'longitude': np.nan,
-             'depth': np.nan,
-             'date_collection': "",
+             # 'activity_name': "",
+             # 'location': "",
+             # 'latitude': np.nan,
+             # 'longitude': np.nan,
+             # 'depth': np.nan,
+             'date_collection': "unknown",
              'date_image': "",
-             'investigator': [],
+             'investigators': [],
              'data_collection_description': "",
              'note': "",
-             'imaging_method': "",
-             'shape_method': "",
-             'shape_method_processing': "",
+             'imaging_method': "unknown",
+             'shape_method': "unknown",
+             'shape_method_processing': "unknown",
              'model_type': "",
-             'sound_speed_method': "",
-             'mass_density_method': "",
-             'shape_data_type': "outline",
-             'dataset_size': np.nan,
+             'sound_speed_method': "unknown",
+             'mass_density_method': "unknown",
+             'shape_data_types': "",
+             # 'dataset_size': np.nan,
              'specimens': []}
+
+if 'aphiaID_cache' not in locals():
+    aphiaID_cache = {}
 
 ########################
 # KRM models
 d = KRMdata()
 
-# group the models into datasets using the 'source' attribute.
+# group the models into datasets using the 'aphiaid' (aka species) attribute.
 dd = collections.defaultdict(list)
 
 for n in d.names():
     m = d.model(n)
-    dd[m.source].append(m.name)
+    dd[m.aphiaid].append(m.name)
 
 datasets = []
-for ds in dd.keys():
+for aphiaid in dd.keys():
 
     # populate dataset metadata
     dataset = copy.deepcopy(dataset_t)
-    dataset['reference'] = ds
-    dataset['shape_method'] = 'outline'
+    dataset['aphiaID'] = aphiaid
+    dataset['shape_method'] = 'unknown'
+    dataset['shape_data_types'] = ['outline']
     dataset['model_type'] = 'KRM'
+    dataset['description'] = 'Shape data for KRM models'
+    dataset['note'] = 'Shape obtained from the KRM shapes available at '
+    'https://www.fisheries.noaa.gov/data-tools/krm-model. '
+    'This is not necessarily the original source of the shape.'
 
     # create models in the dataset
-    for n in dd[ds]:
+    for n in dd[aphiaid]:
         m = d.model(n)
 
-        specimen = {'specimen_id': m.name, 'specimen_condition': '',
-                    'length': np.nan, 'weight': np.nan,
-                    'length_type': '', 'shapes': []}
+        if m.aphiaid not in aphiaID_cache:
+            print(f'Querying WoRMS for aphiaID {m.aphiaid}')
+            r = requests.get(worms_url + str(m.aphiaid))
+            if r.status_code == 200:
+                aphiaID_cache[m.aphiaid] = r.json()
+            else:
+                print('Failed to get record for aphiaID = {m.aphiaid}')
 
-        shape = {'shape': 'body',
+        for attr in ['class', 'order', 'family', 'genus']:
+            dataset[attr] = aphiaID_cache[m.aphiaid][attr]
+        dataset['species'] = aphiaID_cache[m.aphiaid]['scientificname']
+
+        dataset['vernacular_name'] = m.vernacular_name
+        dataset['reference'] = m.source
+
+        specimen = {'specimen_id': m.name, 'specimen_condition': 'unknown',
+                    'length': m.length,
+                    'sex': 'unknown',
+                    'length_type': 'unknown', 'shape_type': 'outline',
+                    'shapes': []}
+
+        shape = {'name': 'body',
                  'boundary': m.body.boundary,
                  'x': m.body.x,
                  'y': np.full(m.body.x.shape, 0.0),
                  'height': m.body.z_U - m.body.z_L,
                  'width': m.body.w,
-                 'mass_density': m.body.rho,
-                 'sound_speed_compressional': m.body.c}
+                 'mass_density': [m.body.rho],
+                 'sound_speed_compressional': [m.body.c]}
         shape['z'] = shape['height']/2 + m.body.z_L
         specimen['shapes'].append(shape)
 
         for inc in m.inclusions:
-            shape = {'shape': 'inclusion',
+            shape = {'name': 'inclusion',
                      'boundary': inc.boundary,
                      'x': inc.x,
                      'y': inc.x * 0.0,
                      'height': inc.z_U - inc.z_L,
                      'width': inc.w,
-                     'mass_density': inc.rho,
-                     'sound_speed_compressional': inc.c}
+                     'mass_density': [inc.rho],
+                     'sound_speed_compressional': [inc.c]}
             shape['z'] = shape['height']/2 + inc.z_L
             specimen['shapes'].append(shape)
 
@@ -100,31 +133,53 @@ for ds in dd.keys():
 
     datasets.append(dataset)
 
-############################
+# ############################
 # DWBA models
 d = DWBAdata()
 dd = collections.defaultdict(list)
 
 for n in d.names():
     m = d.model(n)
-    dd[m.source].append(m.name)
+    dd[m.aphiaid].append(m.name)
 
-for ds in dd.keys():
+for aphiaid in dd.keys():
 
     # populate dataset metadata
     dataset = copy.deepcopy(dataset_t)
-    dataset['reference'] = ds
-    dataset['shape_method'] = 'outline'
+    dataset['aphiaID'] = aphiaid
+    dataset['shape_method'] = 'unknown'
+    dataset['shape_data_types'] = ['outline']
     dataset['model_type'] = 'DWBA'
+    dataset['description'] = ''
+    dataset['model_type'] = 'DWBA'
+    dataset['note'] = 'Shape obtained from the SDWBA.jl github repository. '
+    'This is not necessarily the original source of the shape.'
 
-    for n in dd[ds]:
+    for n in dd[aphiaid]:
         m = d.model(n)
 
-        specimen = {'specimen_id': m.name, 'specimen_condition': '',
-                    'length': np.nan, 'weight': np.nan,
-                    'length_type': '', 'shapes': []}
+        if m.aphiaid not in aphiaID_cache:
+            print(f'Querying WoRMS for aphiaID {m.aphiaid}')
+            r = requests.get(worms_url + str(m.aphiaid))
+            if r.status_code == 200:
+                aphiaID_cache[m.aphiaid] = r.json()
+            else:
+                print('Failed to get record for aphiaID = {m.aphiaid}')
 
-        shape = {'shape': 'body',
+        for attr in ['class', 'order', 'family', 'genus']:
+            dataset[attr] = aphiaID_cache[m.aphiaid][attr]
+        dataset['species'] = aphiaID_cache[m.aphiaid]['scientificname']
+
+        dataset['vernacular_name'] = m.vernacular_name
+        dataset['reference'] = m.source
+
+        specimen = {'specimen_id': m.name, 'specimen_condition': 'unknown',
+                    'length': m.length,
+                    'sex': 'unknown',
+                    'length_type': 'unknown', 'shape_type': 'outline',
+                    'shapes': []}
+
+        shape = {'name': 'body',
                  'boundary': 'fluid',
                  'x': m.rv_pos[:, 0],
                  'y': m.rv_pos[:, 1],
@@ -147,6 +202,14 @@ for ds in datasets_cp:
                 if isinstance(s[k], np.ndarray):
                     s[k] = s[k].tolist()
 
-with open('all_datasets.toml', 'wb') as f:
-    for ds in datasets_cp:
+for ds in datasets_cp:
+    if ds['model_type'] == 'DWBA':
+        prefix = 'SDWBA.jl_github'
+    else:
+        prefix = 'NOAA_KRM'
+
+    dataset_name = f'{prefix}_{ds["aphiaID"]}'
+    dataset_file = datastore_dir/'datasets'/dataset_name/'metadata.toml'
+    Path.mkdir(dataset_file.parent, parents=True, exist_ok=True)
+    with open(dataset_file, 'wb') as f:
         tomli_w.dump(ds, f)
