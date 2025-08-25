@@ -1,4 +1,7 @@
 """Examples that use the echoSMS RESTful API."""
+# /// script
+# dependencies = ['requests', 'pandas', 'seaborn', 'Pillow', 'matplotlib']
+# ///
 
 import requests
 import pandas as pd
@@ -24,13 +27,12 @@ if d.status_code == 200:
     # for each dataset in the reply
     for dataset_id in d.json():
         # Get the full dataset data
-        print(f'  Getting {dataset_id} dataset')
-
         r = requests.get(baseURI + 'v1/dataset/' + dataset_id)
 
         if r.status_code == 200:
             row = r.json()
-
+            print(f'  Got {dataset_id} dataset ({row["vernacular_name"]}) '
+                  f'with {len(row["specimens"])} specimens')
             # create a row for each specimen in the dataset
             to_copy = ['specimen_id', 'length', 'weight']
             for s in row['specimens']:
@@ -45,17 +47,19 @@ if d.status_code == 200:
     df = pd.DataFrame(data=ds).set_index(['dataset_id', 'specimen_id'])
     print(df[['vernacular_name', 'model_type', 'shape_data_types']])
 
-    # Get an image of one of the shapes and show it locally (or put the URL
-    # into a web browser manually)
-    r = requests.get(baseURI + 'v1/specimen_image/CLAY_HORNE/B')
-    if r.status_code == 200:
-        image = Image.open(BytesIO(r.content))
-        plt.imshow(image)
-        plt.axis('off')
-        plt.show()
-
-    # A plot of specimen lengt/weight, coloured by species. Quite a few of the current
+    # A plot of specimen length/weight, coloured by species. Quite a few of the current
     # specimens don't have a weight, so they show as zero in the plot.
     obj = sns.scatterplot(data=df, x='length', y='weight',
                           hue='vernacular_name', style='imaging_method')
+    # Move legend to outside of the axes
     sns.move_legend(obj, 'upper right', bbox_to_anchor=(1.6, 1))
+    plt.show()
+
+    # Get an image of one of the shapes and show it locally (or put the URL
+    # into a web browser manually)
+    r = requests.get(baseURI + 'v1/specimen_image/CLAY_HORNE/B')
+
+    if r.status_code == 200:
+        plt.imshow(Image.open(BytesIO(r.content)))
+        plt.axis('off')
+        plt.show()
