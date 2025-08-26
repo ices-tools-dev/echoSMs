@@ -12,6 +12,64 @@ else:
     import tomli as tomllib
 
 
+def create_krmorganism_from_datastore(shape: dict):
+    """Create a KRMorganism instance from an echoSMs datastore shape.
+
+    Converts the centreline and width/height definition of a shape into that
+    required by the echoSMs implementation of the KRM (straight centreline, width, upper and
+    lower heights from the centreline).
+
+    Parameters
+    ----------
+    shape :
+        The shape to convert, in the echoSMs datastore `outline` shape data structure.
+
+    Returns
+    -------
+        An instance of KRMorganism
+
+    Notes
+    -----
+    The shape with name `body` becomes the main organism body and all other shapes become
+    inclusions. If there is no shape with name of `body`, the first shape is used for the body.
+
+    The KRM uses just one sound speed and density per shape, but datastore shapes can have values
+    per slice. If this occurs, the mean of the sound speed and density values are used.
+
+    The datastore shapes can have non-zero _y_-axis values but these are ignored when creating
+    a KRMorganism instance.
+
+    """
+
+    def _to_KRMshape(s: dict):
+        """Convert echoSMs datstore shape into a KRMshape."""
+        height = np.array(s['height'])
+
+        # Take mean of sound speed and density in case there is more than one value.
+        c = sum(s['sound_speed_compressional'])/len(s['sound_speed_compressional'])
+        rho = sum(s['mass_density'])/len(s['mass_density'])
+
+        return KRMshape(s['boundary'],
+                        np.array(s['x']),
+                        np.array(s['width']),
+                        s['z'] + height/2,
+                        s['z'] - height/2,
+                        c, rho)
+
+    inclusions = []
+    body_present = 'body' in [s['name'] for s in shape]
+
+    for i, s in enumerate(shape):
+        if i == 0 and not body_present:
+            body = s
+        elif s['name'] == 'body':
+            body = _to_KRMshape(s)
+        else:
+            inclusions.append(_to_KRMshape(s))
+
+    return KRMorganism('', '', body, inclusions)
+
+
 @dataclass
 class KRMshape():
     """KRM shape and property class.
@@ -75,23 +133,25 @@ class KRMorganism():
         A name for the organism.
     source :
         A link to or description of the source of the organism data.
-    aphiaid :
-        The aphiaID of the organism
-    length :
-        The length of the organism (m)
     body :
         The shape that represents the organism's body.
     inclusions :
         The shapes that are internal to the organism (e.g., swimbladder, backbone, etc)
+    aphiaid :
+        The aphiaID of the organism
+    length :
+        The length of the organism (m)
+    vernacular_name :
+        A vernacular name of the organism
     """
 
     name: str
     source: str
-    aphiaid: str
-    length: float
-    vernacular_name: str
     body: KRMshape
     inclusions: List[KRMshape]
+    aphiaid: int = 1
+    length: float = 0.0
+    vernacular_name: str = ''
 
     def plot(self):
         """Plot of organism shape."""
@@ -130,8 +190,8 @@ class KRMdata():
         # density
         self.krm_models = {}
         for s in shapes['shape']:
-            # These KRM data have the head pointing in the -ve x direction, 
-            # opposite to the echoSMs coordinate convetion, so fix the 
+            # These KRM data have the head pointing in the -ve x direction,
+            # opposite to the echoSMs coordinate convetion, so fix the
             # x-coordinates here when ingesting the data. And set the posterior end
             # of the organism to have x=0
             m = max(s['x_b'])
@@ -141,10 +201,10 @@ class KRMdata():
             swimbladder = KRMshape('soft', -np.array(s['x_sb']), np.array(s['w_sb']),
                                    np.array(s['z_sbU']), np.array(s['z_sbL']),
                                    s['swimbladder_c'], s['swimbladder_rho'])
-            self.krm_models[s['name']] = KRMorganism(s['name'], s['source'], 
+            self.krm_models[s['name']] = KRMorganism(s['name'], s['source'],
+                                                     body, [swimbladder],
                                                      s['aphiaid'], s['length'],
-                                                     s['vernacular'],
-                                                     body, [swimbladder])
+                                                     s['vernacular'])
 
     def names(self):
         """Available KRM model names."""

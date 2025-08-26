@@ -90,6 +90,40 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
     return rv_pos, rv_tan, a
 
 
+def create_dwba_from_datastore(shape: dict):
+    """Create a DWBAorganism instance from an echoSMs datastore shape.
+
+    Converts the centreline and width/height definition of a shape into that
+    required by the echoSMs implementation of the DWBA (centreline, tangential, and
+    radii vectors).
+
+    Parameters
+    ----------
+    shape :
+        The shape to convert, in the echoSMs datastore `outline` shape data structure.
+
+    Returns
+    -------
+        An instance of DWBAorganism
+
+    Notes
+    -----
+    The DWBA simulates a circular shape but the echoSMs datastore shape can store non-
+    circular shapes (via the height and width). This function uses the height information
+    and ignores the width information.
+
+    If `mass_density_ratio` and `sound_speed_ratio` are present into the shape dict,
+    these are used. If not, default values are used by DWBorganism().
+    """
+    a = np.array(shape['height']) * 0.5
+    if 'mass_density_ratio' in shape and 'sound_speed_ratio' in shape:
+        return create_dwba_from_xyza(shape['x'], shape['y'], shape['z'], a,
+                                     shape['name'], shape['mass_density_ratio'],
+                                     shape['sound_speed_ratio'])
+
+    return create_dwba_from_xyza(shape['x'], shape['y'], shape['z'], a, shape['name'])
+
+
 def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
                           source: str = '', note: str = ''):
     """Create a DWBAorganism instance from shape data.
@@ -158,7 +192,6 @@ def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
 
     ```
     """
-
     # Estimate rv_tan from a spline through (x,y).
     tck, u = splprep([x, y, z])
     rv_tan = np.vstack(splev(u, tck, der=1))
@@ -209,12 +242,13 @@ class DWBAorganism():
     g: np.ndarray
     h: np.ndarray
     name: str
-    aphiaid: str
-    length: float
-    vernacular_name: str
     source: str = ''
     note: str = ''
     rv_tan: np.ndarray = None
+    # items below here are depreciated and will be removed in later revisions
+    aphiaid: int = 1
+    length: float = 0.0
+    vernacular_name: str = ''
 
     def plot(self):
         """Do a simple plot of the DWBA model data."""
@@ -267,8 +301,8 @@ class DWBAdata():
             rv_pos = np.vstack((np.array(s['x']), np.array(s['y']), np.array(s['z']))).T
 
             organism = DWBAorganism(rv_pos, np.array(s['a']), np.array(s['g']), np.array(s['h']),
-                                    s['name'], s['aphiaid'], s['length'], s['vernacular'],
-                                    s.get('source', ''), s.get('note', ''), rv_tan)
+                                    s['name'], s.get('source', ''), s.get('note', ''), rv_tan,
+                                    s['aphiaid'], s['length'], s['vernacular'],)
             self.dwba_models[s['name']] = organism
 
     def names(self):
