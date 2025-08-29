@@ -20,6 +20,9 @@ echosms_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents
 datasets_dir = datastore_dir/'datasets'
 schema_file = echosms_dir/'data_store'/'schema'/'v1'/'anatomical_data_store.json'
 
+metadata_file = 'metadata.toml'
+metadata_file_updated = 'metadata_automatically_generated.json'
+
 # json schema for the echoSMs anatomical data store
 with open(schema_file, 'rb') as f:
     schema = json.load(f)
@@ -32,27 +35,46 @@ all_data = []
 
 for path in datasets_dir.iterdir():
     if path.is_dir():
-        meta_files = path.glob('*.toml')
-        for mf in meta_files:
-            with open(mf, 'rb') as f:
-                data = tomllib.load(f)
-            data['dataset_id'] = path.name
-            data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
-            rprint(f'Validating dataset in [cyan]{path.name}')
+        # There should be a metadata.toml file and zero or more specimen*.toml files.
+        meta_files = [path/metadata_file]
 
-            errored = False
-            for error in sorted(v.iter_errors(data), key=str):
-                # print(path.name)
-                rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
-                errored = True
+        if not (path/meta_files[0]).exists():
+            continue
 
-            # write out a modified dataset file in json format
-            if not errored:
-                with open(mf.with_stem(mf.stem + '_updated').with_suffix('.json'), 'w') as f:
-                    json.dump(data, f, indent=2)
-                all_data.append(data)
+        # Add any specimen*.toml files to the list
+        meta_files.extend(list(path.glob('specimen*.toml')))
+
+        # load each .toml file and cmombine into one echoSMs datastore structure
+        for ff in meta_files:
+            with open(ff, mode='rb') as f:
+                if ff.name == metadata_file:
+                    print('Loading ' + ff.name)
+                    data = tomllib.load(f)
+                    if 'specimens' not in data:
+                        data['specimens'] = []
+                else:
+                    print('Loading ' + ff.stem)
+                    specimen = tomllib.load(f)
+                    data['specimens'].extend(specimen['specimens'])
+
+        data['dataset_id'] = path.name
+        data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
+
+        rprint(f'Validating dataset in [cyan]{path.name}')
+        errored = False
+        for error in sorted(v.iter_errors(data), key=str):
+            # print(path.name)
+            rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
+            errored = True
+
+        # write out a modified (and combined if there were specimen*.toml files)
+        # dataset file in json format
+        if not errored:
+            with open(path/metadata_file_updated, 'w') as f:
+                json.dump(data, f, indent=2)
+            all_data.append(data)
 
 # Write the validated datasets out as a single JSON file
-print('Writing a combined metadata file (datasets.json)')
+print('Writing a combined metadata file')
 with open(datasets_dir/'all-datasets-automatically-generated.json', 'w') as f:
     json.dump(all_data, f, indent=2)
