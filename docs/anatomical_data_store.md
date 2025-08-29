@@ -34,8 +34,8 @@ A dataset ready for uploading should contain the following files and directory s
 
 |Path|File(s)|Comment|
 |----|-------|-------|
-|/|metadata.toml|Dataset metadata in TOML format. This file can include specimen and model data. The file name must be metadata.toml|
-|/|specimen*.toml|Specimen and model data in one or more TOML-formatted files. File names must start with ‘specimen’ and have a suffix of .toml. These files are simply appended to the metadata.toml file when reading the dataset data.|
+|/|metadata.toml|Dataset metadata in TOML format. This file can include specimen and model data. The file name must be `metadata.toml`|
+|/|specimen*.toml|Specimen and model data in one or more TOML-formatted files. File names must start with `specimen` and have a suffix of `.toml`. These files are simply appended to the metadata.toml file when reading the dataset data.|
 |/data|Any|Raw and processing files in user-supplied directory hierarchy|
 
 ## Data formats
