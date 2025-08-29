@@ -154,15 +154,19 @@
                 "CT",
                 "MRI",
                 "photograph",
+                "3D scanner",
                 "unknown",
-                "other"
+                "other",
+                "not applicable"
             ]
         },
         "shape_method": {
-            "description": "Method used to obtain the feature shape.",
+            "description": "Method used to obtain the specimen shape.",
             "enum": [
-                "manual",
-                "automated",
+                "manual outline of image(s)",
+                "automated outline of images(s)",
+                "3D scan of object",
+                "not applicable",
                 "unknown",
                 "other"
             ]
@@ -430,8 +434,12 @@
                                         "x",
                                         "y",
                                         "z",
-                                        "facets",
-                                        "normals",
+                                        "facets_0",
+                                        "facets_1",
+                                        "facets_2",
+                                        "normals_x",
+                                        "normals_y",
+                                        "normals_z",
                                         "boundary"
                                     ],
                                     "properties": {
@@ -462,31 +470,55 @@
                                                 "type": "number"
                                             }
                                         },
-                                        "facets": {
-                                            "description": "Zero-based indices into x, y, and z that define the nodes that make up each surface triangle.",
+                                        "facets_0": {
+                                            "description": "Zero-based indices into x, y, and z that define node 0 of a surface triangle.",
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
-                                                "type": "array",
-                                                "minItems": 3,
-                                                "maxItems": 3,
-                                                "items": {
-                                                    "type": "integer",
-                                                    "minimum": 0
-                                                }
+                                                "type": "integer",
+                                                "minimum": 0
                                             }
                                         },
-                                        "normals": {
-                                            "description": "Normal vectors for each facet that point outwards from the surface.",
+                                        "facets_1": {
+                                            "description": "Zero-based indices into x, y, and z that define node 1 of a surface triangle.",
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
-                                                "type": "array",
-                                                "minItems": 3,
-                                                "maxItems": 3,
-                                                "items": {
-                                                    "type": "number"
-                                                }
+                                                "type": "integer",
+                                                "minimum": 0
+                                            }
+                                        },
+                                        "facets_2": {
+                                            "description": "Zero-based indices into x, y, and z that define node 2 of a surface triangle.",
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "items": {
+                                                "type": "integer",
+                                                "minimum": 0
+                                            }
+                                        },
+                                        "normals_x": {
+                                            "description": "x-component of outward-pointing normal vector for each facet.",
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "items": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "normals_y": {
+                                            "description": "y-component of outward-pointing normal vector for each facet.",
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "items": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "normals_z": {
+                                            "description": "z-component of outward-pointing normal vector for each facet.",
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "items": {
+                                                "type": "number"
                                             }
                                         },
                                         "mass_density": {
