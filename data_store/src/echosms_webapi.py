@@ -18,7 +18,7 @@ base_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aq
                 r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
 datasets_dir = base_dir/'datasets'
 
-datasets_dir = Path('.')/'data_store'/'resources'
+#datasets_dir = Path('.')/'data_store'/'resources'
 
 with open(datasets_dir/'all-datasets-automatically-generated.json', 'r') as f:
     all_datasets = json.load(f)
@@ -149,22 +149,23 @@ def get_sp(ds, specimen_id):
 
 def plot_specimen(specimen, dataset_id='', stream=False):
     """Plot the specimen shape."""
-    fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
-
     match specimen['shape_type']:
         case 'outline':
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
             plot_shape_outline(specimen['shapes'], axs)
+            axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
+            axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
+            fig.supxlabel('[mm]')
+            fig.supylabel('[mm]')
         case 'surface':
-            plot_shape_surface(specimen['shapes'], axs)
+            fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
+            plot_shape_surface(specimen['shapes'], ax)
+            plt.tight_layout()
         case 'voxels':
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
             plot_shape_voxels(specimen['shapes'], axs)
 
-    axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
-    axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
-
     fig.suptitle(dataset_id + ' ' + specimen['specimen_id'])
-    fig.supxlabel('[mm]')
-    fig.supylabel('[mm]')
 
     if stream:
         with io.BytesIO() as buffer:
@@ -204,10 +205,24 @@ def plot_shape_outline(shapes, axs):
             axs[i].xaxis.set_inverted(True)
 
 
-def plot_shape_surface(specimen, axs):
+def plot_shape_surface(shapes, ax):
     """Plot the specimen's 3D triangular shape."""
-    for s in specimen['shapes']:
-        pass
+    for s in shapes:
+        # c = 'C0' if s['boundary'] == 'fluid' else 'C1'
+        facets = np.array([s['facets_0'], s['facets_1'], s['facets_2']]).transpose()
+        x = 1e3 * np.array(s['x'])
+        y = 1e3 * np.array(s['y'])
+        z = 1e3 * np.array(s['z'])
+
+        ax.plot_trisurf(x, y, z, triangles=facets)
+        ax.view_init(elev=210, azim=-60, roll=0)
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('z')
+
+        ax.set_aspect('equal')
+        ax.xaxis.set_inverted(True)
+        ax.yaxis.set_inverted(True)
 
 
 def plot_shape_voxels(s, axs):
