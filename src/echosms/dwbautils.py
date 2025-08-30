@@ -90,40 +90,6 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
     return rv_pos, rv_tan, a
 
 
-def create_dwba_from_datastore(shape: dict):
-    """Create a DWBAorganism instance from an echoSMs datastore shape.
-
-    Converts the centreline and width/height definition of a shape into that
-    required by the echoSMs implementation of the DWBA (centreline, tangential, and
-    radii vectors).
-
-    Parameters
-    ----------
-    shape :
-        The shape to convert, in the echoSMs datastore `outline` shape data structure.
-
-    Returns
-    -------
-        An instance of DWBAorganism
-
-    Notes
-    -----
-    The DWBA simulates a circular shape but the echoSMs datastore shape can store non-
-    circular shapes (via the height and width). This function uses the height information
-    and ignores the width information.
-
-    If `mass_density_ratio` and `sound_speed_ratio` are present into the shape dict,
-    these are used. If not, default values are used by DWBorganism().
-    """
-    a = np.array(shape['height']) * 0.5
-    if 'mass_density_ratio' in shape and 'sound_speed_ratio' in shape:
-        return create_dwba_from_xyza(shape['x'], shape['y'], shape['z'], a,
-                                     shape['name'], shape['mass_density_ratio'],
-                                     shape['sound_speed_ratio'])
-
-    return create_dwba_from_xyza(shape['x'], shape['y'], shape['z'], a, shape['name'])
-
-
 def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
                           source: str = '', note: str = ''):
     """Create a DWBAorganism instance from shape data.

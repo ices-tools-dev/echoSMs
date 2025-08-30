@@ -2,7 +2,8 @@
 from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_jnpp
 from .utils import pro_rad1, pro_rad2, pro_ang1
 from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_Sa
-from .dwbautils import create_dwba_spheroid, create_dwba_cylinder, create_dwba_from_xyza, create_dwba_from_datastore, DWBAorganism, DWBAdata
+from .utils_datastore import mesh_from_datastore, dwbaorganism_from_datastore, krmorganism_from_datastore
+from .dwbautils import create_dwba_spheroid, create_dwba_cylinder, create_dwba_from_xyza, DWBAorganism, DWBAdata
 from .scattermodelbase import ScatterModelBase
 from .benchmarkdata import BenchmarkData
 from .jechetaldata import JechEtAlData
@@ -16,14 +17,15 @@ from .dwbamodel import DWBAModel
 from .kamodel import KAModel
 from .krmmodel import KRMModel
 from .hpmodel import HPModel
-from .krmdata import KRMdata, KRMorganism, KRMshape, create_krmorganism_from_datastore
+from .krmdata import KRMdata, KRMorganism, KRMshape
 
 __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'MSSModel', 'PSMSModel', 'DCMModel', 'ESModel', 'PTDWBAModel',
            'DWBAModel', 'SDWBAModel', 'KAModel', 'KRMModel', 'HPModel',
            'wavenumber', 'wavelength', 'Neumann', 'h1', 'spherical_jnpp', 'prolate_swf',
-           'theoretical_Sa', 'KRMdata', 'KRMorganism', 'KRMshape', 'create_krmorganism_from_datastore',
+           'theoretical_Sa', 'KRMdata', 'KRMorganism', 'KRMshape', 'krmorganism_from_datastore',
            'DWBAorganism', 'DWBAdata', 'JechEtAlData',
            'pro_rad1', 'pro_rad2', 'pro_ang1',
            'as_dataframe', 'as_dataarray', 'as_dict', 'split_dict',
-           'create_dwba_spheroid', 'create_dwba_cylinder', 'create_dwba_from_xyza', 'create_dwba_from_datastore']
+           'create_dwba_spheroid', 'create_dwba_cylinder', 'create_dwba_from_xyza', 'dwbaorganism_from_datastore',
+           'mesh_from_datastore']

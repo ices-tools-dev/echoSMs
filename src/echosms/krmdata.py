@@ -12,64 +12,6 @@ else:
     import tomli as tomllib
 
 
-def create_krmorganism_from_datastore(shape: dict):
-    """Create a KRMorganism instance from an echoSMs datastore shape.
-
-    Converts the centreline and width/height definition of a shape into that
-    required by the echoSMs implementation of the KRM (straight centreline, width, upper and
-    lower heights from the centreline).
-
-    Parameters
-    ----------
-    shape :
-        The shape to convert, in the echoSMs datastore `outline` shape data structure.
-
-    Returns
-    -------
-        An instance of KRMorganism
-
-    Notes
-    -----
-    The shape with name `body` becomes the main organism body and all other shapes become
-    inclusions. If there is no shape with name of `body`, the first shape is used for the body.
-
-    The KRM uses just one sound speed and density per shape, but datastore shapes can have values
-    per slice. If this occurs, the mean of the sound speed and density values are used.
-
-    The datastore shapes can have non-zero _y_-axis values but these are ignored when creating
-    a KRMorganism instance.
-
-    """
-
-    def _to_KRMshape(s: dict):
-        """Convert echoSMs datstore shape into a KRMshape."""
-        height = np.array(s['height'])
-
-        # Take mean of sound speed and density in case there is more than one value.
-        c = sum(s['sound_speed_compressional'])/len(s['sound_speed_compressional'])
-        rho = sum(s['mass_density'])/len(s['mass_density'])
-
-        return KRMshape(s['boundary'],
-                        np.array(s['x']),
-                        np.array(s['width']),
-                        s['z'] + height/2,
-                        s['z'] - height/2,
-                        c, rho)
-
-    inclusions = []
-    body_present = 'body' in [s['name'] for s in shape]
-
-    for i, s in enumerate(shape):
-        if i == 0 and not body_present:
-            body = s
-        elif s['name'] == 'body':
-            body = _to_KRMshape(s)
-        else:
-            inclusions.append(_to_KRMshape(s))
-
-    return KRMorganism('', '', body, inclusions)
-
-
 @dataclass
 class KRMshape():
     """KRM shape and property class.
