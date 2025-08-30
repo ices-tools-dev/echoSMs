@@ -116,3 +116,18 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     inclusions = KRMshapes
 
     return KRMorganism('', '', body, inclusions)
+
+
+def volume_from_datastore(voxels: list):
+    """Create a 3D numpy array from nested lists.
+
+    Parameters
+    ----------
+    voxels :
+        The datastore 3D voxel structure (list of list of list)
+
+    Returns
+    -------
+        A numpy 3D array.
+    """
+    return np.array(voxels)  # TODO - check ordering is correct!

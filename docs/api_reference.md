@@ -43,6 +43,4 @@ make cylinder and spheroid shapes for use in the DWBA models.
 
 ## Anatomical datastore
 
-::: echosms.dwbaorganism_from_datastore
-::: echosms.krmorganism_from_datastore
-::: echosms.mesh_from_datastore
+::: echosms.utils_datastore

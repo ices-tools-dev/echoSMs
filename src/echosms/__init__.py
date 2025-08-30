@@ -3,6 +3,7 @@ from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_j
 from .utils import pro_rad1, pro_rad2, pro_ang1
 from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_Sa
 from .utils_datastore import mesh_from_datastore, dwbaorganism_from_datastore, krmorganism_from_datastore
+from .utils_datastore import volume_from_datastore
 from .dwbautils import create_dwba_spheroid, create_dwba_cylinder, create_dwba_from_xyza, DWBAorganism, DWBAdata
 from .scattermodelbase import ScatterModelBase
 from .benchmarkdata import BenchmarkData
@@ -28,4 +29,4 @@ __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'pro_rad1', 'pro_rad2', 'pro_ang1',
            'as_dataframe', 'as_dataarray', 'as_dict', 'split_dict',
            'create_dwba_spheroid', 'create_dwba_cylinder', 'create_dwba_from_xyza', 'dwbaorganism_from_datastore',
-           'mesh_from_datastore']
+           'mesh_from_datastore', 'volume_from_datastore']
