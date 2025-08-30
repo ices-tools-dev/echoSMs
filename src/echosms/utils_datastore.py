@@ -1,9 +1,6 @@
 """Utilities for working with the echoSMs anatomical datastore."""
 import trimesh
 import numpy as np
-from echosms import create_dwba_from_xyza
-from dwbautils import DWBAorganism
-from krmdata import KRMorganism, KRMshape
 
 
 def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
@@ -30,7 +27,7 @@ def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
     return [_to_trimesh(s) for s in shapes]
 
 
-def dwbaorganism_from_datastore(shape: dict) -> DWBAorganism:
+def dwbaorganism_from_datastore(shape: dict):
     """Create a DWBAorganism instance from an echoSMs datastore shape.
 
     Converts the centreline and width/height definition of a shape into that
@@ -55,6 +52,7 @@ def dwbaorganism_from_datastore(shape: dict) -> DWBAorganism:
     If `mass_density_ratio` and `sound_speed_ratio` are present into the shape dict,
     these are used. If not, default values are used by DWBorganism().
     """
+    from echosms import create_dwba_from_xyza  # here to avoid a circular import
     a = np.array(shape['height']) * 0.5
     if 'mass_density_ratio' in shape and 'sound_speed_ratio' in shape:
         return create_dwba_from_xyza(shape['x'], shape['y'], shape['z'], a,
@@ -64,7 +62,7 @@ def dwbaorganism_from_datastore(shape: dict) -> DWBAorganism:
     return create_dwba_from_xyza(shape['x'], shape['y'], shape['z'], a, shape['name'])
 
 
-def krmorganism_from_datastore(shapes: list[dict]) -> list[KRMorganism]:
+def krmorganism_from_datastore(shapes: list[dict]) -> list:
     """Create a KRMorganism instance from an echoSMs datastore shape.
 
     Converts the centreline and width/height definition of a shape into that
@@ -92,6 +90,7 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list[KRMorganism]:
     a KRMorganism instance.
 
     """
+    from echosms import KRMorganism, KRMshape  # here to avoid a circular import
 
     def _to_KRMshape(s: dict):
         """Convert echoSMs datstore shape into a KRMshape."""
@@ -103,22 +102,17 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list[KRMorganism]:
         return KRMshape(s['boundary'], np.array(s['x']), np.array(s['width']),
                         s['z'] + height2, s['z'] - height2, c, rho)
 
-    # What is the index of the first shape with name == 'body' (if any)
+    if len(shapes) == 0:
+        return KRMorganism('', '', [], [])
 
-    # Reorder list of shapes to have a name == 'body' one first
-    body = shapes[body_idx]
-    inclusions = shapes with body idx removed
-    return KRMorganism('', '', body, inclusions)
+    KRMshapes = [_to_KRMshape(s) for s in shapes]
 
-    inclusions = []
-    body_present = 'body' in [s['name'] for s in shapes]
+    # get the index of the first shape with name == 'body' (if any)
+    idx = [i for i, s in enumerate(shapes) if s['name'] == 'body']
+    if not idx:
+        idx = 0  # No shape with name of body so we use the first shape as the body
 
-    for i, s in enumerate(shapes):
-        if i == 0 and not body_present:
-            body = s
-        elif s['name'] == 'body':
-            body = _to_KRMshape(s)  # will lose shapes if there are more with name == 'body'
-        else:
-            inclusions.append(_to_KRMshape(s))
+    body = KRMshapes.pop(idx[0])
+    inclusions = KRMshapes
 
     return KRMorganism('', '', body, inclusions)

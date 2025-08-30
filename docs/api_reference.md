@@ -29,7 +29,6 @@ make cylinder and spheroid shapes for use in the DWBA models.
 ::: echosms.KRMdata
 ::: echosms.KRMorganism
 ::: echosms.KRMshape
-::: echosms.create_krmorganism_from_datastore
 
 ## ::: echosms.MSSModel
 
@@ -41,3 +40,9 @@ make cylinder and spheroid shapes for use in the DWBA models.
 ::: echosms.ReferenceModels
 ::: echosms.JechEtAlData
 ::: echosms.utils
+
+## Anatomical datastore
+
+::: echosms.dwbaorganism_from_datastore
+::: echosms.krmorganism_from_datastore
+::: echosms.mesh_from_datastore
