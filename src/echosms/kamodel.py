@@ -60,7 +60,8 @@ class KAModel(ScatterModelBase):
             - `area_faces` (the area of each triangular face [m²]).
 
             A suitable library for creating and manipulating triangular meshes
-            is [trimesh](https://trimesh.org).
+            is [trimesh](https://trimesh.org). Trimesh will accept the usual nodes/facets
+            definition of a mesh and calculate the above attributes automatically.
         boundary_type : str
             The boundary type. Supported types are given in the `boundary_types` class variable.
         validate_parameters : bool
