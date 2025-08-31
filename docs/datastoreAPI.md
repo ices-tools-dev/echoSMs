@@ -20,9 +20,8 @@ Some example API calls are:
 
 - A list of all [dataset ids](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/datasets) in the testing server
 - A [dataset](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/dataset/CLAY_HORNE)
-- Shape data a [specimen](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/specimen/CLAY_HORNE/B) in a dataset
-- An [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/specimen_image/CLAY_HORNE/B) of that specimen
-- The API call to provide the [raw](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/dataset/CLAY_HORNE?full_data=true) dataset is not available on the test server
+- Shape data from a [specimen](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/specimen/CLAY_HORNE/B) in a dataset, and an [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/specimen_image/CLAY_HORNE/B) of that specimen
+- The API call to provide the [raw](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/dataset/CLAY_HORNE?full_data=true) dataset is there, but currently doesn't return any raw data
 
 An example Python program that uses the API is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/src/api_examples.py).
 
