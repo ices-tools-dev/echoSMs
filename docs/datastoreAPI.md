@@ -2,9 +2,9 @@
 
 ???+ Note
 
-    This page contains the draft API specification and documentation for web access to the echoSMs anatomical data store. It is a work in progress and no web access data store has been set up yet.
+    This page contains the draft API specification and documentation for web access to the echoSMs anatomical data store. It is a work in progress.
 
-The data store API is implemented as a RESTful web API with calls to:
+The anatomical data store API is implemented as a RESTful web API with calls to:
 
 1. Query dataset metadata
 1. Obtain specimen information and model definitions and parameters.
@@ -12,6 +12,19 @@ The data store API is implemented as a RESTful web API with calls to:
 
 API endpoints to modify the data store have not yet been created as the data store can be manually loaded given the relatively low rate of expected model uploading.
 
+A testing server has been setup with some sample data at https://echosms-data-store-app-ogogm.ondigitalocean.app.
+
+Live API documentation is available from the test [server](https://echosms-data-store-app-ogogm.ondigitalocean.app/docs) and a cached version stored on github is included at the end of this page.
+
+Some example API calls are:
+
+- A list of all [dataset ids](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/datasets) in the testing server
+- A [dataset](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/dataset/CLAY_HORNE)
+- Shape data a [specimen](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/specimen/CLAY_HORNE/B) in a dataset
+- An [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/specimen_image/CLAY_HORNE/B) of that specimen
+- The API call to provide the [raw](https://echosms-data-store-app-ogogm.ondigitalocean.app/v1/dataset/CLAY_HORNE?full_data=true) dataset is not available on the test server
+
+An example Python program that uses the API is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/src/api_examples.py).
 
 
 !!swagger datastore_api_openapi.json!!

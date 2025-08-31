@@ -12,10 +12,10 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 
 # API documentation is available here:
-# https://web-c589h8dkt0qi.up-de-fra1-k8s-1.apps.run-on-seenode.com/docs
+# https://echosms-data-store-app-ogogm.ondigitalocean.app/docs
 
 baseURI = 'http://127.0.0.1:8000/'
-baseURI = 'https://web-c589h8dkt0qi.up-de-fra1-k8s-1.apps.run-on-seenode.com/'
+baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
 
 ds = []
 
