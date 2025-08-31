@@ -2,7 +2,7 @@
 
 ???+ Note
 
-    This page contains the draft specification and documentation for the echoSMs anatomical data store. It is a work in progress and no data store has been set up yet.
+    This page contains the draft specification and documentation for the echoSMs anatomical data store. It is a work in progress.
 
 The echoSMs anatomical data store aims to:
 
