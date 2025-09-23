@@ -59,6 +59,7 @@ for path in datasets_dir.iterdir():
 
         data['dataset_id'] = path.name
         data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
+        data['shape_types'] = list({s['shape_type'] for s in data['specimens']})
 
         rprint(f'Validating dataset in [cyan]{path.name}')
         errored = False

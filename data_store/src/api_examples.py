@@ -46,7 +46,7 @@ if d.status_code == 200:
 
     # Put data datasets into a DataFrame for easier viewing
     df = pd.DataFrame(data=ds).set_index(['dataset_id', 'specimen_id'])
-    print(df[['vernacular_name', 'model_type', 'shape_data_types']])
+    print(df[['vernacular_name', 'model_type', 'shape_types']])
 
     # A plot of specimen length/weight, coloured by species. Quite a few of the current
     # specimens don't have a weight, so they show as zero in the plot.

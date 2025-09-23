@@ -49,8 +49,6 @@ dataset_t = {  # 'dataset_id': "",
              'model_type': "",
              'sound_speed_method': "unknown",
              'mass_density_method': "unknown",
-             'shape_data_types': "",
-             # 'dataset_size': np.nan,
              'specimens': []}
 
 if 'aphiaID_cache' not in locals():
@@ -74,7 +72,6 @@ for aphiaid in dd.keys():
     dataset = copy.deepcopy(dataset_t)
     dataset['aphiaID'] = aphiaid
     dataset['shape_method'] = 'unknown'
-    dataset['shape_data_types'] = ['outline']
     dataset['model_type'] = 'KRM'
     dataset['description'] = 'Shape data for KRM models'
     dataset['note'] = 'Shape obtained from the KRM shapes available at '
@@ -148,7 +145,6 @@ for aphiaid in dd.keys():
     dataset = copy.deepcopy(dataset_t)
     dataset['aphiaID'] = aphiaid
     dataset['shape_method'] = 'unknown'
-    dataset['shape_data_types'] = ['outline']
     dataset['model_type'] = 'DWBA'
     dataset['description'] = ''
     dataset['model_type'] = 'DWBA'
