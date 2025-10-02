@@ -12,9 +12,7 @@ The anatomical data store API is implemented as a RESTful web API with calls to:
 
 API endpoints to modify the data store have not yet been created as the data store can be manually loaded given the relatively low rate of expected model uploading.
 
-A testing server has been setup with some sample data at https://echosms-data-store-app-ogogm.ondigitalocean.app.
-
-Live API documentation is available from the test [server](https://echosms-data-store-app-ogogm.ondigitalocean.app/docs) and a cached version stored on github is included at the end of this page.
+A testing server has been setup with some sample data. Live API documentation is available from the test [server](https://echosms-data-store-app-ogogm.ondigitalocean.app/docs) and a cached version stored on github is included at the end of this page.
 
 Some example API calls are:
 
