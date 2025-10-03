@@ -8,7 +8,7 @@ def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
 
     Parameters
     ----------
-    shape :
+    shapes :
         The shapes to convert, in the echoSMs datastore `surface` shape data structure.
 
     Returns
