@@ -79,7 +79,7 @@ watch:
 
 hooks:
     - docs/src/make_datastore_schema_md.py
-    - docs/src/get_datastore_api_json.py
+    # - docs/src/get_datastore_api_json.py
 
 markdown_extensions:
     - attr_list
