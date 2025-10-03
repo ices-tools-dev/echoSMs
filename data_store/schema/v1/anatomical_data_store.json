@@ -296,7 +296,8 @@
                         "enum": [
                             "outline",
                             "surface",
-                            "voxels"
+                            "voxels",
+                            "categorised voxels"
                         ]
                     },
                     "shapes": {
@@ -407,7 +408,7 @@
                                             }
                                         },
                                         "sound_speed_ratio": {
-                                            "description": "Ratio of compressional sound speed of the and the surrounding material or shape (m/s).",
+                                            "description": "Ratio of compressional sound speed of the and the surrounding material or shape.",
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
@@ -542,7 +543,7 @@
                                             "minimum": 0
                                         },
                                         "sound_speed_ratio": {
-                                            "description": "Ratio of compressional sound speed of the and the surrounding material or shape (m/s).",
+                                            "description": "Ratio of compressional sound speed of the and the surrounding material or shape.",
                                             "type": "number",
                                             "minimum": 0
                                         },
@@ -594,7 +595,7 @@
                                             }
                                         },
                                         "sound_speed_compressional": {
-                                            "description": "Compressional sound speed of voxels (kg/m³).",
+                                            "description": "Compressional sound speed of voxels (m/s).",
                                             "type": "array",
                                             "minItems": 1,
                                             "items": {
@@ -608,6 +609,63 @@
                                                         "minimum": 0
                                                     }
                                                 }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "required": [
+                                        "voxel_size",
+                                        "categories",
+                                        "mass_density",
+                                        "sound_speed_compressional"
+                                    ],
+                                    "properties": {
+                                        "shape_type": {
+                                            "const": "categorised voxels"
+                                        },
+                                        "voxel_size": {
+                                            "description": "Voxel size, ordered x, y, z (m).",
+                                            "type": "array",
+                                            "minItems": 3,
+                                            "maxItems": 3,
+                                            "items": {
+                                                "type": "number",
+                                                "minimum": 0
+                                            }
+                                        },
+                                        "categories": {
+                                            "description": "Voxel categories",
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "items": {
+                                                "type": "array",
+                                                "minItems": 1,
+                                                "items": {
+                                                    "type": "array",
+                                                    "minItems": 1,
+                                                    "items": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "mass_density": {
+                                            "description": "Mass density of voxels categories (kg/m³).",
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "items": {
+                                                "type": "number",
+                                                "minimum": 0
+                                            }
+                                        },
+                                        "sound_speed_compressional": {
+                                            "description": "Compressional sound speed of voxel categories (m/s).",
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "items": {
+                                                "type": "number",
+                                                "minimum": 0
                                             }
                                         }
                                     }
