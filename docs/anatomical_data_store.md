@@ -46,7 +46,7 @@ The dataset metadata and model data structures have been designed as a hierarchi
 
 The dataset metadata requires information about the species, the collection and processing of specimens used in scattering models, links to published work, and other context. These are intended to provide information for users to assess the quality, usability, and suitability of a particular dataset.
 
-Associated with each dataset are one or more specimen datasets. These contain basic information about the specimen(s) (e.g., length and weight), along with the three-dimensional shape information required by acoustic scattering models. A specimen is not necessarily a whole organisms - the data structure allows for a specimen to be some part of the organism (e.g., swimbladder, organs, etc)
+Associated with each dataset are data about one or more specimens. This includes basic information about the specimen(s) (e.g., length and weight), along with the three-dimensional shape information required by acoustic scattering models. A specimen is not necessarily a whole organisms - the data structure allows for a specimen to be some part of the organism (e.g., swimbladder, organs, etc)
 
 The type of shape data required by a scattering model falls into three main types: a three-dimensional triangulated closed surface, dorsal and ventral outlines, and a rectangular three-dimensional grid of voxels (see table below). The model data structure provides the means to store each of these. Some models have multiple shapes for a single specimen (e.g., a fish body and swimbladder) and this is achieved with multiple shapes per specimen.
 
@@ -55,8 +55,9 @@ The structure and attributes required for the dataset metadata and model data ar
 |Shape data type|Realisation|Models that use this|Notes|
 |---------------|-----------|--------------------|-----|
 |surface|3D triangular surface mesh|BEM, KA|ρ and c per shape|
-|voxels|3D rectangular grid with material properties for each voxel|PT-DWBA, FEM|ρ and c for each voxel|
 |outline|Dorsal and ventral outlines (widths and heights) along a curved centreline|KRM, DWBA, DCM|ρ and c per shape (KRM) or per section (DWBA)|
+|voxels|3D rectangular grid with material properties for each voxel|FEM|ρ and c for each voxel|
+|categorised voxels|3D rectangular grid with material property categories for each voxel|PT-DWBA|integer categories point to a ρ and c for each voxel|
 
 Specialisations of the outline shape are:
 
@@ -70,7 +71,7 @@ The format of model shape data is specified in the echoSMs anatomical data store
 
 ### Raw files
 
-Raw data formats are not directly used by scattering models so do not need to be formatted for direct use in scattering models. Raw data typically includes images (e.g., png, tiff, jpg), imaging system files (e.g., CT, MRI, and x-ray – typically DICOM or sets of 2D images), and other more ad-hoc data (e.g., spreadsheets). Text-based formats are preferred for their long-term usability, but well-defined and accessible binary formats are acceptable (e.g., common image formats and DICOM)
+Raw data formats are not directly used by scattering models so do not need to be formatted for direct use in scattering models. Raw data typically includes images (e.g., png, tiff, jpg), imaging system files (e.g., CT, MRI, and x-ray – typically DICOM or sets of 2D images), and other more ad-hoc data (e.g., spreadsheets). Text-based file formats are preferred for their long-term usability, but well-defined and accessible binary formats are acceptable (e.g., common image formats and DICOM).
 
 ### Processing files
 
