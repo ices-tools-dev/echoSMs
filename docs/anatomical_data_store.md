@@ -46,18 +46,18 @@ The dataset metadata and model data structures have been designed as a hierarchi
 
 The dataset metadata requires information about the species, the collection and processing of specimens used in scattering models, links to published work, and other context. These are intended to provide information for users to assess the quality, usability, and suitability of a particular dataset.
 
-Associated with each dataset are data about one or more specimens. This includes basic information about the specimen(s) (e.g., length and weight), along with the three-dimensional shape information required by acoustic scattering models. A specimen is not necessarily a whole organisms - the data structure allows for a specimen to be some part of the organism (e.g., swimbladder, organs, etc)
+Associated with each dataset are data about one or more specimens. This includes basic information about the specimen(s) (e.g., length and weight), along with the three-dimensional shape information required by acoustic scattering models. A specimen is not necessarily a whole organism - the data structure allows for a specimen to be some part of the organism (e.g., swimbladder, organs, etc)
 
-The type of shape data required by a scattering model falls into three main types: a three-dimensional triangulated closed surface, dorsal and ventral outlines, and a rectangular three-dimensional grid of voxels (see table below). The model data structure provides the means to store each of these. Some models have multiple shapes for a single specimen (e.g., a fish body and swimbladder) and this is achieved with multiple shapes per specimen.
+The type of shape data required by a scattering model falls into three main types: a three-dimensional triangulated closed surface, dorsal and ventral outlines, and a rectangular three-dimensional grid of voxels (see table below). The model data structure provides the means to store each of these. Some models have multiple shapes for a single specimen (e.g., a fish body and swimbladder) and this is achieved with multiple shapes per specimen. Additional shape formats can be added as required (e.g., 3D shapes defined by tetrahedrons, as used by the [TetraScatt](https://doi.org/10.1115/1.4067286) scattering model).
 
-The structure and attributes required for the dataset metadata and model data are recorded as a [JSON schema](https://json-schema.org/) that is stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, and is rendered into the echoSMs [documentation](schema/data_store_schema.md). The schema can also used to validate incoming datasets (there are many online tools that can do this, and an offline version in Python will be provided).
+The structure and attributes required for the dataset metadata and model data are recorded as a [JSON schema](https://json-schema.org/) that is stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, and is rendered into the echoSMs [documentation](schema/data_store_schema.md). To make the schema more concrete, several examples are available [here](). The schema can also used to programmatically validate incoming datasets.
 
 |Shape data type|Realisation|Models that use this|Notes|
 |---------------|-----------|--------------------|-----|
 |surface|3D triangular surface mesh|BEM, KA|ρ and c per shape|
 |outline|Dorsal and ventral outlines (widths and heights) along a curved centreline|KRM, DWBA, DCM|ρ and c per shape (KRM) or per section (DWBA)|
 |voxels|3D rectangular grid with material properties for each voxel|FEM|ρ and c for each voxel|
-|categorised voxels|3D rectangular grid with material property categories for each voxel|PT-DWBA|integer categories point to a ρ and c for each voxel|
+|categorised voxels|3D rectangular grid with a material property category for each voxel|PT-DWBA|There is a ρ and c for each category|
 
 Specialisations of the outline shape are:
 
@@ -67,7 +67,61 @@ Specialisations of the outline shape are:
 
 ### Shape data structure
 
-The format of model shape data is specified in the echoSMs anatomical data store schema, but some additional explanatory notes and examples are provided here (_to do_). Code is also provided in the echoSMs python package to make it easy to convert data to the schema format (_to do_).
+The format of model shape data is specified in the echoSMs anatomical data store schema, but some additional explanatory notes and examples are provided here. Code is also provided in the echoSMs python package to make it easy to convert data to the schema format.
+
+#### Surface
+
+The `surface` format stores a 3D triangular surface mesh. The mesh is represented with three numeric arrays (`x`, `y`, and `z`) for the x, y, and z coordinates of the surface nodes, three integer arrays (`facets_0`, `facets_1`, `facets_2`) that index into the x, y, and z arrays and specify which nodes form individual triangles, and three arrays that give the outward normal vector for each triangle (`normals_x`, `normals_y`, and `normals_z`). The length of the facets and normals arrays must all be the same.
+
+The order of the nodes that define a triangle should be as per the right hand system (i.e., an anti-clockwise order has the normal towards you). If there are inconsistencies between the node order and the normals, the normals take precedence.
+
+!!! note
+    Some scattering models require a closed 3D surface mesh (i.e., without holes), but the `surface` format does not require this.
+
+EchoSMs provides a function, [shape_from_stl()][echosms.shape_from_stl], to convert an .stl file into the surface shape format. This function can be used like this to create an echoSMs specimen:
+
+```py
+from echosms import shape_from_stl
+import tomli_w
+
+# Load the surface shape from an .stl file. The named parameters are optional.
+shape = shape_from_stl('A.stl', dim_scale=1e-3, name='body', boundary='soft')
+
+# Create specimen metadata and add in the shape
+specimens = {'specimens': 
+                [{'specimen_id': 'A',
+                  'specimen_condition': 'unknown',
+                  'length': 0.0,
+                  'weight': 0.0,
+                  'sex': 'unknown',
+                  'length_type': 'unknown',
+                  'shape_type': 'surface',
+                  'shapes': [shape]}]}
+
+# Write to a TOML file
+with open('specimen_A.toml', 'wb') as f:
+    tomli_w.dump(specimens, f)
+```
+
+#### Outline
+
+The outline format is a generalised structure that can represent the outline shapes typically used for the DWBA, KRM, and DCM models. It uses a centreline (defined by a series of x, y, and z points) and then a height and width for each centreline point.
+
+EchoSMs provides functions to convert to and from the outline format into the specific formats typically required by the DWBA, KRM, and DCM models.
+
+#### Voxels
+
+The voxels format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list. Conversion between a Python numpy (or xarray) 3D matrix and the echoSMs structure is done as follows:
+
+XXXXXX
+
+#### Categorised voxels
+
+The categorised voxels format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of differing material properties in the specimen. The category value is used as a zero-based index into the associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`.
+
+Example code that converts from a Python numpy (or xarray) 3D matrix of categories into the echoSMs format is a follows:
+
+XXXXXX
 
 ### Raw files
 

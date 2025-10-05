@@ -1,7 +1,7 @@
 """Utilities for working with the echoSMs anatomical datastore."""
 import trimesh
 import numpy as np
-
+from pathlib import Path
 
 def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
     """Create trimesh instances from an echoSMs datastore surface shape.
@@ -131,3 +131,48 @@ def volume_from_datastore(voxels: list):
         A numpy 3D array.
     """
     return np.array(voxels)  # TODO - check ordering is correct!
+
+
+def shape_from_stl(stl_file: str | Path, 
+                     dim_scale: float = 1.0,
+                     name: str = 'body',
+                     boundary : str = 'soft') -> dict:
+    """Create an echoSMs surface shape from an .stl file.
+
+    Parameters
+    ----------
+    stl_file :
+        An .stl file
+    dim_scale :
+        Scaling factor applied to the node positions. Use to convert from one 
+        length unit to another (e.g., 1e-3 will convert from mm to m).
+    name : 
+        The name for this shape.
+    boundary :
+        The boundary type for this shape.
+
+    Returns
+    -------
+    :
+        An echoSMs surface shape representation.
+
+    Notes
+    -----
+    This function uses a call to `load_mesh()` from the `trimesh` library to read the
+    .stl file. If there are problems with loading your .stl file, please refer to the 
+    `trimesh` documentation.
+    """
+    mesh = trimesh.load_mesh(stl_file)
+
+    # Boundle up into a dict as per the echoSMs schema for a surface
+    return {'name': name, 'boundary': boundary,
+            'x': (mesh.vertices[:, 0]*dim_scale).tolist(),
+            'y': (mesh.vertices[:, 1]*dim_scale).tolist(),
+            'z': (mesh.vertices[:, 2]*dim_scale).tolist(),
+            'facets_0': mesh.faces[:, 0].tolist(),
+            'facets_1': mesh.faces[:, 1].tolist(),
+            'facets_2': mesh.faces[:, 2].tolist(),
+            'normals_x': mesh.face_normals[:, 0].tolist(),
+            'normals_y': mesh.face_normals[:, 1].tolist(),
+            'normals_z': mesh.face_normals[:, 2].tolist()}
+
