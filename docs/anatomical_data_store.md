@@ -78,7 +78,7 @@ The order of the nodes that define a triangle should be as per the right hand sy
 !!! note
     Some scattering models require a closed 3D surface mesh (i.e., without holes), but the `surface` format does not require this.
 
-EchoSMs provides a function, [shape_from_stl()][echosms.shape_from_stl], to convert an .stl file into the surface shape format. This function can be used like this to create an echoSMs specimen:
+EchoSMs provides a function, [shape_from_stl()][echosms.shape_from_stl], to convert an .stl file into the surface shape format. This function can be used like this:
 
 ```py
 from echosms import shape_from_stl
@@ -102,6 +102,8 @@ specimens = {'specimens':
 with open('specimen_A.toml', 'wb') as f:
     tomli_w.dump(specimens, f)
 ```
+
+There is complimentary function to `shape_from_stl()` that takes the echoSMs data store form of a surface shape and returns the mesh as a trimesh object (see [mesh_from_datastore()][echosms.mesh_from_datastore]).
 
 #### Outline
 
