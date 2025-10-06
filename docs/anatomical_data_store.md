@@ -71,22 +71,24 @@ The format of model shape data is specified in the echoSMs anatomical data store
 
 #### Surface
 
-The `surface` format stores a 3D triangular surface mesh. The mesh is represented with three numeric arrays (`x`, `y`, and `z`) for the x, y, and z coordinates of the surface nodes, three integer arrays (`facets_0`, `facets_1`, `facets_2`) that index into the x, y, and z arrays and specify which nodes form individual triangles, and three arrays that give the outward normal vector for each triangle (`normals_x`, `normals_y`, and `normals_z`). The length of the facets and normals arrays must all be the same.
-
-The order of the nodes that define a triangle should be as per the right hand system (i.e., an anti-clockwise order has the normal towards you). If there are inconsistencies between the node order and the normals, the normals take precedence.
+The `surface` format stores a 3D triangular surface mesh. The mesh is represented with three numeric arrays (`x`, `y`, and `z`) for the x, y, and z coordinates of the surface nodes, three integer arrays (`facets_0`, `facets_1`, `facets_2`) that index into the x, y, and z arrays and specify which nodes form individual triangles, and three arrays that give the outward normal vector for each triangle (`normals_x`, `normals_y`, and `normals_z`). The lengths of the facets and normals arrays must all be the same.
 
 !!! note
     Some scattering models require a closed 3D surface mesh (i.e., without holes), but the `surface` format does not require this.
 
-EchoSMs provides a function, [shape_from_stl()][echosms.shape_from_stl], to convert an .stl file into the surface shape format. This function can be used like this:
+EchoSMs provides a function, [surface_from_stl()][echosms.surface_from_stl], to convert an .stl file into the surface shape format. This function can be used like this:
 
 ```py
-from echosms import shape_from_stl
-import tomli_w
+from echosms import surface_from_stl
 
 # Load the surface shape from an .stl file. The named parameters are optional.
-shape = shape_from_stl('A.stl', dim_scale=1e-3, name='body', boundary='soft')
+shape = surface_from_stl('A.stl', dim_scale=1e-3, name='body', boundary='soft')
+```
+This shape can then be combined with the specimen metadata and written to a TOML file ready for 
+loading to the echoSMs datastore:
 
+```py
+import tomli_w
 # Create specimen metadata and add in the shape
 specimens = {'specimens': 
                 [{'specimen_id': 'A',
@@ -103,27 +105,56 @@ with open('specimen_A.toml', 'wb') as f:
     tomli_w.dump(specimens, f)
 ```
 
-There is complimentary function to `shape_from_stl()` that takes the echoSMs data store form of a surface shape and returns the mesh as a trimesh object (see [mesh_from_datastore()][echosms.mesh_from_datastore]).
+There is complimentary function to `surface_from_stl()` that takes the echoSMs data store form of a surface shape and returns the mesh as a trimesh object (see [mesh_from_datastore()][echosms.mesh_from_datastore]).
 
 #### Outline
 
-The outline format is a generalised structure that can represent the outline shapes typically used for the DWBA, KRM, and DCM models. It uses a centreline (defined by a series of x, y, and z points) and then a height and width for each centreline point.
+The `outline` format is a generalised structure that can represent the outline shapes typically used for the DWBA, KRM, and DCM models. It uses a centreline (defined by a series of x, y, and z points) and a height and width for each centreline point. The [echoSMs coordinate system][] is used so heights are along the _z_-axis and widths along the _y_-axis. Five numeric arrays are used to represent the shape in the echSMs format with names of `x`, `y`, `z`, `height`, and `width`. The lengths of these arrays must all be the same.
 
-EchoSMs provides functions to convert to and from the outline format into the specific formats typically required by the DWBA, KRM, and DCM models.
+EchoSMs provides functions to convert to and from the outline format into the specific formats typically required by the DWBA, KRM, and DCM models - see the examples below.
+
+Historically, outline shapes used in the KRM model used a straight centreline along the _x_-axis (with _y_ = _z_ = 0), non-symmetric heights (i.e., lower and upper heights measured from the centreline) and symmetric widths. This form of shape can be converted to the echoSMs via:
+
+```py
+from echosms import outline_from_krm
+
+# Make up a shape in the KRM style
+x = []
+height_u = []
+height_l = []
+width = []
+
+shape = outline_from_krm(x, height_u, height_l, width, name='body', boundary='soft')
+```
+
+As per the surface example above, this can then be combined with specimen metadata and written to a TOML file.
+
+In contrast, DBWA model implementations tend to use a centreline that is curved in the _y_-axis and circular cross-sections:
+
+```py
+from echosms import outline_from_dwba
+
+# Make up a shape in the DWBA style
+x = []
+y = []  # in the echoSMs coordinate system, this is the negative z-axis
+radius = []
+
+shape = outline_from_dwba(x, y, radius, width, name='body', boundary='soft')
+```
 
 #### Voxels
 
-The voxels format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list. Conversion between a Python numpy (or xarray) 3D matrix and the echoSMs structure is done as follows:
+The `voxels` format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list. Conversion between a Python numpy (or xarray) 3D matrix and the echoSMs structure is done as follows:
 
-XXXXXX
+_not yet done_
 
 #### Categorised voxels
 
-The categorised voxels format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of differing material properties in the specimen. The category value is used as a zero-based index into the associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`.
+The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of differing material properties in the specimen. The category value is used as a zero-based index into the associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`.
 
 Example code that converts from a Python numpy (or xarray) 3D matrix of categories into the echoSMs format is a follows:
 
-XXXXXX
+_not yet done_
 
 ### Raw files
 

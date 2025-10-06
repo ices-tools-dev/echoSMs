@@ -54,7 +54,6 @@ site_url: https://ices-tools-dev.github.io/echoSMs/
 plugins:
     - search
     - autorefs
-    - render_swagger
     - mkdocstrings:
         handlers:
             python:
@@ -74,8 +73,9 @@ plugins:
                         - "!^_"
 
 watch:
-    - src/echosms
-    - data_store/schema/v1
+    - ./docs
+    - ./src/echosms
+    - ./data_store/schema/v1
 
 hooks:
     - docs/src/make_datastore_schema_md.py

@@ -2,6 +2,7 @@
 import trimesh
 import numpy as np
 from pathlib import Path
+import numpy.typing as npt
 
 def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
     """Create trimesh instances from an echoSMs datastore surface shape.
@@ -133,10 +134,10 @@ def volume_from_datastore(voxels: list):
     return np.array(voxels)  # TODO - check ordering is correct!
 
 
-def shape_from_stl(stl_file: str | Path, 
+def surface_from_stl(stl_file: str | Path, 
                      dim_scale: float = 1.0,
                      name: str = 'body',
-                     boundary : str = 'soft') -> dict:
+                     boundary: str = 'soft') -> dict:
     """Create an echoSMs surface shape from an .stl file.
 
     Parameters
@@ -176,3 +177,76 @@ def shape_from_stl(stl_file: str | Path,
             'normals_y': mesh.face_normals[:, 1].tolist(),
             'normals_z': mesh.face_normals[:, 2].tolist()}
 
+
+def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.ArrayLike,
+                     width: npt.ArrayLike,
+                     name: str = "body", boundary: str = 'soft') -> dict:
+    """
+    Convert KRM shape representation to the echoSMs outline shape representation.
+
+    Parameters
+    ----------
+    x :
+        The _x_ values of the centreline
+    height_u :
+        The distance from _z_ = 0 to the upper part of the shape at each _x_ coordinate.
+        Positive values are towards the dorsal surface and negative values towards the ventral
+        surface.
+    height_l :
+        The distance from _z_ = 0 to the lower part of the shape at each _x_ coordinate.
+        Positive values are towards the dorsal surface and negative values towards the ventral
+        surface.
+    width :
+        The width of the shape at each _x_ coordinate
+    name : 
+        The name for this shape.
+    boundary :
+        The boundary type for this shape.
+
+    Returns
+    -------
+     An echoSMs outline shape representation.
+    """
+
+    y = np.zeros(len(x))
+    height = np.array(height_u) - np.array(height_l)
+    z = -(np.array(height_l) + height / 2.0)
+
+    return {'name': name, 'boundary': boundary,
+            'x': np.array(x).tolist(),
+            'y': y.tolist(),
+            'z': z.tolist(),
+            'height': height.tolist(),
+            'width': width.tolist()}
+
+
+def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') -> dict:
+    """
+    Convert DWBA shape to the echoSMs outline shape representation.
+    
+    Parameters
+    ----------
+    x :
+        The _x_ values of the centreline
+    y :
+        The distance of the centreline from _z_ = 0. Positive values are towards
+        the dorsal surface and negative values towards the ventral surface.
+    radius :
+        The radius of the shape at each _x_ coordinate
+    name : 
+        The name for this shape.
+    boundary :
+        The boundary type for this shape.
+
+    Returns
+    -------
+     An echoSMs outline shape representation.
+    
+    """
+
+    return {'name': name, 'boundary': boundary,
+            'x': np.array(x).tolist(),
+            'y': np.zeros(len(x)).tolist(),
+            'z': (-np.array(z)).tolist(),
+            'height': 2*np.array(radius).tolist(),
+            'width': 2*np.array(radius).tolist()}
