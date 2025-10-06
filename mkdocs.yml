@@ -20,7 +20,6 @@ theme:
         repo: fontawesome/brands/github
     features:
         - navigation.top
-        - toc.integrate
         - content.action.view
         - content.code.copy
         - search.suggest
