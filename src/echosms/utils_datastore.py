@@ -228,7 +228,7 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
     ----------
     x :
         The _x_ values of the centreline
-    y :
+    z :
         The distance of the centreline from _z_ = 0. Positive values are towards
         the dorsal surface and negative values towards the ventral surface.
     radius :
