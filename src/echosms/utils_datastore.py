@@ -220,7 +220,7 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
             'width': width.tolist()}
 
 
-def outline_from_dwba(x, y, radius, name: str = "body", boundary: str = 'soft') -> dict:
+def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') -> dict:
     """
     Convert DWBA shape to the echoSMs outline shape representation.
     
