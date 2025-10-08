@@ -134,7 +134,7 @@ def volume_from_datastore(voxels: list):
     return np.array(voxels)  # TODO - check ordering is correct!
 
 
-def surface_from_stl(stl_file: str | Path, 
+def surface_from_stl(stl_file: str | Path,
                      dim_scale: float = 1.0,
                      name: str = 'body',
                      boundary: str = 'soft') -> dict:
@@ -145,9 +145,9 @@ def surface_from_stl(stl_file: str | Path,
     stl_file :
         An .stl file
     dim_scale :
-        Scaling factor applied to the node positions. Use to convert from one 
+        Scaling factor applied to the node positions. Use to convert from one
         length unit to another (e.g., 1e-3 will convert from mm to m).
-    name : 
+    name :
         The name for this shape.
     boundary :
         The boundary type for this shape.
@@ -160,7 +160,7 @@ def surface_from_stl(stl_file: str | Path,
     Notes
     -----
     This function uses a call to `load_mesh()` from the `trimesh` library to read the
-    .stl file. If there are problems with loading your .stl file, please refer to the 
+    .stl file. If there are problems with loading your .stl file, please refer to the
     `trimesh` documentation.
     """
     mesh = trimesh.load_mesh(stl_file)
@@ -198,7 +198,7 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
         surface.
     width :
         The width of the shape at each _x_ coordinate
-    name : 
+    name :
         The name for this shape.
     boundary :
         The boundary type for this shape.
@@ -217,13 +217,13 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
             'y': y.tolist(),
             'z': z.tolist(),
             'height': height.tolist(),
-            'width': width.tolist()}
+            'width': np.array(width).tolist()}
 
 
 def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') -> dict:
     """
     Convert DWBA shape to the echoSMs outline shape representation.
-    
+
     Parameters
     ----------
     x :
@@ -233,7 +233,7 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
         the dorsal surface and negative values towards the ventral surface.
     radius :
         The radius of the shape at each _x_ coordinate
-    name : 
+    name :
         The name for this shape.
     boundary :
         The boundary type for this shape.
@@ -241,12 +241,12 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
     Returns
     -------
      An echoSMs outline shape representation.
-    
+
     """
 
     return {'name': name, 'boundary': boundary,
             'x': np.array(x).tolist(),
             'y': np.zeros(len(x)).tolist(),
             'z': (-np.array(z)).tolist(),
-            'height': 2*np.array(radius).tolist(),
-            'width': 2*np.array(radius).tolist()}
+            'height': (2*np.array(radius)).tolist(),
+            'width': (2*np.array(radius)).tolist()}
