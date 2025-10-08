@@ -122,7 +122,7 @@ EchoSMs provides functions to convert to and from the outline format into the sp
 Historically, outline shapes used in the KRM model used a centreline coincident with the _x_-axis (i.e., _y_ = _z_ = 0), upper and lower shape distances measured from the centreline, and symmetric widths. This form of outline shape can be converted to the anatomical datastore form using an echoSMs utility function:
 
 ```py
-from echosms import outline_from_krm, KRMdata
+from echosms import outline_from_krm, KRMdata, plot_specimen
 
 # Get a fish shape from the old echoSMs KRM datastore
 data = KRMdata()
@@ -148,7 +148,7 @@ s['mass_density'] = cod.body.c
 # the body size.
 print(s.keys())
 
-# Add specimen metadata
+# Add the shape to some example specimen metadata
 specimens = {'specimens': 
                 [{'specimen_id': 'A',
                   'specimen_condition': 'unknown',
@@ -191,7 +191,7 @@ s['mass_density_ratio'] = krill.g
 # the body size.
 print(s.keys())
 
-# Add specimen metadata
+# Add the shape to some example specimen metadata
 specimens = {'specimens': 
                 [{'specimen_id': '123',
                   'specimen_condition': 'unknown',
