@@ -221,16 +221,24 @@ class DWBAorganism():
         import matplotlib.pyplot as plt
         fig, axs = plt.subplots(2, 1, layout='compressed')
         x = self.rv_pos[:, 0]*1e3
+        outline1 = (-self.rv_pos[:, 1] + self.a)*1e3
+        outline2 = (-self.rv_pos[:, 1] - self.a)*1e3
         axs[0].plot(x, -self.rv_pos[:, 1]*1e3, '.-', c='C0')
-        axs[0].plot(x, (-self.rv_pos[:, 1]+self.a/2)*1e3, c='C1')
-        axs[0].plot(x, (-self.rv_pos[:, 1]-self.a/2)*1e3, c='C1')
+        axs[0].plot(x, outline1, c='C1')
+        axs[0].plot(x, outline2, c='C1')
+        axs[0].plot([x[0], x[0]], [outline1[0], outline2[0]], c='C1')
+        axs[0].plot([x[-1], x[-1]], [outline1[-1], outline2[-1]], c='C1')
         axs[0].set_title('Dorsal', loc='left', fontsize=8)
         axs[0].axis('scaled')
         axs[0].xaxis.set_inverted(True)
 
+        outline1 = (-self.rv_pos[:, 2] + self.a)*1e3
+        outline2 = (-self.rv_pos[:, 2] - self.a)*1e3
         axs[1].plot(x, -self.rv_pos[:, 2]*1e3, '.-', c='C0')
-        axs[1].plot(x, (-self.rv_pos[:, 2]+self.a/2)*1e3, c='C1')
-        axs[1].plot(x, (-self.rv_pos[:, 2]-self.a/2)*1e3, c='C1')
+        axs[1].plot(x, outline1, c='C1')
+        axs[1].plot(x, outline2, c='C1')
+        axs[1].plot([x[0], x[0]], [outline1[0], outline2[0]], c='C1')
+        axs[1].plot([x[-1], x[-1]], [outline1[-1], outline2[-1]], c='C1')
         axs[1].set_title('Lateral', loc='left', fontsize=8)
         axs[1].axis('scaled')
         axs[1].xaxis.set_inverted(True)
