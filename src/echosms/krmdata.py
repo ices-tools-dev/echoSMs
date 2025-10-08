@@ -18,7 +18,7 @@ class KRMshape():
 
     Attributes
     ----------
-    shape_type :
+    boundary :
         The shape bounday condition - either `soft` or `fluid`.
     x :
         The _x_-axis coordinates [m].
