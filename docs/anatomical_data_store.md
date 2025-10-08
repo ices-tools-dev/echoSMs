@@ -42,7 +42,9 @@ A dataset ready for uploading should contain the following files and directory s
 
 ### Dataset and model data
 
-The dataset metadata and model data structures have been designed as a hierarchical structure of key-value pairs that can be realised in many commonly used data file formats, including TOML, XML, YAML, JSON, HDF5, netCDF4, and Zarr. The data structures are also designed to be simple to instantiate in the programming languages that are commonly used for acoustic scattering models (e.g., Julia, Matlab, Python, and R).
+The dataset metadata and specimen data structures have been designed as a hierarchical structure of key-value pairs that can be realised in many commonly used data file formats, including TOML, XML, YAML, JSON, HDF5, netCDF4, and Zarr. The data structures are also designed to be simple to instantiate in the programming languages that are commonly used for acoustic scattering models (e.g., Julia, Matlab, Python, and R).
+
+The dataset data format is specified by a [JSON schema](https://json-schema.org/) file stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, etc, and is included in the echoSMs [documentation](schema/data_store_schema.md). The schema is a very technical document and is perhaps more easily understood via the examples [here](https://github.com/ices-tools-dev/echoSMs/tree/main/data_store/resources). The schema can also used to programmatically validate incoming datasets.
 
 The dataset metadata requires information about the species, the collection and processing of specimens used in scattering models, links to published work, and other context. These are intended to provide information for users to assess the quality, usability, and suitability of a particular dataset.
 
@@ -50,9 +52,9 @@ Associated with each dataset are data about one or more specimens. This includes
 
 Most anatomical scattering models use one of these three-dimensional representations:
 
-- 3D triangulated surface mesh,
-- dorsal and ventral outline,
-- 3D grid of cuboids (voxels).
+- 3D triangulated surface meshes,
+- dorsal and ventral outlines,
+- 3D grids of cuboids (voxels).
 
 The echoSMs data structure provides the means to store each of these (see table below). Some models can use multiple shapes for a single specimen (e.g., a fish body and swimbladder) and this is achieved with multiple shapes per specimen. Additional shape formats can be added as required (e.g., 3D shapes defined by tetrahedrons, as used by the [TetraScatt](https://doi.org/10.1115/1.4067286) scattering model).
 
@@ -68,8 +70,6 @@ The outline shape is a generalised form of the shape definition used for several
 - KRM: non-circular cross-sections along a straight centreline
 - DWBA: circular cross-sections along a curved centreline
 - DCM: circular cross-sections along a straight or curved centreline
-
-The structure and attributes required for the dataset metadata and specimen shape data are specified in a [JSON schema](https://json-schema.org/), stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, and is rendered into the echoSMs [documentation](schema/data_store_schema.md). The schema is a quite technical document and is more easily understood via the examples [here](). The schema can also used to programmatically validate incoming datasets.
 
 ### Shape data structure
 
@@ -115,39 +115,89 @@ There is complimentary function to `surface_from_stl()` that takes the echoSMs d
 
 #### Outline
 
-_This section is not complete._
-
 The `outline` format is a generalised structure that can represent the outline shapes typically used for the DWBA, KRM, and DCM models. It uses a centreline (defined by a list of (_x_, _y_, _z_) coordinates) and a height and width at each centreline point. The [echoSMs coordinate system][coordinate-systems] is used so heights are along the _z_-axis and widths along the _y_-axis. Five numeric arrays are used to represent the shape in the echSMs format with names of `x`, `y`, `z`, `height`, and `width`. The lengths of these arrays must all be the same.
 
 EchoSMs provides functions to convert to and from the outline format into the specific formats typically required by the DWBA, KRM, and DCM models - see the examples below.
 
-Historically, outline shapes used in the KRM model used a centreline coincident with the _x_-axis (i.e., _y_ = _z_ = 0), upper and lower heights measured from the centreline, and symmetric widths. This form of outline shape can be converted to the with an echoSMs utility function:
+Historically, outline shapes used in the KRM model used a centreline coincident with the _x_-axis (i.e., _y_ = _z_ = 0), upper and lower shape distances measured from the centreline, and symmetric widths. This form of outline shape can be converted to the anatomical datastore form using an echoSMs utility function:
 
 ```py
-from echosms import outline_from_krm
+import numpy as np
+import matplotlib.pyplot as plt
+from echosms import outline_from_krm, KRMdata
 
-# Make up a shape in the KRM style
-x = []
-height_u = []
-height_l = []
-width = []
+# Get a fish shape from the old echoSMs KRM datastore
+data = KRMdata()
+cod = data.model('Cod')
+cod.plot()
 
-shape = outline_from_krm(x, height_u, height_l, width, name='body', boundary='soft')
+# Convert the shape to the echoSMs anatomical datastore form. To keep
+# this example brief, only do the body outline and ignore any inclusions.
+s = outline_from_krm(x = cod.body.x,
+                     height_u = cod.body.z_U,
+                     height_l = cod.body.z_L,
+                     width = cod.body.w,
+                     name='body',
+                     boundary=cod.body.boundary)
+
+# Add in other shape attributes to give a shape that contains all
+# those required by the schema.
+s['sound_speed_compressional'] = cod.body.rho
+s['mass_density'] = cod.body.c
+
+# The shape is now converted to the echoSMs anatomical datastore form with
+# (x,y,z) points defining the centreline and widths and heights for
+# the body size.
+print(s.keys())
+
+# Do a plot of the shape to compare to the one from KRMdata above.
+plt.plot(s['x'], s['z'] + np.array(s['height'])/2, 'black',
+         s['x'], s['z'] - np.array(s['height'])/2, 'black')
+plt.gca().set_aspect('equal')
+plt.gca().xaxis.set_inverted(True)
+plt.gca().yaxis.set_inverted(True)
+plt.title('Cod')
+plt.show()
 ```
 
-In the same way as for the surface mesh example above, this shape ca be combined with specimen metadata and written to a TOML file.
+In the same way as for the surface mesh example above, this shape can be combined with specimen metadata and written to a TOML file.
 
-DBWA model implementations tend to use a centreline that is curved in the _z_-axis and body cross-sections that are circular, so there is a separate function for DWBA shapes:
+DBWA model implementations tend to use a centreline that is curved in the _z_-axis and body cross-sections that are circular, so there is a separate function for converting DWBA shapes:
 
 ```py
-from echosms import outline_from_dwba
+import numpy as np
+import matplotlib.pyplot as plt
+from echosms import outline_from_dwba, DWBAdata
 
-# Make up a shape in the DWBA style
-x = []
-y = []  # in the echoSMs coordinate system, this is the negative z-axis
-radius = []
+# Get a krill shape from the old echoSMs DWBA datastore
+data = DWBAdata()
+krill = data.model('Generic krill (McGehee 1998)')
+krill.plot()
 
-shape = outline_from_dwba(x, z, radius, width, name='body', boundary='soft')
+# Convert the shape to the echoSMs anatomical datastore form.
+s = outline_from_dwba(x = krill.rv_pos[:, 0],
+                      z = krill.rv_pos[:, 2],
+                      radius = krill.a,
+                      name='body', boundary='soft')
+
+# Add in other shape attributes to give enough information to run a model.
+s['sound_speed_ratio'] = krill.h
+s['mass_density_ratio'] = krill.g
+
+# The shape is now converted to the echoSMs anatomical datastore form with
+# (x,y,z) points defining the centreline and widths and heights for
+# the body size.
+print(s.keys())
+
+# Do a plot of the shape to compare to the one from KRMdata above.
+plt.plot(s['x'], s['z'] + np.array(s['height'])/2, 'C1',
+         s['x'], s['z'] - np.array(s['height'])/2, 'C1')
+plt.gca().set_aspect('equal')
+plt.gca().xaxis.set_inverted(True)
+# plt.gca().yaxis.set_inverted(True)
+plt.title('Generic krill (McGehee 1998)')
+plt.show()
+
 ```
 
 #### Voxels
