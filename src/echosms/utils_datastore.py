@@ -1,8 +1,10 @@
 """Utilities for working with the echoSMs anatomical datastore."""
+import io
 import trimesh
 import numpy as np
 from pathlib import Path
 import numpy.typing as npt
+import matplotlib.pyplot as plt
 
 def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
     """Create trimesh instances from an echoSMs datastore surface shape.
@@ -250,3 +252,135 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
             'z': (-np.array(z)).tolist(),
             'height': (2*np.array(radius)).tolist(),
             'width': (2*np.array(radius)).tolist()}
+
+
+def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
+                  stream: bool=False) -> None:
+    """Plot the specimen shape.
+
+    Produces a relevant plot for all echoSMs anatomical datastore shape types.
+
+    Parameters
+    ----------
+    specimen :
+        Specimen data as per the echoSMs anatomical datastore schema.
+    dataset_id :
+        Used to form a plot title if `title` is an empty string.
+    title :
+        A title for the plot.
+    stream :
+        If True, return an in-memory binary stream containing
+        the plot in PNG format. If False, generate a matplotlib plot.
+
+"""
+    match specimen['shape_type']:
+        case 'outline':
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
+            plot_shape_outline(specimen['shapes'], axs)
+            axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
+            axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
+            fig.supxlabel('[mm]')
+            fig.supylabel('[mm]')
+        case 'surface':
+            fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
+            plot_shape_surface(specimen['shapes'], ax)
+            plt.tight_layout()
+        case 'voxels':
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
+            axs[0].text(0.5, 0.5, 'Voxel plots are not yet implemented',
+                        horizontalalignment='center',
+                        transform=axs[0].transAxes)
+            # plot_shape_voxels(specimen['shapes'], axs)
+            axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
+            axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
+            fig.supxlabel('[mm]')
+            fig.supylabel('[mm]')
+        case 'categorised_voxels':
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
+            # plot_shape_categorised_voxels(specimen['shapes'], axs)
+            axs[0].text(0.5, 0.5, 'Categorised voxel plots are not yet implemented',
+                        horizontalalignment='center',
+                        transform=axs[0].transAxes)
+            axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
+            axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
+            fig.supxlabel('[mm]')
+            fig.supylabel('[mm]')
+
+
+    t = title if title else dataset_id + ' ' + specimen['specimen_id']
+    fig.suptitle(t)
+
+    if stream:
+        with io.BytesIO() as buffer:
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            return buffer.getvalue()
+    else:
+        plt.show()
+
+
+def plot_shape_outline(shapes: list[dict], axs) -> None:
+    """Plot an echoSMs anatomical outline shape.
+
+    Parameters
+    ----------
+    shapes :
+        Outline shapes to be plotted
+    axs :
+        Two matplotlib axes - one for the dorsal view and one for the
+        lateral view
+    """
+    for s in shapes:
+        c = 'C0' if s['boundary'] == 'fluid' else 'C1'
+        x = np.array(s['x'])*1e3
+        z = np.array(s['z'])*1e3
+        y = np.array(s['y'])*1e3
+        width_2 = np.array(s['width'])/2*1e3
+        zU = (z + np.array(s['height'])/2*1e3)
+        zL = (z - np.array(s['height'])/2*1e3)
+
+        # Dorsal view
+        axs[0].plot(x, y, c='grey', linestyle='--', linewidth=1)  # centreline
+        axs[0].plot(x, y+width_2, c=c)
+        axs[0].plot(x, y-width_2, c=c)
+
+        # Lateral view
+        axs[1].plot(x, z, c='grey', linestyle='--', linewidth=1)  # centreline
+        axs[1].plot(x, zU, c=c)
+        axs[1].plot(x, zL, c=c)
+
+        # close the ends of the shapes
+        for i in [0, -1]:
+            axs[1].plot([x[i], x[i]], [zU[i], zL[i]], c=c)
+            axs[0].plot([x[i], x[i]], [(y+width_2)[i], (y-width_2)[i]], c=c)
+            axs[i].set_aspect('equal')
+            axs[i].xaxis.set_inverted(True)
+            axs[i].yaxis.set_inverted(True)
+
+
+def plot_shape_surface(shapes, ax):
+    """Plot an echoSMs anatomical surface shape.
+
+    Parameters
+    ----------
+    shapes :
+        Surface shapes to be plotted
+    ax :
+        A matplotlib axis.
+    """
+    for s in shapes:
+        # c = 'C0' if s['boundary'] == 'fluid' else 'C1'
+        facets = np.array([s['facets_0'], s['facets_1'], s['facets_2']]).transpose()
+        x = 1e3 * np.array(s['x'])
+        y = 1e3 * np.array(s['y'])
+        z = 1e3 * np.array(s['z'])
+
+        ax.plot_trisurf(x, y, z, triangles=facets)
+        ax.view_init(elev=210, azim=-60, roll=0)
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('z')
+
+        ax.set_aspect('equal')
+        ax.xaxis.set_inverted(True)
+        ax.yaxis.set_inverted(True)

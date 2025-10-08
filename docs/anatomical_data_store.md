@@ -122,8 +122,6 @@ EchoSMs provides functions to convert to and from the outline format into the sp
 Historically, outline shapes used in the KRM model used a centreline coincident with the _x_-axis (i.e., _y_ = _z_ = 0), upper and lower shape distances measured from the centreline, and symmetric widths. This form of outline shape can be converted to the anatomical datastore form using an echoSMs utility function:
 
 ```py
-import numpy as np
-import matplotlib.pyplot as plt
 from echosms import outline_from_krm, KRMdata
 
 # Get a fish shape from the old echoSMs KRM datastore
@@ -150,24 +148,28 @@ s['mass_density'] = cod.body.c
 # the body size.
 print(s.keys())
 
-# Do a plot of the shape to compare to the one from KRMdata above.
-plt.plot(s['x'], s['z'] + np.array(s['height'])/2, 'black',
-         s['x'], s['z'] - np.array(s['height'])/2, 'black')
-plt.gca().set_aspect('equal')
-plt.gca().xaxis.set_inverted(True)
-plt.gca().yaxis.set_inverted(True)
-plt.title('Cod')
-plt.show()
+# Add specimen metadata
+specimens = {'specimens': 
+                [{'specimen_id': 'A',
+                  'specimen_condition': 'unknown',
+                  'length': 0.0,
+                  'weight': 0.0,
+                  'sex': 'unknown',
+                  'length_type': 'unknown',
+                  'shape_type': 'outline',
+                  'shapes': [s]}]}
+
+# And use an echoSMs function to plot the shape (to compare to the one from KRMdata above()).
+plot_specimen(specimens['specimens'][0], dataset_id='Cod')
 ```
 
-In the same way as for the surface mesh example above, this shape can be combined with specimen metadata and written to a TOML file.
+In the same way as for the surface mesh example above, the 
+specimen data can be written to a TOML file.
 
 DBWA model implementations tend to use a centreline that is curved in the _z_-axis and body cross-sections that are circular, so there is a separate function for converting DWBA shapes:
 
 ```py
-import numpy as np
-import matplotlib.pyplot as plt
-from echosms import outline_from_dwba, DWBAdata
+from echosms import outline_from_dwba, DWBAdata, plot_specimen
 
 # Get a krill shape from the old echoSMs DWBA datastore
 data = DWBAdata()
@@ -189,15 +191,19 @@ s['mass_density_ratio'] = krill.g
 # the body size.
 print(s.keys())
 
-# Do a plot of the shape to compare to the one from KRMdata above.
-plt.plot(s['x'], s['z'] + np.array(s['height'])/2, 'C1',
-         s['x'], s['z'] - np.array(s['height'])/2, 'C1')
-plt.gca().set_aspect('equal')
-plt.gca().xaxis.set_inverted(True)
-# plt.gca().yaxis.set_inverted(True)
-plt.title('Generic krill (McGehee 1998)')
-plt.show()
+# Add specimen metadata
+specimens = {'specimens': 
+                [{'specimen_id': '123',
+                  'specimen_condition': 'unknown',
+                  'length': 0.0,
+                  'weight': 0.0,
+                  'sex': 'unknown',
+                  'length_type': 'unknown',
+                  'shape_type': 'outline',
+                  'shapes': [s]}]}
 
+# And use an echoSMs function to plot the shape (to compare to the one from DWBAdata above()).
+plot_specimen(specimens['specimens'][0], dataset_id='Krill')
 ```
 
 #### Voxels
