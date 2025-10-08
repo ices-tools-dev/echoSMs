@@ -145,7 +145,7 @@ s = outline_from_krm(x = cod.body.x,
 s['sound_speed_compressional'] = cod.body.rho
 s['mass_density'] = cod.body.c
 
-# The shape is now converted to the echoSMs anatomical datastore form with
+# The shape is now in the echoSMs anatomical datastore form with
 # (x,y,z) points defining the centreline and widths and heights for
 # the body size.
 print(s.keys())
@@ -176,7 +176,7 @@ krill.plot()
 
 # Convert the shape to the echoSMs anatomical datastore form.
 s = outline_from_dwba(x = krill.rv_pos[:, 0],
-                      z = krill.rv_pos[:, 2],
+                      z = -krill.rv_pos[:, 2],
                       radius = krill.a,
                       name='body', boundary='soft')
 
@@ -184,7 +184,7 @@ s = outline_from_dwba(x = krill.rv_pos[:, 0],
 s['sound_speed_ratio'] = krill.h
 s['mass_density_ratio'] = krill.g
 
-# The shape is now converted to the echoSMs anatomical datastore form with
+# The shape is now in the echoSMs anatomical datastore form with
 # (x,y,z) points defining the centreline and widths and heights for
 # the body size.
 print(s.keys())
