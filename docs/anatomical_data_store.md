@@ -121,7 +121,7 @@ EchoSMs provides functions to convert to and from the outline format into the sp
 
 Historically, outline shapes used in the KRM model used a centreline coincident with the _x_-axis (i.e., _y_ = _z_ = 0), upper and lower shape distances measured from the centreline, and symmetric widths. This form of outline shape can be converted to the anatomical datastore form using an echoSMs utility function:
 
-```py
+```py hl_lines="10 11 12 13 14 15"
 from echosms import outline_from_krm, KRMdata, plot_specimen
 
 # Get a fish shape from the old echoSMs KRM datastore
@@ -159,7 +159,8 @@ specimens = {'specimens':
                   'shape_type': 'outline',
                   'shapes': [s]}]}
 
-# And use an echoSMs function to plot the shape (to compare to the one from KRMdata above()).
+# And use an echoSMs function to plot the shape 
+# (to compare to the one from KRMdata above()).
 plot_specimen(specimens['specimens'][0], dataset_id='Cod')
 ```
 
@@ -168,7 +169,7 @@ specimen data can be written to a TOML file.
 
 DBWA model implementations tend to use a centreline that is curved in the _z_-axis and body cross-sections that are circular, so there is a separate function for converting DWBA shapes:
 
-```py
+```py  hl_lines="9 10 11 12"
 from echosms import outline_from_dwba, DWBAdata, plot_specimen
 
 # Get a krill shape from the old echoSMs DWBA datastore
@@ -202,7 +203,8 @@ specimens = {'specimens':
                   'shape_type': 'outline',
                   'shapes': [s]}]}
 
-# And use an echoSMs function to plot the shape (to compare to the one from DWBAdata above()).
+# And use an echoSMs function to plot the shape 
+# (to compare to the one from DWBAdata above()).
 plot_specimen(specimens['specimens'][0], dataset_id='Krill')
 ```
 
