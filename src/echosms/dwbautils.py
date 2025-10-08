@@ -32,11 +32,11 @@ def create_dwba_spheroid(major_radius: float, minor_radius: float, spacing: floa
     Returns
     -------
     rv_pos : iterable[np.ndarray]
-        An interable of vectors of the 3D positions of the centre of each disc that
+        An iterable of vectors of the 3D positions of the centre of each disc that
         defines the spheroid. Each vector has three values corresponding to
         the _x_, _y_, and _z_ coordinates [m] of the disc centre.
     rv_tan : iterable[np.ndarray]
-        An interable of unit vectors of the tangent to the target body axis at
+        An iterable of unit vectors of the tangent to the target body axis at
         the points given in `rv_pos`. Each vector has three values corresponding to
         the _x_, _y_, and _z_ components of the tangent vector.
     a : iterable
@@ -72,11 +72,11 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
     Returns
     -------
     rv_pos : iterable[np.ndarray]
-        An interable of vectors of the 3D positions of the centre of each disc that
+        An iterable of vectors of the 3D positions of the centre of each disc that
         defines the cylinder. Each vector has three values corresponding to
         the _x_, _y_, and _z_ coordinates [m] of the disc centre.
     rv_tan : iterable[np.ndarray]
-        An interable of unit vectors of the tangent to the cylinder body axis at
+        An iterable of unit vectors of the tangent to the cylinder body axis at
         the points given in `rv_pos`. Each vector has three values corresponding to
         the _x_, _y_, and _z_ components of the tangent vector.
     a : iterable
@@ -181,7 +181,7 @@ class DWBAorganism():
     Attributes
     ----------
     rv_pos : iterable[np.ndarray]
-        An interable of vectors of the 3D positions of the centre of each disc that
+        An iterable of vectors of the 3D positions of the centre of each disc that
         defines the target shape. Each vector should have three values corresponding to
         the _x_, _y_, and _z_ coordinates [m] of the disc centre, as per the echoSMs
         [coordinate system](https://ices-tools-dev.github.io/echoSMs/
@@ -197,7 +197,7 @@ class DWBAorganism():
     note :
         Information about the data.
     rv_tan :
-        An interable of unit vectors of the tangent to the body axis at
+        An iterable of unit vectors of the tangent to the body axis at
         the points given by (_x_, _y_, _z_). Each vector has three values corresponding to
         the _x_, _y_, and _z_ components of the tangent vector [m]. If not given, unit
         vectors pointing along the positive _x_-axis are used.
