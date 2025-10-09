@@ -1,4 +1,4 @@
-name: build-docs
+name: Build documentation
 on:
   push:
     branches:
@@ -14,5 +14,5 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs mkdocstrings[python] mkdocs-material json-schema-for-humans
-      - run: mkdocs gh-deploy --force --clean --verbose
+      - run: mkdocs gh-deploy --force --clean --verbose --message "Deploy documentation to GitHub Pages"
       
