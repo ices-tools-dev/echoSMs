@@ -211,7 +211,7 @@ plot_specimen(specimens['specimens'][0], dataset_id='Krill')
 #### Voxels
 
 _This section is not complete._
-
+ 
 The `voxels` format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list. Conversion between a Python numpy (or xarray) 3D matrix and the echoSMs structure is done as follows:
 
 ```py
