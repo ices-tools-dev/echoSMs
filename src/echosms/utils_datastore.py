@@ -272,15 +272,16 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
         If True, return an in-memory binary stream containing
         the plot in PNG format. If False, generate a matplotlib plot.
 
-"""
+    """
+    labels = ['Dorsal', 'Lateral']
+
     match specimen['shape_type']:
         case 'outline':
-            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='compressed')
             plot_shape_outline(specimen['shapes'], axs)
-            axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
-            axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
-            fig.supxlabel('[mm]')
-            fig.supylabel('[mm]')
+            for label, a in zip(labels, axs):
+                a.set_title(label, loc='left', fontsize=8)
+                a.axis('scaled')
         case 'surface':
             fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
             plot_shape_surface(specimen['shapes'], ax)
@@ -340,12 +341,12 @@ def plot_shape_outline(shapes: list[dict], axs) -> None:
         zL = (z - np.array(s['height'])/2*1e3)
 
         # Dorsal view
-        axs[0].plot(x, y, c='grey', linestyle='--', linewidth=1)  # centreline
+        axs[0].plot(x, y, c='grey', linestyle='--', linewidth=1, marker='.')  # centreline
         axs[0].plot(x, y+width_2, c=c)
         axs[0].plot(x, y-width_2, c=c)
 
         # Lateral view
-        axs[1].plot(x, z, c='grey', linestyle='--', linewidth=1)  # centreline
+        axs[1].plot(x, z, c='grey', linestyle='--', linewidth=1, marker='.')  # centreline
         axs[1].plot(x, zU, c=c)
         axs[1].plot(x, zL, c=c)
 
@@ -353,7 +354,6 @@ def plot_shape_outline(shapes: list[dict], axs) -> None:
         for i in [0, -1]:
             axs[1].plot([x[i], x[i]], [zU[i], zL[i]], c=c)
             axs[0].plot([x[i], x[i]], [(y+width_2)[i], (y-width_2)[i]], c=c)
-            axs[i].set_aspect('equal')
             axs[i].xaxis.set_inverted(True)
             axs[i].yaxis.set_inverted(True)
 
