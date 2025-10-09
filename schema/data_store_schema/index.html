@@ -1,0 +1,7705 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ices-tools-dev.github.io/echoSMs/schema/data_store_schema/">
+      
+      
+        <link rel="prev" href="../../datastoreAPI/">
+      
+      
+      
+      <link rel="icon" href="../../resources/echoSMs_logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Schema - echoSMs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#echosms-anatomical-data-store-schema" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="echoSMs" class="md-header__button md-logo" aria-label="echoSMs" data-md-component="logo">
+      
+  <img src="../../resources/echoSMs_logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            echoSMs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Schema
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ices-tools-dev/echoSMs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="echoSMs" class="md-nav__button md-logo" aria-label="echoSMs" data-md-component="logo">
+      
+  <img src="../../resources/echoSMs_logo.png" alt="logo">
+
+    </a>
+    echoSMs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ices-tools-dev/echoSMs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Using echoSMs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developing echoSMs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Conventions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmark_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Benchmarks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api_reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../historical_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Historical notes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other_software/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Other software
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Anatomical data store
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Anatomical data store
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../anatomical_data_store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datastoreAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#property-dataset_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property dataset_id
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-anatomical_category" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property anatomical_category
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-anatomical_features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property anatomical_features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property anatomical_features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anatomical_features-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      anatomical_features items
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_first_added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_first_added
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_last_modified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_last_modified
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-aphiaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property aphiaID
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property order
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property family
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-genus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property genus
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-species" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property species
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-vernacular_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property vernacular_name
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-activity_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property activity_name
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property location
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-latitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property latitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-longitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property longitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property depth
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_collection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-investigators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property investigators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property investigators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#investigators-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      investigators items
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-data_collection_description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property data_collection_description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property note
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-imaging_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property imaging_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-shape_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-shape_method_processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_method_processing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-model_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property model_type
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-sound_speed_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-mass_density_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-shape_types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property shape_types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shape_types-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      shape_types items
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-dataset_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property dataset_size
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-specimens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property specimens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property specimens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#specimens-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      specimens items
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="specimens items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#property-specimen_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property specimen_id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-specimen_condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property specimen_condition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property length
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property weight
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sex" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sex
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-length_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property length_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shapes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property shapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shapes-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      shapes items
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="shapes items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#property-item-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 0
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property x
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#x-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      x items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-y" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#y-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      y items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-z" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#z-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      z items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property height
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#height-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      height items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-width" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property width
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#width-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      width items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_shear" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_shear
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_shear-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_shear items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_ratio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density_ratio-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density_ratio items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_ratio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_ratio-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_ratio items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-youngs_modulus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property youngs_modulus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#youngs_modulus-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      youngs_modulus items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property boundary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-item-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-x_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property x
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#x-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      x items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-y_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#y-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      y items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-z_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#z-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      z items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-facets_0" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property facets_0
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facets_0-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      facets_0 items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-facets_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property facets_1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facets_1-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      facets_1 items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-facets_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property facets_2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facets_2-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      facets_2 items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-normals_x" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property normals_x
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normals_x-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      normals_x items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-normals_y" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property normals_y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normals_y-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      normals_y items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-normals_z" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property normals_z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normals_z-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      normals_z items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_shear_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_shear
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_ratio_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_ratio_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-youngs_modulus_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property youngs_modulus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-boundary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property boundary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-item-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-voxel_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property voxel_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#voxel_size-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      voxel_size items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-item-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-voxel_size_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property voxel_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#voxel_size-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      voxel_size items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property categories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      categories items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      categories items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-items-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      categories items items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property name
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#property-dataset_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property dataset_id
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-anatomical_category" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property anatomical_category
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-anatomical_features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property anatomical_features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property anatomical_features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anatomical_features-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      anatomical_features items
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_first_added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_first_added
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_last_modified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_last_modified
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-aphiaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property aphiaID
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property order
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property family
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-genus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property genus
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-species" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property species
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-vernacular_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property vernacular_name
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-activity_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property activity_name
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property location
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-latitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property latitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-longitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property longitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property depth
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_collection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-date_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property date_image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-investigators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property investigators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property investigators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#investigators-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      investigators items
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-data_collection_description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property data_collection_description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property note
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-imaging_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property imaging_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-shape_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-shape_method_processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_method_processing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-model_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property model_type
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-sound_speed_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-mass_density_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density_method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-shape_types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property shape_types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shape_types-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      shape_types items
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-dataset_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property dataset_size
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#property-specimens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property specimens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property specimens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#specimens-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      specimens items
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="specimens items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#property-specimen_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property specimen_id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-specimen_condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property specimen_condition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property length
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property weight
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sex" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sex
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-length_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property length_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shapes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Property shapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shapes-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      shapes items
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="shapes items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#property-item-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 0
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property x
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#x-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      x items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-y" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#y-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      y items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-z" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#z-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      z items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property height
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#height-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      height items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-width" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property width
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#width-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      width items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_shear" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_shear
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_shear-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_shear items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_ratio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density_ratio-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density_ratio items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_ratio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_ratio-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_ratio items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-youngs_modulus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property youngs_modulus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#youngs_modulus-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      youngs_modulus items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property boundary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-item-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-x_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property x
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#x-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      x items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-y_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#y-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      y items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-z_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#z-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      z items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-facets_0" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property facets_0
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facets_0-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      facets_0 items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-facets_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property facets_1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facets_1-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      facets_1 items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-facets_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property facets_2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facets_2-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      facets_2 items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-normals_x" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property normals_x
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normals_x-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      normals_x items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-normals_y" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property normals_y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normals_y-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      normals_y items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-normals_z" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property normals_z
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normals_z-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      normals_z items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_shear_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_shear
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_ratio_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_ratio_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_ratio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-youngs_modulus_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property youngs_modulus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-boundary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property boundary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-item-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-voxel_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property voxel_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#voxel_size-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      voxel_size items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-item-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property item 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-shape_type_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property shape_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-voxel_size_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property voxel_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#voxel_size-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      voxel_size items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property categories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      categories items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      categories items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-items-items-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      categories items items items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-mass_density_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property mass_density
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mass_density-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      mass_density items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-sound_speed_compressional_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property sound_speed_compressional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sound_speed_compressional-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      sound_speed_compressional items
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property name
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/ices-tools-dev/echoSMs/raw/main/docs/schema/data_store_schema.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="echosms-anatomical-data-store-schema">EchoSMs anatomical data store schema</h1>
+<p><strong>Title:</strong> EchoSMs anatomical data store schema</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td><strong>Additional properties</strong></td>
+<td><img alt="Not allowed" src="https://img.shields.io/badge/Not%20allowed-red" /></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> This document is the JSON schema for the echoSMs anatomical data store. It provides a standardised structure for storing fish and plankton acoustic scattering model data.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Title/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+ <a href="#dataset_id">dataset_id</a></td>
+<td>string</td>
+<td>A unique identifier for this dataset, generated by the data storage system.</td>
+</tr>
+<tr>
+<td>+ <a href="#description">description</a></td>
+<td>string</td>
+<td>A description of the dataset.</td>
+</tr>
+<tr>
+<td>+ <a href="#anatomical_category">anatomical_category</a></td>
+<td>enum (of string)</td>
+<td>The type of anatomy that this dataset contains.</td>
+</tr>
+<tr>
+<td>+ <a href="#anatomical_features">anatomical_features</a></td>
+<td>array of enum (of string)</td>
+<td>The type of anatomical features in this dataset.</td>
+</tr>
+<tr>
+<td>+ <a href="#date_first_added">date_first_added</a></td>
+<td>string</td>
+<td>The date when these metadata were first created, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</td>
+</tr>
+<tr>
+<td>+ <a href="#date_last_modified">date_last_modified</a></td>
+<td>string</td>
+<td>The date when these metadata were last modified, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</td>
+</tr>
+<tr>
+<td>+ <a href="#aphiaID">aphiaID</a></td>
+<td>integer</td>
+<td>The WoRMS <a href="https://www.marinespecies.org/aphia.php">aphiaID</a> of the species in this dataset.</td>
+</tr>
+<tr>
+<td>- <a href="#class">class</a></td>
+<td>string</td>
+<td>Taxonomical hierarchy level of class that is consistent with WoRMS.</td>
+</tr>
+<tr>
+<td>- <a href="#order">order</a></td>
+<td>string</td>
+<td>Taxonomical hierarchy level of order that is consistent with WoRMS.</td>
+</tr>
+<tr>
+<td>- <a href="#family">family</a></td>
+<td>string</td>
+<td>Taxonomical hierarchy level of family that is consistent with WoRMS.</td>
+</tr>
+<tr>
+<td>- <a href="#genus">genus</a></td>
+<td>string</td>
+<td>Taxonomical hierarchy level of genus that is consistent with WoRMS.</td>
+</tr>
+<tr>
+<td>- <a href="#species">species</a></td>
+<td>string</td>
+<td>Taxonomical hierarchy level of species that is consistent with WoRMS.</td>
+</tr>
+<tr>
+<td>- <a href="#vernacular_name">vernacular_name</a></td>
+<td>string</td>
+<td>A vernacular name for the organism.</td>
+</tr>
+<tr>
+<td>- <a href="#reference">reference</a></td>
+<td>string</td>
+<td>A literature reference for the dataset. If available, a DOI or URI is recommended.</td>
+</tr>
+<tr>
+<td>- <a href="#activity_name">activity_name</a></td>
+<td>string</td>
+<td>Name of the data collection activity (if any), such as voyage code, project name, etc.</td>
+</tr>
+<tr>
+<td>- <a href="#location">location</a></td>
+<td>string</td>
+<td>Name or description of the location where organism was collected.</td>
+</tr>
+<tr>
+<td>- <a href="#latitude">latitude</a></td>
+<td>number</td>
+<td>Latitude of location where organism was collected (decimal degrees).</td>
+</tr>
+<tr>
+<td>- <a href="#longitude">longitude</a></td>
+<td>number</td>
+<td>Longitude of location where organism was collected (decimal degrees).</td>
+</tr>
+<tr>
+<td>- <a href="#depth">depth</a></td>
+<td>number</td>
+<td>Depth below surface of organism collection location (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#date_collection">date_collection</a></td>
+<td>string</td>
+<td>The date or date range when the dataset was collected, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</td>
+</tr>
+<tr>
+<td>+ <a href="#date_image">date_image</a></td>
+<td>string</td>
+<td>The date when the dataset was imaged, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</td>
+</tr>
+<tr>
+<td>- <a href="#investigators">investigators</a></td>
+<td>array of string</td>
+<td>Names or identifying descriptions of persons or organisations that created this dataset.</td>
+</tr>
+<tr>
+<td>- <a href="#data_collection_description">data_collection_description</a></td>
+<td>string</td>
+<td>Description of data collection details.</td>
+</tr>
+<tr>
+<td>- <a href="#note">note</a></td>
+<td>string</td>
+<td>Explanatory notes about the shape data.</td>
+</tr>
+<tr>
+<td>+ <a href="#imaging_method">imaging_method</a></td>
+<td>enum (of string)</td>
+<td>Method used to obtain the raw image data.</td>
+</tr>
+<tr>
+<td>+ <a href="#shape_method">shape_method</a></td>
+<td>enum (of string)</td>
+<td>Method used to obtain the specimen shape.</td>
+</tr>
+<tr>
+<td>- <a href="#shape_method_processing">shape_method_processing</a></td>
+<td>string</td>
+<td>Description of processing used to convert raw images into shapes, including any manipulation of image data (for example, smoothing, edge enhancement, rotation, etc).</td>
+</tr>
+<tr>
+<td>- <a href="#model_type">model_type</a></td>
+<td>enum (of string)</td>
+<td>Original scattering model type.</td>
+</tr>
+<tr>
+<td>- <a href="#sound_speed_method">sound_speed_method</a></td>
+<td>enum (of string)</td>
+<td>Method used to obtain sound speed in the feature.</td>
+</tr>
+<tr>
+<td>- <a href="#mass_density_method">mass_density_method</a></td>
+<td>enum (of string)</td>
+<td>Method used to obtain density in the feature.</td>
+</tr>
+<tr>
+<td>+ <a href="#shape_types">shape_types</a></td>
+<td>array of enum (of string)</td>
+<td>Shape types in this dataset. Generated by the data store server</td>
+</tr>
+<tr>
+<td>+ <a href="#dataset_size">dataset_size</a></td>
+<td>number</td>
+<td>Size of the entire dataset (including raw data) (MiB). Generated by the data store server.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens">specimens</a></td>
+<td>array of object</td>
+<td>Specimen data.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-dataset_id"><a name="dataset_id"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>dataset_id</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> A unique identifier for this dataset, generated by the data storage system.</p>
+<h2 id="property-description"><a name="description"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>description</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> A description of the dataset.</p>
+<h2 id="property-anatomical_category"><a name="anatomical_category"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>anatomical_category</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> The type of anatomy that this dataset contains.</p>
+<p>Must be one of:
+* "tissue"
+* "organ"
+* "organ system"
+* "organism"
+* "other"</p>
+<h2 id="property-anatomical_features"><a name="anatomical_features"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>anatomical_features</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> The type of anatomical features in this dataset.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#anatomical_features_items">anatomical_features items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="anatomical_features-items"><a name="anatomical_features_items"></a>anatomical_features items</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Must be one of:
+* "body"
+* "swimbladder"
+* "backbone"
+* "muscle"
+* "other"</p>
+<h2 id="property-date_first_added"><a name="date_first_added"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>date_first_added</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td><strong>Format</strong></td>
+<td><code>date</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> The date when these metadata were first created, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</p>
+<h2 id="property-date_last_modified"><a name="date_last_modified"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>date_last_modified</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td><strong>Format</strong></td>
+<td><code>date</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> The date when these metadata were last modified, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</p>
+<h2 id="property-aphiaid"><a name="aphiaID"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>aphiaID</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>integer</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> The WoRMS <a href="https://www.marinespecies.org/aphia.php">aphiaID</a> of the species in this dataset.</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-class"><a name="class"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>class</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Taxonomical hierarchy level of class that is consistent with WoRMS.</p>
+<h2 id="property-order"><a name="order"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>order</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Taxonomical hierarchy level of order that is consistent with WoRMS.</p>
+<h2 id="property-family"><a name="family"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>family</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Taxonomical hierarchy level of family that is consistent with WoRMS.</p>
+<h2 id="property-genus"><a name="genus"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>genus</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Taxonomical hierarchy level of genus that is consistent with WoRMS.</p>
+<h2 id="property-species"><a name="species"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>species</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Taxonomical hierarchy level of species that is consistent with WoRMS.</p>
+<h2 id="property-vernacular_name"><a name="vernacular_name"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>vernacular_name</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> A vernacular name for the organism.</p>
+<h2 id="property-reference"><a name="reference"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>reference</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> A literature reference for the dataset. If available, a DOI or URI is recommended.</p>
+<h2 id="property-activity_name"><a name="activity_name"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>activity_name</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Name of the data collection activity (if any), such as voyage code, project name, etc.</p>
+<h2 id="property-location"><a name="location"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>location</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Name or description of the location where organism was collected.</p>
+<h2 id="property-latitude"><a name="latitude"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>latitude</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Latitude of location where organism was collected (decimal degrees).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; -90</td>
+</tr>
+<tr>
+<td><strong>Maximum</strong></td>
+<td>&le; 90</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-longitude"><a name="longitude"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>longitude</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Longitude of location where organism was collected (decimal degrees).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; -180</td>
+</tr>
+<tr>
+<td><strong>Maximum</strong></td>
+<td>&le; 180</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-depth"><a name="depth"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>depth</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Depth below surface of organism collection location (m).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-date_collection"><a name="date_collection"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>date_collection</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td><strong>Format</strong></td>
+<td><code>date</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> The date or date range when the dataset was collected, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</p>
+<h2 id="property-date_image"><a name="date_image"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>date_image</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td><strong>Format</strong></td>
+<td><code>date</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> The date when the dataset was imaged, in <a href="https://datatracker.ietf.org/doc/rfc9557">RFC9557</a> format.</p>
+<h2 id="property-investigators"><a name="investigators"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>investigators</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Names or identifying descriptions of persons or organisations that created this dataset.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#investigators_items">investigators items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="investigators-items"><a name="investigators_items"></a>investigators items</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-data_collection_description"><a name="data_collection_description"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>data_collection_description</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Description of data collection details.</p>
+<h2 id="property-note"><a name="note"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>note</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Explanatory notes about the shape data.</p>
+<h2 id="property-imaging_method"><a name="imaging_method"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>imaging_method</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Method used to obtain the raw image data.</p>
+<p>Must be one of:
+* "radiograph"
+* "CT"
+* "MRI"
+* "photograph"
+* "3D scanner"
+* "unknown"
+* "other"
+* "not applicable"</p>
+<h2 id="property-shape_method"><a name="shape_method"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>shape_method</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Method used to obtain the specimen shape.</p>
+<p>Must be one of:
+* "manual outline of image(s)"
+* "automated outline of images(s)"
+* "3D scan of object"
+* "not applicable"
+* "unknown"
+* "other"</p>
+<h2 id="property-shape_method_processing"><a name="shape_method_processing"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>shape_method_processing</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Description of processing used to convert raw images into shapes, including any manipulation of image data (for example, smoothing, edge enhancement, rotation, etc).</p>
+<h2 id="property-model_type"><a name="model_type"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>model_type</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Original scattering model type.</p>
+<p>Must be one of:
+* "KRM"
+* "KA"
+* "DWBA"
+* "PTDWBA"
+* "FEM"
+* "BEM"
+* "MFS"
+* "unknown"
+* "other"</p>
+<h2 id="property-sound_speed_method"><a name="sound_speed_method"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>sound_speed_method</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Method used to obtain sound speed in the feature.</p>
+<p>Must be one of:
+* "density to sound speed relationship"
+* "time-of-flight"
+* "literature"
+* "unknown"
+* "other"</p>
+<h2 id="property-mass_density_method"><a name="mass_density_method"></a><img alt="Optional" src="https://img.shields.io/badge/Optional-yellow" /> Property <code>mass_density_method</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Method used to obtain density in the feature.</p>
+<p>Must be one of:
+* "CT density"
+* "liquid displacement"
+* "literature"
+* "unknown"
+* "other"</p>
+<h2 id="property-shape_types"><a name="shape_types"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>shape_types</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Shape types in this dataset. Generated by the data store server</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#shape_types_items">shape_types items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="shape_types-items"><a name="shape_types_items"></a>shape_types items</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Must be one of:
+* "surface"
+* "voxels"
+* "categorised voxels"
+* "outline"</p>
+<h2 id="property-dataset_size"><a name="dataset_size"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>dataset_size</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Size of the entire dataset (including raw data) (MiB). Generated by the data store server.</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-specimens"><a name="specimens"></a><img alt="Required" src="https://img.shields.io/badge/Required-blue" /> Property <code>specimens</code></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of object</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Specimen data.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items">specimens items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="specimens-items"><a name="specimens_items"></a>specimens items</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td><strong>Additional properties</strong></td>
+<td><img alt="Not allowed" src="https://img.shields.io/badge/Not%20allowed-red" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Title/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+ <a href="#specimens_items_specimen_id">specimen_id</a></td>
+<td>string</td>
+<td>A name that uniquely identifies each specimen in a dataset.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_specimen_condition">specimen_condition</a></td>
+<td>enum (of string)</td>
+<td>Condition of the specimen when it was imaged.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_length">length</a></td>
+<td>number</td>
+<td>Length of the specimen (m).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_weight">weight</a></td>
+<td>number</td>
+<td>Weight of the specimen (kg).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_sex">sex</a></td>
+<td>enum (of string)</td>
+<td>Sex of specimen</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_length_type">length_type</a></td>
+<td>enum (of string)</td>
+<td>Type of length measurement.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shape_type">shape_type</a></td>
+<td>enum (of string)</td>
+<td>Type of shape data used for this specimen.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes">shapes</a></td>
+<td>array of object</td>
+<td>Shape data.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="property-specimen_id"><a name="specimens_items_specimen_id"></a>Property <code>specimen_id</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> A name that uniquely identifies each specimen in a dataset.</p>
+<h4 id="property-specimen_condition"><a name="specimens_items_specimen_condition"></a>Property <code>specimen_condition</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Condition of the specimen when it was imaged.</p>
+<p>Must be one of:
+* "fresh"
+* "frozen"
+* "thawed"
+* "unknown"
+* "other"</p>
+<h4 id="property-length"><a name="specimens_items_length"></a>Property <code>length</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Length of the specimen (m).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="property-weight"><a name="specimens_items_weight"></a>Property <code>weight</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Weight of the specimen (kg).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="property-sex"><a name="specimens_items_sex"></a>Property <code>sex</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Sex of specimen</p>
+<p>Must be one of:
+* "female"
+* "male"
+* "immature"
+* "unknown"</p>
+<h4 id="property-length_type"><a name="specimens_items_length_type"></a>Property <code>length_type</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Type of length measurement.</p>
+<p>Must be one of:
+* "total length"
+* "fork length"
+* "standard length"
+* "lower jaw fork length"
+* "total width"
+* "carapace length"
+* "curved fork length"
+* "disc width"
+* "stretched total length"
+* "CCAMLR krill - front of eye to tip of telson"
+* "unknown"
+* "other"</p>
+<h4 id="property-shape_type"><a name="specimens_items_shape_type"></a>Property <code>shape_type</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Type of shape data used for this specimen.</p>
+<p>Must be one of:
+* "outline"
+* "surface"
+* "voxels"
+* "categorised voxels"</p>
+<h4 id="property-shapes"><a name="specimens_items_shapes"></a>Property <code>shapes</code></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of object</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Shape data.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items">shapes items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="shapes-items"><a name="specimens_items_shapes_items"></a>shapes items</h5>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>combining</code></td>
+</tr>
+<tr>
+<td><strong>Additional properties</strong></td>
+<td><img alt="Any type: allowed" src="https://img.shields.io/badge/Any%20type-allowed-green" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Title/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_name">name</a></td>
+<td>string</td>
+<td>Name of the shape, e.g., 'body', 'swimbladder', 'bone', 'inclusion', etc.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>One of(Option)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0">item 0</a></td>
+</tr>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1">item 1</a></td>
+</tr>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2">item 2</a></td>
+</tr>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i3">item 3</a></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-item-0"><a name="specimens_items_shapes_items_oneOf_i0"></a>Property <code>item 0</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td><strong>Additional properties</strong></td>
+<td><img alt="Any type: allowed" src="https://img.shields.io/badge/Any%20type-allowed-green" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Title/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i0_shape_type">shape_type</a></td>
+<td>const</td>
+<td>-</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i0_x">x</a></td>
+<td>array of number</td>
+<td>x-coordinate of shape centreline (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i0_y">y</a></td>
+<td>array of number</td>
+<td>y-coordinate of shape centreline (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i0_z">z</a></td>
+<td>array of number</td>
+<td>z-coordinate of shape centreline (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i0_height">height</a></td>
+<td>array of number</td>
+<td>Height of the shape at each centreline point (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i0_width">width</a></td>
+<td>array of number</td>
+<td>Width of the shape at each centreline point (m).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i0_mass_density">mass_density</a></td>
+<td>array of number</td>
+<td>Mass density of shape (kg/m³).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i0_sound_speed_compressional">sound_speed_compressional</a></td>
+<td>array of number</td>
+<td>Compressional sound speed in shape (m/s).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i0_sound_speed_shear">sound_speed_shear</a></td>
+<td>array of number</td>
+<td>Transversal (shear) sound speed in shape (m/s).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i0_mass_density_ratio">mass_density_ratio</a></td>
+<td>array of number</td>
+<td>Ratio of mass densities of the shape and the surrounding material or shape.</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i0_sound_speed_ratio">sound_speed_ratio</a></td>
+<td>array of number</td>
+<td>Ratio of compressional sound speed of the and the surrounding material or shape.</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i0_youngs_modulus">youngs_modulus</a></td>
+<td>array of number</td>
+<td>Young's modulus, E, of the shape (Pa).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i0_boundary">boundary</a></td>
+<td>enum (of string)</td>
+<td>Type of reflecting boundary for this shape.</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-shape_type_1"><a name="specimens_items_shapes_items_oneOf_i0_shape_type"></a>Property <code>shape_type</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>const</code></td>
+</tr>
+</tbody>
+</table>
+<p>Specific value: <code>"outline"</code></p>
+<h6 id="property-x"><a name="specimens_items_shapes_items_oneOf_i0_x"></a>Property <code>x</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> x-coordinate of shape centreline (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_x_items">x items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="x-items"><a name="specimens_items_shapes_items_oneOf_i0_x_items"></a>x items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-y"><a name="specimens_items_shapes_items_oneOf_i0_y"></a>Property <code>y</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> y-coordinate of shape centreline (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_y_items">y items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="y-items"><a name="specimens_items_shapes_items_oneOf_i0_y_items"></a>y items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-z"><a name="specimens_items_shapes_items_oneOf_i0_z"></a>Property <code>z</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> z-coordinate of shape centreline (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_z_items">z items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="z-items"><a name="specimens_items_shapes_items_oneOf_i0_z_items"></a>z items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-height"><a name="specimens_items_shapes_items_oneOf_i0_height"></a>Property <code>height</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Height of the shape at each centreline point (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_height_items">height items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="height-items"><a name="specimens_items_shapes_items_oneOf_i0_height_items"></a>height items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-width"><a name="specimens_items_shapes_items_oneOf_i0_width"></a>Property <code>width</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Width of the shape at each centreline point (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_width_items">width items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="width-items"><a name="specimens_items_shapes_items_oneOf_i0_width_items"></a>width items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-mass_density"><a name="specimens_items_shapes_items_oneOf_i0_mass_density"></a>Property <code>mass_density</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Mass density of shape (kg/m³).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_mass_density_items">mass_density items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="mass_density-items"><a name="specimens_items_shapes_items_oneOf_i0_mass_density_items"></a>mass_density items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_compressional"><a name="specimens_items_shapes_items_oneOf_i0_sound_speed_compressional"></a>Property <code>sound_speed_compressional</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Compressional sound speed in shape (m/s).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_sound_speed_compressional_items">sound_speed_compressional items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="sound_speed_compressional-items"><a name="specimens_items_shapes_items_oneOf_i0_sound_speed_compressional_items"></a>sound_speed_compressional items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_shear"><a name="specimens_items_shapes_items_oneOf_i0_sound_speed_shear"></a>Property <code>sound_speed_shear</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Transversal (shear) sound speed in shape (m/s).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_sound_speed_shear_items">sound_speed_shear items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="sound_speed_shear-items"><a name="specimens_items_shapes_items_oneOf_i0_sound_speed_shear_items"></a>sound_speed_shear items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-mass_density_ratio"><a name="specimens_items_shapes_items_oneOf_i0_mass_density_ratio"></a>Property <code>mass_density_ratio</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Ratio of mass densities of the shape and the surrounding material or shape.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_mass_density_ratio_items">mass_density_ratio items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="mass_density_ratio-items"><a name="specimens_items_shapes_items_oneOf_i0_mass_density_ratio_items"></a>mass_density_ratio items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_ratio"><a name="specimens_items_shapes_items_oneOf_i0_sound_speed_ratio"></a>Property <code>sound_speed_ratio</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Ratio of compressional sound speed of the and the surrounding material or shape.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_sound_speed_ratio_items">sound_speed_ratio items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="sound_speed_ratio-items"><a name="specimens_items_shapes_items_oneOf_i0_sound_speed_ratio_items"></a>sound_speed_ratio items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-youngs_modulus"><a name="specimens_items_shapes_items_oneOf_i0_youngs_modulus"></a>Property <code>youngs_modulus</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Young's modulus, E, of the shape (Pa).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i0_youngs_modulus_items">youngs_modulus items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="youngs_modulus-items"><a name="specimens_items_shapes_items_oneOf_i0_youngs_modulus_items"></a>youngs_modulus items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-boundary"><a name="specimens_items_shapes_items_oneOf_i0_boundary"></a>Property <code>boundary</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+<tr>
+<td><strong>Defined in</strong></td>
+<td>#/$defs/boundary</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Type of reflecting boundary for this shape.</p>
+<p>Must be one of:
+* "hard"
+* "soft"
+* "fluid"</p>
+<h6 id="property-item-1"><a name="specimens_items_shapes_items_oneOf_i1"></a>Property <code>item 1</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td><strong>Additional properties</strong></td>
+<td><img alt="Any type: allowed" src="https://img.shields.io/badge/Any%20type-allowed-green" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Title/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i1_shape_type">shape_type</a></td>
+<td>const</td>
+<td>-</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_x">x</a></td>
+<td>array of number</td>
+<td>x-coordinates of surface nodes (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_y">y</a></td>
+<td>array of number</td>
+<td>y-coordinates of surface nodes (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_z">z</a></td>
+<td>array of number</td>
+<td>z-coordinates of surface nodes (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_facets_0">facets_0</a></td>
+<td>array of integer</td>
+<td>Zero-based indices into x, y, and z that define node 0 of a surface triangle.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_facets_1">facets_1</a></td>
+<td>array of integer</td>
+<td>Zero-based indices into x, y, and z that define node 1 of a surface triangle.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_facets_2">facets_2</a></td>
+<td>array of integer</td>
+<td>Zero-based indices into x, y, and z that define node 2 of a surface triangle.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_normals_x">normals_x</a></td>
+<td>array of number</td>
+<td>x-component of outward-pointing normal vector for each facet.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_normals_y">normals_y</a></td>
+<td>array of number</td>
+<td>y-component of outward-pointing normal vector for each facet.</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_normals_z">normals_z</a></td>
+<td>array of number</td>
+<td>z-component of outward-pointing normal vector for each facet.</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i1_mass_density">mass_density</a></td>
+<td>number</td>
+<td>Mass density of shape (kg/m³).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i1_sound_speed_compressional">sound_speed_compressional</a></td>
+<td>number</td>
+<td>Compressional sound speed in shape (m/s).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i1_sound_speed_shear">sound_speed_shear</a></td>
+<td>number</td>
+<td>Transversal (shear) sound speed in shape (m/s).</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i1_mass_density_ratio">mass_density_ratio</a></td>
+<td>number</td>
+<td>Ratio of mass densities of the shape and the surrounding material or shape.</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i1_sound_speed_ratio">sound_speed_ratio</a></td>
+<td>number</td>
+<td>Ratio of compressional sound speed of the and the surrounding material or shape.</td>
+</tr>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i1_youngs_modulus">youngs_modulus</a></td>
+<td>number</td>
+<td>Young's modulus, E, of the shape (Pa).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i1_boundary">boundary</a></td>
+<td>enum (of string)</td>
+<td>Type of reflecting boundary for this shape.</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-shape_type_2"><a name="specimens_items_shapes_items_oneOf_i1_shape_type"></a>Property <code>shape_type</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>const</code></td>
+</tr>
+</tbody>
+</table>
+<p>Specific value: <code>"surface"</code></p>
+<h6 id="property-x_1"><a name="specimens_items_shapes_items_oneOf_i1_x"></a>Property <code>x</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> x-coordinates of surface nodes (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_x_items">x items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="x-items_1"><a name="specimens_items_shapes_items_oneOf_i1_x_items"></a>x items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-y_1"><a name="specimens_items_shapes_items_oneOf_i1_y"></a>Property <code>y</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> y-coordinates of surface nodes (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_y_items">y items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="y-items_1"><a name="specimens_items_shapes_items_oneOf_i1_y_items"></a>y items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-z_1"><a name="specimens_items_shapes_items_oneOf_i1_z"></a>Property <code>z</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> z-coordinates of surface nodes (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_z_items">z items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="z-items_1"><a name="specimens_items_shapes_items_oneOf_i1_z_items"></a>z items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-facets_0"><a name="specimens_items_shapes_items_oneOf_i1_facets_0"></a>Property <code>facets_0</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of integer</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Zero-based indices into x, y, and z that define node 0 of a surface triangle.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_facets_0_items">facets_0 items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="facets_0-items"><a name="specimens_items_shapes_items_oneOf_i1_facets_0_items"></a>facets_0 items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>integer</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-facets_1"><a name="specimens_items_shapes_items_oneOf_i1_facets_1"></a>Property <code>facets_1</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of integer</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Zero-based indices into x, y, and z that define node 1 of a surface triangle.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_facets_1_items">facets_1 items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="facets_1-items"><a name="specimens_items_shapes_items_oneOf_i1_facets_1_items"></a>facets_1 items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>integer</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-facets_2"><a name="specimens_items_shapes_items_oneOf_i1_facets_2"></a>Property <code>facets_2</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of integer</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Zero-based indices into x, y, and z that define node 2 of a surface triangle.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_facets_2_items">facets_2 items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="facets_2-items"><a name="specimens_items_shapes_items_oneOf_i1_facets_2_items"></a>facets_2 items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>integer</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-normals_x"><a name="specimens_items_shapes_items_oneOf_i1_normals_x"></a>Property <code>normals_x</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> x-component of outward-pointing normal vector for each facet.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_normals_x_items">normals_x items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="normals_x-items"><a name="specimens_items_shapes_items_oneOf_i1_normals_x_items"></a>normals_x items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-normals_y"><a name="specimens_items_shapes_items_oneOf_i1_normals_y"></a>Property <code>normals_y</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> y-component of outward-pointing normal vector for each facet.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_normals_y_items">normals_y items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="normals_y-items"><a name="specimens_items_shapes_items_oneOf_i1_normals_y_items"></a>normals_y items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-normals_z"><a name="specimens_items_shapes_items_oneOf_i1_normals_z"></a>Property <code>normals_z</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> z-component of outward-pointing normal vector for each facet.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i1_normals_z_items">normals_z items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="normals_z-items"><a name="specimens_items_shapes_items_oneOf_i1_normals_z_items"></a>normals_z items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-mass_density_1"><a name="specimens_items_shapes_items_oneOf_i1_mass_density"></a>Property <code>mass_density</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Mass density of shape (kg/m³).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_compressional_1"><a name="specimens_items_shapes_items_oneOf_i1_sound_speed_compressional"></a>Property <code>sound_speed_compressional</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Compressional sound speed in shape (m/s).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_shear_1"><a name="specimens_items_shapes_items_oneOf_i1_sound_speed_shear"></a>Property <code>sound_speed_shear</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Transversal (shear) sound speed in shape (m/s).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-mass_density_ratio_1"><a name="specimens_items_shapes_items_oneOf_i1_mass_density_ratio"></a>Property <code>mass_density_ratio</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Ratio of mass densities of the shape and the surrounding material or shape.</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_ratio_1"><a name="specimens_items_shapes_items_oneOf_i1_sound_speed_ratio"></a>Property <code>sound_speed_ratio</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Ratio of compressional sound speed of the and the surrounding material or shape.</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-youngs_modulus_1"><a name="specimens_items_shapes_items_oneOf_i1_youngs_modulus"></a>Property <code>youngs_modulus</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Young's modulus, E, of the shape (Pa).</p>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-boundary_1"><a name="specimens_items_shapes_items_oneOf_i1_boundary"></a>Property <code>boundary</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>enum (of string)</code></td>
+</tr>
+<tr>
+<td><strong>Defined in</strong></td>
+<td>#/$defs/boundary</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Type of reflecting boundary for this shape.</p>
+<p>Must be one of:
+* "hard"
+* "soft"
+* "fluid"</p>
+<h6 id="property-item-2"><a name="specimens_items_shapes_items_oneOf_i2"></a>Property <code>item 2</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td><strong>Additional properties</strong></td>
+<td><img alt="Any type: allowed" src="https://img.shields.io/badge/Any%20type-allowed-green" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Title/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i2_shape_type">shape_type</a></td>
+<td>const</td>
+<td>-</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i2_voxel_size">voxel_size</a></td>
+<td>array of number</td>
+<td>Voxel size, ordered x, y, z (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i2_mass_density">mass_density</a></td>
+<td>array of array</td>
+<td>Mass density of voxels (kg/m³).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i2_sound_speed_compressional">sound_speed_compressional</a></td>
+<td>array of array</td>
+<td>Compressional sound speed of voxels (m/s).</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-shape_type_3"><a name="specimens_items_shapes_items_oneOf_i2_shape_type"></a>Property <code>shape_type</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>const</code></td>
+</tr>
+</tbody>
+</table>
+<p>Specific value: <code>"voxels"</code></p>
+<h6 id="property-voxel_size"><a name="specimens_items_shapes_items_oneOf_i2_voxel_size"></a>Property <code>voxel_size</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Voxel size, ordered x, y, z (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2_voxel_size_items">voxel_size items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="voxel_size-items"><a name="specimens_items_shapes_items_oneOf_i2_voxel_size_items"></a>voxel_size items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-mass_density_2"><a name="specimens_items_shapes_items_oneOf_i2_mass_density"></a>Property <code>mass_density</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of array</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Mass density of voxels (kg/m³).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2_mass_density_items">mass_density items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="mass_density-items_1"><a name="specimens_items_shapes_items_oneOf_i2_mass_density_items"></a>mass_density items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of array</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2_mass_density_items_items">mass_density items items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="mass_density-items-items"><a name="specimens_items_shapes_items_oneOf_i2_mass_density_items_items"></a>mass_density items items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2_mass_density_items_items_items">mass_density items items items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="mass_density-items-items-items"><a name="specimens_items_shapes_items_oneOf_i2_mass_density_items_items_items"></a>mass_density items items items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_compressional_2"><a name="specimens_items_shapes_items_oneOf_i2_sound_speed_compressional"></a>Property <code>sound_speed_compressional</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of array</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Compressional sound speed of voxels (m/s).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2_sound_speed_compressional_items">sound_speed_compressional items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="sound_speed_compressional-items_1"><a name="specimens_items_shapes_items_oneOf_i2_sound_speed_compressional_items"></a>sound_speed_compressional items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of array</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2_sound_speed_compressional_items_items">sound_speed_compressional items items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="sound_speed_compressional-items-items"><a name="specimens_items_shapes_items_oneOf_i2_sound_speed_compressional_items_items"></a>sound_speed_compressional items items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i2_sound_speed_compressional_items_items_items">sound_speed_compressional items items items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="sound_speed_compressional-items-items-items"><a name="specimens_items_shapes_items_oneOf_i2_sound_speed_compressional_items_items_items"></a>sound_speed_compressional items items items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-item-3"><a name="specimens_items_shapes_items_oneOf_i3"></a>Property <code>item 3</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>object</code></td>
+</tr>
+<tr>
+<td><strong>Additional properties</strong></td>
+<td><img alt="Any type: allowed" src="https://img.shields.io/badge/Any%20type-allowed-green" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Title/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>- <a href="#specimens_items_shapes_items_oneOf_i3_shape_type">shape_type</a></td>
+<td>const</td>
+<td>-</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i3_voxel_size">voxel_size</a></td>
+<td>array of number</td>
+<td>Voxel size, ordered x, y, z (m).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i3_categories">categories</a></td>
+<td>array of array</td>
+<td>Voxel categories</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i3_mass_density">mass_density</a></td>
+<td>array of number</td>
+<td>Mass density of voxels categories (kg/m³).</td>
+</tr>
+<tr>
+<td>+ <a href="#specimens_items_shapes_items_oneOf_i3_sound_speed_compressional">sound_speed_compressional</a></td>
+<td>array of number</td>
+<td>Compressional sound speed of voxel categories (m/s).</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-shape_type_4"><a name="specimens_items_shapes_items_oneOf_i3_shape_type"></a>Property <code>shape_type</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>const</code></td>
+</tr>
+</tbody>
+</table>
+<p>Specific value: <code>"categorised voxels"</code></p>
+<h6 id="property-voxel_size_1"><a name="specimens_items_shapes_items_oneOf_i3_voxel_size"></a>Property <code>voxel_size</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Voxel size, ordered x, y, z (m).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i3_voxel_size_items">voxel_size items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="voxel_size-items_1"><a name="specimens_items_shapes_items_oneOf_i3_voxel_size_items"></a>voxel_size items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-categories"><a name="specimens_items_shapes_items_oneOf_i3_categories"></a>Property <code>categories</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of array</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Voxel categories</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i3_categories_items">categories items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="categories-items"><a name="specimens_items_shapes_items_oneOf_i3_categories_items"></a>categories items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of array</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i3_categories_items_items">categories items items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="categories-items-items"><a name="specimens_items_shapes_items_oneOf_i3_categories_items_items"></a>categories items items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of integer</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i3_categories_items_items_items">categories items items items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="categories-items-items-items"><a name="specimens_items_shapes_items_oneOf_i3_categories_items_items_items"></a>categories items items items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>integer</code></td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-mass_density_3"><a name="specimens_items_shapes_items_oneOf_i3_mass_density"></a>Property <code>mass_density</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Mass density of voxels categories (kg/m³).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i3_mass_density_items">mass_density items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="mass_density-items_2"><a name="specimens_items_shapes_items_oneOf_i3_mass_density_items"></a>mass_density items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-sound_speed_compressional_3"><a name="specimens_items_shapes_items_oneOf_i3_sound_speed_compressional"></a>Property <code>sound_speed_compressional</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>array of number</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Compressional sound speed of voxel categories (m/s).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Min items</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Max items</strong></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Items unicity</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Additional items</strong></td>
+<td>False</td>
+</tr>
+<tr>
+<td><strong>Tuple validation</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Each item of this array must be</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#specimens_items_shapes_items_oneOf_i3_sound_speed_compressional_items">sound_speed_compressional items</a></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="sound_speed_compressional-items_2"><a name="specimens_items_shapes_items_oneOf_i3_sound_speed_compressional_items"></a>sound_speed_compressional items</h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>number</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Restrictions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum</strong></td>
+<td>&ge; 0</td>
+</tr>
+</tbody>
+</table>
+<h6 id="property-name"><a name="specimens_items_shapes_items_name"></a>Property <code>name</code></h6>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td><code>string</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description:</strong> Name of the shape, e.g., 'body', 'swimbladder', 'bone', 'inclusion', etc.</p>
+<hr />
+<p>Generated using <a href="https://github.com/coveooss/json-schema-for-humans">json-schema-for-humans</a> on 2025-10-09 at 22:13:09 +0000</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "content.action.view", "content.code.copy", "search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
