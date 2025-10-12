@@ -6,7 +6,6 @@
 
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ices-tools-dev/echoSMs/publish-to-pypi.yml)](https://github.com/ices-tools-dev/echoSMs/actions/workflows/publish-to-pypi.yml)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ices-tools-dev/echoSMs/build-docs.yml?label=docs)](https://github.com/ices-tools-dev/echoSMs/actions/workflows/build-docs.yml)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ices-tools-dev/echoSMs/run-tests.yml?label=tests)](https://github.com/ices-tools-dev/echoSMs/actions/workflows/run-tests.yml)
 
 > Making acoustic scattering models available to fisheries and plankton scientists via the world wide web
 
