@@ -7,7 +7,7 @@ import collections
 import copy
 import numpy as np
 from datetime import date
-from echosms import KRMdata, DWBAdata
+from echosms import KRMdata, DWBAdata, outline_from_krm
 import tomli_w
 import requests
 from pathlib import Path
@@ -103,27 +103,18 @@ for aphiaid in dd.keys():
                     'length_type': 'unknown', 'shape_type': 'outline',
                     'shapes': []}
 
-        shape = {'name': 'body',
-                 'boundary': m.body.boundary,
-                 'x': m.body.x,
-                 'y': np.full(m.body.x.shape, 0.0),
-                 'height': m.body.z_U - m.body.z_L,
-                 'width': m.body.w,
-                 'mass_density': [m.body.rho],
-                 'sound_speed_compressional': [m.body.c]}
-        shape['z'] = shape['height']/2 + m.body.z_L
+        shape = outline_from_krm(m.body.x, m.body.z_U, m.body.z_L,
+                                 m.body.w, boundary=m.body.boundary)
+        shape['mass_density'] = len(m.body.x) * [m.body.rho]
+        shape['sound_speed_compressional'] = len(m.body.x) * [m.body.c]
         specimen['shapes'].append(shape)
 
         for inc in m.inclusions:
-            shape = {'name': 'inclusion',
-                     'boundary': inc.boundary,
-                     'x': inc.x,
-                     'y': inc.x * 0.0,
-                     'height': inc.z_U - inc.z_L,
-                     'width': inc.w,
-                     'mass_density': [inc.rho],
-                     'sound_speed_compressional': [inc.c]}
-            shape['z'] = shape['height']/2 + inc.z_L
+            shape = outline_from_krm(inc.x, inc.z_U, inc.z_L,
+                                     inc.w, boundary=inc.boundary,
+                                     name='inclusion')
+            shape['mass_density'] = len(inc.x) * [inc.rho]
+            shape['sound_speed_compressional'] = len(inc.x) * [inc.c]
             specimen['shapes'].append(shape)
 
         dataset['specimens'].append(specimen)
