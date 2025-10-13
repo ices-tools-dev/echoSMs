@@ -12,10 +12,10 @@ import json
 import jsonschema
 from rich import print as rprint
 
-datastore_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd\Projects'
-                     r'\2024-05 NOAA modelling\working\anatomical data store')
-echosms_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd\Projects'
-                   r'\2024-05 NOAA modelling\working\echoSMs')
+datastore_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited'
+                     r'\Documents\Aqualyd\Projects\2024-05 NOAA modelling'
+                     r'\working\anatomical data store')
+echosms_dir = Path(r'E:\repositories\echoSMs')
 
 datasets_dir = datastore_dir/'datasets'
 schema_file = echosms_dir/'data_store'/'schema'/'v1'/'anatomical_data_store.json'
@@ -64,8 +64,9 @@ for path in datasets_dir.iterdir():
         rprint(f'Validating dataset in [cyan]{path.name}')
         errored = False
         for error in sorted(v.iter_errors(data), key=str):
-            # print(path.name)
-            rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
+            print(f'Error in dataset {path.name} at {error.json_path}')
+            # rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
+
             errored = True
 
         # write out a modified (and combined if there were specimen*.toml files)
