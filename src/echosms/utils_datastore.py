@@ -255,7 +255,7 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
 
 
 def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
-                  stream: bool=False) -> None:
+                  stream: bool=False, dpi: float=150) -> None:
     """Plot the specimen shape.
 
     Produces a relevant plot for all echoSMs anatomical datastore shape types.
@@ -271,21 +271,29 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
     stream :
         If True, return an in-memory binary stream containing
         the plot in PNG format. If False, generate a matplotlib plot.
+    dpi :
+        The resolution of the figure in dots per inch.
 
     """
     labels = ['Dorsal', 'Lateral']
+    t = title if title else dataset_id + ' ' + specimen['specimen_id']
 
     match specimen['shape_type']:
         case 'outline':
-            fig, axs = plt.subplots(2, 1, sharex=True, layout='compressed')
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='tight', dpi=dpi)
+            fig.set_tight_layout({'h_pad': 1, 'w_pad': 1})
             plot_shape_outline(specimen['shapes'], axs)
             for label, a in zip(labels, axs):
                 a.set_title(label, loc='left', fontsize=8)
                 a.axis('scaled')
+            axs[0].set_title(t)
+            fit_to_axes(fig)
+
         case 'surface':
             fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
             plot_shape_surface(specimen['shapes'], ax)
             plt.tight_layout()
+            ax.set_title(t)
         case 'voxels':
             fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
             axs[0].text(0.5, 0.5, 'Voxel plots are not yet implemented',
@@ -296,6 +304,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
             axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
             fig.supxlabel('[mm]')
             fig.supylabel('[mm]')
+            fig.suptitle(t)
         case 'categorised_voxels':
             fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
             # plot_shape_categorised_voxels(specimen['shapes'], axs)
@@ -306,11 +315,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
             axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
             fig.supxlabel('[mm]')
             fig.supylabel('[mm]')
-
-
-    t = title if title else dataset_id + ' ' + specimen['specimen_id']
-    fig.suptitle(t)
-
+            fig.suptitle(t)
     if stream:
         with io.BytesIO() as buffer:
             plt.savefig(buffer, format='png')
@@ -319,8 +324,18 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
     else:
         plt.show()
 
+def fit_to_axes(fig):
+    """Change figure size to fit the axes."""
 
-def plot_shape_outline(shapes: list[dict], axs) -> None:
+    w = h = 0.0
+    for a in fig.axes:
+        bbox = a.get_window_extent()
+        w = max(w, bbox.width)
+        h += bbox.height
+    fig.set_size_inches(w/fig.dpi, h/fig.dpi)
+
+
+def plot_shape_outline(shapes: list[dict], axs: list) -> None:
     """Plot an echoSMs anatomical outline shape.
 
     Parameters
@@ -341,12 +356,12 @@ def plot_shape_outline(shapes: list[dict], axs) -> None:
         zL = (z - np.array(s['height'])/2*1e3)
 
         # Dorsal view
-        axs[0].plot(x, y, c='grey', linestyle='--', linewidth=1, marker='.')  # centreline
+        axs[0].plot(x, y, c='grey', linestyle='--', linewidth=1)  # centreline
         axs[0].plot(x, y+width_2, c=c)
         axs[0].plot(x, y-width_2, c=c)
 
         # Lateral view
-        axs[1].plot(x, z, c='grey', linestyle='--', linewidth=1, marker='.')  # centreline
+        axs[1].plot(x, z, c='grey', linestyle='--', linewidth=1)  # centreline
         axs[1].plot(x, zU, c=c)
         axs[1].plot(x, zL, c=c)
 
