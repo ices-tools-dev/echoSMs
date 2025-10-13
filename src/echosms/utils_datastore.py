@@ -399,3 +399,34 @@ def plot_shape_surface(shapes, ax):
         ax.set_aspect('equal')
         ax.xaxis.set_inverted(True)
         ax.yaxis.set_inverted(True)
+
+
+def plot_shape_voxels(s, axs):
+    """Plot the specimen's voxels."""
+    voxel_size = np.array(s['voxel_size'])
+
+    # Work with an impedance proxy for plotting
+    z = np.array(s['sound_speed_compressional']) * np.array(s['mass_density'])
+
+    # Could alternatively plot the sum of the matrix values along one axis instead
+    # of choosing a cutting plane, so would sum along an axis for each view
+
+    # The cutting plane indices
+    x_i = int(np.round(z.shape[0]/2))
+    y_i = int(np.round(z.shape[0]/2))
+
+    # Dorsal view
+    axs[0].imshow(z[:, y_i, :], extent=[0, z.shape[2]*voxel_size[2]*1e3,
+                                        0, z.shape[0]*voxel_size[0]*1e3])
+
+    # Ventral view
+    axs[1].imshow(z[x_i, :, :], extent=[0, z.shape[1]*voxel_size[1]*1e3,
+                                        0, z.shape[2]*voxel_size[2]*1e3])
+
+
+
+def plot_shape_categorised_voxels(s, axs):
+    """Plot the specimen's voxels."""
+
+    # could do the same as for plot_shape_voxels or something more fancy.
+    pass
