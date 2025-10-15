@@ -44,7 +44,7 @@ for path in datasets_dir.iterdir():
         # Add any specimen*.toml files to the list
         meta_files.extend(list(path.glob('specimen*.toml')))
 
-        # load each .toml file and cmombine into one echoSMs datastore structure
+        # load each .toml file and combine into one echoSMs datastore structure
         for ff in meta_files:
             with open(ff, mode='rb') as f:
                 if ff.name == metadata_file:
