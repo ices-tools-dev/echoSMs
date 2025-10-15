@@ -212,21 +212,25 @@ plot_specimen(specimens['specimens'][0], dataset_id='Krill')
 
 _This section is not complete._
  
-The `voxels` format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list. Conversion between a Python numpy (or xarray) 3D matrix and the echoSMs structure is done as follows:
+The `voxels` format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list as used by the numpy package. Rows (numpy axis 0) correspond to the echoSMs _z_-axis, columns (numpy axis 1) to the echoSMs _x_-axis, and slices (numpy axis 2) to the echoSMs _y_-axis.
+
+Conversion between a Python numpy 3D matrix and the echoSMs structure can simply use the numpy `tolist()` method:
 
 ```py
 import numpy as np
 
 # Get 3D matrices of sound speed and density
-rho = np.array()
-c = np.array()
+rho = np.array([...])
+c = np.array([...])
 
 # Put into a dict as per the echoSMs datastore schema
 shape = {'voxel_size': [0.005, 0.005, 0.005],  # echoSMs expects units of metres
          'mass_density': rho.tolist(),
          'sound_speed_compressional': c.tolist()}
+```
+If using xarrays rather than numpy, you'll need to use the xarray `.values` attribute to get a numpy matrix and then call `tolist()`:
 
-# If using xarrays, use xarray's .values attribute first:
+```py
 shape = {'voxel_size': [0.005, 0.005, 0.005],
          'mass_density': rho.values.tolist(),
          'sound_speed_compressional': c.values.tolist()}
@@ -234,26 +238,7 @@ shape = {'voxel_size': [0.005, 0.005, 0.005],
 
 #### Categorised voxels
 
-_This section is not complete._
-
-The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of differing material properties in the specimen. The category value is used as a zero-based index into the associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`.
-
-Example code that converts from a Python numpy (or xarray) 3D matrix of categories into the echoSMs format is a follows:
-
-
-```py
-import numpy as np
-
-# Get a 3D matrix material categories
-rho = np.array()
-c = np.array()
-
-# Put into a dict as per the echoSMs datastore schema
-shape = {'voxel_size': [0.005, 0.005, 0.005],
-         'categories': [],
-         'mass_density': [rho1, rho2, rho2]
-         'sound_speed_compressional': [c1, c2, c3]}
-```
+The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of homogenous material properties in the specimen. The category value is used as a zero-based index into associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`. The 3D category matrix is structured the same way as for the voxels format (see above).
 
 ### Raw files
 

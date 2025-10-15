@@ -211,7 +211,6 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
     -------
      An echoSMs outline shape representation.
     """
-
     y = np.zeros(len(x))
     height = np.array(height_u) - np.array(height_l)
     z = -(np.array(height_l) + height / 2.0)
@@ -247,7 +246,6 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
      An echoSMs outline shape representation.
 
     """
-
     return {'name': name, 'boundary': boundary,
             'x': np.array(x).tolist(),
             'y': np.zeros(len(x)).tolist(),
@@ -298,17 +296,8 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
             ax.set_title(t)
         case 'voxels':
             plot_shape_voxels(specimen['shapes'][0], t)
-        case 'categorised_voxels':
-            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
-            # plot_shape_categorised_voxels(specimen['shapes'], axs)
-            axs[0].text(0.5, 0.5, 'Categorised voxel plots are not yet implemented',
-                        horizontalalignment='center',
-                        transform=axs[0].transAxes)
-            axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
-            axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
-            fig.supxlabel('[mm]')
-            fig.supylabel('[mm]')
-            fig.suptitle(t)
+        case 'categorised voxels':
+            plot_shape_categorised_voxels(specimen['shapes'][0], t)
     if stream:
         with io.BytesIO() as buffer:
             plt.savefig(buffer, format='png')
@@ -319,7 +308,6 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
 
 def fit_to_axes(fig):
     """Change figure size to fit the axes."""
-
     w = h = 0.0
     for a in fig.axes:
         bbox = a.get_window_extent()
@@ -396,29 +384,28 @@ def plot_shape_surface(shapes, ax):
 
 def plot_shape_voxels(s, title):
     """Plot the specimen's voxels."""
-
-    # Work with an impedance proxy for plotting
-    # d = np.array(s['sound_speed_compressional']) * np.array(s['mass_density'])
+    # Show density. Could do sound speed or some impedance proxy.
     d = np.array(s['sound_speed_compressional'])
-    # d = np.array(s['mass_density'])
-    shape = d.shape
     voxel_size = np.array(s['voxel_size'])
+    shape = d.shape
 
+    # Make the colours ignore extreme high value and the lowest low values
     norm = colors.Normalize(vmin=np.percentile(d.flat, 1),
                             vmax=np.percentile(d.flat, 99))
 
     row_dim = np.linspace(0, voxel_size[0]*1e3*shape[0], shape[0]+1)
-    # col_dim = np.linspace(0, voxel_size[1]*1e3*shape[1], shape[1]+1)
     slice_dim = np.linspace(0, voxel_size[2]*1e3*shape[2], shape[2]+1)
 
     cmap = colormaps['viridis']
 
+    # Create 25 plots along the organism's echoSMs x-axis
     fig, axs = plt.subplots(5, 5, sharex=True, sharey=True)
     cols = np.linspace(0, shape[1]-1, num=25)
+
     for col, ax in zip(cols, axs.flat):
         c = int(floor(col))
         # The [::-1] and .invert_ axis calls give the appropriate
-        # x and y axes directions.
+        # x and y axes directions in the plots.
         im = ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:,c,:],
                            norm=norm, cmap=cmap)
 
@@ -429,16 +416,47 @@ def plot_shape_voxels(s, title):
         ax.text(0.05, .86, f'{col*1e3*voxel_size[1]:.0f} mm',
                 transform=ax.transAxes, fontsize=6, color='white')
 
+    # A single colorbar in the plot
     cbar = fig.colorbar(im, ax=axs, orientation='vertical',
                         fraction=0.1, extend='both', cmap=cmap)
     cbar.ax.set_ylabel('[kg m$^{-3}$]')
-    fig.supxlabel('[mm]')
-    fig.supylabel('[mm]')
+    fig.supxlabel('y [mm]')
+    fig.supylabel('z [mm]')
     fig.suptitle(title)
 
 
-def plot_shape_categorised_voxels(s, axs):
+def plot_shape_categorised_voxels(s, title):
     """Plot the specimen's voxels."""
+    d = np.array(s['categories'])
+    voxel_size = np.array(s['voxel_size'])
+    shape = d.shape
 
-    # could do the same as for plot_shape_voxels or something more fancy.
-    pass
+    cats = np.unique(d)
+    norm = colors.Normalize(vmin=min(cats), vmax=max(cats))
+
+    row_dim = np.linspace(0, voxel_size[0]*1e3*shape[0], shape[0]+1)
+    slice_dim = np.linspace(0, voxel_size[2]*1e3*shape[2], shape[2]+1)
+
+    cmap = colormaps['Dark2']
+
+    # Create 25 plots along the organism's echoSMs x-axis
+    fig, axs = plt.subplots(5, 5, sharex=True, sharey=True)
+    cols = np.linspace(0, shape[1]-1, num=25)
+
+    for col, ax in zip(cols, axs.flat):
+        c = int(floor(col))
+        # The [::-1] and .invert_ axis calls give the appropriate
+        # x and y axes directions in the plots.
+        ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:,c,:],
+                      norm=norm, cmap=cmap)
+
+        ax.set_aspect('equal')
+        ax.invert_xaxis()
+        ax.invert_yaxis()
+
+        ax.text(0.05, .86, f'{col*1e3*voxel_size[1]:.0f} mm',
+                transform=ax.transAxes, fontsize=6, color='white')
+
+    fig.supxlabel('y [mm]')
+    fig.supylabel('z [mm]')
+    fig.suptitle(title)
