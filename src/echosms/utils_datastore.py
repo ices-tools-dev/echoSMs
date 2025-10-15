@@ -5,6 +5,8 @@ import numpy as np
 from pathlib import Path
 import numpy.typing as npt
 import matplotlib.pyplot as plt
+from matplotlib import colors, colormaps
+from math import floor
 
 def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
     """Create trimesh instances from an echoSMs datastore surface shape.
@@ -295,16 +297,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
             plt.tight_layout()
             ax.set_title(t)
         case 'voxels':
-            fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
-            axs[0].text(0.5, 0.5, 'Voxel plots are not yet implemented',
-                        horizontalalignment='center',
-                        transform=axs[0].transAxes)
-            # plot_shape_voxels(specimen['shapes'], axs)
-            axs[0].text(0, 1.05, 'Dorsal', transform=axs[0].transAxes)
-            axs[1].text(0, 1.05, 'Lateral', transform=axs[1].transAxes)
-            fig.supxlabel('[mm]')
-            fig.supylabel('[mm]')
-            fig.suptitle(t)
+            plot_shape_voxels(specimen['shapes'][0], t)
         case 'categorised_voxels':
             fig, axs = plt.subplots(2, 1, sharex=True, layout='constrained')
             # plot_shape_categorised_voxels(specimen['shapes'], axs)
@@ -401,28 +394,47 @@ def plot_shape_surface(shapes, ax):
         ax.yaxis.set_inverted(True)
 
 
-def plot_shape_voxels(s, axs):
+def plot_shape_voxels(s, title):
     """Plot the specimen's voxels."""
-    voxel_size = np.array(s['voxel_size'])
 
     # Work with an impedance proxy for plotting
-    z = np.array(s['sound_speed_compressional']) * np.array(s['mass_density'])
+    # d = np.array(s['sound_speed_compressional']) * np.array(s['mass_density'])
+    d = np.array(s['sound_speed_compressional'])
+    # d = np.array(s['mass_density'])
+    shape = d.shape
+    voxel_size = np.array(s['voxel_size'])
 
-    # Could alternatively plot the sum of the matrix values along one axis instead
-    # of choosing a cutting plane, so would sum along an axis for each view
+    norm = colors.Normalize(vmin=np.percentile(d.flat, 1),
+                            vmax=np.percentile(d.flat, 99))
 
-    # The cutting plane indices
-    x_i = int(np.round(z.shape[0]/2))
-    y_i = int(np.round(z.shape[0]/2))
+    row_dim = np.linspace(0, voxel_size[0]*1e3*shape[0], shape[0]+1)
+    # col_dim = np.linspace(0, voxel_size[1]*1e3*shape[1], shape[1]+1)
+    slice_dim = np.linspace(0, voxel_size[2]*1e3*shape[2], shape[2]+1)
 
-    # Dorsal view
-    axs[0].imshow(z[:, y_i, :], extent=[0, z.shape[2]*voxel_size[2]*1e3,
-                                        0, z.shape[0]*voxel_size[0]*1e3])
+    cmap = colormaps['viridis']
 
-    # Ventral view
-    axs[1].imshow(z[x_i, :, :], extent=[0, z.shape[1]*voxel_size[1]*1e3,
-                                        0, z.shape[2]*voxel_size[2]*1e3])
+    fig, axs = plt.subplots(5, 5, sharex=True, sharey=True)
+    cols = np.linspace(0, shape[1]-1, num=25)
+    for col, ax in zip(cols, axs.flat):
+        c = int(floor(col))
+        # The [::-1] and .invert_ axis calls give the appropriate
+        # x and y axes directions.
+        im = ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:,c,:],
+                           norm=norm, cmap=cmap)
 
+        ax.set_aspect('equal')
+        ax.invert_xaxis()
+        ax.invert_yaxis()
+
+        ax.text(0.05, .86, f'{col*1e3*voxel_size[1]:.0f} mm',
+                transform=ax.transAxes, fontsize=6, color='white')
+
+    cbar = fig.colorbar(im, ax=axs, orientation='vertical',
+                        fraction=0.1, extend='both', cmap=cmap)
+    cbar.ax.set_ylabel('[kg m$^{-3}$]')
+    fig.supxlabel('[mm]')
+    fig.supylabel('[mm]')
+    fig.suptitle(title)
 
 
 def plot_shape_categorised_voxels(s, axs):
