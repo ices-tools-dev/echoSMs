@@ -22,9 +22,11 @@ The data store will contain many datasets, where each dataset comprises the foll
 1. Optionally, raw data files that were used to produce the scattering model input data (mostly binary files, such as x-ray and photographic images, MRI & CT scan files, etc)
 1. Optionally, processing files (programs, notes, intermediate data files, etc)
 
-Each dataset may contain information about more than one organism (e.g., multiple fish shapes were used in an analysis) but is restricted to a single species per dataset.
+Each dataset may contain information about more than one organism (e.g., multiple fish shapes were used in an analysis) but is restricted to a single species per dataset. For ease of use, output from the datastore is a flattened version of the input - the grouping of organisms into datasets is removed (although this can be easily reconstructed if needed).
 
-The dataset metadata and model data have prescribed formats and are structured for convenient access via a [RESTful](https://en.wikipedia.org/wiki/REST) API, loading from formatted files, and inputting to scattering models. The raw data and processing file formats and layout are unconstrained and are accessible via the RESTful API as a zipped download and a browsable directory hierarchy.
+The dataset metadata and model data have prescribed formats and are structured for convenient access via a [RESTful](https://en.wikipedia.org/wiki/REST) API, loading from formatted files, and inputting to scattering models.
+
+The raw data and processing file formats and layout are unconstrained and are accessible via the RESTful API as a zipped download and a browsable directory hierarchy.
 
 Model outputs are not stored.
 
@@ -210,8 +212,6 @@ plot_specimen(specimens['specimens'][0], dataset_id='Krill')
 
 #### Voxels
 
-_This section is not complete._
- 
 The `voxels` format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list as used by the numpy package. Rows (numpy axis 0) correspond to the echoSMs _z_-axis, columns (numpy axis 1) to the echoSMs _x_-axis, and slices (numpy axis 2) to the echoSMs _y_-axis.
 
 Conversion between a Python numpy 3D matrix and the echoSMs structure can simply use the numpy `tolist()` method:
