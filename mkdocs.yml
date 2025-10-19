@@ -10,6 +10,7 @@ nav:
     - Other software: other_software.md
     - Anatomical data store:
         - Introduction: anatomical_data_store.md
+        - Using with echoSMs: data_store_models.md
         - API: datastoreAPI.md
 
 theme: 
