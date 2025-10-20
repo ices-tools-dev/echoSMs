@@ -61,7 +61,8 @@ dev = [
   "twine",
   "pytest",
   "jsonschema_rs",
-  "orjson"
+  "orjson",
+  "rich"
 ]
 
 
