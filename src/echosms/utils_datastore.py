@@ -255,7 +255,7 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
 
 
 def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
-                  stream: bool=False, dpi: float=150) -> None:
+                  savefile: str|None=None, dpi: float=150) -> None:
     """Plot the specimen shape.
 
     Produces a relevant plot for all echoSMs anatomical datastore shape types.
@@ -268,9 +268,9 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
         Used to form a plot title if `title` is an empty string.
     title :
         A title for the plot.
-    stream :
-        If True, return an in-memory binary stream containing
-        the plot in PNG format. If False, generate a matplotlib plot.
+    savefile :
+        Filename to save the plot to. If None, generate the plot in the
+        interactive terminal (if that's supported).
     dpi :
         The resolution of the figure in dots per inch.
 
@@ -298,11 +298,10 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
             plot_shape_voxels(specimen['shapes'][0], t)
         case 'categorised voxels':
             plot_shape_categorised_voxels(specimen['shapes'][0], t)
-    if stream:
-        with io.BytesIO() as buffer:
-            plt.savefig(buffer, format='png')
-            buffer.seek(0)
-            return buffer.getvalue()
+
+    if savefile:
+        plt.savefig(savefile, format='png', dpi=dpi)
+        plt.close()
     else:
         plt.show()
 

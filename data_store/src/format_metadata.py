@@ -7,7 +7,6 @@
 """
 # %%
 from pathlib import Path
-import io
 import orjson
 import rtoml
 import jsonschema_rs
@@ -41,6 +40,10 @@ validator = jsonschema_rs.validator_for(schema)
 # Read in all .toml files that we can find, add/update the dataset_id and dataset_size
 # attributes and accumulate in a DataFrame. Write this out at the end as json. Exclude
 # any shape data that is considered large.
+
+# Note: this loop below reads all data into memory at once - this will eventually cause problems
+# with out of memory errors. The solution is to do the large model detection in this loop rather
+# than the subsequent loop.
 
 all_data = []
 
@@ -101,11 +104,7 @@ for ds in all_data:
 
         # Make a shape image for later use
         image_file = str(datastore_final_dir/row['id']) + '.png'
-        buffer = io.BytesIO()
-        plot_specimen(row, title=row['id'], buffer=buffer, dpi=200)
-        with open(image_file, 'wb') as f:
-            f.write(buffer.getbuffer())
-        buffer.close()
+        plot_specimen(row, title=row['id'], savefile=image_file, dpi=200)
 
         large = False
 
