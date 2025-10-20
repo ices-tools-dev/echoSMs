@@ -7,9 +7,10 @@
 """
 # %%
 from pathlib import Path
-import tomllib
-import json
-import jsonschema
+import io
+import orjson
+import rtoml
+import jsonschema_rs
 from rich import print as rprint
 import numpy as np
 from echosms import plot_specimen
@@ -32,8 +33,10 @@ metadata_final_filename = 'metadata_all_autogen.json'
 
 # json schema for the echoSMs anatomical data store
 with open(schema_file, 'rb') as f:
-    schema = json.load(f)
-v = jsonschema.Draft202012Validator(schema)
+    json_bytes = f.read()
+    schema = orjson.loads(json_bytes)
+
+validator = jsonschema_rs.validator_for(schema)
 
 # Read in all .toml files that we can find, add/update the dataset_id and dataset_size
 # attributes and accumulate in a DataFrame. Write this out at the end as json. Exclude
@@ -53,22 +56,23 @@ for path in datasets_dir.iterdir():
         if not (path/meta_files[0]).exists():
             continue
 
+        rprint('[orange1]Reading dataset: ' + path.name)
+
         # Add any specimen*.toml files to the list
         meta_files.extend(list(path.glob('specimen*.toml')))
 
         # load each .toml file and combine into one echoSMs datastore structure
         # this can take lots of memory, but we do this on a capable machine...
         for ff in meta_files:
-            with open(ff, mode='rb') as f:
-                if ff.name == metadata_file:
-                    print('Loading ' + ff.name)
-                    data = tomllib.load(f)
-                    if 'specimens' not in data:
-                        data['specimens'] = []
-                else:
-                    print('Loading ' + ff.stem)
-                    specimen = tomllib.load(f)
-                    data['specimens'].extend(specimen['specimens'])
+            if ff.name == metadata_file:
+                print('Loading ' + ff.name)
+                data = rtoml.load(ff)
+                if 'specimens' not in data:
+                    data['specimens'] = []
+            else:
+                print('Loading ' + ff.stem)
+                specimen = rtoml.load(ff)
+                data['specimens'].extend(specimen['specimens'])
 
         data['dataset_id'] = path.name
         data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
@@ -76,31 +80,32 @@ for path in datasets_dir.iterdir():
 
         rprint(f'Validating dataset in [cyan]{path.name}')
         errored = False
-        for error in sorted(v.iter_errors(data), key=str):
+        for error in validator.iter_errors(data):
             print(f'Error in dataset {path.name} at {error.json_path}')
             rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
-
             errored = True
 
         if not errored:
             all_data.append(data)
 
-
 # Flatten the read in data and write out to a staging directory
 dataset = []
-
+rprint('\n[orange1]Creating shape plots and final data files:')
 for ds in all_data:
     for sp in ds['specimens']:
         row = {'id': ds['dataset_id'] + '_' + sp['specimen_id']} | ds | sp
+        print(f'Processing specimen with id {row["id"]}')
         # Remove unneeded columns in the flattened version
         for r in ['specimens', 'shape_types']:
             row.pop(r)
 
         # Make a shape image for later use
         image_file = str(datastore_final_dir/row['id']) + '.png'
-        buf = plot_specimen(row, title=row['id'], stream=True, dpi=200)
+        buffer = io.BytesIO()
+        plot_specimen(row, title=row['id'], buffer=buffer, dpi=200)
         with open(image_file, 'wb') as f:
-            f.write(buf)
+            f.write(buffer.getbuffer())
+        buffer.close()
 
         large = False
 
@@ -116,15 +121,17 @@ for ds in all_data:
             large = True
 
         if large:
-            print(f'{row["id"]} has a large shape')
+            rprint(f'    [cyan]{row["id"]} has a large shape')
             s = row['shapes']
             row['shapes'] = row['id'] + '.json'
 
-            with open(datastore_final_dir/row['shapes'], 'w') as f:
-                json.dump(s, f, indent=2)  # could zip these up!
+            json_bytes = orjson.dumps(s)
+            with open(datastore_final_dir/row['shapes'], 'wb') as f:
+                f.write(json_bytes)
 
         dataset.append(row)
 
 print('Writing a combined metadata file')
-with open(datastore_final_dir/metadata_final_filename, 'w') as f:
-    json.dump(dataset, f, indent=2)
+json_bytes = orjson.dumps(dataset)
+with open(datastore_final_dir/metadata_final_filename, 'wb') as f:
+    f.write(json_bytes)

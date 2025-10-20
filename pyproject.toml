@@ -60,6 +60,8 @@ dev = [
   "mkdocs-material",
   "twine",
   "pytest",
+  "jsonschema_rs",
+  "orjson"
 ]
 
 
