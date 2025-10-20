@@ -1,6 +1,6 @@
 {
     "$id": "https://example.com/anatomical.echosms.schema.json",
-    "$schema": "http://json-schema.org/draft/2020-12/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "EchoSMs anatomical data store schema",
     "description": "This document is the JSON schema for the echoSMs anatomical data store. It provides a standardised structure for storing fish and plankton acoustic scattering model data.",
     "type": "object",
