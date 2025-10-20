@@ -13,6 +13,7 @@ import jsonschema_rs
 from rich import print as rprint
 import numpy as np
 from echosms import plot_specimen
+from shutil import make_archive
 
 datastore_source_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited'
                             r'\Documents\Aqualyd\Projects\2024-05 NOAA modelling'
@@ -134,3 +135,6 @@ print('Writing a combined metadata file')
 json_bytes = orjson.dumps(dataset)
 with open(datastore_final_dir/metadata_final_filename, 'wb') as f:
     f.write(json_bytes)
+
+print(f'Compressing all data to {datastore_final_dir.with_suffix(".zip")}')
+make_archive(str(datastore_final_dir), 'zip', datastore_final_dir);
