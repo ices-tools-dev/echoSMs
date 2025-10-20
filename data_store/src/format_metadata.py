@@ -97,7 +97,7 @@ for ds in all_data:
             row.pop(r)
 
         # Make a shape image for later use
-        image_file = (datastore_final_dir/row['id']).with_suffix('.png')
+        image_file = str(datastore_final_dir/row['id']) + '.png'
         buf = plot_specimen(row, title=row['id'], stream=True, dpi=200)
         with open(image_file, 'wb') as f:
             f.write(buf)
