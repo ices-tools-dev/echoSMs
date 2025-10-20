@@ -1,4 +1,8 @@
 """An example of how to use echoSMs with model shapes from the echoSMs datastore API."""
+# /// script
+# dependencies = ['echosms', 'requests', 'numpy', 'matplotlib']
+# ///
+
 import echosms
 import requests
 import numpy as np
