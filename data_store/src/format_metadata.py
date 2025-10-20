@@ -31,6 +31,19 @@ metadata_file = 'metadata.toml'
 
 metadata_final_filename = 'metadata_all_autogen.json'
 
+def large_shape(row):
+    """Identify large shape datasets."""
+    if row['shape_type'] == 'voxels' and np.array(row['shapes'][0]['mass_density']).size > 1e3:
+        return True
+
+    if row['shape_type'] == 'categorised voxels' and\
+       np.array(row['shapes'][0]['categories']).size > 1e3:
+        return True
+
+    if row['shape_type'] == 'surface' and len(row['shapes'][0]['x']) > 500:
+        return True
+
+
 # json schema for the echoSMs anatomical data store
 with open(schema_file, 'rb') as f:
     json_bytes = f.read()
@@ -39,20 +52,13 @@ with open(schema_file, 'rb') as f:
 validator = jsonschema_rs.validator_for(schema)
 
 # Read in all .toml files that we can find, add/update the dataset_id and dataset_size
-# attributes and accumulate in a DataFrame. Write this out at the end as json. Exclude
-# any shape data that is considered large.
+# attributes, flatten, and generate an image of each specimen. For specimens with large
+# shape data, save that to a seprate json file. Then write out a json file with all specimen
+# data in it (except for the large shape data).
 
-# Note: this loop below reads all data into memory at once - this will eventually cause problems
-# with out of memory errors. The solution is to do the large model detection in this loop rather
-# than the subsequent loop.
-
-all_data = []
-
+dataset = []
 for path in datasets_dir.iterdir():
     if path.is_dir():
-
-        # if path.name != 'test_categorial':
-        #     continue
 
         # There should be a metadata.toml file and zero or more specimen*.toml files.
         meta_files = [path/metadata_file]
@@ -60,7 +66,7 @@ for path in datasets_dir.iterdir():
         if not (path/meta_files[0]).exists():
             continue
 
-        rprint('[orange1]Reading dataset: ' + path.name)
+        rprint('Reading dataset [orange1]' + path.name)
 
         # Add any specimen*.toml files to the list
         meta_files.extend(list(path.glob('specimen*.toml')))
@@ -68,13 +74,12 @@ for path in datasets_dir.iterdir():
         # load each .toml file and combine into one echoSMs datastore structure
         # this can take lots of memory, but we do this on a capable machine...
         for ff in meta_files:
+            print('  Loading ' + ff.name)
             if ff.name == metadata_file:
-                print('Loading ' + ff.name)
                 data = rtoml.load(ff)
                 if 'specimens' not in data:
                     data['specimens'] = []
             else:
-                print('Loading ' + ff.stem)
                 specimen = rtoml.load(ff)
                 data['specimens'].extend(specimen['specimens'])
 
@@ -82,59 +87,46 @@ for path in datasets_dir.iterdir():
         data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
         data['shape_types'] = list({s['shape_type'] for s in data['specimens']})
 
-        rprint(f'Validating dataset in [cyan]{path.name}')
         errored = False
         for error in validator.iter_errors(data):
-            print(f'Error in dataset {path.name} at {error.json_path}')
+            print(f'[red] Validation error at {error.json_path}')
             rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
             errored = True
 
-        if not errored:
-            all_data.append(data)
+        if errored:
+            rprint('  [red]Validation failed')
+        else:
+            rprint('  [green]Validation passed ✓')
+            # Flatten and write out to a staging directory
+            for sp in data['specimens']:
+                row = {'id': data['dataset_id'] + '_' + sp['specimen_id']} | data | sp
 
-# Flatten the read in data and write out to a staging directory
-dataset = []
-rprint('\n[orange1]Creating shape plots and final data files:')
-for ds in all_data:
-    for sp in ds['specimens']:
-        row = {'id': ds['dataset_id'] + '_' + sp['specimen_id']} | ds | sp
-        print(f'Processing specimen with id {row["id"]}')
-        # Remove unneeded columns in the flattened version
-        for r in ['specimens', 'shape_types']:
-            row.pop(r)
+                rprint(f'    Writing specimen [orange4]{row["specimen_id"]:s}', end='')
 
-        # Make a shape image for later use
-        image_file = str(datastore_final_dir/row['id']) + '.png'
-        plot_specimen(row, title=row['id'], savefile=image_file, dpi=200)
+                # Remove unneeded columns in the flattened version
+                for r in ['specimens', 'shape_types']:
+                    row.pop(r)
 
-        large = False
+                # Make a shape image for later use
+                image_file = str(datastore_final_dir/row['id']) + '.png'
+                plot_specimen(row, title=row['id'], savefile=image_file, dpi=200)
 
-        # Flag large shape datasets
-        if row['shape_type'] == 'voxels' and np.array(row['shapes'][0]['mass_density']).size > 1e3:
-            large = True
+                if large_shape(row):
+                    rprint(' (large shape)', end='')
+                    s = row['shapes']
+                    row['shapes'] = row['id'] + '.json'
 
-        if row['shape_type'] == 'categorised voxels' and\
-           np.array(row['shapes'][0]['categories']).size > 1e3:
-            large = True
+                    json_bytes = orjson.dumps(s)
+                    with open(datastore_final_dir/row['shapes'], 'wb') as f:
+                        f.write(json_bytes)
+                print('')
 
-        if row['shape_type'] == 'surface' and len(row['shapes'][0]['x']) > 500:
-            large = True
-
-        if large:
-            rprint(f'    [cyan]{row["id"]} has a large shape')
-            s = row['shapes']
-            row['shapes'] = row['id'] + '.json'
-
-            json_bytes = orjson.dumps(s)
-            with open(datastore_final_dir/row['shapes'], 'wb') as f:
-                f.write(json_bytes)
-
-        dataset.append(row)
+                dataset.append(row)
 
 print('Writing a combined metadata file')
 json_bytes = orjson.dumps(dataset)
 with open(datastore_final_dir/metadata_final_filename, 'wb') as f:
     f.write(json_bytes)
 
-print(f'Compressing all data to {datastore_final_dir.with_suffix(".zip")}')
+print(f'Compressing all data into {datastore_final_dir.with_suffix(".zip")}')
 make_archive(str(datastore_final_dir), 'zip', datastore_final_dir);
