@@ -5,6 +5,9 @@
 3. Create files in a staging directory for uploading to the server
 
 """
+# /// script
+# dependencies = ['orjson', 'rtoml', 'jsonschema_rs', 'rich', 'echosms', 'numpy']
+# ///
 # %%
 from pathlib import Path
 import orjson
