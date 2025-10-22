@@ -1,8 +1,8 @@
 {
     "$id": "https://example.com/anatomical.echosms.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "EchoSMs anatomical data store schema",
-    "description": "This document is the JSON schema for the echoSMs anatomical data store. It provides a standardised structure for storing fish and plankton acoustic scattering model data.",
+    "title": "EchoSMs anatomical datastore schema",
+    "description": "This schema defines a structure for storing fish and plankton acoustic scattering model data, mainly for input to the echoSMs anatomical datastore.\n\nThe reference version of the schema (formatted as a JSON-schema file) will always be available in the echoSMs github [repository](https://github.com/ices-tools-dev/echoSMs/tree/main/data_store/schema/v1).",
     "type": "object",
     "required": [
         "description",
@@ -32,6 +32,7 @@
         },
         "anatomical_category": {
             "description": "The type of anatomy that this dataset contains.",
+            "type": "string",
             "enum": [
                 "tissue",
                 "organ",
@@ -45,6 +46,7 @@
             "type": "array",
             "minItems": 1,
             "items": {
+                "type": "string",
                 "enum": [
                     "body",
                     "swimbladder",
@@ -149,6 +151,7 @@
         },
         "imaging_method": {
             "description": "Method used to obtain the raw image data.",
+            "type": "string",
             "enum": [
                 "radiograph",
                 "CT",
@@ -162,6 +165,7 @@
         },
         "shape_method": {
             "description": "Method used to obtain the specimen shape.",
+            "type": "string",
             "enum": [
                 "manual outline of image(s)",
                 "automated outline of images(s)",
@@ -177,6 +181,7 @@
         },
         "model_type": {
             "description": "Original scattering model type.",
+            "type": "string",
             "enum": [
                 "KRM",
                 "KA",
@@ -191,6 +196,7 @@
         },
         "sound_speed_method": {
             "description": "Method used to obtain sound speed in the feature.",
+            "type": "string",
             "enum": [
                 "density to sound speed relationship",
                 "time-of-flight",
@@ -201,6 +207,7 @@
         },
         "mass_density_method": {
             "description": "Method used to obtain density in the feature.",
+            "type": "string",
             "enum": [
                 "CT density",
                 "liquid displacement",
@@ -214,6 +221,7 @@
             "type": "array",
             "minItems": 1,
             "items": {
+                "type": "string",
                 "enum": [
                     "surface",
                     "voxels",
@@ -230,6 +238,7 @@
         "specimens": {
             "description": "Specimen data.",
             "type": "array",
+            "minItems": 1,
             "items": {
                 "type": "object",
                 "required": [
@@ -248,6 +257,7 @@
                     },
                     "specimen_condition": {
                         "description": "Condition of the specimen when it was imaged.",
+                        "type": "string",
                         "enum": [
                             "fresh",
                             "frozen",
@@ -268,6 +278,7 @@
                     },
                     "sex": {
                         "description": "Sex of specimen",
+                        "type": "string",
                         "enum": [
                             "female",
                             "male",
@@ -277,6 +288,7 @@
                     },
                     "length_type": {
                         "description": "Type of length measurement.",
+                        "type": "string",
                         "enum": [
                             "total length",
                             "fork length",
@@ -294,6 +306,7 @@
                     },
                     "shape_type": {
                         "description": "Type of shape data used for this specimen.",
+                        "type": "string",
                         "enum": [
                             "outline",
                             "surface",
@@ -304,6 +317,7 @@
                     "shapes": {
                         "description": "Shape data.",
                         "type": "array",
+                        "minItems": 1,
                         "items": {
                             "type": "object",
                             "required": [
@@ -681,6 +695,7 @@
     "$defs": {
         "boundary": {
             "description": "Type of reflecting boundary for this shape.",
+            "type": "string",
             "enum": [
                 "hard",
                 "soft",
