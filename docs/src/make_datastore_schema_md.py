@@ -46,6 +46,6 @@ def on_files(files, config):
     # Add the schema page in the 'Anatomical data store' section
     for s in config['nav']:
         if 'Anatomical data store' in s:
-            s['Anatomical data store'].append({'Schema': mkdfile.src_path})
+            s['Anatomical data store'].insert(2, ({'Schema': mkdfile.src_path}))
 
     return files

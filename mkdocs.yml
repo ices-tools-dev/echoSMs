@@ -11,7 +11,7 @@ nav:
     - Anatomical data store:
         - Introduction: anatomical_data_store.md
         - Using with echoSMs: data_store_models.md
-        - API: datastoreAPI.md
+        - Web API: datastoreAPI.md
 
 theme: 
     name: material 
