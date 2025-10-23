@@ -4,11 +4,10 @@ Designed to work with the echoSMs datastore schema so only implements
 the features used in that.
 """
 import json
-from pathlib import Path
 
 
 def parse_property(pname, p, required, defs):
-
+    """Parse a JSON schema property definition."""
     if pname in defs:
         p = defs[pname]
 
@@ -42,6 +41,7 @@ def parse_property(pname, p, required, defs):
 
 
 def parse_object(d, defs):
+    """Parse a JSON schema object definition."""
     if 'required' in d:
         prequired = d['required']
     else:
@@ -68,11 +68,10 @@ def parse_object(d, defs):
             rows.append((name, required, desc, type_, constraints))
 
         if 'oneOf' in d:
-            # rows.append(('normal text', 'And one of:\n\n', '', '', ''))
             for option in d['oneOf']:
                 of_rows = parse_object(option, defs)
 
-                rows.append(('normal text', 
+                rows.append(('normal text',
                              f'And when {of_rows[0][0]} is ``{of_rows[0][3]}`` this includes:'))
                 rows.append(('new table', '', '', '', ''))
                 rows.extend(of_rows[1:])
@@ -80,7 +79,7 @@ def parse_object(d, defs):
     return rows
 
 def generate(schema_json_file, schema_md_file):
-
+    """Parse a JSON schema and write out a Markdown version."""
     # Load the json schema
     with open(schema_json_file) as f:
         schema = json.load(f)
