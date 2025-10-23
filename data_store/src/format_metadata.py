@@ -48,6 +48,7 @@ def large_shape(row):
 
 
 # json schema for the echoSMs anatomical data store
+rprint(f'Reading datastore schema from [orange]{schema_file.parent}')
 with open(schema_file, 'rb') as f:
     json_bytes = f.read()
     schema = orjson.loads(json_bytes)
@@ -60,6 +61,8 @@ validator = jsonschema_rs.validator_for(schema)
 # data in it (except for the large shape data).
 
 dataset = []
+rprint(f'Using datasets in [green]{datasets_dir}')
+rprint(f'Writing outputs to [green]{datastore_final_dir}\n')
 for path in datasets_dir.iterdir():
     if path.is_dir():
 
@@ -126,10 +129,10 @@ for path in datasets_dir.iterdir():
 
                 dataset.append(row)
 
-print('Writing a combined metadata file')
+print('\nWriting a combined metadata file')
 json_bytes = orjson.dumps(dataset)
 with open(datastore_final_dir/metadata_final_filename, 'wb') as f:
     f.write(json_bytes)
 
-print(f'Compressing all data into {datastore_final_dir.with_suffix(".zip")}')
+rprint(f'Compressing all data into [green]{datastore_final_dir.with_suffix(".zip")}')
 make_archive(str(datastore_final_dir), 'zip', datastore_final_dir);
