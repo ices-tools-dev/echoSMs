@@ -1,4 +1,4 @@
-"""Make a markdown version of the anatomical datastore JSON schema."""
+"""Make a Material for MkDocs markdown version of the anatomical datastore JSON schema."""
 
 from pathlib import Path
 from mkdocs.structure.files import File
