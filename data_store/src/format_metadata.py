@@ -91,12 +91,11 @@ for path in datasets_dir.iterdir():
 
         data['dataset_id'] = path.name
         data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
-        data['shape_types'] = list({s['shape_type'] for s in data['specimens']})
 
         errored = False
         for error in validator.iter_errors(data):
-            print(f'[red] Validation error at {error.json_path}')
-            rprint('[orange4]' + error.message + ' (at ' + error.json_path + ')')
+            rprint(f'[yellow] Validation error with {error.schema_path}')
+            rprint('[orange4]' + error.message)
             errored = True
 
         if errored:
@@ -110,7 +109,7 @@ for path in datasets_dir.iterdir():
                 rprint(f'    Writing specimen [orange4]{row["specimen_id"]:s}', end='')
 
                 # Remove unneeded columns in the flattened version
-                for r in ['specimens', 'shape_types']:
+                for r in ['specimens',]:
                     row.pop(r)
 
                 # Make a shape image for later use
