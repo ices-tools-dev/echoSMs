@@ -8,8 +8,6 @@ EchoSMs is available on [PyPi](https://pypi.org) as [`echosms`](https://pypi.org
 
     pip install echosms
 
-The prolate spheroidal modal series model in echoSMs uses spheroidal wave functions. A high-accuracy implementation of these is available in the [`spheroidalwavefunctions`](https://pypi.org/project/spheroidalwavefunctions/) Python package as the functions provided by [scipy](https://docs.scipy.org/doc/scipy/reference/special.html#spheroidal-wave-functions) are not accurate enough.
-
 ## Versions
 
 The changelogs for echoSMs are listed [here](https://github.com/ices-tools-dev/echoSMs/releases) and the latest release is always at the top of that list.
