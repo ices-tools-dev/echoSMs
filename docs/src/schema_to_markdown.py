@@ -64,7 +64,9 @@ def parse_object(d, defs):
             else:
                 rows.append((name, required, desc, 'Array of object', constraints))
 
-                rows.append(('start table','caption', f'Where the ``{name}`` object is:\n\n','',''))
+                rows.append(('normal text', f'## {name.capitalize()}\n\n'))
+                rows.append(('start table','caption',
+                             f'The ``{name}`` properties are:\n\n','',''))
                 object_rows = parse_object(pdata['items'], defs)
                 rows.extend(object_rows)
         else:
@@ -96,6 +98,10 @@ def generate(schema_json_file, schema_md_file):
     with open(schema_md_file, 'w') as md:
         md.write(f'# {schema["title"]}\n\n')
         md.write(f'{schema["description"]}\n\n')
+        
+        md.write('## Dataset\n')
+        md.write('The dataset properties are:\n\n')
+
         md.write('|Property|Required|Description|Type|Constraints|\n')
         md.write('|---|---|---|---|---|\n')
 
