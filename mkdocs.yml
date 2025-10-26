@@ -1,4 +1,8 @@
 site_name: echoSMs
+repo_url: https://github.com/ices-tools-dev/echoSMs
+edit_uri: edit/main/docs/
+site_url: https://ices-tools-dev.github.io/echoSMs/
+
 nav:
     - Introduction: index.md
     - Using echoSMs: usage.md
@@ -15,8 +19,8 @@ nav:
 
 theme: 
     name: material 
-    logo: resources/echoSMs_logo.png
-    favicon: resources/echoSMs_logo.png
+    logo: resources/echoSMs_logo_white.svg
+    favicon: resources/echoSMs_logo_black.svg
     icon:
         repo: fontawesome/brands/github
     features:
@@ -46,10 +50,6 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to system preference
-
-repo_url: https://github.com/ices-tools-dev/echoSMs
-edit_uri: edit/main/docs/
-site_url: https://ices-tools-dev.github.io/echoSMs/
 
 plugins:
     - search
