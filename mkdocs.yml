@@ -20,7 +20,7 @@ nav:
 theme: 
     name: material 
     logo: resources/echoSMs_logo_white.svg
-    favicon: resources/echoSMs_logo_black.svg
+    favicon: resources/echoSMs_logo_auto_colour.svg
     icon:
         repo: fontawesome/brands/github
     features:
