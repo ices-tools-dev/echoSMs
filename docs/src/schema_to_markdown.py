@@ -16,6 +16,7 @@ def parse_property(pname, p, required, defs):
 
     constraints = []
     if 'enum' in p:
+        type_ = 'enum of ' + type_
         constraints.append('one of ' + ', '.join([f'``{item}``' for item in p['enum']]))
 
     for c in ['minimum', 'maximum', 'minItems', 'maxItems']:
@@ -48,15 +49,15 @@ def parse_object(d, defs):
         if type_ == 'array':
             name, _, _, type_, item_constraints = parse_property(pname, pdata['items'], prequired, defs)
             if type_ != 'object':
-                type_ = 'Array of ' + type_
+                type_ = 'array of ' + type_
 
                 # The bodge...
-                if type_ == 'Array of array':
+                if type_ == 'array of array':
                     item_constraints = 'minItems: 1<br>minItems: 1<br>minimum: 0'
                     if name in ['mass_density', 'sound_speed_compressional']:
-                        type_ = 'Array of array of array of number'
+                        type_ = 'array of array of array of number'
                     elif name == 'categories':
-                        type_ = 'Array of array of array of integer'
+                        type_ = 'array of array of array of integer'
 
                 # join constraints from the property and from the array item
                 cc = '<br>'.join([constraints, item_constraints])
