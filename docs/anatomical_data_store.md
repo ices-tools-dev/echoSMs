@@ -51,7 +51,7 @@ Associated with each dataset are data about one or more specimens. This includes
 
 The dataset contents are specified by a [JSON schema](https://json-schema.org/) file stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, etc. The schema is a very technical document and is perhaps more easily understood via the table in the echoSMs [documentation](schema/data_store_schema.md) and an [example file](https://github.com/ices-tools-dev/echoSMs/tree/main/data_store/resources).
 
-Your datasets files can be validated against the datastore schema using online validators (e.g., [here](https://www.jsonschemavalidator.net/), [here](https://jsonschema.dev/), [here](https://www.liquid-technologies.com/online-json-schema-validator)), or within your own code using a JSON schema validation library (e.g., [jsonschema-rs](https://github.com/Stranger6667/jsonschema/tree/master/crates/jsonschema-py) for Python and [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) for R). It is not necessary to validate your data before submitting it to the datastore, but it will help the uploading happen faster ( a validation is done during the uploading process and any dataset formatting errors will be identified then).
+Your dataset files can be validated against the datastore schema using online validators (e.g., [here](https://www.jsonschemavalidator.net/), [here](https://jsonschema.dev/), or [here](https://www.liquid-technologies.com/online-json-schema-validator)), or within your own code using a JSON schema validation library (e.g., [jsonschema-rs](https://github.com/Stranger6667/jsonschema/tree/master/crates/jsonschema-py) for Python and [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) for R). It is not necessary to validate your data before submitting it to the datastore, but it will help the uploading happen faster (a validation is done during the uploading process and any dataset format problems will be identified then).
 
 ### Shapes
 
@@ -66,9 +66,9 @@ Some models use multiple shapes for a single specimen (e.g., a fish body and swi
 |Shape data type|Realisation|Models that use this|Example from datastore|Material properties|
 |---------------|-----------|--------------------|-----|--|
 |surface|3D triangular surface mesh|BEM, KA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM003_HOK_hok108/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM003_HOK_hok108/image)|ρ and c per shape|
-|outline|Dorsal and ventral outlines (widths and heights) along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/image)|ρ and c per shape (KRM) or per section (DWBA)|
-|voxels|3D rectangular grid with material properties for each voxel|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/image)|ρ and c for each voxel|
-|categorised voxels|3D rectangular grid with a material property category for each voxel|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/image)|ρ and c for each category|
+|outline|Dorsal and ventral outlines along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/image)|ρ and c per shape (KRM) or per section (DWBA)|
+|voxels|3D rectangular grid|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/image)|ρ and c for each voxel|
+|categorised voxels|categorised 3D rectangular grid|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/image)|ρ and c for each category|
 
 ???+ Note
     The outline shape is a generalised form of the shape definition used for several models:
@@ -85,7 +85,7 @@ The shape data format is formally specified in the echoSMs anatomical data store
 
 The `surface` format contains a 3D triangular surface mesh. The mesh is represented with three numeric arrays (`x`, `y`, and `z`) for the x, y, and z coordinates of the surface nodes, three integer arrays (`facets_0`, `facets_1`, `facets_2`) that index into the x, y, and z arrays and specify the nodes that make up individual triangles, and three arrays that give the outward unit normal vector for each triangle (`normals_x`, `normals_y`, and `normals_z`). The lengths of the facets and normals arrays must all be the same.
 
-!!! note
+???+ note
     Some scattering models require a closed 3D surface mesh (i.e., without holes), but the `surface` format does not enforce this.
 
 EchoSMs provides a function, [surface_from_stl()][echosms.surface_from_stl], to convert an [STL](https://en.wikipedia.org/wiki/STL_(file_format)) file into the echoSMs surface shape format:
@@ -216,9 +216,9 @@ plot_specimen(specimens['specimens'][0], dataset_id='Krill')
 
 ##### Voxels
 
-The `voxels` format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list as used by the numpy package. Rows (numpy axis 0) correspond to the echoSMs _z_-axis, columns (numpy axis 1) to the echoSMs _x_-axis, and slices (numpy axis 2) to the echoSMs _y_-axis.
+The `voxels` format contains two 3D matrices, one for density and one for sound speed. The echoSMs representation of a 3D matrix is a doubly-nested list as used by the Numpy package. Rows (numpy axis 0) correspond to the echoSMs _z_-axis, columns (numpy axis 1) to the echoSMs _x_-axis, and slices (numpy axis 2) to the echoSMs _y_-axis.
 
-Conversion between a Python numpy 3D matrix and the echoSMs structure can simply use the numpy `tolist()` method:
+Numpy's `tolist()` method is used to convert between a Python numpy 3D matrix and the echoSMs structure:
 
 ```py
 import numpy as np
@@ -228,11 +228,11 @@ rho = np.array([...])
 c = np.array([...])
 
 # Put into a dict as per the echoSMs datastore schema
-shape = {'voxel_size': [0.005, 0.005, 0.005],  # echoSMs expects units of metres
+shape = {'voxel_size': [0.005, 0.005, 0.005],
          'mass_density': rho.tolist(),
          'sound_speed_compressional': c.tolist()}
 ```
-If using xarrays rather than numpy, you'll need to use the xarray `.values` attribute to get a numpy matrix and then call `tolist()`:
+If using Xarrays rather than Numpy, you'll need to use the Xarray `.values` attribute to get the Numpy matrix and then call `tolist()`:
 
 ```py
 shape = {'voxel_size': [0.005, 0.005, 0.005],
@@ -242,4 +242,4 @@ shape = {'voxel_size': [0.005, 0.005, 0.005],
 
 ##### Categorised voxels
 
-The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of homogenous material properties in the specimen. The category value is used as a zero-based index into associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`. The 3D category matrix is structured the same way as for the voxels format (see above).
+The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of homogenous material properties in the specimen. The category value is used as a zero-based index into associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`. The category matrix is structured the same way as for the voxels format (see above).
