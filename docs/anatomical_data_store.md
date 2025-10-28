@@ -63,12 +63,12 @@ Most anatomical scattering models use one of these three-dimensional representat
 
 Some models use multiple shapes for a single specimen (e.g., a fish body and swimbladder) and multiple shapes per specimen are permitted. Additional shape formats can be added as required (e.g., tetrahedrons as used by the [TetraScatt](https://doi.org/10.1115/1.4067286) scattering model).
 
-|Shape data type|Realisation|Models that use this|Notes|
-|---------------|-----------|--------------------|-----|
-|surface|3D triangular surface mesh|BEM, KA|ρ and c per shape|
-|outline|Dorsal and ventral outlines (widths and heights) along a curved centreline|KRM, DWBA, DCM|ρ and c per shape (KRM) or per section (DWBA)|
-|voxels|3D rectangular grid with material properties for each voxel|FEM|ρ and c for each voxel|
-|categorised voxels|3D rectangular grid with a material property category for each voxel|PT-DWBA|ρ and c for each category|
+|Shape data type|Realisation|Models that use this|Example from datastore|Material properties|
+|---------------|-----------|--------------------|-----|--|
+|surface|3D triangular surface mesh|BEM, KA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM003_HOK_hok108/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM003_HOK_hok108/image)|ρ and c per shape|
+|outline|Dorsal and ventral outlines (widths and heights) along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/image)|ρ and c per shape (KRM) or per section (DWBA)|
+|voxels|3D rectangular grid with material properties for each voxel|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/image)|ρ and c for each voxel|
+|categorised voxels|3D rectangular grid with a material property category for each voxel|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/image)|ρ and c for each category|
 
 ???+ Note
     The outline shape is a generalised form of the shape definition used for several models:
