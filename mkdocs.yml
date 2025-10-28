@@ -13,9 +13,10 @@ nav:
     - Historical notes: historical_notes.md
     - Other software: other_software.md
     - Anatomical data store:
-        - Introduction: anatomical_data_store.md
-        - Using with echoSMs: data_store_models.md
+        - Introduction: datastore_intro.md
+        - Data structures: anatomical_data_store.md
         - Web API: datastoreAPI.md
+        - Using with echoSMs: data_store_models.md
 
 theme: 
     name: material 
