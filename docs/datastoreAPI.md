@@ -1,8 +1,8 @@
-# Web API
-
 ???+ Note
 
     This page contains the draft API specification and documentation for web access to the echoSMs anatomical data store. It is a work in progress.
+
+## Introduction
 
 The anatomical data store API is implemented as a RESTful web API with calls to:
 
@@ -17,6 +17,8 @@ A testing server is available with some sample data, along with the API [documen
 
 API endpoints to modify the data store have not yet been created as the data store can be manually loaded given the relatively low rate of expected model uploading.
 
+## Example API calls
+
 Some example API calls are:
 
 - A list of all [specimens](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens)
@@ -28,3 +30,7 @@ Some example API calls are:
 - A specimen with a shape type of [surface](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM003_CBO_cbo12/image) (and the [metadata](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens?id=GJM003_CBO_cbo12))
 
 The API call to get the full raw data is not yet implemented.
+
+## Use with spreadsheets
+
+Microsoft Excel and Google Sheets can load data directly from the datastore API. For Excel navigate to the `Data` tab and choose `Get data->From Other Sources->From Web`, enter the specimens endpoint (`https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens`) and then use the Power Query Editor to select columns before loading into Excel. For Google Sheets use one of the many API/Data Connector add-ons (e.g. `API Connector`).
