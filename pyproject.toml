@@ -22,6 +22,7 @@ dependencies = [
 	"pandas",
   "xarray",
   'tomli >= 1.1.0; python_version < "3.11"',
+  'backports.strenum >= 1.3.1; python_version < "3.11"',
   'trimesh',
   'spheroidalwavefunctions',
   'tqdm',
@@ -55,13 +56,13 @@ addopts = ["--import-mode=importlib",]
 [project.optional-dependencies]
 dev = [
   "mkdocstrings[python]",
-  "json-schema-for-humans",
   "matplotlib",
   "mkdocs-material",
   "twine",
   "pytest",
   "jsonschema_rs",
   "orjson",
+  "rtoml",
   "rich"
 ]
 

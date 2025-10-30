@@ -61,6 +61,7 @@ validator = jsonschema_rs.validator_for(schema)
 # data in it (except for the large shape data).
 
 dataset = []
+error_count = 0
 rprint(f'Using datasets in [green]{datasets_dir}')
 rprint(f'Writing outputs to [green]{datastore_final_dir}\n')
 for path in datasets_dir.iterdir():
@@ -95,11 +96,12 @@ for path in datasets_dir.iterdir():
         errored = False
         for error in validator.iter_errors(data):
             rprint(f'[yellow] Validation error with {error.schema_path}')
-            rprint('[orange4]' + error.message)
+            # rprint('[orange4]' + error.message)
             errored = True
 
         if errored:
             rprint('  [red]Validation failed')
+            error_count += 1
         else:
             rprint('  [green]Validation passed ✓')
             # Flatten and write out to a staging directory
@@ -127,6 +129,9 @@ for path in datasets_dir.iterdir():
                 print('')
 
                 dataset.append(row)
+
+if error_count:
+    rprint(f'[red]{error_count} datasets failed the verification')
 
 print('\nWriting a combined metadata file')
 json_bytes = orjson.dumps(dataset)

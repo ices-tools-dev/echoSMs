@@ -66,6 +66,7 @@ plugins:
                     docstring_section_style: spacy
                     show_submodules: false
                     show_symbol_type_heading: true
+                    show_symbol_type_toc: true
                     merge_init_into_class: true
                     show_bases: true
                     inherited_members: true
