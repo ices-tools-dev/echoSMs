@@ -63,6 +63,7 @@ plugins:
                 paths: [src]
                 options:
                     docstring_style: numpy
+                    docstring_section_style: spacy
                     show_submodules: false
                     show_symbol_type_heading: true
                     merge_init_into_class: true
