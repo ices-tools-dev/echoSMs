@@ -3,7 +3,7 @@
 from math import log10
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-from .utils import wavenumber, wavelength, as_dict
+from .utils import wavenumber, wavelength, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
 
 
@@ -18,7 +18,7 @@ class KAModel(ScatterModelBase):
         self.long_name = 'Kirchhoff approximation'
         self.short_name = 'ka'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['pressure release']
+        self.boundary_types = [bt.pressure_release]
         self.shapes = ['closed surfaces']
         self.max_ka = 20  # [1]
         self.no_expand_parameters = ['mesh']
@@ -33,7 +33,7 @@ class KAModel(ScatterModelBase):
         super()._present_and_positive(p, ['medium_c', 'f'])
 
     def calculate_ts_single(self, medium_c, theta, phi, f, mesh,
-                            boundary_type, validate_parameters=True, **kwargs) -> float:
+                            boundary_type: bt, validate_parameters=True, **kwargs) -> float:
         """
         Calculate the scatter using the ka model for one set of parameters.
 
@@ -62,7 +62,7 @@ class KAModel(ScatterModelBase):
             A suitable library for creating and manipulating triangular meshes
             is [trimesh](https://trimesh.org). Trimesh will accept the usual nodes/facets
             definition of a mesh and calculate the above attributes automatically.
-        boundary_type : str
+        boundary_type :
             The boundary type. Supported types are given in the `boundary_types` class variable.
         validate_parameters : bool
             Whether to validate the model parameters.

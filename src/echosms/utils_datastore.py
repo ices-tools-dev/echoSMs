@@ -1,5 +1,4 @@
 """Utilities for working with the echoSMs anatomical datastore."""
-import io
 import trimesh
 import numpy as np
 from pathlib import Path
@@ -7,6 +6,7 @@ import numpy.typing as npt
 import matplotlib.pyplot as plt
 from matplotlib import colors, colormaps
 from math import floor
+from .utils import boundary_type as bt
 
 def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
     """Create trimesh instances from an echoSMs datastore surface shape.
@@ -327,7 +327,7 @@ def plot_shape_outline(shapes: list[dict], axs: list) -> None:
         lateral view
     """
     for s in shapes:
-        c = 'C0' if s['boundary'] == 'fluid' else 'C1'
+        c = 'C0' if s['boundary'] == bt.fluid_filled else 'C1'
         x = np.array(s['x'])*1e3
         z = np.array(s['z'])*1e3
         y = np.array(s['y'])*1e3
@@ -364,7 +364,7 @@ def plot_shape_surface(shapes, ax):
         A matplotlib axis.
     """
     for s in shapes:
-        # c = 'C0' if s['boundary'] == 'fluid' else 'C1'
+        # c = 'C0' if s['boundary'] == bt.fluid_filled else 'C1'
         facets = np.array([s['facets_0'], s['facets_1'], s['facets_2']]).transpose()
         x = 1e3 * np.array(s['x'])
         y = 1e3 * np.array(s['y'])

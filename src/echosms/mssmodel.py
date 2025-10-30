@@ -3,7 +3,7 @@
 from math import log10
 import numpy as np
 from scipy.special import spherical_jn, spherical_yn
-from .utils import h1, wavenumber, as_dict
+from .utils import h1, wavenumber, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
 
 
@@ -19,9 +19,9 @@ class MSSModel(ScatterModelBase):
         self.long_name = 'modal series solution'
         self.short_name = 'mss'
         self.analytical_type = 'exact'
-        self.boundary_types = ['fixed rigid', 'pressure release', 'fluid filled',
-                               'fluid shell fluid interior',
-                               'fluid shell pressure release interior']
+        self.boundary_types = [bt.fixed_rigid, bt.pressure_release, bt.fluid_filled,
+                               bt.fluid_shell_fluid_interior,
+                               bt.fluid_shell_pressure_release_interior]
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
 
@@ -36,19 +36,19 @@ class MSSModel(ScatterModelBase):
         super()._present_and_positive(p, ['medium_rho', 'a', 'f'])
 
         types = np.unique(np.atleast_1d(p['boundary_type']))
-        for bt in types:
-            mask = p['boundary_type'] == bt
-            match bt:
-                case 'fluid filled':
+        for t in types:
+            mask = p['boundary_type'] == t
+            match t:
+                case bt.fluid_filled:
                     super()._present_and_positive(p, ['target_c', 'target_rho'], mask=mask)
-                case 'fluid shell fluid interior':
+                case bt.fluid_shell_fluid_interior:
                     super()._present_and_positive(p, ['target_c', 'target_rho', 'shell_c',
                                                       'shell_rho', 'shell_thickness'], mask=mask)
-                case 'fluid shell pressure release interior':
+                case bt.fluid_shell_pressure_release_interior:
                     super()._present_and_positive(p, ['shell_c', 'shell_rho', 'shell_thickness'],
                                                   mask=mask)
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, f, boundary_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, f, boundary_type: bt,
                             target_c=None, target_rho=None,
                             shell_c=None, shell_rho=None, shell_thickness=None,
                             validate_parameters=True,
@@ -66,14 +66,14 @@ class MSSModel(ScatterModelBase):
             Radius of the spherical target [m].
         f : float
             Frequency to calculate the scattering at [Hz].
-        boundary_type : str
+        boundary_type :
             The boundary type. Supported types are given in the `boundary_types` class variable.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
-            Only required for `boundary_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid_filled``.
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
-            Only required for `boundary_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid_filled``.
         shell_c : float, optional
             Sound speed in the spherical shell [m/s].
             Only required for `boundary_type`s that include a fluid shell.
@@ -112,11 +112,11 @@ class MSSModel(ScatterModelBase):
         n = np.arange(0, round(ka+20))
 
         match boundary_type:
-            case 'fixed rigid':
+            case bt.fixed_rigid:
                 A = list(map(lambda x: -spherical_jn(x, ka, True) / h1(x, ka, True), n))
-            case 'pressure release':
+            case bt.pressure_release:
                 A = list(map(lambda x: -spherical_jn(x, ka) / h1(x, ka), n))
-            case 'fluid filled':
+            case bt.fluid_filled:
                 k1a = wavenumber(target_c, f)*a
                 gh = target_rho/medium_rho * target_c/medium_c
 
@@ -129,7 +129,7 @@ class MSSModel(ScatterModelBase):
                            / (spherical_jn(n, k1a)*spherical_jn(n, ka, True))-gh)
 
                 A = -1/(1 + 1j*np.asarray(list(map(Cn_fr, n)), dtype=complex))
-            case 'fluid shell fluid interior':
+            case bt.fluid_shell_fluid_interior:
                 b = a - shell_thickness
 
                 g21 = shell_rho / medium_rho
@@ -148,7 +148,7 @@ class MSSModel(ScatterModelBase):
                         / (a11*a22*a33 + a13*a21*a32 - a12*a21*a33 - a11*a23*a32)
 
                 A = list(map(Cn_fsfi, n))
-            case 'fluid shell pressure release interior':
+            case bt.fluid_shell_pressure_release_interior:
                 b = a - shell_thickness
 
                 g21 = shell_rho / medium_rho

@@ -3,7 +3,7 @@
 from math import sin, cos, nan, pi, log10
 from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
 import numpy as np
-from .utils import Neumann, wavenumber, as_dict
+from .utils import Neumann, wavenumber, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
 
 
@@ -19,7 +19,7 @@ class DCMModel(ScatterModelBase):
         self.long_name = 'deformed cylinder model'
         self.short_name = 'dcm'
         self.analytical_type = 'approximate analytical'
-        self.boundary_types = ['fixed rigid', 'pressure release', 'fluid filled']
+        self.boundary_types = [bt.fixed_rigid, bt.pressure_release, bt.fluid_filled]
         self.shapes = ['finite cylinder']
         self.max_ka = 20  # [1]
 
@@ -33,12 +33,12 @@ class DCMModel(ScatterModelBase):
         super()._present_and_positive(p, ['medium_rho', 'medium_c', 'a', 'b', 'f'])
 
         types = np.unique(np.atleast_1d(p['boundary_type']))
-        for bt in types:
-            if bt == 'fluid filled':
+        for t in types:
+            if t == bt.fluid_filled:
                 super()._present_and_positive(p, ['target_c', 'target_rho'],
-                                              mask=p['boundary_type'] == bt)
+                                              mask=p['boundary_type'] == t)
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type: bt,
                             target_c=None, target_rho=None, validate_parameters=True,
                             **kwargs):
         """
@@ -60,14 +60,14 @@ class DCMModel(ScatterModelBase):
             conventions/#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
-        boundary_type : str
+        boundary_type :
             The model type. Supported model types are given in the `boundary_types` class attribute.
         target_c : float, optional
             Sound speed in the fluid inside the sphere [m/s].
-            Only required for `boundary_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid_filled``.
         target_rho : float, optional
             Density of the fluid inside the sphere [kg/m³].
-            Only required for `boundary_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid_filled``.
         validate_parameters : bool
             Whether to validate the model parameters.
 
@@ -102,11 +102,11 @@ class DCMModel(ScatterModelBase):
         m = range(30)  # TODO this needs to vary with f
 
         match boundary_type:
-            case 'fixed rigid':
+            case bt.fixed_rigid:
                 series = map(lambda m: (-1)**m * Neumann(m)*(jvp(m, Ka) / h1vp(m, Ka)), m)
-            case 'pressure release':
+            case bt.pressure_release:
                 series = map(lambda m: (-1)**m * Neumann(m)*(jv(m, Ka) / hankel1(m, Ka)), m)
-            case 'fluid filled':
+            case bt.fluid_filled:
                 g = target_rho/medium_rho
                 h = target_c/medium_c
                 gh = g*h

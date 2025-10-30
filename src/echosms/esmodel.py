@@ -4,7 +4,7 @@ from math import log10, sin, atan
 from cmath import exp
 from warnings import warn
 from scipy.special import spherical_jn, spherical_yn
-from .utils import wavenumber, spherical_jnpp, as_dict
+from .utils import wavenumber, spherical_jnpp, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
 
 
@@ -19,7 +19,7 @@ class ESModel(ScatterModelBase):
         self.long_name = 'elastic sphere'
         self.short_name = 'es'
         self.analytical_type = 'exact'
-        self.boundary_types = ['elastic']
+        self.boundary_types = [bt.elastic]
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
 

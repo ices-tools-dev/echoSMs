@@ -4,7 +4,7 @@ from math import log10, pi, sqrt, cos, sin, radians
 from cmath import exp
 import numpy as np
 from scipy.special import j0, y0, jvp, yvp
-from .utils import wavenumber, as_dict
+from .utils import wavenumber, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
 from .krmdata import KRMshape
 
@@ -32,7 +32,7 @@ class KRMModel(ScatterModelBase):
         self.long_name = 'Kirchhoff ray mode'
         self.short_name = 'krm'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['fluid filled']
+        self.boundary_types = [bt.fluid_filled]
         self.shapes = ['closed surfaces']
         self.max_ka = 20  # [1]
         self.no_expand_parameters = ['bodies']
@@ -164,10 +164,10 @@ class KRMModel(ScatterModelBase):
                     gp = incl.rho / medium_rho
                     hp = incl.c / medium_c
                 sl.append(self._mode_solution(1/gp, 1/hp, k, a_e, incl.length(), theta))
-            elif incl.boundary == 'soft':
+            elif incl.boundary == bt.pressure_release:
                 kk = k_b if high_ka_medium == 'body' else k
                 sl.append(self._soft_KA(incl, k, kk, R_bc, TwbTbw, theta))
-            elif incl.boundary == 'fluid':
+            elif incl.boundary == bt.fluid_filled:
                 kk = k_b if high_ka_medium == 'body' else k
                 sl.append(self._fluid_KA(incl, k, kk, R_bc, TwbTbw, theta))
             else:

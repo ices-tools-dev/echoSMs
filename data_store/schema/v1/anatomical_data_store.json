@@ -682,9 +682,10 @@
             "description": "Type of reflecting boundary for this shape.",
             "type": "string",
             "enum": [
-                "hard",
-                "soft",
-                "fluid"
+                "fixed-rigid",
+                "pressure-release",
+                "fluid-filled",
+                "elastic"
             ]
         }
     }

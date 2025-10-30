@@ -5,7 +5,7 @@ import pandas as pd
 import xarray as xr
 import numpy as np
 from tqdm import tqdm
-from .utils import as_dataframe
+from .utils import as_dataframe, boundary_type
 
 
 class ScatterModelBase(abc.ABC):
@@ -27,7 +27,7 @@ class ScatterModelBase(abc.ABC):
             A short version of the model's long name, typically an acronym.
         analytical_type : str
             Whether the model implements an ``exact`` or an ``approximate`` model.
-        boundary_types : list[str]
+        boundary_types : list[boundary_type]
             The types of boundary conditions that the model provides, e.g., 'fixed rigid',
             'pressure release', 'fluid filled'
         shapes : list[str]
@@ -202,7 +202,6 @@ class ScatterModelBase(abc.ABC):
         KeyError
             If any required model parameters are not present.
         """
-
         # The values in p can be any iterable or scalar variable. This function has to cope
         # with all of these. A simple way to deal with this is to use np.atleast_1d() to
         # get a consistent type type to work with.
@@ -232,7 +231,6 @@ class ScatterModelBase(abc.ABC):
         KeyError
             If any required model parameters are not present.
         """
-
         # The values in p can be any iterable or scalar variable. This function has to cope
         # with all of these. A simple way to deal with this is to use np.atleast_1d() to
         # get a consistent type type to work with.

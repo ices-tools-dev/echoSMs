@@ -67,7 +67,7 @@ The simplest way to provide these to the model is a dictionary:
 p = {'medium_rho': 1026.8,
      'medium_c': 1477.4,
      'a': 0.01, 
-     'boundary_type': 'pressure release',
+     'boundary_type': 'pressure-release',
      'f': 38000}
 ```
 
@@ -86,7 +86,7 @@ import numpy as np
 p = {'medium_rho': 1026.8,
      'medium_c': 1477.4,
      'a': 0.01,
-     'boundary_type': 'pressure release',
+     'boundary_type': 'pressure-release',
      'f': np.arange(10, 100, 1)*1000}  # [Hz]
 model.calculate_ts(p)
 ```
@@ -97,7 +97,7 @@ It is also fine to have multiple items with multiple values:
 p = {'medium_rho': 1026.8,
      'medium_c': 1477.4,
      'a': np.arange(0.01, 0.02, 0.001),  # [m]
-     'boundary_type': ['pressure release', 'fixed rigid'],
+     'boundary_type': ['pressure-release', 'fixed-rigid'],
      'f': np.arange(10, 100, 1)*1000}  # [Hz]
 model.calculate_ts(p)
 ```

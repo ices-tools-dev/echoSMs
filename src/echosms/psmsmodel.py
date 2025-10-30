@@ -3,7 +3,7 @@
 import numpy as np
 from .scattermodelbase import ScatterModelBase
 import scipy.integrate as integrate
-from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict
+from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict, boundary_type as bt
 
 
 class PSMSModel(ScatterModelBase):
@@ -20,7 +20,7 @@ class PSMSModel(ScatterModelBase):
         self.long_name = 'prolate spheroidal modal series'
         self.short_name = 'psms'
         self.analytical_type = 'exact'
-        self.boundary_types = ['fixed rigid', 'pressure release', 'fluid filled']
+        self.boundary_types = [bt.fixed_rigid, bt.pressure_release, bt.fluid_filled]
         self.shapes = ['prolate spheroid']
         self.max_ka = 10  # [1]
 
@@ -34,12 +34,12 @@ class PSMSModel(ScatterModelBase):
         super()._present_and_positive(p, ['medium_c', 'medium_rho', 'a', 'b', 'f'])
 
         types = np.unique(np.atleast_1d(p['boundary_type']))
-        for bt in types:
-            if bt == 'fluid filled':
+        for t in types:
+            if t == bt.fluid_filled:
                 super()._present_and_positive(p, ['target_c', 'target_rho'],
-                                              mask=p['boundary_type'] == bt)
+                                              mask=p['boundary_type'] == t)
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type,
+    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type: bt,
                             target_c=None, target_rho=None, validate_parameters=True):
         """Prolate spheroid modal series (PSMS) solution model.
 
@@ -59,14 +59,14 @@ class PSMSModel(ScatterModelBase):
             conventions/#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
-        boundary_type : str
+        boundary_type :
             The model type. Supported model types are given in the `boundary_types` class variable.
         target_c : float
             Sound speed in the fluid inside the target [m/s].
-            Only required for `boundary_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid_filled``.
         target_rho : float
             Density of the fluid inside the target [kg/m³].
-            Only required for `boundary_type` of ``fluid filled``.
+            Only required for `boundary_type` of ``fluid_filled``.
         validate_parameters : bool
             Whether to validate the input parameters.
 
@@ -102,7 +102,7 @@ class PSMSModel(ScatterModelBase):
         km = wavenumber(medium_c, f)
         hm = km*q
 
-        if boundary_type == 'fluid filled':
+        if boundary_type == bt.fluid_filled:
             g = target_rho / medium_rho
             ht = wavenumber(target_c, f)*q
             simplified = False
@@ -141,7 +141,7 @@ class PSMSModel(ScatterModelBase):
             epsilon_m = Neumann(m)
             cos_term = np.cos(m*(phi_sca - phi_inc))
 
-            if boundary_type == 'fluid filled' and not simplified:
+            if boundary_type == bt.fluid_filled and not simplified:
                 Am = PSMSModel._fluidfilled(m, n_max, hm, ht, xim, g, theta_inc)
 
             for n_i, n in enumerate(range(m, n_max+1)):
@@ -161,15 +161,15 @@ class PSMSModel(ScatterModelBase):
                 R2m, dR2m = pro_rad2(m, n, hm, xim)
 
                 match boundary_type:
-                    case 'fluid filled':
+                    case bt.fluid_filled:
                         if simplified:
                             E1, E3 = PSMSModel._fluidfilled_Emn(m, n, n, hm, ht, xim, g)
                             Amn = -E1/E3
                         else:
                             Amn = Am[n_i][0]
-                    case 'pressure release':
+                    case bt.pressure_release:
                         Amn = -R1m/(R1m + 1j*R2m)
-                    case 'fixed rigid':
+                    case bt.fixed_rigid:
                         Amn = -dR1m/(dR1m + 1j*dR2m)
 
                 f_sca += epsilon_m * Smn_inc * Amn * Smn_sca * cos_term

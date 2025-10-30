@@ -1,7 +1,7 @@
 """The distorted-wave Born approximation model."""
 
 from .scattermodelbase import ScatterModelBase
-from .utils import wavenumber, as_dict
+from .utils import wavenumber, as_dict, boundary_type as bt
 from math import log10, cos, acos, pi, isclose, radians
 from cmath import exp
 from scipy.spatial.transform import Rotation as R
@@ -23,7 +23,7 @@ class DWBAModel(ScatterModelBase):
         self.long_name = 'distorted-wave Born approximation'
         self.short_name = 'dwba'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['weakly scattering']
+        self.boundary_types = [bt.fluid_filled]
         self.shapes = ['piecewise cylindical']
         self.max_ka = 20
         # The distorted wave Born approximation is increasingly inaccurate outside these limits:

@@ -10,9 +10,9 @@ def rm():
     return echosms.ReferenceModels()
 
 
-# Test that models return correct TS values. 
+# Test that models return correct TS values.
 
-# Generally, each model is run for it's various boundary conditions at one size and frequency. 
+# Generally, each model is run for it's various boundary conditions at one size and frequency.
 # This is likely to be sufficient to pick up when changes to model code changes the output.
 
 
@@ -102,7 +102,7 @@ def test_kamodel(rm):
 
     p = {'medium_c': s['medium_c'], 'phi': 0, 'theta': 90.0,
          'mesh': trimesh.creation.icosphere(radius=s['a'], subdivisions=4),
-         'boundary_type': 'pressure release', 'f': 38e3}
+         'boundary_type': 'pressure-release', 'f': 38e3}
 
     mod = echosms.KAModel()
     assert np.allclose(mod.calculate_ts(p), -44.4474, atol=0.0001), "Incorrect TS value"
@@ -110,20 +110,20 @@ def test_kamodel(rm):
 
 ###########################################################
 # HPModel
-@pytest.mark.parametrize('model, f, ts', 
-                         [('fixed rigid', 38e3, -46.2576),
+@pytest.mark.parametrize('model, f, ts',
+                         [('fixed-rigid', 38e3, -46.2576),
                           ('elastic', 38e3, -58.1926),
-                          ('fluid filled', 38e3, -94.4968),])
+                          ('fluid-filled', 38e3, -94.4968),])
 def test_hpmodel(model, f, ts):
     mod = echosms.HPModel()
     p = {'boundary_type': model, 'shape': 'sphere', 'medium_c': 1500, 'a': 0.01, 'f': f}
     match model:
-        case 'fixed rigid':
+        case 'fixed-rigid':
             assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
         case 'elastic':
             p |= {'medium_rho': 1024, 'target_c': 1600, 'target_rho': 1600}
             assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
-        case 'fluid filled':
+        case 'fluid-filled':
             p |= {'medium_rho': 1024, 'target_c': 1510, 'target_rho': 1025}
             assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
 

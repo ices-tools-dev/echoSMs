@@ -9,7 +9,7 @@ from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel
 from echosms import HPModel, KRMModel
 from echosms import BenchmarkData, JechEtAlData
 from echosms import ReferenceModels
-from echosms import as_dataframe, as_dataarray
+from echosms import as_dataframe, as_dataarray, boundary_type as bt
 from echosms import create_dwba_spheroid, create_dwba_cylinder
 from echosms import KRMdata
 from echosms import DWBAdata
@@ -180,7 +180,7 @@ m['medium_c'] = s['medium_c']
 m['phi'] = 0
 m['theta'] = 90.0
 m['mesh'] = mesh
-m['boundary_type'] = 'pressure release'
+m['boundary_type'] = bt.pressure_release
 
 # Get the benchmark TS values
 bm_f, bm_ts = bm.freq_data(name)
@@ -324,13 +324,13 @@ plt.show()
 # %% ###############################################################################################
 # Try the high-pass model
 mod = HPModel()
-p = {'boundary_type': 'fixed rigid', 'shape': 'sphere', 'medium_c': 1500, 'a': 0.01,
+p = {'boundary_type': bt.fixed_rigid, 'shape': 'sphere', 'medium_c': 1500, 'a': 0.01,
      'f': np.arange(1, 400, 1)*1e3}
 fixed_rigid = mod.calculate_ts(p)
-p['boundary_type'] = 'elastic'
+p['boundary_type'] = bt.elastic
 p |= {'medium_rho': 1024, 'target_c': 1600, 'target_rho': 1600}
 elastic = mod.calculate_ts(p)
-p['boundary_type'] = 'fluid filled'
+p['boundary_type'] = bt.fluid_filled
 p |= {'medium_rho': 1024, 'target_c': 1510, 'target_rho': 1025}
 fluid = mod.calculate_ts(p)
 
@@ -409,7 +409,7 @@ params = {'medium_rho': [1000, 1250, 1500],
           'f': np.linspace(12, 100, num=400) * 1000,
           'theta': np.arange(0, 180, 1),
           'a': 0.07,
-          'boundary_type': 'fluid filled',
+          'boundary_type': bt.fluid_filled,
           'target_c': 1450,
           'target_rho': 1250}
 

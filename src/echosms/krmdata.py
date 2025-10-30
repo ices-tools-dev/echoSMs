@@ -6,6 +6,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass
+from .utils import boundary_type as bt
 if sys.version_info >= (3, 11):
     import tomllib
 else:
@@ -18,8 +19,8 @@ class KRMshape():
 
     Attributes
     ----------
-    boundary :
-        The shape bounday condition - either `soft` or `fluid`.
+    boundary : bt
+        The shape bounday condition - either `pressure_release` or `fluid_filled`.
     x :
         The _x_-axis coordinates [m].
     w :
@@ -34,7 +35,7 @@ class KRMshape():
         Density of the shape material [kg/m³].
     """
 
-    boundary: str  # 'soft' (aka swimbladder) or 'fluid' (aka body)
+    boundary: bt
     x: np.ndarray
     w: np.ndarray
     z_U: np.ndarray
@@ -105,7 +106,7 @@ class KRMorganism():
                      c='black')
 
         for s in self.inclusions:
-            c = 'C0' if s.boundary == 'fluid' else 'C1'
+            c = 'C0' if s.boundary == bt.fluid_filled else 'C1'
             plt.plot(s.x*1e3, s.z_U*1e3, s.x*1e3, s.z_L*1e3, c=c)
             for i in [0, -1]:  # close the ends of the shape
                 plt.plot([s.x[i]*1e3]*2, [s.z_U[i]*1e3, s.z_L[i]*1e3], c=c)
@@ -137,10 +138,10 @@ class KRMdata():
             # x-coordinates here when ingesting the data. And set the posterior end
             # of the organism to have x=0
             m = max(s['x_b'])
-            body = KRMshape('fluid', -np.array(s['x_b']), np.array(s['w_b']),
+            body = KRMshape(bt.fluid_filled, -np.array(s['x_b']), np.array(s['w_b']),
                             np.array(s['z_bU']), np.array(s['z_bL']),
                             s['body_c'], s['body_rho'])
-            swimbladder = KRMshape('soft', -np.array(s['x_sb']), np.array(s['w_sb']),
+            swimbladder = KRMshape(bt.pressure_release, -np.array(s['x_sb']), np.array(s['w_sb']),
                                    np.array(s['z_sbU']), np.array(s['z_sbL']),
                                    s['swimbladder_c'], s['swimbladder_rho'])
             self.krm_models[s['name']] = KRMorganism(s['name'], s['source'],

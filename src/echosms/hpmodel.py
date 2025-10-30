@@ -1,7 +1,7 @@
 """A class that provides a high-pass fluid sphere scattering model."""
 
 from math import log10, pi, sin, cos, exp, radians
-from .utils import wavenumber, as_dict
+from .utils import wavenumber, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
 
 
@@ -13,7 +13,7 @@ class HPModel(ScatterModelBase):
         self.long_name = 'high pass'
         self.short_name = 'hp'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['fluid filled', 'elastic', 'fixed rigid']
+        self.boundary_types = [bt.fluid_filled, bt.elastic, bt.fixed_rigid]
         self.shapes = ['sphere', 'prolate spheroid', 'cylinder', 'bent cylinder']
         self.max_ka = 20  # [1]
 
@@ -32,7 +32,7 @@ class HPModel(ScatterModelBase):
             raise ValueError('The boundary_type parameter must be one of: ' +
                              ', '.join(self.boundary_types))
 
-    def calculate_ts_single(self, shape, medium_c, a, f, boundary_type, medium_rho=None,
+    def calculate_ts_single(self, shape, medium_c, a, f, boundary_type: bt, medium_rho=None,
                             target_c=None, target_rho=None,
                             theta=None,
                             L=None, rho_c=None,
@@ -49,19 +49,19 @@ class HPModel(ScatterModelBase):
             Sound speed in the fluid medium surrounding the target [m/s].
         medium_rho : float
             Density of the fluid medium surrounding the target [kg/m³]. Not required when
-            `boundary_type` is `fixed rigid`.
+            `boundary_type` is `fixed_rigid`.
         target_c : float
             Longitudinal sound speed in the material inside the target [m/s]. Not required when
-            `boundary_type` is `fixed rigid`.
+            `boundary_type` is `fixed_rigid`.
         target_rho : float
             Density of the material inside the target [kg/m³]. Not required when
-            `boundary_type` is `fixed rigid`.
+            `boundary_type` is `fixed_rigid`.
         a : float
             Radius of the sphere, length of semi-minor axis of the prolate spheriod, or cylindrical
             radius of the straight or bent cylinder [m].
         f : float
             Frequency to calculate the scattering at [Hz].
-        boundary_type : str
+        boundary_type :
             The boundary type for the model.
         theta : float
             Pitch angle to calculate the scattering as per the echoSMs
@@ -112,7 +112,7 @@ class HPModel(ScatterModelBase):
         if validate_parameters:
             self.validate_parameters(locals())
 
-        if boundary_type == 'fixed rigid':
+        if boundary_type == bt.fixed_rigid:
             # just need something large
             g = 1e20
             h = 1e20
@@ -134,12 +134,12 @@ class HPModel(ScatterModelBase):
                 R = (g*h-1)/(g*h+1)
                 if irregular:
                     match boundary_type:
-                        case 'fluid filled':
+                        case bt.fluid_filled:
                             F = 40 * (k*a)**(-0.4)
                             G = 1-0.8*exp(-2.5*(k*a-2.25)**2)
-                        case 'elastic':
+                        case bt.elastic:
                             F = 15 * (k*a)**(-1.9)
-                        case 'rigid fixed':
+                        case bt.fixed_rigid:
                             F = 15 * (k*a)**(-1.9)
 
                 sigma_bs = a*a * (k*a)**4 * alpha_pis**2 * G\
@@ -148,12 +148,12 @@ class HPModel(ScatterModelBase):
                 a_pic = alpha_pic(g, h)
                 if irregular:
                     match boundary_type:
-                        case 'fluid filled':
+                        case bt.fluid_filled:
                             F = 2.5 * (k*a)**(1.65)
                             G = 1-0.8*exp(-2.5*(k*a-2.3)**2)
-                        case 'elastic':
+                        case bt.elastic:
                             F = 1.8 * (k*a)**(-0.4)
-                        case 'rigid fixed':
+                        case bt.fixed_rigid:
                             F = 1.8 * (k*a)**(-0.4)
 
                 sigma_bs = 1/9 * L*L * (k*a)**4 * a_pic**2 * G\
@@ -165,12 +165,12 @@ class HPModel(ScatterModelBase):
                 Ka = k*sin(theta)*a
                 if irregular:
                     match boundary_type:
-                        case 'fluid filled':
+                        case bt.fluid_filled:
                             F = 3 * (k*a)**(0.65)
                             G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
-                        case 'elastic':
+                        case bt.elastic:
                             F = 3.5 * (k*a)**(-1.0)
-                        case 'rigid fixed':
+                        case bt.fixed_rigid:
                             F = 3.5 * (k*a)**(-1.0)
 
                 sigma_bs = 0.25 * L*L * (Ka)**4 * a_pic**2 * s*s * G\
@@ -180,12 +180,12 @@ class HPModel(ScatterModelBase):
                 H = 1.
                 if irregular:
                     match boundary_type:
-                        case 'fluid filled':
+                        case bt.fluid_filled:
                             F = 3.0 * (k*a)**(0.65)
                             G = 1-0.8*exp(-2.5*(k*a-2.0)**2)
-                        case 'elastic':
+                        case bt.elastic:
                             F = 2.5 * (k*a)**(-1.0)
-                        case 'rigid fixed':
+                        case bt.fixed_rigid:
                             F = 2.5 * (k*a)**(-1.0)
 
                 sigma_bs = 0.25 * L*L * (k*a)**4 * a_pic**2 * H*H*G\

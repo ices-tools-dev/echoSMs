@@ -1,6 +1,6 @@
 """Setup the public API for echoSMs."""
 from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_jnpp
-from .utils import pro_rad1, pro_rad2, pro_ang1
+from .utils import pro_rad1, pro_rad2, pro_ang1, boundary_type
 from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_Sa
 from .utils_datastore import mesh_from_datastore, dwbaorganism_from_datastore, krmorganism_from_datastore
 from .utils_datastore import volume_from_datastore, surface_from_stl, outline_from_krm, outline_from_dwba
@@ -34,4 +34,4 @@ __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'mesh_from_datastore', 'volume_from_datastore', 'surface_from_stl', 'outline_from_krm',
            'outline_from_dwba', 
            'plot_specimen', 'plot_shape_outline', 'plot_shape_surface',
-           'plot_shape_voxels', 'plot_shape_categorised_voxels']
+           'plot_shape_voxels', 'plot_shape_categorised_voxels', 'boundary_type']

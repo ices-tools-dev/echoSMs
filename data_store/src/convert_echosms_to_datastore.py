@@ -7,7 +7,7 @@ import collections
 import copy
 import numpy as np
 from datetime import date
-from echosms import KRMdata, DWBAdata, outline_from_krm
+from echosms import KRMdata, DWBAdata, outline_from_krm, boundary_type as bt
 import tomli_w
 import requests
 from pathlib import Path
@@ -167,7 +167,7 @@ for aphiaid in dd.keys():
                     'shapes': []}
 
         shape = {'name': 'body',
-                 'boundary': 'fluid',
+                 'boundary': bt.fluid_filled,
                  'x': m.rv_pos[:, 0],
                  'y': m.rv_pos[:, 1],
                  'z': m.rv_pos[:, 2],

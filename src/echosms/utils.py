@@ -8,10 +8,47 @@ import pandas as pd
 from scipy.special import spherical_jn, spherical_yn
 from collections import namedtuple
 from spheroidalwavefunctions import prolate_swf
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+    from backports.strenum import StrEnum
+
 
 swf_t = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
                            'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
 
+class boundary_type(StrEnum):
+    """Scattering model boundary types."""
+
+    fixed_rigid = 'fixed-rigid'
+    """Fixed-rigid boundary condition, where the normal velocity is zero at the
+    object's boundary."""
+
+    pressure_release = 'pressure-release'
+    """Pressure-release boundary condition, where the acoustic pressure is zero at the
+    object's boundary."""
+
+    fluid_filled = 'fluid-filled'
+    """Fluid-filled boundary condition, where the acoustic pressure and normal velocity are
+    both non-zero at the object's boundary."""
+
+    elastic = 'elastic'
+    """The scattering object supports compressional and shear waves."""
+
+    fluid_shell_fluid_interior = 'fluid shell fluid interior'
+    """The object has a fluid interior surrounded by a fluid shell."""
+
+    fluid_shell_pressure_release_interior = "fluid shell pressure release interior"
+    """The object has a pressure release interior surrounded by a fluid shell."""
+
+    hard = 'fixed-rigid'
+    """A synonym for `fixed_rigid`."""
+
+    soft = 'pressure-release'
+    """A synonym for `pressure_release`."""
+
+    fluid = 'fluid-filled'
+    """A synonym for `fluid_filled`."""
 
 def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)\
                    -> float | np.ndarray:
@@ -22,7 +59,7 @@ def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)
     ts :
         The target strength of the object [dB re 1 m²].
     eba :
-        Ten times the logarithm to the base 10 of the transducer's equivalent two-way beam angle (ψ, sr). 
+        Ten times the logarithm to the base 10 of the transducer's equivalent two-way beam angle (ψ, sr).
         In formula form this is: eba = 10 log<sub>10</sub>(ψ) dB (re 1 sr).
     r :
         The range from the transducer to the target [m]. Used for acoustic beam spreading.

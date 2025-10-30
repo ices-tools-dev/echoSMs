@@ -43,7 +43,7 @@
             "shapes": [
                 {
                     "name": "body",
-                    "boundary": "fluid",
+                    "boundary": "fluid-filled",
                     "x": [
                         0.0,
                         -0.0177,
@@ -118,7 +118,7 @@
                 },
                 {
                     "name": "swimbladder",
-                    "boundary": "soft",
+                    "boundary": "pressure-release",
                     "x": [
                         -0.0487,
                         -0.0532,
@@ -183,7 +183,7 @@
             "shapes": [
                 {
                     "name": "body",
-                    "boundary": "fluid",
+                    "boundary": "fluid-filled",
                     "x": [
                         0.0,
                         -0.0156,
@@ -258,7 +258,7 @@
                 },
                 {
                     "name": "swimbladder",
-                    "boundary": "soft",
+                    "boundary": "pressure-release",
                     "x": [
                         -0.0398,
                         -0.0468,
@@ -323,7 +323,7 @@
             "shapes": [
                 {
                     "name": "body",
-                    "boundary": "fluid",
+                    "boundary": "fluid-filled",
                     "x": [
                         0.0,
                         -0.0336,
@@ -398,7 +398,7 @@
                 },
                 {
                     "name": "swimbladder",
-                    "boundary": "soft",
+                    "boundary": "pressure-release",
                     "x": [
                         -0.0874,
                         -0.1009,
@@ -463,7 +463,7 @@
             "shapes": [
                 {
                     "name": "body",
-                    "boundary": "fluid",
+                    "boundary": "fluid-filled",
                     "x": [
                         0.0,
                         -0.041,
@@ -538,7 +538,7 @@
                 },
                 {
                     "name": "swimbladder",
-                    "boundary": "soft",
+                    "boundary": "pressure-release",
                     "x": [
                         -0.103,
                         -0.125,

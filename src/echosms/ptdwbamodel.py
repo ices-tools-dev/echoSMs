@@ -4,7 +4,7 @@ import numpy as np
 from scipy import ndimage
 from scipy.spatial.transform import Rotation as R
 from .scattermodelbase import ScatterModelBase
-from .utils import as_dict
+from .utils import as_dict, boundary_type as bt
 
 
 class PTDWBAModel(ScatterModelBase):
@@ -15,14 +15,14 @@ class PTDWBAModel(ScatterModelBase):
         self.long_name = 'phase-tracking distorted-wave Born approximation'
         self.short_name = 'pt-dwba'
         self.analytical_type = 'approximate'
-        self.boundary_types = ['weakly scattering']
+        self.boundary_types = [bt.fluid_filled]
         self.shapes = ['unrestricted voxel-based']
         self.max_ka = 20
         self.no_expand_parameters = ['volume', 'voxel_size', 'rho', 'c']
 
     def validate_parameters(self, params):
         """Validate the model parameters.
-        
+
         See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
         """
         p = as_dict(params)
