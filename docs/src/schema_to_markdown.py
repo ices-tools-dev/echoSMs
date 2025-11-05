@@ -8,8 +8,8 @@ import json
 
 def parse_property(pname, p, required, defs):
     """Parse a JSON schema property definition."""
-    if pname in defs:
-        p = defs[pname]
+    if '$ref' in p:  # is a reference to a definition
+        p = defs[p['$ref'][8:]]
 
     desc = p.get('description', '')
     type_ = p.get('type', '')
@@ -17,7 +17,10 @@ def parse_property(pname, p, required, defs):
     constraints = []
     if 'enum' in p:
         type_ = 'enum of ' + type_
-        constraints.append('one of ' + ', '.join([f'``{item}``' for item in p['enum']]))
+        if len(p['enum']) == 1:
+            constraints.append(f'must be: ``{p["enum"][0]}``')
+        else:
+            constraints.append('one of ' + ', '.join([f'``{item}``' for item in p['enum']]))
 
     for c in ['minimum', 'maximum', 'minItems', 'maxItems']:
         if c in p:
@@ -44,7 +47,7 @@ def parse_object(d, defs):
     for pname, pdata in d['properties'].items():
         name, required, desc, type_, constraints = parse_property(pname, pdata, pname in prequired, defs)
 
-        # This code doesn't dea =l with nested arrays (e.g, array of array of array of int).
+        # This code doesn't deal with nested arrays (e.g, array of array of array of int).
         # This doesn't occur often with the echoSMs schema, so bodge it...
         if type_ == 'array':
             name, _, _, type_, item_constraints = parse_property(pname, pdata['items'], prequired, defs)
@@ -73,19 +76,19 @@ def parse_object(d, defs):
         else:
             rows.append((name, required, desc, type_, constraints))
 
-        if 'oneOf' in d:
-            first = True
-            for option in d['oneOf']:
-                of_rows = parse_object(option, defs)
-                if first:
-                    rows.append(('normal text',
-                                 f'and includes these properties as per the value of ``{of_rows[0][0]}``\n'))
-                    first = False
-                rows.append(('normal text', f'=== "{of_rows[0][3]}"\n'))
-                rows.append(('start table', 'indent', '', '', ''))
-                rows.extend(of_rows[1:])
-                rows.append(('end table', ''))
-                # rows.append(('normal text', '\n\n'))
+    if 'oneOf' in d:
+        first = True
+        for option in d['oneOf']:
+            of_rows = parse_object(option, defs)
+            if first:
+                rows.append(('normal text',
+                             f'and includes these properties as per the value of ``{of_rows[0][0]}``\n'))
+                first = False
+            rows.append(('normal text', f'=== "{of_rows[0][3]}"\n'))
+            rows.append(('start table', 'indent', '', '', ''))
+            rows.extend(of_rows[1:])
+            rows.append(('end table', ''))
+            # rows.append(('normal text', '\n\n'))
 
     return rows
 
@@ -99,7 +102,7 @@ def generate(schema_json_file, schema_md_file):
     with open(schema_md_file, 'w') as md:
         md.write(f'# {schema["title"]}\n\n')
         md.write(f'{schema["description"]}\n\n')
-        
+
         md.write('## Dataset\n')
         md.write('The dataset properties are:\n\n')
 
