@@ -2,7 +2,8 @@
 
 ???+ Note
 
-    This page contains the draft specification and documentation for the echoSMs anatomical datastore. It is a work in progress.
+    This page contains the draft specification and documentation for the echoSMs anatomical datastore. It is a work in progress. The specification here may not always be 
+    consistent with the example data available from the web API.
 
 ## Data store contents and structure
 
@@ -106,7 +107,9 @@ specimens = {'specimens':
                 [{'specimen_id': 'A',
                   'specimen_condition': 'unknown',
                   'length': 0.0,
+                  'length_units': 'm',
                   'weight': 0.0,
+                  'weight_units': 'kg',
                   'sex': 'unknown',
                   'length_type': 'unknown',
                   'shape_type': 'surface',
@@ -146,8 +149,11 @@ s = outline_from_krm(x = cod.body.x,
 
 # Add in other shape attributes to give a shape that contains all
 # those required by the schema.
+s['length_units'] = 'm'
 s['sound_speed_compressional'] = cod.body.rho
+s['sound_speed_compressional_units'] = 'm/s'
 s['mass_density'] = cod.body.c
+s['mass_density_units'] = 'kg/m^3'
 
 # The shape is now in the echoSMs anatomical datastore form with
 # (x,y,z) points defining the centreline and widths and heights for
@@ -159,7 +165,9 @@ specimens = {'specimens':
                 [{'specimen_id': 'A',
                   'specimen_condition': 'unknown',
                   'length': 0.0,
+                  'length_units': 'm',
                   'weight': 0.0,
+                  'weight_units': 'kg',
                   'sex': 'unknown',
                   'length_type': 'unknown',
                   'shape_type': 'outline',
@@ -190,6 +198,7 @@ s = outline_from_dwba(x = krill.rv_pos[:, 0],
                       name='body', boundary='soft')
 
 # Add in other shape attributes to give enough information to run a model.
+s['length_units'] = 'm'
 s['sound_speed_ratio'] = krill.h
 s['mass_density_ratio'] = krill.g
 
@@ -203,7 +212,9 @@ specimens = {'specimens':
                 [{'specimen_id': '123',
                   'specimen_condition': 'unknown',
                   'length': 0.0,
+                  'length_units': 'm',
                   'weight': 0.0,
+                  'weight_units': 'kg',
                   'sex': 'unknown',
                   'length_type': 'unknown',
                   'shape_type': 'outline',
@@ -229,15 +240,21 @@ c = np.array([...])
 
 # Put into a dict as per the echoSMs datastore schema
 shape = {'voxel_size': [0.005, 0.005, 0.005],
+         'voxel_size_units': 'm',
          'mass_density': rho.tolist(),
-         'sound_speed_compressional': c.tolist()}
+         'mass_density_units': 'kg/m^3',
+         'sound_speed_compressional': c.tolist(),
+         'sound_speed_compressional_units': 'm/s'}
 ```
 If using Xarrays rather than Numpy, you'll need to use the Xarray `.values` attribute to get the Numpy matrix and then call `tolist()`:
 
 ```py
 shape = {'voxel_size': [0.005, 0.005, 0.005],
+         'voxel_size_units': 'm',
          'mass_density': rho.values.tolist(),
-         'sound_speed_compressional': c.values.tolist()}
+         'mass_density_units': 'kg/m^3',
+         'sound_speed_compressional': c.values.tolist(),
+         'sound_speed_compressional_units': 'm/s'}
 ```
 
 ##### Categorised voxels
