@@ -98,7 +98,7 @@
             "maximum": 90
         },
         "latitude_units": {
-            "description": "Units name for the latitude property. Positive values indicate north of the equator.",
+            "description": "Units for latitude. Positive values indicate north of the equator.",
             "type": "string",
             "enum": [
                 "degrees_north"
@@ -111,7 +111,7 @@
             "maximum": 180
         },
         "longitude_units": {
-            "description": "Units name for the longitude property. Positive values indicate east of the prime meridian.",
+            "description": "Units for longitude. Positive values indicate east of the prime meridian.",
             "type": "string",
             "enum": [
                 "degrees_east"
@@ -123,10 +123,10 @@
             "minimum": 0
         },
         "depth_units": {
-            "description": "Units name for the depth property.",
+            "description": "Units for depth.",
             "type": "string",
             "enum": [
-                "metre"
+                "m"
             ]
         },
         "date_collection": {
@@ -227,7 +227,7 @@
             "minimum": 0
         },
         "dataset_size_units": {
-            "description": "Units name for the dataset_size property.",
+            "description": "Units for dataset_size.",
             "type": "string",
             "enum": [
                 "megabyte"
@@ -246,8 +246,7 @@
                     "length",
                     "length_units",
                     "length_type",
-                    "shape_type",
-                    "anatomical_type"
+                    "shape_type"
                 ],
                 "additionalProperties": false,
                 "properties": {
@@ -280,10 +279,10 @@
                         "minimum": 0
                     },
                     "weight_units": {
-                        "description": "Units name for the weight property.",
+                        "description": "Units for weight.",
                         "type": "string",
                         "enum": [
-                            "kilogram"
+                            "kg"
                         ]
                     },
                     "sex": {
@@ -331,7 +330,6 @@
                         "items": {
                             "type": "object",
                             "required": [
-                                "name",
                                 "anatomical_type"
                             ],
                             "properties": {
@@ -359,7 +357,7 @@
                             "oneOf": [
                                 {
                                     "required": [
-                                        "length_units",
+                                        "shape_units",
                                         "x",
                                         "y",
                                         "z",
@@ -371,7 +369,7 @@
                                         "shape_type": {
                                             "const": "outline"
                                         },
-                                        "length_units": {
+                                        "shape_units": {
                                             "$ref": "#/$defs/length_units"
                                         },
                                         "x": {
@@ -438,7 +436,7 @@
                                             }
                                         },
                                         "sound_speed_compressional_units": {
-                                            "$ref": "#/$defs/sound_speed_compressional_units"
+                                            "$ref": "#/$defs/sound_speed_units"
                                         },
                                         "sound_speed_shear": {
                                             "description": "Transversal (shear) sound speed in shape.",
@@ -450,7 +448,7 @@
                                             }
                                         },
                                         "sound_speed_shear_units": {
-                                            "$ref": "#/$defs/sound_speed_shear_units"
+                                            "$ref": "#/$defs/sound_speed_units"
                                         },
                                         "mass_density_ratio": {
                                             "description": "Ratio of mass densities of the shape and the surrounding material or shape.",
@@ -489,7 +487,7 @@
                                 },
                                 {
                                     "required": [
-                                        "length_units",
+                                        "shape_units",
                                         "x",
                                         "y",
                                         "z",
@@ -505,7 +503,7 @@
                                         "shape_type": {
                                             "const": "surface"
                                         },
-                                        "length_units": {
+                                        "shape_units": {
                                             "$ref": "#/$defs/length_units"
                                         },
                                         "x": {
@@ -597,7 +595,7 @@
                                             "minimum": 0
                                         },
                                         "sound_speed_compressional_units": {
-                                            "$ref": "#/$defs/sound_speed_compressional_units"
+                                            "$ref": "#/$defs/sound_speed_units"
                                         },
                                         "sound_speed_shear": {
                                             "description": "Transversal (shear) sound speed in shape.",
@@ -605,7 +603,7 @@
                                             "minimum": 0
                                         },
                                         "sound_speed_shear_units": {
-                                            "$ref": "#/$defs/sound_speed_shear_units"
+                                            "$ref": "#/$defs/sound_speed_units"
                                         },
                                         "mass_density_ratio": {
                                             "description": "Ratio of mass densities of the shape and the surrounding material or shape.",
@@ -654,7 +652,7 @@
                                             }
                                         },
                                         "voxel_size_units": {
-                                            "$ref": "#/$defs/voxel_size_units"
+                                            "$ref": "#/$defs/length_units"
                                         },
                                         "mass_density": {
                                             "description": "Mass density of voxels.",
@@ -694,7 +692,7 @@
                                             }
                                         },
                                         "sound_speed_compressional_units": {
-                                            "$ref": "#/$defs/sound_speed_compressional_units"
+                                            "$ref": "#/$defs/sound_speed_units"
                                         }
                                     }
                                 },
@@ -723,7 +721,7 @@
                                             }
                                         },
                                         "voxel_size_units": {
-                                            "$ref": "#/$defs/voxel_size_units"
+                                            "$ref": "#/$defs/length_units"
                                         },
                                         "categories": {
                                             "description": "Voxel categories",
@@ -763,7 +761,7 @@
                                             }
                                         },
                                         "sound_speed_compressional_units": {
-                                            "$ref": "#/$defs/sound_speed_compressional_units"
+                                            "$ref": "#/$defs/sound_speed_units"
                                         }
                                     }
                                 }
@@ -786,42 +784,28 @@
             ]
         },
         "length_units": {
-            "description": "Units name for coordinates, dimensions, and lengths.",
+            "description": "Units for lengths, dimensions, and sizes.",
             "type": "string",
             "enum": [
-                "metre"
-            ]
-        },
-        "voxel_size_units": {
-            "description": "Units name for voxel size units.",
-            "type": "string",
-            "enum": [
-                "metre"
+                "m"
             ]
         },
         "mass_density_units": {
-            "description": "Units symbol for the mass density property.",
+            "description": "Units for mass density.",
             "type": "string",
             "enum": [
                 "kg/m^3"
             ]
         },
-        "sound_speed_compressional_units": {
-            "description": "Units symbol for the sound speed compressional property.",
-            "type": "string",
-            "enum": [
-                "m/s"
-            ]
-        },
-        "sound_speed_shear_units": {
-            "description": "Units symbol for the shear sound speed property.",
+        "sound_speed_units": {
+            "description": "Units for sound speed.",
             "type": "string",
             "enum": [
                 "m/s"
             ]
         },
         "youngs_modulus_units": {
-            "description": "Units symbol for the Young's modulus property.",
+            "description": "Units for Young's modulus.",
             "type": "string",
             "enum": [
                 "Pa"
