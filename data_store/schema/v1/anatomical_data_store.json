@@ -51,6 +51,10 @@
                     "swimbladder",
                     "backbone",
                     "muscle",
+                    "head",
+                    "eye",
+                    "organs",
+                    "appendages",
                     "other"
                 ]
             }
@@ -232,7 +236,8 @@
                     "shapes",
                     "length",
                     "length_type",
-                    "shape_type"
+                    "shape_type",
+                    "anatomical_type"
                 ],
                 "additionalProperties": false,
                 "properties": {
@@ -248,6 +253,21 @@
                             "frozen",
                             "thawed",
                             "unknown",
+                            "other"
+                        ]
+                    },
+                    "anatomical_type": {
+                        "description": "Type of anatomical feature represented by this specimen.",
+                        "type": "string",
+                        "enum": [
+                            "body",
+                            "swimbladder",
+                            "backbone",
+                            "muscle",
+                            "head",
+                            "eye",
+                            "organs",
+                            "appendages",
                             "other"
                         ]
                     },
