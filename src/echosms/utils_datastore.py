@@ -140,8 +140,8 @@ def volume_from_datastore(voxels: list):
 
 def surface_from_stl(stl_file: str | Path,
                      dim_scale: float = 1.0,
-                     name: str = 'body',
-                     boundary: str = 'soft') -> dict:
+                     anatomical_type: str = 'body',
+                     boundary: str = 'pressure-release') -> dict:
     """Create an echoSMs surface shape from an .stl file.
 
     Parameters
@@ -151,10 +151,10 @@ def surface_from_stl(stl_file: str | Path,
     dim_scale :
         Scaling factor applied to the node positions. Use to convert from one
         length unit to another (e.g., 1e-3 will convert from mm to m).
-    name :
-        The name for this shape.
+    anatomical_type :
+        The anatomical type for this shape, as per the echoSMs datastore schema.
     boundary :
-        The boundary type for this shape.
+        The boundary type for this shape, as per the echoSMs datastore schema.
 
     Returns
     -------
@@ -169,8 +169,9 @@ def surface_from_stl(stl_file: str | Path,
     """
     mesh = trimesh.load_mesh(stl_file)
 
-    # Boundle up into a dict as per the echoSMs schema for a surface
-    return {'name': name, 'boundary': boundary,
+    # Bundle up into a dict as per the echoSMs schema for a surface
+    return {'anatomical_type': anatomical_type, 'boundary': boundary,
+            'shape_units': 'm',
             'x': (mesh.vertices[:, 0]*dim_scale).tolist(),
             'y': (mesh.vertices[:, 1]*dim_scale).tolist(),
             'z': (mesh.vertices[:, 2]*dim_scale).tolist(),
@@ -184,7 +185,8 @@ def surface_from_stl(stl_file: str | Path,
 
 def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.ArrayLike,
                      width: npt.ArrayLike,
-                     name: str = "body", boundary: str = 'soft') -> dict:
+                     anatomical_type: str = "body",
+                     boundary: str = 'pressure-release') -> dict:
     """
     Convert KRM shape representation to the echoSMs outline shape representation.
 
@@ -202,10 +204,10 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
         surface.
     width :
         The width of the shape at each _x_ coordinate
-    name :
-        The name for this shape.
+    anatomical_type :
+        The anatomical type for this shape, as per the echoSMs datastore schema.
     boundary :
-        The boundary type for this shape.
+        The boundary type for this shape, as per the echoSMs datastore schema.
 
     Returns
     -------
@@ -215,7 +217,8 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
     height = np.array(height_u) - np.array(height_l)
     z = -(np.array(height_l) + height / 2.0)
 
-    return {'name': name, 'boundary': boundary,
+    return {'anatomical_type': anatomical_type, 'boundary': boundary,
+            'shape_units': 'm',
             'x': np.array(x).tolist(),
             'y': y.tolist(),
             'z': z.tolist(),
@@ -223,7 +226,8 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
             'width': np.array(width).tolist()}
 
 
-def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') -> dict:
+def outline_from_dwba(x, z, radius, anatomical_type: str = "body",
+                      boundary: str = 'pressure-release') -> dict:
     """
     Convert DWBA shape to the echoSMs outline shape representation.
 
@@ -236,17 +240,19 @@ def outline_from_dwba(x, z, radius, name: str = "body", boundary: str = 'soft') 
         the dorsal surface and negative values towards the ventral surface.
     radius :
         The radius of the shape at each _x_ coordinate
-    name :
-        The name for this shape.
+    anatomical_type :
+        The anatomical type for this shape, as per the echoSMs datastore schema.
     boundary :
-        The boundary type for this shape.
+        The boundary type for this shape, as per the echoSMs datastore schema.
 
     Returns
     -------
      An echoSMs outline shape representation.
 
     """
-    return {'name': name, 'boundary': boundary,
+    return {'anatomical_type': anatomical_type,
+            'boundary': boundary,
+            'shape_units': 'm',
             'x': np.array(x).tolist(),
             'y': np.zeros(len(x)).tolist(),
             'z': (-np.array(z)).tolist(),

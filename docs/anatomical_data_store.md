@@ -94,7 +94,8 @@ EchoSMs provides a function, [surface_from_stl()][echosms.surface_from_stl], to 
 ```py
 from echosms import surface_from_stl
 
-shape = surface_from_stl('A.stl', dim_scale=1e-3, name='body', boundary='soft')
+shape = surface_from_stl('A.stl', dim_scale=1e-3, anatomical_type='body'
+                          boundary='pressure-release')
 ```
 
 This shape can then be combined with specimen metadata and written to a TOML file ready for loading into the echoSMs datastore:
@@ -144,12 +145,11 @@ s = outline_from_krm(x = cod.body.x,
                      height_u = cod.body.z_U,
                      height_l = cod.body.z_L,
                      width = cod.body.w,
-                     name='body',
-                     boundary=cod.body.boundary)
+                     anatomical_type='body',
+                     boundary=str(cod.body.boundary))
 
 # Add in other shape attributes to give a shape that contains all
 # those required by the schema.
-s['length_units'] = 'm'
 s['sound_speed_compressional'] = cod.body.rho
 s['sound_speed_compressional_units'] = 'm/s'
 s['mass_density'] = cod.body.c
@@ -195,10 +195,10 @@ krill.plot()
 s = outline_from_dwba(x = krill.rv_pos[:, 0],
                       z = -krill.rv_pos[:, 2],
                       radius = krill.a,
-                      name='body', boundary='soft')
+                      anatomical_type='body',
+                      boundary='fluid-filled')
 
 # Add in other shape attributes to give enough information to run a model.
-s['length_units'] = 'm'
 s['sound_speed_ratio'] = krill.h
 s['mass_density_ratio'] = krill.g
 
