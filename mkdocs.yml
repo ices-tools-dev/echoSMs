@@ -14,9 +14,9 @@ nav:
     - Other software: other_software.md
     - Anatomical data store:
         - Introduction: datastore_intro.md
-        - Data structures: anatomical_data_store.md
-        - Web API: datastoreAPI.md
-        - Using with echoSMs: data_store_models.md
+        - Data structures: datastore_anatomical.md
+        - Web API: datastore_API.md
+        - Using with echoSMs: datastore_models.md
 
 theme: 
     name: material 

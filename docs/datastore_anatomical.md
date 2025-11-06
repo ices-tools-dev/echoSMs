@@ -52,6 +52,8 @@ Associated with each dataset are data about one or more specimens. This includes
 
 The dataset contents are specified by a [JSON schema](https://json-schema.org/) file stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, etc. The schema is a very technical document and is perhaps more easily understood via the table in the echoSMs [documentation](schema/data_store_schema.md) and an [example file](https://github.com/ices-tools-dev/echoSMs/tree/main/data_store/resources).
 
+An alternative structure for the schema is available in an echoSMs [issue](https://github.com/ices-tools-dev/echoSMs/issues/35).
+
 Your dataset files can be validated against the datastore schema using online validators (e.g., [here](https://www.jsonschemavalidator.net/), [here](https://jsonschema.dev/), or [here](https://www.liquid-technologies.com/online-json-schema-validator)), or within your own code using a JSON schema validation library (e.g., [jsonschema-rs](https://github.com/Stranger6667/jsonschema/tree/master/crates/jsonschema-py) for Python and [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) for R). It is not necessary to validate your data before submitting it to the datastore, but it will help the uploading happen faster (a validation is done during the uploading process and any dataset format problems will be identified then).
 
 ### Shapes
