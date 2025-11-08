@@ -293,7 +293,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
                 a.set_title(label, loc='left', fontsize=8)
                 a.axis('scaled')
             axs[0].set_title(t)
-            fit_to_axes(fig)
+            _fit_to_axes(fig)
 
         case 'surface':
             fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
@@ -311,7 +311,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
     else:
         plt.show()
 
-def fit_to_axes(fig):
+def _fit_to_axes(fig):
     """Change figure size to fit the axes."""
     w = h = 0.0
     for a in fig.axes:
@@ -323,6 +323,8 @@ def fit_to_axes(fig):
 
 def plot_shape_outline(shapes: list[dict], axs: list) -> None:
     """Plot an echoSMs anatomical outline shape.
+    
+    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
 
     Parameters
     ----------
@@ -362,6 +364,8 @@ def plot_shape_outline(shapes: list[dict], axs: list) -> None:
 def plot_shape_surface(shapes, ax):
     """Plot an echoSMs anatomical surface shape.
 
+    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
+
     Parameters
     ----------
     shapes :
@@ -387,8 +391,20 @@ def plot_shape_surface(shapes, ax):
         ax.yaxis.set_inverted(True)
 
 
-def plot_shape_voxels(s, title):
-    """Plot the specimen's voxels."""
+def plot_shape_voxels(s, title=''):
+    """Plot the specimen's voxels.
+    
+    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
+    
+    Parameters
+    ----------
+    s :
+        The voxel shape data structure as per the echoSMs datastore.
+        
+    title :
+        Title for the plot.
+    
+    """
     # Show density. Could do sound speed or some impedance proxy.
     d = np.array(s['sound_speed_compressional'])
     voxel_size = np.array(s['voxel_size'])
@@ -430,8 +446,18 @@ def plot_shape_voxels(s, title):
     fig.suptitle(title)
 
 
-def plot_shape_categorised_voxels(s, title):
-    """Plot the specimen's voxels."""
+def plot_shape_categorised_voxels(s, title=''):
+    """Plot the specimen's categorised voxels.
+    
+    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
+    
+    Parameters
+    ----------
+    s :
+        The categorised voxel shape data structure as per the echoSMs datastore.
+    title :
+        Title for the plot.
+    """
     d = np.array(s['categories'])
     voxel_size = np.array(s['voxel_size'])
     shape = d.shape
