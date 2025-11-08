@@ -4,9 +4,9 @@ Designed to work with the echoSMs datastore schema so only implements
 the features used in that.
 """
 import json
+from collections import defaultdict
 
-
-def parse_property(pname, p, required, defs):
+def parse_property(pname, p, required, depends_on, defs):
     """Parse a JSON schema property definition."""
     if '$ref' in p:  # is a reference to a definition
         p = defs[p['$ref'][8:]]
@@ -28,7 +28,13 @@ def parse_property(pname, p, required, defs):
 
     constraints = '<br>'.join(constraints)
 
-    req = 'yes' if required else 'no'
+    if required:
+        req = 'yes'
+    else:
+        if depends_on:
+            req = f'yes, if ``{depends_on[0]}`` is present'  # TODO
+        else:
+            req = 'no'
 
     if 'const' in p:
         type_ = f'``{p["const"]}``'
@@ -43,14 +49,28 @@ def parse_object(d, defs):
     else:
         prequired = []
 
+    drequired = {}
+    if 'dependentRequired' in d:
+        # invert the dependentRequired mapping
+        drequired = defaultdict(list)
+        for k, v in d['dependentRequired'].items():
+            for item in v:
+                drequired[item].append(k)
+
     rows = []
     for pname, pdata in d['properties'].items():
-        name, required, desc, type_, constraints = parse_property(pname, pdata, pname in prequired, defs)
+        name, required, desc,\
+            type_, constraints = parse_property(pname, pdata,
+                                                pname in prequired,
+                                                drequired.get(pname, []), defs)
 
         # This code doesn't deal with nested arrays (e.g, array of array of array of int).
         # This doesn't occur often with the echoSMs schema, so bodge it...
         if type_ == 'array':
-            name, _, _, type_, item_constraints = parse_property(pname, pdata['items'], prequired, defs)
+            name, _, _,\
+                type_, item_constraints = parse_property(pname, pdata['items'],
+                                                         prequired,
+                                                         drequired.get(pname, []), defs)
             if type_ != 'object':
                 type_ = 'array of ' + type_
 
