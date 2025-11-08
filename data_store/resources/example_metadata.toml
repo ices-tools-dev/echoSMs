@@ -35,11 +35,12 @@ dataset_size_units = "megabyte"
 specimen_id = "A"
 specimen_condition = "fresh"
 length = 0.173
-length_units = "m"
 weight = 0.048
+length_units = "m"
 weight_units = "kg"
 length_type = "standard length"
 shape_type = "outline"
+
 [[specimens.shapes]]
 anatomical_type = "body"
 boundary = "fluid-filled"
@@ -74,7 +75,9 @@ length = 0.156
 weight = 0.034
 length_type = "standard length"
 length_units = "m"
+weight_units = "kg"
 shape_type = "outline"
+
 [[specimens.shapes]]
 anatomical_type = "body"
 boundary = "fluid-filled"
@@ -110,7 +113,9 @@ length = 0.323
 weight = 0.286
 length_type = "standard length"
 length_units = "m"
+weight_units = "kg"
 shape_type = "outline"
+
 [[specimens.shapes]]
 anatomical_type = "body"
 boundary = "fluid-filled"
@@ -145,8 +150,10 @@ specimen_condition = "fresh"
 length = 0.380
 weight = 0.544
 length_type = "standard length"
-shape_type = "outline"
 length_units = "m"
+weight_units = "kg"
+shape_type = "outline"
+
 [[specimens.shapes]]
 anatomical_type = "body"
 boundary = "fluid-filled"
