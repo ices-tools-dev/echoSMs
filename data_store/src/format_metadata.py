@@ -92,11 +92,12 @@ for path in datasets_dir.iterdir():
 
         data['dataset_id'] = path.name
         data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
+        data['dataset_size_units'] = 'megabyte'
 
         errored = False
         for error in validator.iter_errors(data):
             rprint(f'[yellow] Validation error with {error.schema_path}')
-            # rprint('[orange4]' + error.message)
+            #rprint('[orange4]' + error.message)
             errored = True
 
         if errored:
