@@ -22,7 +22,6 @@ worms_url = 'https://www.marinespecies.org/rest/AphiaRecordByAphiaID/'
 dataset_t = {  # 'dataset_id': "",
              'description': "",
              'anatomical_category': "organism",
-             'anatomical_features': ['body', 'swimbladder', 'backbone'],
              'date_first_added': date.today().strftime('%Y-%m-%d'),
              'date_last_modified': date.today().strftime('%Y-%m-%d'),
              'aphiaID': 1,
@@ -110,16 +109,18 @@ for aphiaid in dd.keys():
         shape['mass_density_units'] = 'kg/m^3'
         shape['sound_speed_compressional'] = len(m.body.x) * [m.body.c]
         shape['sound_speed_compressional_units'] = 'm/s'
+        shape['shape_units'] = "m"
         specimen['shapes'].append(shape)
 
         for inc in m.inclusions:
             shape = outline_from_krm(inc.x, inc.z_U, inc.z_L,
                                      inc.w, boundary=inc.boundary,
-                                     name='inclusion')
+                                     anatomical_type='inclusion')
             shape['mass_density'] = len(inc.x) * [inc.rho]
             shape['mass_density_units'] = 'kg/m^3'
             shape['sound_speed_compressional'] = len(inc.x) * [inc.c]
             shape['sound_speed_compressional_units'] = 'm/s'
+            shape['shape_units'] = "m"
             specimen['shapes'].append(shape)
 
         dataset['specimens'].append(specimen)
@@ -167,11 +168,13 @@ for aphiaid in dd.keys():
 
         specimen = {'specimen_id': m.name, 'specimen_condition': 'unknown',
                     'length': m.length,
+                    'length_units': 'm',
                     'sex': 'unknown',
                     'length_type': 'unknown', 'shape_type': 'outline',
                     'shapes': []}
 
-        shape = {'name': 'body',
+        shape = {'anatomical_type': 'body',
+                 'shape_units': 'm',
                  'boundary': bt.fluid_filled,
                  'x': m.rv_pos[:, 0],
                  'y': m.rv_pos[:, 1],
