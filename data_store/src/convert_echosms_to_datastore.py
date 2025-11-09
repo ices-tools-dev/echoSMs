@@ -99,6 +99,7 @@ for aphiaid in dd.keys():
 
         specimen = {'specimen_id': m.name, 'specimen_condition': 'unknown',
                     'length': m.length,
+                    'length_units': 'm',
                     'sex': 'unknown',
                     'length_type': 'unknown', 'shape_type': 'outline',
                     'shapes': []}
@@ -106,7 +107,9 @@ for aphiaid in dd.keys():
         shape = outline_from_krm(m.body.x, m.body.z_U, m.body.z_L,
                                  m.body.w, boundary=m.body.boundary)
         shape['mass_density'] = len(m.body.x) * [m.body.rho]
+        shape['mass_density_units'] = 'kg/m^3'
         shape['sound_speed_compressional'] = len(m.body.x) * [m.body.c]
+        shape['sound_speed_compressional_units'] = 'm/s'
         specimen['shapes'].append(shape)
 
         for inc in m.inclusions:
@@ -114,7 +117,9 @@ for aphiaid in dd.keys():
                                      inc.w, boundary=inc.boundary,
                                      name='inclusion')
             shape['mass_density'] = len(inc.x) * [inc.rho]
+            shape['mass_density_units'] = 'kg/m^3'
             shape['sound_speed_compressional'] = len(inc.x) * [inc.c]
+            shape['sound_speed_compressional_units'] = 'm/s'
             specimen['shapes'].append(shape)
 
         dataset['specimens'].append(specimen)

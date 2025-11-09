@@ -56,8 +56,11 @@ for comsol_data in raw_dir.glob('*.txt'):
 
     shape = {'name': 'body',
              'voxel_size': voxel_size,
+             'voxel_size_units': 'm',
              'mass_density': rho_r.tolist(),
-             'sound_speed_compressional': c_r.tolist()}
+             'mass_density_units': 'kg/m^3',
+             'sound_speed_compressional': c_r.tolist(),
+             'sound_speed_compressional_units': 'm/s'}
 
     spec_id = str(int(comsol_data.stem[3:6]))
 
@@ -66,7 +69,9 @@ for comsol_data in raw_dir.glob('*.txt'):
                 'length_type': 'total length',
                 'shape_type': 'voxels',
                 'length': lw[spec_id][0],
+                'length_units': 'm',
                 'weight': lw[spec_id][1],
+                'weight_units': 'kg',
                 'shapes': [shape]}
 
     print('Writing TOML file')
