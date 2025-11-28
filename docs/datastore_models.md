@@ -68,7 +68,7 @@ shape = surface_from_stl('length_44_cm_body.stl',
                           boundary='pressure-release')
 
 # flips the STL mesh around to fit the echoSMs coordinate system.
-# This step will depend on with how your meshes are oriented
+# This step will depend on how your meshes are oriented
 x = shape['x']
 y = shape['y']
 z = shape['z']
@@ -101,5 +101,9 @@ specimen['shape_type'] = 'outline'
 specimen['shapes'] = [shape]
 
 plot_specimen(specimen)
+
+# It's not shown here, but the next steps are to use krmorganism_from_datastore()
+#  or dwba_from_datastore() to convert the shape into the form that the relevant
+#  echoSMs models require.
 
 ```
