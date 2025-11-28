@@ -34,19 +34,19 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     dorsal = projected(mesh, normal=[0, 0, 1], ignore_sign=True)
     lateral = projected(mesh, normal=[0, -1, 0], ignore_sign=True)
 
-    # Get a centreline on the x-axis that extends the full length of the organism
+    # Get bounds for a centreline on the x-axis that extends the full length of the organism
     bounds = mesh.bounding_box
     xmin = bounds.vertices[0, 0]
     xmax = bounds.vertices[7, 0]
-    centreline_x = np.arange(xmin, xmax, slice_thickness)
-
+    
     # calculate the shape heights, widths, and y and z coordinates of the centreline
     widths = []
     heights = []
+    centreline_x = []
     centreline_y = []
     centreline_z = []
 
-    for x in centreline_x:
+    for x in np.arange(xmin, xmax, slice_thickness):
         # Get the points where a line perpendicular to the x-axis intersects
         # the dorsal and lateral shapes
 
@@ -55,19 +55,30 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
         # and the intersection of that line with the dorsal shape
         intersect = intersection(dorsal, line)
 
+        # If there is no intersection, go to the next x-point. This can happen
+        # at the start or end of the bounding box
+        if not intersect:
+            continue
+
         # The length of that line is the width of the shape at this x position
-        widths.append(intersect.length)
+        w = intersect.length
         # and the centre point of that line is the y coordinate of the centreline
         centre = intersect.interpolate(0.5, normalized=True)
-        # No intersection means the y coordinate of the centreline is 0.0
-        centreline_y.append(-centre.y if centre else 0.0)
+        y = -centre.y
 
         # Do similar for the lateral outline
         line = LineString([[-1000, x], [1000, x]])
         intersect = intersection(lateral, line)
+        if not intersect:
+            continue
+
         heights.append(intersect.length)
         centre = intersect.interpolate(0.5, normalized=True)
-        centreline_z.append(centre.x if centre else 0.0)
+
+        widths.append(w)
+        centreline_x.append(x)
+        centreline_y.append(y)
+        centreline_z.append(centre.x)
 
     # Create an echoSMs shape dict using the metadata from the input surface shape
     to_remove = ['x', 'y', 'z', 'facets_0', 'facets_1', 'facets_2',
@@ -75,7 +86,7 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     outline_shape = {k: v for k, v in shape.items() if k not in to_remove}
 
     # Add the outline shape data
-    outline_shape['x'] = centreline_x.tolist()
+    outline_shape['x'] = centreline_x
     outline_shape['y'] = centreline_y
     outline_shape['z'] = centreline_z
     outline_shape['height'] = heights
