@@ -96,7 +96,7 @@ EchoSMs provides a function, [surface_from_stl()][echosms.surface_from_stl], to 
 ```py
 from echosms import surface_from_stl
 
-shape = surface_from_stl('A.stl', dim_scale=1e-3, anatomical_type='body'
+shape = surface_from_stl('A.stl', dim_scale=1e-3, anatomical_type='body',
                           boundary='pressure-release')
 ```
 
