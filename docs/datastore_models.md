@@ -56,7 +56,8 @@ plt.show()
 
 ## Converting from echoSMs surface shape to an outline shape
 
-This code shows how to load an STL 3D triangular mesh and convert it into an echoSMs outline shape. It can then be used with echoSMs models that require outlines (e.g., KRM, DWBA).
+This code shows how to load an STL 3D triangular mesh and convert it into an echoSMs outline shape.
+It can then be used with echoSMs models that use outlines (e.g., KRM, DWBA).
 
 ```py
 from echosms import surface_to_outline, surface_from_stl, plot_specimen
@@ -67,8 +68,8 @@ shape = surface_from_stl('length_44_cm_body.stl',
                           anatomical_type='body',
                           boundary='pressure-release')
 
-# flips the STL mesh around to fit the echoSMs coordinate system.
-# This step will depend on how your meshes are oriented
+# Flip the STL mesh around to fit the echoSMs coordinate system.
+# This step will depend on how your mesh is oriented
 x = shape['x']
 y = shape['y']
 z = shape['z']
@@ -78,7 +79,7 @@ shape['y'] = x
 shape['z'] = y
 
 # Add the shape into an echoSMs specimen metadata structure so it can
-# easily plotted using the echoSMs plot_specimen() function
+# be plotted using the echoSMs plot_specimen() function
 specimen = {'specimen_id': 'A',
             'specimen_condition': 'fresh',
             'length': 0.044,
@@ -92,7 +93,7 @@ plot_specimen(specimen)
 # Do the conversion. For the moment, this function expects an echoSMs
 # shape data structure but it may be more convenient for it to accept
 # an echoSMs specimen data structure.
-# Also, the particulars of how the metadata are structured may change
+# Note: the particulars of how the metadata are structured may change
 # as the datastore data structures are refined.
 shape = surface_to_outline(specimen['shapes'][0], slice_thickness=0.005)
 
@@ -103,7 +104,7 @@ specimen['shapes'] = [shape]
 plot_specimen(specimen)
 
 # It's not shown here, but the next steps are to use krmorganism_from_datastore()
-#  or dwba_from_datastore() to convert the shape into the form that the relevant
-#  echoSMs models require.
+# or dwba_from_datastore() to convert the shape into the form that the relevant
+# echoSMs models require.
 
 ```
