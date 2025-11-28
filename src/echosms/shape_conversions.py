@@ -17,7 +17,8 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
 
     Returns
     -------
-    An echoSMs outline shape with shape metadata as per the input shape.
+    :
+        An echoSMs outline shape with shape metadata as per the input shape.
     
     Notes
     -----
