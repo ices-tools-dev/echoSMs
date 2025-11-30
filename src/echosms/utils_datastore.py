@@ -115,7 +115,7 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     # get the index of the first shape with name == 'body' (if any)
     idx = [i for i, s in enumerate(shapes) if s['name'] == 'body']
     if not idx:
-        idx = 0  # No shape with name of body so we use the first shape as the body
+        idx = [0]  # No shape with name of body so we use the first shape as the body
 
     body = KRMshapes.pop(idx[0])
     inclusions = KRMshapes
