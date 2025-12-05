@@ -74,9 +74,10 @@ x = shape['x']
 y = shape['y']
 z = shape['z']
 
+# The shape is centered on the y and z axis
 shape['x'] = [-v for v in z]
-shape['y'] = x
-shape['z'] = y
+shape['y'] = [v- sum(x)/len(x)  for v in x]
+shape['z'] = [v- sum(y)/len(y)  for v in y]
 
 # Add the shape into an echoSMs specimen metadata structure so it can
 # be plotted using the echoSMs plot_specimen() function
