@@ -113,7 +113,7 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     KRMshapes = [_to_KRMshape(s) for s in shapes]
 
     # get the index of the first shape with name == 'body' (if any)
-    idx = [i for i, s in enumerate(shapes) if s['name'] == 'body']
+    idx = [i for i, s in enumerate(shapes) if s['anatomical_type'] == 'body']
     if not idx:
         idx = [0]  # No shape with name of body so we use the first shape as the body
 
