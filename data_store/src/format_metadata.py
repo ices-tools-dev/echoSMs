@@ -101,13 +101,17 @@ for path in datasets_dir.iterdir():
             errored = True
 
         if errored:
-            rprint('  [red]Validation failed')
+            rprint('  [red]Validation failed ✗')
             error_count += 1
         else:
             rprint('  [green]Validation passed ✓')
             # Flatten and write out to a staging directory
             for sp in data['specimens']:
-                row = {'id': data['dataset_id'] + '_' + sp['specimen_id']} | data | sp
+
+                anatomical_types = [sh['anatomical_type'] for sh in sp['shapes']]
+
+                row = {'id': data['dataset_id'] + '_' + sp['specimen_id']} |\
+                    {'anatomical_types': anatomical_types} |  data | sp
 
                 rprint(f'    Writing specimen [orange4]{row["specimen_id"]:s}', end='')
 
