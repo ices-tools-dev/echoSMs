@@ -113,9 +113,10 @@ for aphiaid in dd.keys():
         specimen['shapes'].append(shape)
 
         for inc in m.inclusions:
+            a_type = 'swimbladder' if inc.rho < 100 else 'bone'
             shape = outline_from_krm(inc.x, inc.z_U, inc.z_L,
                                      inc.w, boundary=inc.boundary,
-                                     anatomical_type='inclusion')
+                                     anatomical_type=a_type)
             shape['mass_density'] = len(inc.x) * [inc.rho]
             shape['mass_density_units'] = 'kg/m^3'
             shape['sound_speed_compressional'] = len(inc.x) * [inc.c]
