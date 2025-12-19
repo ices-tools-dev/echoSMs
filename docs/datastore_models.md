@@ -54,7 +54,9 @@ plt.ylabel('TS [dB re 1 m$^2$]')
 plt.show()
 ```
 
-## Converting from echoSMs surface shape to an outline shape
+## Converting between from echoSMs shapes
+
+### Surface to outline
 
 This code shows how to load an STL 3D triangular mesh and convert it into an echoSMs outline shape.
 It can then be used with echoSMs models that use outlines (e.g., KRM, DWBA).
@@ -108,4 +110,36 @@ plot_specimen(specimen)
 # or dwba_from_datastore() to convert the shape into the form that the relevant
 # echoSMs models require.
 
+```
+
+### Outline to surface
+
+This code shows how to convert an echoSMs outline shape into an echoSMs surface shape, using a shape from the echoSMs anatomical datastore.
+
+```py
+import requests
+from echosms import outline_to_surface, plot_specimen
+
+# Get an outline shape from the echoSMs anatomical datastore
+baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
+r = requests.get(baseURI + 'v2/specimen/CLAY_HORNE_B/data')
+specimen = r.json()
+
+# Plot the outline shapes - there will be a body and swimbladder shape
+plot_specimen(specimen)
+
+# Convert the shapes to surfaces.
+# For the moment, outline_to_surface expects an echoSMs shape data
+# structure but it may be more convenient for it to accept an echoSMs
+# specimen data structure.
+surfaces = []
+for shape in specimen['shapes']:
+    surfaces.append(outline_to_surface(shape))
+
+# And update the specimen dict with the shapes and shape type
+specimen['shapes'] = surfaces
+specimen['shape_type'] = 'surface'
+
+# Plot the surface shapes
+plot_specimen(specimen)
 ```
