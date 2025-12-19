@@ -58,7 +58,7 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
     # Create triangles for the two end surfaces
     # TODO - ensure this works for end surfaces that are a point (e.g. width or height = 0)
     pts2d = [[p[1], p[2]] for p in pts]  # shapely.Polygon wants a 2D polygon, so remove the x coord
-    breakpoint()
+
     _, endcap1_faces = triangulate_polygon(Polygon(pts2d[:num_pts]), engine='earcut')
     # the order of the nodes is inverted for endcap2 to have the normals point outwards
     _, endcap2_faces = triangulate_polygon(Polygon(pts2d[:-(num_pts+1):-1]), engine='earcut')
