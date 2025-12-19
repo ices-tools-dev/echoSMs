@@ -25,7 +25,7 @@ dependencies = [
   'backports.strenum >= 1.3.1; python_version < "3.11"',
   'trimesh',
   "shapely",
-  "triangle",
+  "mapbox_earcut",
   'spheroidalwavefunctions',
   'tqdm',
   'mapply',
