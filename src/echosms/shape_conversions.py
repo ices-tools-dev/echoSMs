@@ -25,9 +25,10 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
     Notes
     -----
     Each outline cross-sectional ellipse is represented by a polygon with num_pts
-    vertices and triangles are created that join the vertices on adjacent polygons.
-    The two ends are meshed using Delaunay triangulation (using the `triangle` package, a
-    wrapper around the [Triangle](https://www.cs.cmu.edu/~quake/triangle.html) mesh generator.
+    vertices. Triangles are created that join the vertices on adjacent polygons.
+    The two ends are meshed using an ear slicing algorithm (using the `mapbox_earcut` package, a
+    Python binding to a [C++ implementation](https://github.com/mapbox/earcut.hpp) of the
+    algorithm).
     """
     num_discs = len(outline['x'])
 
