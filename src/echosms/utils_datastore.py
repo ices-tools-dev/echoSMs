@@ -323,7 +323,7 @@ def _fit_to_axes(fig):
 
 def plot_shape_outline(shapes: list[dict], axs: list) -> None:
     """Plot an echoSMs anatomical outline shape.
-    
+
     Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
 
     Parameters
@@ -380,7 +380,7 @@ def plot_shape_surface(shapes, ax):
         y = 1e3 * np.array(s['y'])
         z = 1e3 * np.array(s['z'])
 
-        ax.plot_trisurf(x, y, z, triangles=facets)
+        ax.plot_trisurf(x, y, z, triangles=facets, alpha=0.6)
         ax.view_init(elev=210, azim=-60, roll=0)
         ax.set_xlabel('x')
         ax.set_ylabel('y')
@@ -393,17 +393,17 @@ def plot_shape_surface(shapes, ax):
 
 def plot_shape_voxels(s, title=''):
     """Plot the specimen's voxels.
-    
+
     Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
-    
+
     Parameters
     ----------
     s :
         The voxel shape data structure as per the echoSMs datastore.
-        
+
     title :
         Title for the plot.
-    
+
     """
     # Show density. Could do sound speed or some impedance proxy.
     d = np.array(s['sound_speed_compressional'])
@@ -448,9 +448,9 @@ def plot_shape_voxels(s, title=''):
 
 def plot_shape_categorised_voxels(s, title=''):
     """Plot the specimen's categorised voxels.
-    
+
     Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
-    
+
     Parameters
     ----------
     s :
