@@ -286,7 +286,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
 
     match specimen['shape_type']:
         case 'outline':
-            fig, axs = plt.subplots(2, 1, sharex=True, layout='tight', dpi=dpi)
+            fig, axs = plt.subplots(2, 1, sharex=True, layout='tight')
             fig.set_tight_layout({'h_pad': 1, 'w_pad': 1})
             plot_shape_outline(specimen['shapes'], axs)
             for label, a in zip(labels, axs):
@@ -306,7 +306,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
             plot_shape_categorised_voxels(specimen['shapes'][0], t)
 
     if savefile:
-        plt.savefig(savefile, format='png', dpi=dpi)
+        plt.savefig(savefile, format='png', dpi=dpi, bbox_inches='tight')
         plt.close()
     else:
         plt.show()
@@ -374,13 +374,13 @@ def plot_shape_surface(shapes, ax):
         A matplotlib axis.
     """
     for s in shapes:
-        # c = 'C0' if s['boundary'] == bt.fluid_filled else 'C1'
+        c = 'C0' if s['boundary'] == bt.fluid_filled else 'C1'
         facets = np.array([s['facets_0'], s['facets_1'], s['facets_2']]).transpose()
         x = 1e3 * np.array(s['x'])
         y = 1e3 * np.array(s['y'])
         z = 1e3 * np.array(s['z'])
 
-        ax.plot_trisurf(x, y, z, triangles=facets, alpha=0.6)
+        ax.plot_trisurf(x, y, z, triangles=facets, alpha=0.6, color=c)
         ax.view_init(elev=210, azim=-60, roll=0)
         ax.set_xlabel('x')
         ax.set_ylabel('y')

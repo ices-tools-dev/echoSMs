@@ -35,6 +35,8 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
     # Create points around each ellipse cross-section of the outline shape
     t = np.linspace(0, 2*np.pi, num=num_pts, endpoint=False)
     pts = []
+    # Could vectorise this, but then the code is harder to understand and the number of
+    # discs that this will iterate over is fairly small so speed isn't a concern
     for i in range(num_discs):
         pts_y = outline['y'][i] + outline['width'][i]/2 * np.cos(t)
         pts_z = outline['z'][i] + outline['height'][i]/2 * np.sin(t)
@@ -42,6 +44,7 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
         pts.extend(np.c_[pts_x, pts_y, pts_z].tolist())
 
     # Create triangles connecting respective points on each ellipse
+    # Same vectorisation comment here as above
     faces = []
     for disc in range(num_discs-1):
         for pt_i in range(num_pts):
@@ -76,7 +79,6 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
                          'or normals are not facing outwards')
 
     # TODO - consider resampling the mesh to give triangles all of a similar size
-    # TODO - check that the normals are always outwards
 
     # structure as an echoSMs surface dict
     surface = {'x': mesh.vertices[:, 0].tolist(),
