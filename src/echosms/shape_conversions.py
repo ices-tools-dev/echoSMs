@@ -3,11 +3,85 @@
 import numpy as np
 import trimesh
 from trimesh.path.polygons import projected
-from shapely import intersection, LineString
+from trimesh.creation import triangulate_polygon
+from shapely import intersection, LineString, Polygon
+
+def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
+    """Convert an outline shape to a surface shape.
+
+    Parameters
+    ----------
+    outline :
+        An echoSMs outline shape.
+    num_pts :
+        The number of points to place on each cross-sectional ellipse.
+
+    Returns
+    -------
+    :
+        An echoSMs surface shape with shape metadata as per the input shape.
+
+    Notes
+    -----
+    Each outline cross-sectional ellipse is represented by a polygon with num_pts
+    vertices and triangles are created that join the vertices on adjacent polygons.
+    The two ends are meshed using delaunay triangulation (using the `triangle` library).
+    """
+    num_discs = len(outline['x'])
+
+    # Create points around each ellipse cross-section of the outline shape
+    t = np.linspace(0, 2*np.pi, num=num_pts, endpoint=False)
+    pts = []
+    for i in range(num_discs):
+        pts_y = outline['y'][i] + outline['width'][i]/2 * np.cos(t)
+        pts_z = outline['z'][i] + outline['height'][i]/2 * np.sin(t)
+        pts_x = np.full(pts_y.shape, outline['x'][i])
+        pts.extend(np.c_[pts_x, pts_y, pts_z].tolist())
+
+    # Create triangles connecting respective points on each ellipse
+    faces = []
+    for disc in range(num_discs-1):
+        for pt_i in range(num_pts):
+            face = [disc*num_pts + pt_i,
+                    (disc+1)*num_pts + pt_i,
+                    disc*num_pts + (pt_i+1) % num_pts]
+            faces.append(face)
+
+            face = [disc*num_pts + (pt_i+1) % num_pts,
+                    (disc+1)*num_pts + pt_i,
+                    (disc+1)*num_pts + (pt_i+1) % num_pts]
+            faces.append(face)
+
+    # Create triangles for the two end surfaces
+    # TODO - ensure this works for end surfaces that are a point (e.g. width or height = 0)
+    pts2d = [[p[1], p[2]] for p in pts]  # shapely.Polygon wants a 2D polygon, so remove the x coord
+    _, endcap1_faces = triangulate_polygon(Polygon(pts2d[:num_pts]), engine='triangle')
+    _, endcap2_faces = triangulate_polygon(Polygon(pts2d[-num_pts:]), engine='triangle')
+    # Get the right facet indices for endcap2
+    endcap2_faces = [f + num_pts * (num_discs-1) for f in endcap2_faces]
+
+    faces.extend(endcap1_faces)
+    faces.extend(endcap2_faces)
+
+    # TODO - consider resampling the mesh to give triangles all of a similar size
+
+    # structure as an echoSMs surface dict
+    surface = {'x': [pt[0] for pt in pts],
+               'y': [pt[1] for pt in pts],
+               'z': [pt[2] for pt in pts],
+               'facets_0': [face[0] for face in faces],
+               'facets_1': [face[1] for face in faces],
+               'facets_2': [face[2] for face in faces]}
+
+    # Copy across other attributes from the outline shape
+    attrs = {k:v for k, v in outline.items() if k not in ['x', 'y', 'z', 'height', 'width']}
+
+    return surface | attrs
+
 
 def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     """Convert a surface shape to an outline shape.
-    
+
     Parameters
     ----------
     shape :
@@ -19,13 +93,12 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     -------
     :
         An echoSMs outline shape with shape metadata as per the input shape.
-    
+
     Notes
     -----
     The conversion projects the surface shape to get dorsal and lateral outlines and then
     slices along the _x_-axis at a configurable resolution to produce the outline shape.
     """
-
     # Put the shape into a trimesh mesh
     v = np.array([shape['x'], shape['y'], shape['z']]).T
     f = np.array([shape['facets_0'], shape['facets_1'], shape['facets_2']]).T
@@ -39,7 +112,7 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     bounds = mesh.bounding_box
     xmin = bounds.vertices[0, 0]
     xmax = bounds.vertices[7, 0]
-    
+
     # calculate the shape heights, widths, and y and z coordinates of the centreline
     widths = []
     heights = []
@@ -92,5 +165,5 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     outline_shape['z'] = centreline_z
     outline_shape['height'] = heights
     outline_shape['width'] = widths
-    
+
     return outline_shape

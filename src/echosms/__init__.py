@@ -21,7 +21,7 @@ from .kamodel import KAModel
 from .krmmodel import KRMModel
 from .hpmodel import HPModel
 from .krmdata import KRMdata, KRMorganism, KRMshape
-from .shape_conversions import surface_to_outline
+from .shape_conversions import surface_to_outline, outline_to_surface
 
 __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'MSSModel', 'PSMSModel', 'DCMModel', 'ESModel', 'PTDWBAModel',
@@ -36,4 +36,4 @@ __all__ = ['ScatterModelBase', 'BenchmarkData', 'ReferenceModels',
            'outline_from_dwba', 
            'plot_specimen', 'plot_shape_outline', 'plot_shape_surface',
            'plot_shape_voxels', 'plot_shape_categorised_voxels', 'boundary_type',
-           'surface_to_outline']
+           'surface_to_outline', 'outline_to_surface']
