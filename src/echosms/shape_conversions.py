@@ -3,7 +3,8 @@
 import numpy as np
 import trimesh
 from trimesh.path.polygons import projected
-from trimesh.creation import triangulate_polygon
+from trimesh.creation import triangulate_polygon, Trimesh
+
 from shapely import intersection, LineString, Polygon
 
 def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
@@ -56,27 +57,40 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
     # TODO - ensure this works for end surfaces that are a point (e.g. width or height = 0)
     pts2d = [[p[1], p[2]] for p in pts]  # shapely.Polygon wants a 2D polygon, so remove the x coord
     _, endcap1_faces = triangulate_polygon(Polygon(pts2d[:num_pts]), engine='triangle')
-    _, endcap2_faces = triangulate_polygon(Polygon(pts2d[-num_pts:]), engine='triangle')
+    # the order of the nodes is inverted for endcap2 to have the normals point outwards
+    _, endcap2_faces = triangulate_polygon(Polygon(pts2d[:-(num_pts+1):-1]), engine='triangle')
     # Get the right facet indices for endcap2
     endcap2_faces = [f + num_pts * (num_discs-1) for f in endcap2_faces]
 
     faces.extend(endcap1_faces)
     faces.extend(endcap2_faces)
 
+    # Put into trimesh to get the face normals
+    mesh = Trimesh(vertices=pts, faces=faces)
+
+    if not mesh.is_volume:
+        raise ValueError('Mesh is not watertight, not wound consistently, '
+                         'or normals are not facing outwards')
+
     # TODO - consider resampling the mesh to give triangles all of a similar size
+    # TODO - check that the normals are always outwards
 
     # structure as an echoSMs surface dict
-    surface = {'x': [pt[0] for pt in pts],
-               'y': [pt[1] for pt in pts],
-               'z': [pt[2] for pt in pts],
-               'facets_0': [face[0] for face in faces],
-               'facets_1': [face[1] for face in faces],
-               'facets_2': [face[2] for face in faces]}
+    surface = {'x': mesh.vertices[:, 0].tolist(),
+               'y': mesh.vertices[:, 1].tolist(),
+               'z': mesh.vertices[:, 2].tolist(),
+               'facets_0': mesh.faces[:, 0].tolist(),
+               'facets_1': mesh.faces[:, 1].tolist(),
+               'facets_2': mesh.faces[:, 2].tolist(),
+               'normals_x': mesh.face_normals[:, 0].tolist(),
+               'normals_y': mesh.face_normals[:, 1].tolist(),
+               'normals_z': mesh.face_normals[:, 2].tolist(),
+               }
 
     # Copy across other attributes from the outline shape
     attrs = {k:v for k, v in outline.items() if k not in ['x', 'y', 'z', 'height', 'width']}
 
-    return surface | attrs
+    return attrs | surface
 
 
 def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
