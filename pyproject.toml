@@ -29,6 +29,7 @@ dependencies = [
   'spheroidalwavefunctions',
   'tqdm',
   'mapply',
+  "matplotlib",
 ]
 classifiers = [
     'Development Status :: 3 - Alpha',
