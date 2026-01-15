@@ -144,4 +144,4 @@ with open(datastore_final_dir/metadata_final_filename, 'wb') as f:
     f.write(json_bytes)
 
 rprint(f'Compressing all data into [green]{datastore_final_dir.with_suffix(".zip")}')
-make_archive(str(datastore_final_dir), 'zip', datastore_final_dir);
+make_archive(str(datastore_final_dir), 'zip', datastore_final_dir)
