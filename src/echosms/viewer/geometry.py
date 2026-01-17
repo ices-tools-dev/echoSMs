@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def generate_sphere(radius, num_points=100):
     """Generate KRM-style sphere data."""
     # Centered at 0
@@ -7,7 +8,7 @@ def generate_sphere(radius, num_points=100):
     val = radius**2 - x**2
     val[val < 0] = 0
     z = np.sqrt(val)
-    
+
     return {
         "name": f"Sphere (a={radius*100:.1f}cm)",
         "x_b": x.tolist(),
@@ -16,6 +17,7 @@ def generate_sphere(radius, num_points=100):
         "w_b": (2*z).tolist(),
         "x_sb": [], "z_sbU": [], "z_sbL": [], "w_sb": []
     }
+
 
 def generate_prolate_spheroid(minor_radius, length, num_points=100):
     """Generate KRM-style prolate spheroid data."""
@@ -26,13 +28,15 @@ def generate_prolate_spheroid(minor_radius, length, num_points=100):
     z = minor_radius * np.sqrt(val)
 
     return {
-        "name": f"Prolate Spheroid (a={minor_radius*100:.1f}cm, L={length*100:.1f}cm)",
+        "name": f"Prolate Spheroid (a={minor_radius*100:.1f}cm, "
+                f"L={length*100:.1f}cm)",
         "x_b": x.tolist(),
         "z_bU": z.tolist(),
         "z_bL": (-z).tolist(),
         "w_b": (2*z).tolist(),
         "x_sb": [], "z_sbU": [], "z_sbL": [], "w_sb": []
     }
+
 
 def generate_cylinder(radius, length, num_points=100):
     """Generate KRM-style cylinder data."""
@@ -48,19 +52,23 @@ def generate_cylinder(radius, length, num_points=100):
         "x_sb": [], "z_sbU": [], "z_sbL": [], "w_sb": []
     }
 
+
 def generate_bent_cylinder(radius, length, rho_c, num_points=100):
     """Generate DWBA-style bent cylinder data."""
     # Angle subtended
     theta_total = length / rho_c
     t = np.linspace(-theta_total/2, theta_total/2, num_points)
-    
+
     x_c = rho_c * np.sin(t)
     z_c = rho_c * np.cos(t) - rho_c
     y_c = np.zeros_like(x_c)
     a = np.full_like(x_c, radius)
 
+    name_str = f"Bent Cyl (a={radius*100:.1f}, L={length*100:.1f}, " \
+               f"rho={rho_c*100:.1f}cm)"
+
     return {
-        "name": f"Bent Cyl (a={radius*100:.1f}, L={length*100:.1f}, rho={rho_c*100:.1f}cm)",
+        "name": name_str,
         "x": x_c.tolist(),
         "y": y_c.tolist(),
         "z": z_c.tolist(),
