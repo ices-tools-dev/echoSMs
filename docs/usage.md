@@ -303,3 +303,29 @@ theta, ts = bm.angle_data('fixed rigid prolate spheroid')
 bm.freq_as_dataframe()
 bm.angle_as_dataframe()
 ```
+
+## Shape Viewer
+
+EchoSMs includes an optional graphical user interface (GUI) for inspecting organism shapes and anatomical data. This is particularly useful for verifying geometric models (like DWBA or KRM shapes) before running acoustic simulations.
+
+### Installation
+
+The viewer requires additional dependencies. To install echoSMs with the viewer support:
+
+```bash
+pip install echosms[viewer]
+```
+
+### Usage
+
+Once installed, you can launch the viewer from the command line:
+
+```bash
+echosms-view
+```
+
+The Shape Viewer allows you to:
+
+- **Load Shapes:** Browse models directly from the echoSMs DataStore (via the web) or open local JSON/TOML files.
+- **Inspect Geometry:** Switch between 2D profile views and 3D wireframe reconstructions to check coordinate alignment and structural integrity.
+- **Verify Metadata:** View detailed metadata associated with each shape to ensure the correct species and dimensions are being used.

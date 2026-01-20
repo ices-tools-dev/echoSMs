@@ -70,6 +70,14 @@ dev = [
   "rtoml",
   "rich"
 ]
+viewer = [
+    "rtoml",
+    "tomli; python_version < '3.11'",
+    "requests",
+]
+
+[project.scripts]
+echosms-view = "echosms.viewer.app:main"
 
 
 [project.urls]
