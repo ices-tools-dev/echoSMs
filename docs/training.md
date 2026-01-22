@@ -2,7 +2,7 @@
 
 _This section is under development_
 
-Choosing and using acoustic scattering models can be difficult. to help, this page provides links
+Choosing and using acoustic scattering models can be difficult. To help, this page provides links
  to some helpful resources and presentations. Suggestions
 of additional items for the list below are welcome, as are other training materials that may
 be relevant.
