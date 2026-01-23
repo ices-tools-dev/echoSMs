@@ -1,6 +1,7 @@
 # Other software
 
-Other software that provides source code for acoustic scattering models of relevance to fisheries and plankton acoustics includes:
+Software that provides source code for acoustic scattering models of relevance to fisheries and plankton acoustics are listed below. A more general list of underwater acoustic modelling software is available
+at the [Ocean Acoustics Library](https://oalib-acoustics.org/models-and-software/).
 
 - [acousticTS](https://github.com/brandynlucca/acousticTS): R code for calculating scattering using the DCM, DWBA, SDWBA, SDWBA_curved, KRM, MSS model, as well as that of calibration spheres.
 - [Coupled BEM acoustic](https://github.com/elavia/coupled_bem_acoustic): Julia code that calculates the TS of three-dimensional shapes with an included object (e.g., a swimbladder).
