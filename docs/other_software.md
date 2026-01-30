@@ -6,6 +6,7 @@ at the [Ocean Acoustics Library](https://oalib-acoustics.org/models-and-software
 - [acousticTS](https://github.com/brandynlucca/acousticTS): R code for calculating scattering using the DCM, DWBA, SDWBA, SDWBA_curved, KRM, MSS model, as well as that of calibration spheres.
 - [Coupled BEM acoustic](https://github.com/elavia/coupled_bem_acoustic): Julia code that calculates the TS of three-dimensional shapes with an included object (e.g., a swimbladder).
 - [FishAcoustics](https://github.com/gavinmacaulay/FishAcoustics): Contains a Python module that implements the phase-tracking DWBA model.
+- [gasbubbles](https://github.com/peter-urban/gasbubbles/tree/main): Contains Python code for scattering models relevant to gas bubbles. Uses echoSMs for some of its' models.
 - [Hydrac](https://hydrac.readthedocs.io/overview.html): Contains Python code that implements several exact and approximate scattering models, including the DWBA and high-pass models. Hydrac is a package for computing suspended matter concentrations from backscatter.
 - [KRM Model](https://www.fisheries.noaa.gov/data-tools/krm-model): A web page that uses the KRM model to estimate the TS of predefined or user-supplied shapes over a range of input parameters.
 - [KRMr](https://github.com/SvenGastauer/KRMr): KRM model for fish in R.
