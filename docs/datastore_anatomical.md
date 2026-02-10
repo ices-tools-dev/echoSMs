@@ -58,9 +58,9 @@ Your dataset files can be validated against the datastore schema using online va
 
 ### Units
 
-All physical numerical values in a dataset must be provided in the SI units prescribed in the datastore schema. If shape data contains values with different units, they must be converted to the prescribed units for the .toml files. The main situation where this occurs are the length units - the datastore requires metres, but the original shape data are often in millimetres, centimetres, inches, etc.
+All physical numerical values in a dataset must be provided in the SI units prescribed in the datastore schema. If shape data contains values with different units, they must be converted to the prescribed units for the .toml files. The main situation where this occurs are the shape coordinate units - the datastore requires metres, but the original shape data are often in millimetres, centimetres, inches, etc.
 
-Forcing particular units places the burden of unit conversion on the data provider. The alternative of accepting any unit requires data users to convert units to suit their model software and is likely to generate more errors and require more effort than than the data provider doing the conversion.
+Forcing particular units places the burden of unit conversion on the data provider. The alternative (accepting any unit) requires data users to convert units to suit their model software. This is likely to generate more errors and require more effort than the data provider doing the conversion.
 
 ### Shapes
 
