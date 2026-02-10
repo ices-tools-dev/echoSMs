@@ -41,7 +41,7 @@ dataset_t = {  # 'dataset_id': "",
              'date_image': "",
              'investigators': [],
              'data_collection_description': "",
-             'note': "",
+             'notes': [],
              'imaging_method': "unknown",
              'shape_method': "unknown",
              'shape_method_processing': "unknown",
@@ -73,9 +73,9 @@ for aphiaid in dd.keys():
     dataset['shape_method'] = 'unknown'
     dataset['model_type'] = 'KRM'
     dataset['description'] = 'Shape data for KRM models'
-    dataset['note'] = 'Shape obtained from the KRM shapes available at '
+    dataset['notes'] = ['Shape obtained from the KRM shapes available at '
     'https://www.fisheries.noaa.gov/data-tools/krm-model. '
-    'This is not necessarily the original source of the shape.'
+    'This is not necessarily the original source of the shape.']
 
     # create models in the dataset
     for n in dd[aphiaid]:
@@ -146,8 +146,8 @@ for aphiaid in dd.keys():
     dataset['model_type'] = 'DWBA'
     dataset['description'] = ''
     dataset['model_type'] = 'DWBA'
-    dataset['note'] = 'Shape obtained from the SDWBA.jl github repository. '
-    'This is not necessarily the original source of the shape.'
+    dataset['notes'] = ['Shape obtained from the SDWBA.jl github repository. '
+    'This is not necessarily the original source of the shape.']
 
     for n in dd[aphiaid]:
         m = d.model(n)

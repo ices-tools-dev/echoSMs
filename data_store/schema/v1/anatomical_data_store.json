@@ -161,9 +161,12 @@
             "description": "Description of data collection details.",
             "type": "string"
         },
-        "note": {
+        "notes": {
             "description": "Explanatory notes about the shape data.",
-            "type": "string"
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         },
         "imaging_method": {
             "description": "Method used to obtain the raw image data.",
