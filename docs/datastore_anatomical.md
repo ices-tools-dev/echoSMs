@@ -56,6 +56,12 @@ An alternative structure for the schema is available in an echoSMs [issue](https
 
 Your dataset files can be validated against the datastore schema using online validators (e.g., [here](https://www.jsonschemavalidator.net/), [here](https://jsonschema.dev/), or [here](https://www.liquid-technologies.com/online-json-schema-validator)), or within your own code using a JSON schema validation library (e.g., [jsonschema-rs](https://github.com/Stranger6667/jsonschema/tree/master/crates/jsonschema-py) for Python and [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) for R). It is not necessary to validate your data before submitting it to the datastore, but it will help the uploading happen faster (a validation is done during the uploading process and any dataset format problems will be identified then).
 
+### Units
+
+All physical numerical values in a dataset must be provided in the SI units prescribed in the datastore schema. If shape data contains values with different units, they must be converted to the prescribed units for the .toml files. The main situation where this occurs are the length units - the datastore requires metres, but the original shape data are often in millimetres, centimetres, inches, etc.
+
+Forcing particular units places the burden of unit conversion on the data provider. The alternative of accepting any unit requires data users to convert units to suit their model software and is likely to generate more errors and require more effort than than the data provider doing the conversion.
+
 ### Shapes
 
 Most anatomical scattering models use one of these three-dimensional representations:
