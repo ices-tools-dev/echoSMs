@@ -1,5 +1,5 @@
 %% read input configuation file
-function				h=get_parameters(fname);
+function				h=save_parameters(fname)
 global 	para	
 
 fid=fopen(fname,'w');

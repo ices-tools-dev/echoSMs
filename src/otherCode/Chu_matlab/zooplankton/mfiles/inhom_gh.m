@@ -105,15 +105,15 @@ else		% construct correlated randomized g ang h profile
   if rem(n_int,2) == 0 		% n_int is an even number
     n=n_int/2;
     phs=2*pi*rand(1,n-1);	
-    F(2:n)=F(2:n).*exp(i*phs); % negative frequency component
+    F(2:n)=F(2:n).*exp(1i*phs); % negative frequency component
     phs_flip=-fliplr(phs);     % fliped phase
-    F(n+2:n_int)=F(n+2:n_int).*exp(i*phs_flip); % complex conjugate (pos. freq)	
+    F(n+2:n_int)=F(n+2:n_int).*exp(1i*phs_flip); % complex conjugate (pos. freq)	
   else                           % n_int is an odd number
     n=(n_int-1)/2;
     phs=2*pi*rand(1,n);	
-    F(2:n+1)=F(2:n+1).*exp(i*phs);			       % 
+    F(2:n+1)=F(2:n+1).*exp(1i*phs);			       % 
     phs_flip=-fliplr(phs);
-    F(n+2:n_int)=F(n+2:n_int).*exp(i*phs_flip);   % complex conjugate	
+    F(n+2:n_int)=F(n+2:n_int).*exp(1i*phs_flip);   % complex conjugate	
   end
   ftc=ifft(F);
   ft=real(ftc);ft=ft-mean(ft);
@@ -123,7 +123,7 @@ else		% construct correlated randomized g ang h profile
 % check 
 
   F1=fft(ft);
-  Pc=F1.*conj(F1).*exp(i*Pphs);
+  Pc=F1.*conj(F1).*exp(1i*Pphs);
   Rx=xcorr(ft);
   subplot(311)
   plot(ft)

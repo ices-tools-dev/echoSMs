@@ -2,7 +2,8 @@
 
 clear
 
-addpath(genpath('C:/bin'))% matlab Sphere  -end
+addpath(genpath('rigid&fixed sphere'))
+addpath(genpath('functions'))
 
 out_flag=1;				% complex form function
 scale=1;				% linear spacing in ka
@@ -74,6 +75,6 @@ if proc_flag == 1
 else
     ths = ka;
     amp = abs(fm);
-    polar(ths, amp)
+    polarplot(ths, amp)
 end
 

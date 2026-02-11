@@ -67,7 +67,7 @@ if ( proc_flag == 1)
    term1=dJn2.*Yn1./(Jn2.*dJn1)-g*h*dYn1./dJn1;
    term2=dJn2.*Jn1./(Jn2.*dJn1)-g*h;
    cn=term1./term2;
-   bn=-1./(1+i*cn);
+   bn=-1./(1+1i*cn);
    i_n = sqrt(-1).^n;
    for j=1:m
       s=-em.*pn.*bn(j,:);
@@ -97,7 +97,7 @@ else
    term1=dJn2.*Yn1./(Jn2.*dJn1)-g*h*dYn1./dJn1;
    term2=dJn2.*Jn1./(Jn2.*dJn1)-g*h;
    cn=term1./term2;
-   bn=1./(1+i*cn);
+   bn=1./(1+1i*cn);
    for j=1:m
       s=(em.*pn(j,:)).*bn;
       f(j)=sum(s);
@@ -109,11 +109,11 @@ ka=ka1;
 if ( out_flag == 1 )			% modular of form function
    outy=abs(2*f./sqrt(pi*ka));		
 elseif ( out_flag == 2 )		% complex form function
-   outy=2*exp(-i*pi/4)*f./sqrt(pi*ka);
+   outy=2*exp(-1i*pi/4)*f./sqrt(pi*ka);
 elseif ( out_flag == 3 )		% modular of normalized scattering amplitude
    outy=abs(f)/pi;
 elseif ( out_flag == 4 )		% normalized complex scattering amplitude
-   outy=-i*f/pi;
+   outy=-1i*f/pi;
 else
    errordlg('''out_flag'' must be within 1-4, try again !','Wrong Parameter' );
    outy=[];

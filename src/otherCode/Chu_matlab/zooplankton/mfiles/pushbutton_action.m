@@ -1,4 +1,4 @@
-function		h=pushbutton_action(indx);
+function		h=pushbutton_action(indx)
 % pushbutton action
 global para status dat
 

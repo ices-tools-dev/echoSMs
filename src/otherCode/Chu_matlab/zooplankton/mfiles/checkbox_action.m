@@ -1,4 +1,4 @@
-function		h=checkbox_action(indx);
+function		h=checkbox_action(indx)
 % checkbox action
 
 global para

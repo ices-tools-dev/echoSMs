@@ -2,7 +2,8 @@
 
 clear
 
-addpath('functions')
+[p, ~, ~] = fileparts(mfilename('fullpath'));
+addpath(fullfile(p, '../functions'))
 
 a=0.25;
 out_flag=2;				% complex form function
@@ -19,7 +20,7 @@ para_rgd=[n ang_0 ang_e ka round(ka)+10];
 [th, fm]=rgd_sft_fs(proc_flag,1,scale,out_flag,para_rgd);
 
 figure(1)
-polar(th, abs(fm))
+polarplot(th, abs(fm))
 
 
 

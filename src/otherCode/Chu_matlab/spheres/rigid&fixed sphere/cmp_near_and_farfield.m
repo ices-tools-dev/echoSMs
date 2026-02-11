@@ -3,7 +3,8 @@
 
 clear
 
-addpath('functions')
+[p, ~, ~] = fileparts(mfilename('fullpath'));
+addpath(fullfile(p, '../functions'))
 
 a = 0.25;               % radius of the sphere
 out_flag = 2;           % complex form function
@@ -40,9 +41,9 @@ else
     [th, ps_nf] = nf_rgd_sft_fs(proc_flag,1,scale,out_flag,para_rgd_nf);
     ps_ff = ps_nf*r_to_a/(2*a);
     figure(1)
-    polar(th, abs(ps_ff), '.-')
+    polarplot(th, abs(ps_ff), '.-')
     hold on
-    polar(th, abs(fs_ff), 'or')
+    polarplot(th, abs(fs_ff), 'or')
     hold off    
     legend('Normalized Near Field', 'Farfield')
 end

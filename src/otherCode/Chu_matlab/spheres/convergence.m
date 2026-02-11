@@ -3,7 +3,8 @@
 % 2015-04-10
 
 clear
-addpath(genpath('C:/bin'))% matlab Sphere  -end
+
+addpath('functions')
 
 out_flag=2;				% complex form function
 scale=1;				% linear spacing in ka

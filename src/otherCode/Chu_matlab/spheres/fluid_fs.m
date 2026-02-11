@@ -66,7 +66,7 @@ if ( proc_flag == 1)    %% scattering as a function of ka
    term1=djn2.*yn1./(jn2.*djn1)-g*h*dyn1./djn1;
    term2=djn2.*jn1./(jn2.*djn1)-g*h;
    cn=term1./term2;
-   bn=-1./(1+i*cn);
+   bn=-1./(1+1i*cn);
    for j=1:m
       s=nl.*pn1.*bn(j,:);
       f(j)=sum(s);
@@ -98,7 +98,7 @@ else       %%% scattering as a function of scattering angle
    term1=djn2.*yn1./(jn2.*djn1)-g*h*dyn1./djn1;
    term2=djn2.*jn1./(jn2.*djn1)-g*h;
    cn=term1./term2;
-   bn=-1./(1+i*cn);
+   bn=-1./(1+1i*cn);
    for j=1:m
       s=(nl.*pn1(j,:)).*bn;
       f(j)=sum(s);
@@ -110,11 +110,11 @@ ka=ka1;
 if ( out_flag == 1 )			% modular of form function
    outy=abs(2*f./ka);
 elseif ( out_flag == 2 )		% complex form function
-   outy=-i*2*f./ka;
+   outy=-1i*2*f./ka;
 elseif ( out_flag == 3 )		% modular of scattering amplitude
    outy=abs(f)./(sqrt(pi)*ka);
 elseif ( out_flag == 4 )		% complex scattering amplitude
-   outy=-i*f./(sqrt(pi)*ka);
+   outy=-1i*f./(sqrt(pi)*ka);
 else
    errordlg('''out_flag'' must be within 1-4, try again !','Wrong Parameter' );
    outy=[];

@@ -57,14 +57,14 @@ if ( proc_flag == 1)   % scattering as a function of ka
       djn=sphbesldj(n,ka,0);
       dyn=sphbesldy(n,ka,0);
       for j=1:m
-        s=(nl.*pn).*(djn(j,:)./(djn(j,:)+i*dyn(j,:)));
+        s=(nl.*pn).*(djn(j,:)./(djn(j,:)+1i*dyn(j,:)));
         f(j)=sum(s);
       end
    else
       jn=sphbeslj(n,ka);
       yn=sphbesly(n,ka);
       for j=1:m
-         s=(nl.*pn).*(jn(j,:)./(jn(j,:)+i*yn(j,:)));
+         s=(nl.*pn).*(jn(j,:)./(jn(j,:)+1i*yn(j,:)));
          f(j)=sum(s);
       end      
    end
@@ -85,7 +85,7 @@ else                    %%% scattering as a function of scattering angle
    if (obj_type == 1)
       djn=sphbesldj(n,ka,0);
       dyn=sphbesldy(n,ka,0);
-      bn=djn./(djn+i*dyn);
+      bn=djn./(djn+1i*dyn);
       for j=1:m
         s=(nl.*pn(j,:)).*bn;
         f(j)=sum(s);
@@ -93,7 +93,7 @@ else                    %%% scattering as a function of scattering angle
    else
       jn=sphbeslj(n,ka);
       yn=sphbesly(n,ka);
-      bn=jn./(jn+i*yn);
+      bn=jn./(jn+1i*yn);
       for j=1:m
         s=(nl.*pn(j,:)).*bn;
         f(j)=sum(s);
@@ -104,11 +104,11 @@ end
 if ( out_flag == 1 )			% modular of form function
    outy=abs(2*f./ka);		
 elseif ( out_flag == 2 )		% complex form function
-   outy=-i*2*f./ka;
+   outy=-1i*2*f./ka;
 elseif ( out_flag == 3 )		% modular of the normalized scattering amplitude
    outy=abs(f)./ka;
 elseif ( out_flag == 4 )		% normalized complex scattering amplitude
-   outy=-i*f./ka;
+   outy=-1i*f./ka;
 else
    errordlg('''out_flag'' must be within 1-4, try again !','Wrong Parameter' );
    outy=[];

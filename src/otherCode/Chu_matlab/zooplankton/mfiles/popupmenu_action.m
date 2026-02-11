@@ -1,4 +1,4 @@
-function		h=popupmenu_action(indx);
+function		h=popupmenu_action(indx)
 % checkbox action
 
 

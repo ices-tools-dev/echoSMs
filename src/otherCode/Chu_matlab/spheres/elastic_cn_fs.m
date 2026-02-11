@@ -73,7 +73,7 @@ for j=1:m
     tan_eta=tan_del.*(tan_phi+tan3)./(tan_phi+tan_beta);
     cos_eta=1./sqrt(1+tan_eta.*tan_eta);
     sin_eta=tan_eta.*cos_eta;
-    bn=sin_eta.*(i*cos_eta-sin_eta);      % i*exp(i*eta)
+    bn=sin_eta.*(1i*cos_eta-sin_eta);      % i*exp(i*eta)
     cn(j,n+1)=nl.*bn;
 end
 outx=ka1(:);

@@ -28,7 +28,7 @@
 %               
 %  By Dezhang Chu, NOAA Fisheries, NWFSC (dezhang.chu@noaa.gov), July 7, 2017  
 %
-function     [outx, outy]=nF_rgd_sft_fs(proc_flag,obj_type,scale,out_flag,para)
+function     [outx, outy]=nf_rgd_sft_fs(proc_flag,obj_type,scale,out_flag,para)
 
 DEG2RAD=pi/180;
 ns=para(1);
@@ -59,14 +59,14 @@ if ( proc_flag == 1)   % scattering as a function of ka
         djn=sphbesldj(n,ka,0);
         dyn=sphbesldy(n,ka,0);
         for j=1:m
-            s=(nl.*pn).*(djn(j,:)./(djn(j,:)+i*dyn(j,:)));
+            s=(nl.*pn).*(djn(j,:)./(djn(j,:)+1i*dyn(j,:)));
             f(j)=sum(s.*hnr(j,:).*(-1i).^(n+1));
         end
     else
         jn=sphbeslj(n,ka);
         yn=sphbesly(n,ka);
         for j=1:m
-            s=(nl.*pn).*(jn(j,:)./(jn(j,:)+i*yn(j,:)));
+            s=(nl.*pn).*(jn(j,:)./(jn(j,:)+1i*yn(j,:)));
             f(j)=sum(s.*hnr(j,:).*(-1i).^(n+1));
         end
     end
@@ -89,7 +89,7 @@ else                    %%% scattering as a function of scattering angle
     if (obj_type == 1)
         djn=sphbesldj(n,ka,0);
         dyn=sphbesldy(n,ka,0);
-        bn=djn./(djn+i*dyn);
+        bn=djn./(djn+1i*dyn);
         for j=1:m
             s=(nl.*pn(j,:)).*bn;
             f(j)=sum(s.*hnr.*(-1i).^(n+1));
@@ -97,7 +97,7 @@ else                    %%% scattering as a function of scattering angle
     else
         jn=sphbeslj(n,ka);
         yn=sphbesly(n,ka);
-        bn=jn./(jn+i*yn);
+        bn=jn./(jn+1i*yn);
         for j=1:m
             s=(nl.*pn(j,:)).*bn;
             f(j)=sum(s.*hnr.*(-1i).^(n+1));

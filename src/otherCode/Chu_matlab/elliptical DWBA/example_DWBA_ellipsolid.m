@@ -400,7 +400,7 @@ switch para.simu.ave_flag
         end
     case 5  % average over thete, phi, and length        
         para.simu.ave_angle_type = 2;       % flag for average over phi first
-        fprintf('Cumputing, please be paticent ...\n')
+        fprintf('Computing, please be paticent ...\n')
         for i=1:nth                         % loop through theta
             para.simu.theta = para.simu.theta0(i);
             para.simu.ave_flag = 1;
@@ -414,7 +414,8 @@ switch para.simu.ave_flag
         sigma_ave_th_len_phi=bscat_ave([],para.simu.theta,sigma_ave_th_len,1,para.simu.ang.ave_para);
         TS_out=10*log10(sigma_ave_th_len_phi);
 end
-    
+
+clf
 figure(1)
 switch example_index
     case {1, 7, 8, 9, 16, 17, 22}   % vs frequency

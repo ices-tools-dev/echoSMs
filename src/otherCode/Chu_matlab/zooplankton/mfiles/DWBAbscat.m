@@ -4,7 +4,7 @@
 % study  ka (frequency) dependence using solution based on integral solution
 % no restriction on incident angle: theta function  [ka0, ang, f]=DWBAscat2(fname,simu_para, shape_para,phy_para,prof_fname)
 %function  [ka0, ang, f]=DWBAscat2(fname,simu_para, shape_para,phy_para,prof_fname)
-function  [ka0, ang, f]=DWBAscat2
+function  [ka0, ang, f]=DWBAscat
 
 global para status misc
 
@@ -62,7 +62,7 @@ for J=1:length(Jarr)        			  % angle loop
     Cos_gamma=cos_dgamma(ones(1,n),:);
     Arg=2*X2.*Cos_th+eps;
     J1x=besselj(1,Arg)./Arg;
-    EXP=exp(i*term0.*Cos_gamma);
+    EXP=exp(1i*term0.*Cos_gamma);
     term2=(X2.*X2).*J1x.*EXP;
     f(:,j)=term2*term1+eps;
   else

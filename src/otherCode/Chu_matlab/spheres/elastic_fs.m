@@ -91,7 +91,7 @@ if ( proc_flag == 1)
       tan_eta=tan_del.*(tan_phi+tan3)./(tan_phi+tan_beta);
       cos_eta=1./sqrt(1+tan_eta.*tan_eta);
       sin_eta=tan_eta.*cos_eta;
-      bn=sin_eta.*(i*cos_eta-sin_eta);      % i*exp(i*eta)
+      bn=sin_eta.*(1i*cos_eta-sin_eta);      % i*exp(i*eta)
       s=nl.*pn.*bn;
       f(j)=sum(s);
       outx=ka1;
@@ -136,7 +136,7 @@ else
    tan_eta=tan_del.*(tan_phi+tan3)./(tan_phi+tan_beta);
    cos_eta=1./sqrt(1+tan_eta.*tan_eta);
    sin_eta=tan_eta.*cos_eta;
-   bn=sin_eta.*(i*cos_eta-sin_eta);          % i*exp(i*eta)
+   bn=sin_eta.*(1i*cos_eta-sin_eta);          % i*exp(i*eta)
    for j=1:m
       s=nl.*pn(j,:).*bn;
       f(j)=sum(s);
@@ -148,11 +148,11 @@ ka=ka1;
 if ( out_flag == 1 )			% modular of form function
    outy=abs(2*f./ka);		
 elseif ( out_flag == 2 )		% complex form function
-   outy=-i*2*f./ka;
+   outy=-1i*2*f./ka;
 elseif ( out_flag == 3 )		% modular of scattering amplitude
    outy=abs(f)./ka;
 elseif ( out_flag == 4 )		% complex scattering amplitude
-   outy=-i*f./ka;
+   outy=-1i*f./ka;
 else
    errordlg('''out_flag'' must be within 1-4, try again !','Wrong Parameter' );
    outy=[];

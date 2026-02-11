@@ -101,12 +101,12 @@ if ( proc_flag == 1)
       nn=2*n.*n;
       a1=rho12*ka2s(j)*ka2s(j)*Jn1(j,:);
       a2=ka1(j)*dJn1(j,:);
-      d11=-rho12*ka2s(j)*ka2s(j)*(Jn1(j,:)+i*Yn1(j,:));
+      d11=-rho12*ka2s(j)*ka2s(j)*(Jn1(j,:)+1i*Yn1(j,:));
       d12=(nn-ka2s(j)*ka2s(j)).*Jn2La(j,:)-2*ka2L(j)*dJn2La(j,:);
       d13=(nn-ka2s(j)*ka2s(j)).*Yn2La(j,:)-2*ka2L(j)*dYn2La(j,:);
       d14=-2*n.*(ka2s(j)*dJn2sa(j,:)-Jn2sa(j,:));
       d15=-2*n.*(ka2s(j)*dYn2sa(j,:)-Yn2sa(j,:));
-      d21=-ka1(j)*(dJn1(j,:)+i*dYn1(j,:));
+      d21=-ka1(j)*(dJn1(j,:)+1i*dYn1(j,:));
       d22=-ka2L(j)*dJn2La(j,:);
       d23=-ka2L(j)*dYn2La(j,:);
       d24=n.*Jn2sa(j,:);
@@ -188,12 +188,12 @@ else
       nn=2*n.*n;
       a1=rho12*ka2s*ka2s*Jn1;
       a2=ka1*dJn1;
-      d11=rho12*ka2s*ka2s*(Jn1+i*Yn1);
+      d11=rho12*ka2s*ka2s*(Jn1+1i*Yn1);
       d12=(nn-ka2s*ka2s).*Jn2La-2*ka2L*dJn2La;
       d13=(nn-ka2s*ka2s).*Yn2La-2*ka2L*dYn2La;
       d14=-2*n.*(ka2s*dJn2sa-Jn2sa);
       d15=-2*n.*(ka2s*dYn2sa-Yn2sa);
-      d21=-ka1*(dJn1+i*dYn1);
+      d21=-ka1*(dJn1+1i*dYn1);
       d22=-ka2L*dJn2La;
       d23=-ka2L*dYn2La;
       d24=n.*Jn2sa;
@@ -240,11 +240,11 @@ ka=ka1;
 if ( out_flag == 1 )			% modular of form function
    outy=abs(2*f./sqrt(pi*ka));		
 elseif ( out_flag == 2 )		% complex form function
-   outy=2*exp(i*pi/4)*f./sqrt(pi*ka);
+   outy=2*exp(1i*pi/4)*f./sqrt(pi*ka);
 elseif ( out_flag == 3 )		% modular of normalized scattering amplitude
    outy=abs(f)/pi;
 elseif ( out_flag == 4 )		% normalized complex scattering amplitude
-   outy=-i*f/pi;
+   outy=-1i*f/pi;
 else
    errordlg('''out_flag'' must be within 1-4, try again !','Wrong Parameter' );
    outy=[];

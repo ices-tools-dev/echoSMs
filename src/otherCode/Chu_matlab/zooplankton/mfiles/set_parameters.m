@@ -1,5 +1,5 @@
 % set loaded parameters to the panel display
-function		h=set_parameters;
+function		h=set_parameters
 
 global para
 
@@ -115,6 +115,9 @@ h6=findobj(gcf,'Tag','EditTextStdh');
 h7=findobj(gcf,'Tag','StaticTextCorrL');
 h8=findobj(gcf,'Tag','EditTextCorrL');
 ha=[h1 h2 h3 h4 h5 h6 h7 h8];
+if ~isfield(para.phy, 'profile')
+    para.phy.profile = 0;
+end
 if para.phy.profile == 1
    set(h,'Value',0);
    set(ha,'Enable','off');

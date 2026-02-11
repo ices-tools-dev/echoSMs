@@ -1,6 +1,6 @@
 % simulation average backscattering over orienation and length by euphausiid and copopod 
 % 
-function			p=bscat;
+function			p=bscat
 global para status misc dat
 
 status.stop=0;

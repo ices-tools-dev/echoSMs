@@ -56,14 +56,14 @@ if ( proc_flag == 1)
       dJn=cylbesldj(n,ka,0);
       dYn=cylbesldy(n,ka,0);
       for j=1:m
-        s=(em.*pn).*(dJn(j,:)./(dJn(j,:)+i*dYn(j,:)));
+        s=(em.*pn).*(dJn(j,:)./(dJn(j,:)+1i*dYn(j,:)));
         f(j)=sum(s);
       end
    else
       Jn=cylbeslj(n,ka);
       Yn=cylbesly(n,ka);
       for j=1:m
-         s=(em.*pn).*(Jn(j,:)./(Jn(j,:)+i*Yn(j,:)));
+         s=(em.*pn).*(Jn(j,:)./(Jn(j,:)+1i*Yn(j,:)));
 %disp(conj(s'));pause
          f(j)=sum(s);
       end
@@ -84,7 +84,7 @@ else
    if (obj_type == 1)
       dJn=cylbesldj(n,ka,0);
       dYn=cylbesldy(n,ka,0);
-      bn=dJn./(dJn+i*dYn);
+      bn=dJn./(dJn+1i*dYn);
       for j=1:m
         s=(em.*pn(j,:)).*bn;
         f(j)=sum(s);
@@ -92,7 +92,7 @@ else
    else
       Jn=cylbeslj(n,ka);
       Yn=cylbesly(n,ka);
-      bn=Jn./(Jn+i*Yn);
+      bn=Jn./(Jn+1i*Yn);
       for j=1:m
         s=(em.*pn(j,:)).*bn;
         f(j)=sum(s);
@@ -104,12 +104,12 @@ end
 if ( out_flag == 1 )			% modular of form function
    outy=abs(2*f./sqrt(pi*ka));		
 elseif ( out_flag == 2 )		% complex form function
-   outy=2*exp(i*pi/4)*f./sqrt(pi*ka);
+   outy=2*exp(1i*pi/4)*f./sqrt(pi*ka);
    outy=2*f./sqrt(pi*ka);
 elseif ( out_flag == 3 )		% modular of normalized scattering amplitude
    outy=abs(f)/pi;
 elseif ( out_flag == 4 )		% normalized complex scattering amplitude
-   outy=-i*f/pi;
+   outy=-1i*f/pi;
 else
    errordlg('''out_flag'' must be within 1-4, try again !','Wrong Parameter' );
    outy=[];

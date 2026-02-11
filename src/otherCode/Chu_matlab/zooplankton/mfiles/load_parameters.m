@@ -1,6 +1,6 @@
 %% read input configuation file
 % and set parameters to the structure: para
-function				h=load_parameters(fname);
+function				h=load_parameters(fname)
 
 global 	para	
 

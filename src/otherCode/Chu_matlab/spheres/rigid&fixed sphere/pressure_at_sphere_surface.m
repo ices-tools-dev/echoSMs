@@ -3,7 +3,6 @@
 %  Dezhang Chu, NWFGSC, NOAA Fisheries, 06 July 2017
 
 
-addpath(genpath('C:\bin\object_scat\Sphere\rigid&fixed sphere'))
 a = 0.25;
 c = 1500;
 ka = 1;
@@ -34,9 +33,9 @@ for i=1:nfreq
     xlabel('ANGLE (deg)')
     ylabel('PRESSURE')
     figure(2)
-    h2 = polar(th, abs(ps(i,:)), '-');
+    h2 = polarplot(th, abs(ps(i,:)), '-');
 %     set(get(h2, 'parent'), 'xlim', 2*[-0.5 0.5], 'ylim', 2*[-0.5 0.5])
-    xlabel(sprintf('ka = %4.2f', ka(i)))
+    title(sprintf('ka = %4.2f', ka(i)))
     pause(1)
 end
 

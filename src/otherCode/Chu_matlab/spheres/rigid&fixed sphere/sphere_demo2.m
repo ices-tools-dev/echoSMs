@@ -2,7 +2,8 @@
 
 clear
 
-addpath('functions')
+[p, ~, ~] = fileparts(mfilename('fullpath'));
+addpath(fullfile(p, '../functions'))
 
 a=0.25;
 out_flag=2;				% complex form function

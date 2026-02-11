@@ -1,4 +1,4 @@
-function		h=radio_action(indx);
+function		h=radio_action(indx)
 % radiobutton action
 
 h1=findobj(gcf,'Tag','RadiobuttonUniPDF');

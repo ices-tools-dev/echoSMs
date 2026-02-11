@@ -2,7 +2,7 @@
 
 clear
 
-addpath c:/bin/matlab  -end
+addpath(genpath('functions'))
 
 out_flag=1;				% modular of form function
 proc_flag=1;			% complex form function vs angle
@@ -46,17 +46,17 @@ if proc_flag == 1
     
 else
     figure(1)
-    hdl=polar(var,real(fx));
+    hdl=polarplot(var,real(fx));
     set(hdl,'linewidth',2)
     title('Re(Form_function)')
     axis square
     figure(2)
-    hdl=polar(var,imag(fx));
+    hdl=polarplot(var,imag(fx));
     set(hdl,'linewidth',2)
     title('Im(Form_function)')
     axis square
     figure(3)
-    hdl=polar(var,abs(fx));
+    hdl=polarplot(var,abs(fx));
     set(hdl,'linewidth',2)
     title('|Form_function|')
     axis square

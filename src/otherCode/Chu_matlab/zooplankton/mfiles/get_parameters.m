@@ -1,5 +1,5 @@
 %% get parameters from the configuration panel and pass to the structure: para
-function				h=get_parameters;
+function				h=get_parameters
 global 	para	
 
 % home directory
