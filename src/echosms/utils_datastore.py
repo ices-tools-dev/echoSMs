@@ -113,7 +113,7 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     KRMshapes = [_to_KRMshape(s) for s in shapes]
 
     # get the index of the first shape with name == 'body' (if any)
-    idx = [i for i, s in enumerate(shapes) if s['anatomical_type'] == 'body']
+    idx = [i for i, s in enumerate(shapes) if s['anatomical_feature'] == 'body']
     if not idx:
         idx = [0]  # No shape with name of body so we use the first shape as the body
 
@@ -140,7 +140,7 @@ def volume_from_datastore(voxels: list):
 
 def surface_from_stl(stl_file: str | Path,
                      dim_scale: float = 1.0,
-                     anatomical_type: str = 'body',
+                     anatomical_feature: str = 'body',
                      boundary: str = 'pressure-release') -> dict:
     """Create an echoSMs surface shape from an .stl file.
 
@@ -151,8 +151,8 @@ def surface_from_stl(stl_file: str | Path,
     dim_scale :
         Scaling factor applied to the node positions. Use to convert from one
         length unit to another (e.g., 1e-3 will convert from mm to m).
-    anatomical_type :
-        The anatomical type for this shape, as per the echoSMs datastore schema.
+    anatomical_feature :
+        The anatomical feature for this shape, as per the echoSMs datastore schema.
     boundary :
         The boundary type for this shape, as per the echoSMs datastore schema.
 
@@ -170,7 +170,7 @@ def surface_from_stl(stl_file: str | Path,
     mesh = trimesh.load_mesh(stl_file)
 
     # Bundle up into a dict as per the echoSMs schema for a surface
-    return {'anatomical_type': anatomical_type, 'boundary': boundary,
+    return {'anatomical_feature': anatomical_feature, 'boundary': boundary,
             'shape_units': 'm',
             'x': (mesh.vertices[:, 0]*dim_scale).tolist(),
             'y': (mesh.vertices[:, 1]*dim_scale).tolist(),
@@ -185,7 +185,7 @@ def surface_from_stl(stl_file: str | Path,
 
 def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.ArrayLike,
                      width: npt.ArrayLike,
-                     anatomical_type: str = "body",
+                     anatomical_feature: str = "body",
                      boundary: str = 'pressure-release') -> dict:
     """
     Convert KRM shape representation to the echoSMs outline shape representation.
@@ -204,8 +204,8 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
         surface.
     width :
         The width of the shape at each _x_ coordinate
-    anatomical_type :
-        The anatomical type for this shape, as per the echoSMs datastore schema.
+    anatomical_feature :
+        The anatomical feature for this shape, as per the echoSMs datastore schema.
     boundary :
         The boundary type for this shape, as per the echoSMs datastore schema.
 
@@ -217,7 +217,7 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
     height = np.array(height_u) - np.array(height_l)
     z = -(np.array(height_l) + height / 2.0)
 
-    return {'anatomical_type': anatomical_type, 'boundary': boundary,
+    return {'anatomical_feature': anatomical_feature, 'boundary': boundary,
             'shape_units': 'm',
             'x': np.array(x).tolist(),
             'y': y.tolist(),
@@ -226,7 +226,7 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
             'width': np.array(width).tolist()}
 
 
-def outline_from_dwba(x, z, radius, anatomical_type: str = "body",
+def outline_from_dwba(x, z, radius, anatomical_feature: str = "body",
                       boundary: str = 'pressure-release') -> dict:
     """
     Convert DWBA shape to the echoSMs outline shape representation.
@@ -240,8 +240,8 @@ def outline_from_dwba(x, z, radius, anatomical_type: str = "body",
         the dorsal surface and negative values towards the ventral surface.
     radius :
         The radius of the shape at each _x_ coordinate
-    anatomical_type :
-        The anatomical type for this shape, as per the echoSMs datastore schema.
+    anatomical_feature :
+        The anatomical feature for this shape, as per the echoSMs datastore schema.
     boundary :
         The boundary type for this shape, as per the echoSMs datastore schema.
 
@@ -250,7 +250,7 @@ def outline_from_dwba(x, z, radius, anatomical_type: str = "body",
      An echoSMs outline shape representation.
 
     """
-    return {'anatomical_type': anatomical_type,
+    return {'anatomical_feature': anatomical_feature,
             'boundary': boundary,
             'shape_units': 'm',
             'x': np.array(x).tolist(),

@@ -15,6 +15,8 @@ import rtoml
 import jsonschema_rs
 from rich import print as rprint
 import numpy as np
+import uuid
+from datetime import datetime, timezone
 from echosms import plot_specimen
 from shutil import make_archive
 
@@ -48,7 +50,7 @@ def large_shape(row):
 
 
 # json schema for the echoSMs anatomical data store
-rprint(f'Reading datastore schema from [orange]{schema_file.parent}')
+rprint(f'Reading datastore schema from [orange1]{schema_file.parent}')
 with open(schema_file, 'rb') as f:
     json_bytes = f.read()
     schema = orjson.loads(json_bytes)
@@ -67,73 +69,61 @@ rprint(f'Writing outputs to [green]{datastore_final_dir}\n')
 for path in datasets_dir.iterdir():
     if path.is_dir():
 
-        # There should be a metadata.toml file and zero or more specimen*.toml files.
-        meta_files = [path/metadata_file]
+        # There may be a metadata.toml file and one or more specimen*.toml files.
 
-        if not (path/meta_files[0]).exists():
-            continue
+        meta_file = path/metadata_file
+        if meta_file.exists():
+            metadata = rtoml.load(meta_file)
+        else:
+            metadata = {}
 
         rprint('Reading dataset [orange1]' + path.name)
 
-        # Add any specimen*.toml files to the list
-        meta_files.extend(list(path.glob('specimen*.toml')))
-
         # load each .toml file and combine into one echoSMs datastore structure
         # this can take lots of memory, but we do this on a capable machine...
-        for ff in meta_files:
-            print('  Loading ' + ff.name)
-            if ff.name == metadata_file:
-                data = rtoml.load(ff)
-                if 'specimens' not in data:
-                    data['specimens'] = []
+        for ff in path.glob('specimen*.toml'):
+            print('  Loading ' + ff.name, end='')
+
+            data = rtoml.load(ff)  # load the specimen data
+            data.update(metadata)  # add in metadata if present
+
+            # Update things the datastore is responsible for
+            data['uuid'] = str(uuid.uuid4())
+            data['version_time'] = datetime.now(timezone.utc).isoformat()
+            data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
+            data['dataset_size_units'] = 'megabyte'
+
+            # Validate the specimen data
+            errored = False
+            for error in validator.iter_errors(data):
+                rprint(f'\n[yellow] Validation error with {error.message}', end='')
+                #rprint('[orange4]' + error.message)
+                errored = True
+
+            if errored:
+                rprint('\n[red]Validation failed ✗')
+                error_count += 1
             else:
-                specimen = rtoml.load(ff)
-                data['specimens'].extend(specimen['specimens'])
+                rprint(' [green]Validation passed ✓', end='')
 
-        data['dataset_id'] = path.name
-        data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
-        data['dataset_size_units'] = 'megabyte'
-
-        errored = False
-        for error in validator.iter_errors(data):
-            rprint(f'[yellow] Validation error with {error.schema_path}')
-            #rprint('[orange4]' + error.message)
-            errored = True
-
-        if errored:
-            rprint('  [red]Validation failed ✗')
-            error_count += 1
-        else:
-            rprint('  [green]Validation passed ✓')
-            # Flatten and write out to a staging directory
-            for sp in data['specimens']:
-
-                anatomical_types = [sh['anatomical_type'] for sh in sp['shapes']]
-
-                row = {'id': data['dataset_id'] + '_' + sp['specimen_id']} |\
-                    {'anatomical_types': anatomical_types} |  data | sp
-
-                rprint(f'    Writing specimen [orange4]{row["specimen_id"]:s}', end='')
-
-                # Remove unneeded columns in the flattened version
-                for r in ['specimens',]:
-                    row.pop(r)
+                # Write out to a staging directory
+                rprint(' Writing specimen', end='')
 
                 # Make a shape image for later use
-                image_file = str(datastore_final_dir/row['id']) + '.png'
-                plot_specimen(row, title=row['id'], savefile=image_file, dpi=200)
+                image_file = str(datastore_final_dir/data['uuid']) + '.png'
+                plot_specimen(data, title=data['specimen_name'], savefile=image_file, dpi=200)
 
-                if large_shape(row):
+                if large_shape(data):
                     rprint(' (large shape)', end='')
-                    s = row['shapes']
-                    row['shapes'] = row['id'] + '.json'
+                    s = data['shapes']
+                    data['shapes'] = data['uuid'] + '.json'
 
                     json_bytes = orjson.dumps(s)
-                    with open(datastore_final_dir/row['shapes'], 'wb') as f:
+                    with open(datastore_final_dir/data['shapes'], 'wb') as f:
                         f.write(json_bytes)
                 print('')
 
-                dataset.append(row)
+                dataset.append(data)
 
 if error_count:
     rprint(f'[red]{error_count} datasets failed the verification')
