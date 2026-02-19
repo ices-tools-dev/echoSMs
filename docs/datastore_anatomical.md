@@ -14,7 +14,7 @@ The datastore contains many datasets, where each dataset comprises the following
 1. Optionally, raw data files that were used to produce the scattering model input data (e.g., binary files, such as x-ray and photographic images, MRI & CT scan files, etc)
 1. Optionally, processing files (programs, notes, intermediate data files, etc)
 
-Each dataset may contain information about more than one organism but can only contain data from a single species.
+Each dataset may contain information about more than one organism.
 
 The dataset metadata and model data have prescribed formats that are designed for convenient access via a [RESTful](https://en.wikipedia.org/wiki/REST) API and for inputting to scattering models.
 
@@ -28,8 +28,8 @@ A dataset ready for uploading to the datastore should contain the following file
 
 |Path|File(s)|Required|Comment|
 |----|-------|--|-------|
-|/|metadata.toml|yes|Dataset metadata in TOML format. This file can include specimen and model data. The file name must be `metadata.toml`|
-|/|specimen*.toml|no|Specimen and model data in one or more TOML-formatted files. File names must start with `specimen` and have a suffix of `.toml`. These files are simply appended to the metadata.toml file when reading the dataset data.|
+|/|metadata.toml|no|Metadata common to all specimens, in TOML format. The file name must be `metadata.toml`|
+|/|specimen*.toml|yes|One file per specimen data. File names must start with `specimen` and have a suffix of `.toml`. If a `metadata.toml` files exists, the contents are appended to the specimen file.|
 |/data|Any|no|Raw and processing files in user-supplied directory hierarchy|
 
 There is currently no automated way to upload datasets to the datastore - it is a manual process - raise an [issue](https://github.com/ices-tools-dev/echoSMs/issues) on Github or contact Gavin Macaulay to have datasets uploaded.
@@ -51,8 +51,6 @@ The dataset metadata includes information about the species, the collection and 
 Associated with each dataset are data about one or more specimens. This includes basic information about the specimen(s) (e.g., length and weight), along with the three-dimensional shape information required by acoustic scattering models. Note that a specimen is not necessarily a whole organism - the data structure allows for a specimen to be some part of the organism (e.g., swimbladder, organs, etc)
 
 The dataset contents are specified by a [JSON schema](https://json-schema.org/) file stored in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json). The schema documents the required attributes, their structure, valid values, etc. The schema is a very technical document and is perhaps more easily understood via the table in the echoSMs [documentation](schema/data_store_schema.md) and an [example file](https://github.com/ices-tools-dev/echoSMs/tree/main/data_store/resources).
-
-An alternative structure for the schema is available in an echoSMs [issue](https://github.com/ices-tools-dev/echoSMs/issues/35).
 
 Your dataset files can be validated against the datastore schema using online validators (e.g., [here](https://www.jsonschemavalidator.net/), [here](https://jsonschema.dev/), or [here](https://www.liquid-technologies.com/online-json-schema-validator)), or within your own code using a JSON schema validation library (e.g., [jsonschema-rs](https://github.com/Stranger6667/jsonschema/tree/master/crates/jsonschema-py) for Python and [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) for R). It is not necessary to validate your data before submitting it to the datastore, but it will help the uploading happen faster (a validation is done during the uploading process and any dataset format problems will be identified then).
 
