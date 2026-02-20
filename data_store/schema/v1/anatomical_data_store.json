@@ -292,53 +292,44 @@
                 "megabyte"
             ]
         },
-        "radiograph_settings": {
-            "description": "Settings used to image the anatomical feature using radiography.",
+        "radiograph_perspective": {
+            "description": "The viewpoint of the imaging x-ray machine to the anatomical feature.",
             "type": "object",
-            "properties": {
-                "perspective": {
-                    "description": "The viewpoint of the imaging x-ray machine to the anatomical feature.",
-                    "type": "object",
-                    "enum": [
-                        "lateral",
-                        "dorsal",
-                        "other"
-                    ],
-                    "additionalProperties": false,
-                    "properties": {
-                        "exposure_time": {
-                            "description": "The exposure time setting of the imaging x-ray machine.",
-                            "type": "string"
-                        },
-                        "exposure_time_unit": {
-                            "description": "Unit of exposure time.",
-                            "type": "string",
-                            "enum": [
-                                "second"
-                            ]
-                        },
-                        "focal_length": {
-                            "description": "Focal length setting of the imaging x-ray machine.",
-                            "type": "string"
-                        },
-                        "focal_length_unit": {
-                            "description": "Unit of focal length.",
-                            "type": "string",
-                            "enum": [
-                                "meter"
-                            ]
-                        },
-                        "kVp": {
-                            "description": "The kilovoltage peak setting of the imaging x-ray machine.",
-                            "type": "number"
-                        },
-                        "MA": {
-                            "description": "The milliamperage setting of the imaging x-ray machine.",
-                            "type": "number"
-                        }
-                    }
-                }
-            }
+            "enum": [
+                "lateral",
+                "dorsal",
+                "other"
+            ]
+        },
+        "radiograph_exposure_time": {
+            "description": "The exposure time setting of the imaging x-ray machine.",
+            "type": "string"
+        },
+        "radiograph_exposure_time_unit": {
+            "description": "Unit of exposure time.",
+            "type": "string",
+            "enum": [
+                "s"
+            ]
+        },
+        "radiograph_focal_length": {
+            "description": "Focal length setting of the imaging x-ray machine.",
+            "type": "string"
+        },
+        "radiograph_focal_length_unit": {
+            "description": "Unit of focal length.",
+            "type": "string",
+            "enum": [
+                "m"
+            ]
+        },
+        "radiograph_kVp": {
+            "description": "The kilovoltage peak setting of the imaging x-ray machine.",
+            "type": "number"
+        },
+        "radiograph_mA": {
+            "description": "The milliamperage setting of the imaging x-ray machine.",
+            "type": "number"
         },
         "specimen_name": {
             "description": "A name that identifies the specimen.",
