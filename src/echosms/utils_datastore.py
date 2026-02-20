@@ -260,7 +260,7 @@ def outline_from_dwba(x, z, radius, anatomical_feature: str = "body",
             'width': (2*np.array(radius)).tolist()}
 
 
-def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
+def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
                   savefile: str|None=None, dpi: float=150) -> None:
     """Plot the specimen shape.
 
@@ -270,7 +270,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
     ----------
     specimen :
         Specimen data as per the echoSMs anatomical datastore schema.
-    dataset_id :
+    dataset_label :
         Used to form a plot title if `title` is an empty string.
     title :
         A title for the plot.
@@ -282,7 +282,7 @@ def plot_specimen(specimen: dict, dataset_id: str='', title: str='',
 
     """
     labels = ['Dorsal', 'Lateral']
-    t = title if title else dataset_id + ' ' + specimen['specimen_id']
+    t = title if title else dataset_label + ' ' + specimen['specimen_name']
 
     match specimen['shape_type']:
         case 'outline':
