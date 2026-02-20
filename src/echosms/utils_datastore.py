@@ -287,7 +287,7 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
     match specimen['shape_type']:
         case 'outline':
             fig, axs = plt.subplots(2, 1, sharex=True, layout='tight')
-            fig.set_tight_layout({'h_pad': 1, 'w_pad': 1})
+            fig.set_layout_engine('tight', h_pad=1, w_pad=1)
             plot_shape_outline(specimen['shapes'], axs)
             for label, a in zip(labels, axs):
                 a.set_title(label, loc='left', fontsize=8)
