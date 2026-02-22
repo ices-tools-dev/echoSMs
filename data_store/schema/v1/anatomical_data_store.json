@@ -6,7 +6,6 @@
     "type": "object",
     "required": [
         "uuid",
-        "dataset_uuid",
         "specimen_name",
         "version_number",
         "version_time",
@@ -75,6 +74,10 @@
             "description": "A Universally Unique IDentifier for a dataset as [RFC9562](https://datatracker.ietf.org/doc/rfc9562). Datasets are used only to group multiple specimens together. They contain no information that is not already in the specimen metadata.",
             "type": "string",
             "format": "uuid"
+        },
+        "dataset_name": {
+            "description": "A name for the dataset.",
+            "type": "string"
         },
         "description": {
             "description": "A description of the specimen.",
