@@ -21,6 +21,7 @@ worms_url = 'https://www.marinespecies.org/rest/AphiaRecordByAphiaID/'
 # Datset template
 specimen_t = {'uuid': '',
              'dataset_uuid': '',
+             'dataset_name': '',
              'description': [''],
              'anatomical_category': "organism",
              'version_time': '',
@@ -57,6 +58,7 @@ d = KRMdata()
 specimens = []
 # All the echoSMs KRM model are grouped into the same dataset
 dataset_uuid = str(uuid.uuid4())
+dataset_name = 'echoSMs KRM'
 
 # create models from the echoSMs KRM data
 for model_name in d.names():
@@ -64,6 +66,7 @@ for model_name in d.names():
 
     specimen = copy.deepcopy(specimen_t)
     specimen['dataset_uuid'] = dataset_uuid
+    specimen['dataset_name'] = dataset_name
     specimen['uuid'] = str(uuid.uuid4())
     specimen['aphia_id'] = m.aphiaid
     specimen['shape_method'] = 'unknown'
@@ -125,6 +128,7 @@ for model_name in d.names():
 d = DWBAdata()
 # All the echoSMs DWBA model are grouped into the same dataset
 dataset_uuid = str(uuid.uuid4())
+dataset_name = 'echoSMs DWBA'
 
 for model_name in d.names():
     m = d.model(model_name)
@@ -132,6 +136,7 @@ for model_name in d.names():
     # populate dataset metadata
     specimen = copy.deepcopy(specimen_t)
     specimen['dataset_uuid'] = dataset_uuid
+    specimen['dataset_name'] = dataset_name
     specimen['uuid'] = str(uuid.uuid4())
     specimen['aphia_id'] = m.aphiaid
     specimen['shape_method'] = 'unknown'
