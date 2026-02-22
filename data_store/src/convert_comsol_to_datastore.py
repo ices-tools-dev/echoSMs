@@ -4,6 +4,8 @@
 
 # convert comsol data files into echoSMs datastore form
 
+# Assumes that a metadata.toml file already exists in the directory.
+
 import numpy as np
 import tomli_w
 from pathlib import Path
@@ -55,6 +57,7 @@ for comsol_data in raw_dir.glob('*.txt'):
             voxel_size.append(np.mean(np.diff(pos)).tolist())
 
     shape = {'name': 'body',
+             'anatomical_feature': 'body',
              'voxel_size': voxel_size,
              'voxel_size_units': 'm',
              'mass_density': rho_r.tolist(),
@@ -64,8 +67,11 @@ for comsol_data in raw_dir.glob('*.txt'):
 
     spec_id = str(int(comsol_data.stem[3:6]))
 
-    specimen = {'specimen_id': spec_id,
+    specimen = {'specimen_name': spec_id,
                 'specimen_condition': 'thawed',
+                'smoothed': False,
+                'rotated': False,
+                'straightened': False,
                 'length_type': 'total length',
                 'shape_type': 'voxels',
                 'length': lw[spec_id][0],
@@ -78,4 +84,4 @@ for comsol_data in raw_dir.glob('*.txt'):
     name = 'specimen_' + comsol_data.name[:6]
     toml_file = (dataset_dir/name).with_suffix('.toml')
     with open(toml_file, 'wb') as f:
-            tomli_w.dump({'specimens': [specimen]}, f)
+            tomli_w.dump(specimen, f)
