@@ -6,8 +6,6 @@
 import requests
 import pandas as pd
 import seaborn as sns
-from PIL import Image
-from io import BytesIO
 import matplotlib.pyplot as plt
 import pprint
 
