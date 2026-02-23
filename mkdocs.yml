@@ -16,7 +16,6 @@ nav:
     - Anatomical data store:
         - Introduction: datastore_intro.md
         - Data structures: datastore_anatomical.md
-        - Schema: data_store_schema.md
         - Web API: datastore_API.md
         - Using with echoSMs: datastore_models.md
 
