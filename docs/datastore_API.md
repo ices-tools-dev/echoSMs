@@ -6,14 +6,11 @@
 
 The anatomical data store API is implemented as a REST web API with calls to:
 
-1. Query dataset metadata
-1. Obtain specimen information and model definitions and parameters.
-1. Access the full dataset associated with a model (this includes the raw data, processing scripts, intermediate data, etc).
+1. Query specimen metadata
+1. Obtain specimen information, definitions, and parameters.
+1. Access the full dataset associated with a specimen (this includes the raw data, processing scripts, intermediate data, etc).
 
 A testing server is available with some sample data, along with the API [documentation](https://echosms-data-store-app-ogogm.ondigitalocean.app/docs). Example Python code that demonstrates use of the API is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/src/api_examples.py). That code also includes an example of how to download all specimen data to a local file for offline access.
-
-???+ info
-    The structure of the data received from the API is a slightly modified version of the data that was uploaded. The main difference is that the hierarchical specimen structure has been flattened into the dataset structure - this provides a more tabular structure that is easier to work with.
 
 API endpoints to modify the data store have not yet been created as the data store can be manually loaded given the relatively low rate of expected model uploading.
 
