@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The anatomical data store API is implemented as a RESTful web API with calls to:
+The anatomical data store API is implemented as a REST web API with calls to:
 
 1. Query dataset metadata
 1. Obtain specimen information and model definitions and parameters.

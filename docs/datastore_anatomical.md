@@ -16,9 +16,9 @@ The datastore contains many datasets, where each dataset comprises the following
 
 Each dataset may contain information about more than one organism.
 
-The dataset metadata and model data have prescribed formats that are designed for convenient access via a [RESTful](https://en.wikipedia.org/wiki/REST) API and for inputting to scattering models.
+The dataset metadata and model data have prescribed formats that are designed for convenient access via a [REST](https://en.wikipedia.org/wiki/REST) API and for inputting to scattering models.
 
-The raw data and processing file formats and layout are unconstrained and are accessible via the RESTful API as a zipped download and a browsable directory hierarchy.
+The raw data and processing file formats and layout are unconstrained and are accessible via the REST API as a zipped download and a browsable directory hierarchy.
 
 Model outputs are not stored.
 
@@ -100,7 +100,7 @@ EchoSMs provides a function, [surface_from_stl()][echosms.surface_from_stl], to 
 ```py
 from echosms import surface_from_stl
 
-shape = surface_from_stl('A.stl', dim_scale=1e-3, anatomical_type='body',
+shape = surface_from_stl('A.stl', dim_scale=1e-3, anatomical_feature='swimbladder',
                           boundary='pressure-release')
 ```
 
@@ -108,23 +108,39 @@ This shape can then be combined with specimen metadata and written to a TOML fil
 
 ```py
 import tomli_w
+import uuid
+from datetime import datetime, timezone
 
 # Create specimen metadata and add in the shape
-specimens = {'specimens': 
-                [{'specimen_id': 'A',
-                  'specimen_condition': 'unknown',
-                  'length': 0.0,
-                  'length_units': 'm',
-                  'weight': 0.0,
-                  'weight_units': 'kg',
-                  'sex': 'unknown',
-                  'length_type': 'unknown',
-                  'shape_type': 'surface',
-                  'shapes': [shape]}]}
+# The items here are the mandatory attributes required for the 
+# echoSMs datastore (there are many others that are optional).
+specimen = {'uuid': str(uuid.uuid4()),
+            'specimen_name': 'A',
+            'version_number': 1,
+            'version_time': datetime.now(timezone.utc).isoformat(),
+            'version_note': 'Initial version',
+            'description': ['Testing'],
+            'anatomical_category': 'organism',
+            'aphia_id': 1234,
+            'date_collection': 'unknown',
+            'date_image': 'unknown',
+            'imaging_method': 'radiograph',
+            'shape_method': 'unknown',
+            'straightened': True,
+            'smoothed': False,
+            'rotated': False,
+            'dataset_size': 1.0,
+            'dataset_units': 'megabyte',
+            'specimen_condition': 'unknown',
+            'length': 0.0,
+            'length_units': 'm',
+            'length_type': 'unknown',
+            'shape_type': 'surface',
+            'shapes': [shape]}
 
 # Write to a TOML file
 with open('specimen_A.toml', 'wb') as f:
-    tomli_w.dump(specimens, f)
+    tomli_w.dump(specimen, f)
 ```
 
 There is a complimentary function to `surface_from_stl()` that takes the echoSMs datastore surface format and returns a [trimesh](https://trimesh.org/) object (see [mesh_from_datastore()][echosms.mesh_from_datastore]), from which an STL file can be written.
@@ -137,8 +153,10 @@ EchoSMs provides functions to convert to and from the outline format into the sp
 
 Historically, outline shapes used in the KRM model used a centreline coincident with the _x_-axis (i.e., _y_ = _z_ = 0), upper and lower shape distances measured from the centreline, and symmetric widths. This form of outline shape can be converted to the datastore form using an echoSMs utility function:
 
-```py hl_lines="10 11 12 13 14 15"
+```py hl_lines="12 13 14 15 16 17"
 from echosms import outline_from_krm, KRMdata, plot_specimen
+import uuid
+from datetime import datetime, timezone
 
 # Get a fish shape from the old echoSMs KRM datastore
 data = KRMdata()
@@ -151,7 +169,7 @@ s = outline_from_krm(x = cod.body.x,
                      height_u = cod.body.z_U,
                      height_l = cod.body.z_L,
                      width = cod.body.w,
-                     anatomical_type='body',
+                     anatomical_feature ='body',
                      boundary=str(cod.body.boundary))
 
 # Add in other shape attributes to give a shape that contains all
@@ -167,21 +185,33 @@ s['mass_density_units'] = 'kg/m^3'
 print(s.keys())
 
 # Add the shape to some example specimen metadata
-specimens = {'specimens': 
-                [{'specimen_id': 'A',
-                  'specimen_condition': 'unknown',
-                  'length': 0.0,
-                  'length_units': 'm',
-                  'weight': 0.0,
-                  'weight_units': 'kg',
-                  'sex': 'unknown',
-                  'length_type': 'unknown',
-                  'shape_type': 'outline',
-                  'shapes': [s]}]}
+specimen = {'uuid': str(uuid.uuid4()),
+            'specimen_name': 'A',
+            'version_number': 1,
+            'version_time': datetime.now(timezone.utc).isoformat(),
+            'version_note': 'Initial version',
+            'description': ['Testing'],
+            'anatomical_category': 'organism',
+            'aphia_id': 1234,
+            'date_collection': 'unknown',
+            'date_image': 'unknown',
+            'imaging_method': 'radiograph',
+            'shape_method': 'unknown',
+            'straightened': True,
+            'smoothed': False,
+            'rotated': False,
+            'dataset_size': 1.0,
+            'dataset_units': 'megabyte',
+            'specimen_condition': 'unknown',
+            'length': 0.0,
+            'length_units': 'm',
+            'length_type': 'unknown',
+            'shape_type': 'outline',
+            'shapes': [s]}
 
 # And use an echoSMs function to plot the shape 
 # (to compare to the one from KRMdata above()).
-plot_specimen(specimens['specimens'][0], dataset_id='Cod')
+plot_specimen(specimen)
 ```
 
 In the same way as for the surface mesh example above, the 
@@ -189,8 +219,10 @@ specimen data can be written to a TOML file.
 
 DBWA model implementations tend to use a centreline that is curved in the _z_-axis and body cross-sections that are circular, so there is a separate function for converting DWBA shapes:
 
-```py  hl_lines="9 10 11 12"
+```py  hl_lines="11 12 13 14 15"
 from echosms import outline_from_dwba, DWBAdata, plot_specimen
+import uuid
+from datetime import datetime, timezone
 
 # Get a krill shape from the old echoSMs DWBA datastore
 data = DWBAdata()
@@ -201,7 +233,7 @@ krill.plot()
 s = outline_from_dwba(x = krill.rv_pos[:, 0],
                       z = -krill.rv_pos[:, 2],
                       radius = krill.a,
-                      anatomical_type='body',
+                      anatomical_feature='body',
                       boundary='fluid-filled')
 
 # Add in other shape attributes to give enough information to run a model.
@@ -214,21 +246,33 @@ s['mass_density_ratio'] = krill.g
 print(s.keys())
 
 # Add the shape to some example specimen metadata
-specimens = {'specimens': 
-                [{'specimen_id': '123',
-                  'specimen_condition': 'unknown',
-                  'length': 0.0,
-                  'length_units': 'm',
-                  'weight': 0.0,
-                  'weight_units': 'kg',
-                  'sex': 'unknown',
-                  'length_type': 'unknown',
-                  'shape_type': 'outline',
-                  'shapes': [s]}]}
+specimen = {'uuid': str(uuid.uuid4()),
+            'specimen_name': '123',
+            'version_number': 1,
+            'version_time': datetime.now(timezone.utc).isoformat(),
+            'version_note': 'Initial version',
+            'description': ['Testing'],
+            'anatomical_category': 'organism',
+            'aphia_id': 1234,
+            'date_collection': 'unknown',
+            'date_image': 'unknown',
+            'imaging_method': 'radiograph',
+            'shape_method': 'unknown',
+            'straightened': True,
+            'smoothed': False,
+            'rotated': False,
+            'dataset_size': 1.0,
+            'dataset_units': 'megabyte',
+            'specimen_condition': 'unknown',
+            'length': 0.0,
+            'length_units': 'm',
+            'length_type': 'unknown',
+            'shape_type': 'outline',
+            'shapes': [s]}
 
 # And use an echoSMs function to plot the shape 
 # (to compare to the one from DWBAdata above()).
-plot_specimen(specimens['specimens'][0], dataset_id='Krill')
+plot_specimen(specimen)
 ```
 
 ##### Voxels
