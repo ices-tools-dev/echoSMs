@@ -85,10 +85,11 @@ class PSMSModel(ScatterModelBase):
         ----------
         Furusawa, M. (1988). "Prolate spheroidal models for predicting general
             trends of fish target strength," J. Acoust. Soc. Jpn. 9, 13-24.
+            <https://doi.org/10.1250/ast.9.13>
 
         Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
             “Prediction of krill target strength by liquid prolate spheroid
-            model,” Fish. Sci., 60, 261-265.
+            model,” Fish. Sci., 60, 261-265. <https://doi.org/10.2331/FISHSCI.60.261>
         """
         if validate_parameters:
             self.validate_parameters(locals())
