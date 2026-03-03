@@ -16,6 +16,8 @@ import jsonschema_rs
 from rich import print as rprint
 import numpy as np
 import uuid
+import shutil
+import os
 from datetime import datetime, timezone
 from echosms import plot_specimen
 from shutil import make_archive
@@ -25,7 +27,12 @@ datastore_source_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited'
                             r'\working\anatomical data store')
 
 datastore_final_dir = Path(r'E:\temp\echosms_datastore_final')
+# empty out datastore_final_dir
+if os.path.exists(datastore_final_dir):
+    shutil.rmtree(datastore_final_dir)
 datastore_final_dir.mkdir(exist_ok=True)
+
+
 
 echosms_dir = Path(r'E:\repositories\echoSMs')
 
@@ -123,15 +130,14 @@ for path in datasets_dir.iterdir():
                         f.write(json_bytes)
                     data['large_shape_ref'] = large_shape_file
 
-                # replace the shape info with just the metadata
-                s_metadata = []
-                for s in data['shapes']:
-                    ss = {k: v for k, v in s.items()
-                            if k in ['anatomical_feature', 'name', 'boundary']}
-                    s_metadata.append(ss)
+                    # replace the shape info with just the metadata
+                    s_metadata = []
+                    for s in data['shapes']:
+                        ss = {k: v for k, v in s.items()
+                                if k in ['anatomical_feature', 'name', 'boundary']}
+                        s_metadata.append(ss)
 
-                data['shapes'] = s_metadata
-
+                    data['shapes'] = s_metadata
 
                 print('')
 
