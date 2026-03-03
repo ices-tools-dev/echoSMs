@@ -115,12 +115,24 @@ for path in datasets_dir.iterdir():
 
                 if large_shape(data):
                     rprint(' (large shape)', end='')
-                    s = data['shapes']
-                    data['shapes'] = data['uuid'] + '.json'
+                    large_shape_file = data['uuid'] + '.json'
 
-                    json_bytes = orjson.dumps(s)
-                    with open(datastore_final_dir/data['shapes'], 'wb') as f:
+                    # write out the shape information                    
+                    json_bytes = orjson.dumps(data['shapes'])
+                    with open(datastore_final_dir/large_shape_file, 'wb') as f:
                         f.write(json_bytes)
+                    data['large_shape_ref'] = large_shape_file
+
+                # replace the shape info with just the metadata
+                s_metadata = []
+                for s in data['shapes']:
+                    ss = {k: v for k, v in s.items()
+                            if k in ['anatomical_feature', 'name', 'boundary']}
+                    s_metadata.append(ss)
+
+                data['shapes'] = s_metadata
+
+
                 print('')
 
                 dataset.append(data)
