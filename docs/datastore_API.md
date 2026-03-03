@@ -23,8 +23,8 @@ Some example API calls are:
 - A list of all specimens with a shape type of [outline](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens?shape_type=outline)
 - A list of all specimens with genus of [Champsocephalus](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens?genus=Champsocephalus)
 - All data from the `B` specimen of the `CLAY_HORNE` [dataset](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data) specimen and an [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/d9266b95-f5fc-4c38-8d5f-5efc19dca841/image) of that specimen
-- A specimen with a shape type of [voxels](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/c31b0c7d-6f02-4874-9da6-0fb0df0f364e/image) (and the [metadata](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens?uuid=c31b0c7d-6f02-4874-9da6-0fb0df0f364e) about that specimen)
-- A specimen with a shape type of [surface](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/8a32b4a3-7970-4fff-8455-0c6235640d28/image) (and the [metadata](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens?uuid=8a32b4a3-7970-4fff-8455-0c6235640d28))
+- A specimen with a shape type of [voxels](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/bf6cffd4-c796-48da-bc38-28f5af215356/image) (and the [metadata](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens?uuid=bf6cffd4-c796-48da-bc38-28f5af215356) about that specimen)
+- A specimen with a shape type of [surface](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/977a6387-cbc7-4205-9bb3-4633f5253b62/image) (and the [metadata](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimens?uuid=977a6387-cbc7-4205-9bb3-4633f5253b62))
 
 The API call to get the full raw data is not yet implemented.
 
