@@ -1,0 +1,184 @@
+{
+  "uuid": "d118c218-bc80-466d-8255-df8731b497b8",
+  "dataset_uuid": "75f775f9-4404-448d-aacc-6de96cccaf3a",
+  "version_number": 1,
+  "version_time": "2026-02-19T03:01:45.875287+00:00",
+  "version_note": "Initial version",
+  "version_investigators": [
+    "Clarence Clay",
+    "John Horne"
+  ],
+  "description": [
+    "Organisms used in Clay & Horne 1994 paper"
+  ],
+  "anatomical_category": "organism",
+  "aphia_id": 126436,
+  "class": "Teleostei",
+  "order": "Gadiformes",
+  "family": "Gadidae",
+  "genus": "Gadus",
+  "species": "Gadus morhua",
+  "vernacular_names": [
+    "Atlantic cod"
+  ],
+  "reference": "doi:10.1121/1.410245",
+  "date_collection": "1970-01-01",
+  "date_image": "1970-01-01",
+  "imaging_method": "radiograph",
+  "shape_method": "manual outline of image(s)",
+  "shape_method_processing": "Body and swimbladder shapes manually derived from x-ray image contrast",
+  "model_type": "KRM",
+  "sound_speed_method": "literature",
+  "mass_density_method": "literature",
+  "dataset_size": 1.0,
+  "dataset_size_units": "megabyte",
+  "specimen_name": "B",
+  "specimen_condition": "fresh",
+  "smoothed": true,
+  "rotated": true,
+  "straightened": true,
+  "length": 0.156,
+  "weight": 0.034,
+  "length_type": "standard length",
+  "length_units": "m",
+  "weight_units": "kg",
+  "shape_type": "outline",
+  "shapes": [
+    {
+      "anatomical_feature": "body",
+      "boundary": "fluid-filled",
+      "shape_units": "m",
+      "x": [
+        0.0,
+        -0.0156,
+        -0.0312,
+        -0.0468,
+        -0.0625,
+        -0.0781,
+        -0.0937,
+        -0.1093,
+        -0.125,
+        -0.1406,
+        -0.15
+      ],
+      "y": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "z": [
+        -0.00075,
+        -0.00075,
+        0.00045,
+        0.00315,
+        0.00395,
+        0.0016,
+        0.0008,
+        0.0016,
+        0.0008,
+        5e-05,
+        -0.00035
+      ],
+      "height": [
+        0.0063,
+        0.0187,
+        0.0289,
+        0.0359,
+        0.0343,
+        0.0266,
+        0.0172,
+        0.014,
+        0.0094,
+        0.0079,
+        0.0023
+      ],
+      "width": [
+        0.0046,
+        0.0171,
+        0.0195,
+        0.0203,
+        0.0179,
+        0.0148,
+        0.0125,
+        0.0085,
+        0.0054,
+        0.0023,
+        0.0007
+      ],
+      "mass_density": [
+        1070
+      ],
+      "mass_density_units": "kg/m^3",
+      "sound_speed_compressional": [
+        1570
+      ],
+      "sound_speed_compressional_units": "m/s"
+    },
+    {
+      "anatomical_feature": "swimbladder",
+      "boundary": "pressure-release",
+      "shape_units": "m",
+      "x": [
+        -0.0398,
+        -0.0468,
+        -0.0546,
+        -0.0625,
+        -0.0703,
+        -0.0781,
+        -0.082
+      ],
+      "y": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "z": [
+        -0.0019,
+        -0.00155,
+        -0.00075,
+        0.0016,
+        0.00395,
+        0.00475,
+        0.00435
+      ],
+      "height": [
+        0.0024,
+        0.0047,
+        0.0063,
+        0.0062,
+        0.0047,
+        0.0015,
+        0.0007
+      ],
+      "width": [
+        0.0054,
+        0.0085,
+        0.0078,
+        0.0062,
+        0.0046,
+        0.0031,
+        0.0015
+      ],
+      "mass_density": [
+        1.24
+      ],
+      "mass_density_units": "kg/m^3",
+      "sound_speed_compressional": [
+        345
+      ],
+      "sound_speed_compressional_units": "m/s"
+    }
+  ]
+}

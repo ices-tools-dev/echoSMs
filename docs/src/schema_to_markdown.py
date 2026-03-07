@@ -123,8 +123,8 @@ def generate(schema_json_file, schema_md_file):
         md.write(f'# {schema["title"]}\n\n')
         md.write(f'{schema["description"]}\n\n')
 
-        md.write('## Dataset\n')
-        md.write('The dataset properties are:\n\n')
+        md.write('## Specimen\n')
+        md.write('The specimen properties are:\n\n')
 
         md.write('|Property|Required|Description|Type|Constraints|\n')
         md.write('|---|---|---|---|---|\n')

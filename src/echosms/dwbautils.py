@@ -134,7 +134,8 @@ def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
     Notes
     -----
     Here is an example of how to use this function to read in .sat files
-    from the ZooScatR package and convert them into the format required
+    from the [ZooScatR](https://github.com/AustralianAntarcticDivision/ZooScatR)
+    package and convert them into the format required
     by the echoSMs DWBA model.
 
     ```py

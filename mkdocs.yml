@@ -7,10 +7,11 @@ nav:
     - Introduction: index.md
     - Using echoSMs: usage.md
     - Developing echoSMs: developing.md
+    - Training resources: training.md
     - Conventions: conventions.md
     - Benchmarks: benchmark_data.md
     - API reference: api_reference.md
-    - Historical notes: historical_notes.md
+    - Historical code & notes: historical_notes.md
     - Other software: other_software.md
     - Anatomical data store:
         - Introduction: datastore_intro.md

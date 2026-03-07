@@ -73,7 +73,7 @@ class ESModel(ScatterModelBase):
         ----------
         MacLennan, D. N. (1981). The Theory of Solid Spheres as Sonar Calibration Targets.
         Scottish Fisheries Research Report Number 22. Department of Agriculture and Fisheries
-        for Scotland.
+        for Scotland. <https://archive.org/details/scottish-fisheries-research-reports_1981_22>
         """
         if validate_parameters:
             self.validate_parameters(locals())
