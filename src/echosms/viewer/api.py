@@ -21,11 +21,16 @@ def fetch_online_shapes_index():
         response.raise_for_status()
         data = response.json()
 
-        # Construct dict: "Vernacular Name (ID) [Model]" -> "ID"
+        # Construct dict: "Vernacular Name (UUID) [Model]" -> "UUID"
         index = {}
         for item in data:
-            name = item.get('vernacular_name') or item.get('name') or "Unknown"
-            sid = item.get('id')
+            v_names = item.get('vernacular_names')
+            if v_names and isinstance(v_names, list) and len(v_names) > 0:
+                name = v_names[0]
+            else:
+                name = item.get('specimen_name') or "Unknown"
+            
+            sid = item.get('uuid')
             m_type = item.get('model_type', 'Unknown')
             display_name = f"{name} ({sid}) [{m_type}]"
             index[display_name] = sid

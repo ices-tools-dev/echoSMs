@@ -1,4 +1,4 @@
-﻿import tkinter as tk
+import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import sys
 import threading
@@ -720,7 +720,7 @@ class ShapeViewerComboApp:
                     shape_data["z_bU"],
                     shape_data["z_bL"],
                     shape_data["w_b"],
-                    anatomical_type="body",
+                    anatomical_feature="body",
                     boundary="fluid-filled"
                 )
                 shapes_for_plot.append(body)
@@ -732,7 +732,7 @@ class ShapeViewerComboApp:
                     shape_data["z_sbU"],
                     shape_data["z_sbL"],
                     shape_data["w_sb"],
-                    anatomical_type="swimbladder",
+                    anatomical_feature="swimbladder",
                     boundary="pressure-release"
                 )
                 shapes_for_plot.append(sb)
@@ -743,7 +743,7 @@ class ShapeViewerComboApp:
                     shape_data["x"],
                     shape_data["z"],
                     shape_data["a"],
-                    anatomical_type="body",
+                    anatomical_feature="body",
                     boundary="fluid-filled"
                 )
                 if "y" in shape_data:
@@ -758,8 +758,8 @@ class ShapeViewerComboApp:
                     # Ensure basics
                     if 'boundary' not in s:
                         s['boundary'] = 'fluid-filled'
-                    if 'anatomical_type' not in s:
-                        s['anatomical_type'] = 'body'
+                    if 'anatomical_feature' not in s:
+                        s['anatomical_feature'] = 'body'
 
                     shapes_for_plot.append(s)
 
@@ -774,7 +774,7 @@ class ShapeViewerComboApp:
             # Find body
             body_s = next(
                 (s for s in shapes_for_plot
-                 if s.get('anatomical_type') == 'body' and 'x' in s),
+                 if s.get('anatomical_feature') == 'body' and 'x' in s),
                 shapes_for_plot[0]
             )
             if 'x' in body_s:
@@ -1181,7 +1181,7 @@ class ShapeViewerComboApp:
             x_mult = 1.0
             body_s = next(
                 (s for s in shapes
-                 if s.get('anatomical_type') == 'body' and 'x' in s), None
+                 if s.get('anatomical_feature') == 'body' and 'x' in s), None
             )
             if body_s:
                 bx = np.array(body_s['x'])
@@ -1191,7 +1191,7 @@ class ShapeViewerComboApp:
             for s in shapes:
                 # Color logic: Body is cool cyan, internal organs are
                 # warm orange
-                is_body = s.get('anatomical_type') == 'body'
+                is_body = s.get('anatomical_feature') == 'body'
                 color = 'cyan' if is_body else 'orange'
                 alpha = 0.4 if is_body else 0.7
 
