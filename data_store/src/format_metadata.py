@@ -95,7 +95,8 @@ for path in datasets_dir.iterdir():
             data.update(metadata)  # add in metadata if present
 
             # Update things the datastore is responsible for
-            data['uuid'] = str(uuid.uuid4())
+            if data['uuid'] == '': 
+                data['uuid'] = str(uuid.uuid4())
             data['version_time'] = datetime.now(timezone.utc).isoformat()
             data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
             data['dataset_size_units'] = 'megabyte'
