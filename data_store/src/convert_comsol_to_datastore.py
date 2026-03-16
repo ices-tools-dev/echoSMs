@@ -17,12 +17,13 @@ dataset_base = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited'
 dataset_dir = dataset_base/'GJM001'
 raw_dir = dataset_base/'GJM001'/'data'/'extracted_fish'
 
-lw = {'1': (.324, .214),
-      '2': (.311, .1552),
-      '3': (.350, .2131),
-      '4': (.340, .2248),
-      '5': (.279, .0969),
-      '6': (.268, .0792)}
+# length, weight, uuid
+lw = {'1': (.324, .214, 'bf6cffd4-c796-48da-bc38-28f5af215356'),
+      '2': (.311, .1552, '658185f5-6e81-4c18-a572-28051c1f6e1d'),
+      '3': (.350, .2131, '5ae5786f-aebb-4dd7-bbcc-370ea0073fed'),
+      '4': (.340, .2248, '0a94fd42-35af-46a1-9621-0bf4f458e55e'),
+      '5': (.279, .0969, '71e37918-3b09-409c-9ab1-e8a564594a2f'),
+      '6': (.268, .0792, '1deb2c20-8ac9-4ab8-91c4-561948d31a0f')}
 
 for comsol_data in raw_dir.glob('*.txt'):
 
@@ -67,7 +68,8 @@ for comsol_data in raw_dir.glob('*.txt'):
 
     spec_id = str(int(comsol_data.stem[3:6]))
 
-    specimen = {'specimen_name': spec_id,
+    specimen = {'uuid': lw[spec_id][2],
+                'specimen_name': spec_id,
                 'specimen_condition': 'thawed',
                 'smoothed': False,
                 'rotated': False,
