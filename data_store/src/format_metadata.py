@@ -95,7 +95,7 @@ for path in datasets_dir.iterdir():
             data.update(metadata)  # add in metadata if present
 
             # Update things the datastore is responsible for
-            if data['uuid'] == '': 
+            if data['uuid'] == '':
                 data['uuid'] = str(uuid.uuid4())
             data['version_time'] = datetime.now(timezone.utc).isoformat()
             data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
@@ -104,8 +104,11 @@ for path in datasets_dir.iterdir():
             # Validate the specimen data
             errored = False
             for error in validator.iter_errors(data):
-                rprint(f'\n[yellow] Validation error with {error.message}', end='')
-                #rprint('[orange4]' + error.message)
+                print(error.instance_path)
+                print(error.evaluation_path)
+                print(error.schema_path)
+                # rprint(f'\n[yellow] Validation error with {error.message}', end='')
+                # rprint('[orange4]' + error.message)
                 errored = True
 
             if errored:
@@ -125,7 +128,7 @@ for path in datasets_dir.iterdir():
                     rprint(' (large shape)', end='')
                     large_shape_file = data['uuid'] + '.json'
 
-                    # write out the shape information                    
+                    # write out the shape information
                     json_bytes = orjson.dumps(data['shapes'])
                     with open(datastore_final_dir/large_shape_file, 'wb') as f:
                         f.write(json_bytes)
