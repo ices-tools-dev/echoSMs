@@ -17,9 +17,6 @@
         "date_image",
         "imaging_method",
         "shape_method",
-        "straightened",
-        "smoothed",
-        "rotated",
         "dataset_size",
         "dataset_size_units",
         "specimen_condition",
@@ -230,21 +227,6 @@
             "description": "Description of processing used to convert raw images into shapes, including any manipulation of image data (for example, smoothing, edge enhancement, rotation, etc).",
             "type": "string"
         },
-        "straightened": {
-            "description": "Was the shape straightened during the processing.",
-            "type": "boolean",
-            "default": "false"
-        },
-        "smoothed": {
-            "description": "Was the shape smoothed during the processing.",
-            "type": "boolean",
-            "default": "false"
-        },
-        "rotated": {
-            "description": "Was the shape rotated during the processing.",
-            "type": "boolean",
-            "default": "false"
-        },
         "model_type": {
             "description": "Original scattering model type.",
             "type": "string",
@@ -404,7 +386,8 @@
                 "outline",
                 "surface",
                 "voxels",
-                "categorised voxels"
+                "categorised voxels",
+                "geometric"
             ]
         },
         "shapes": {
@@ -437,6 +420,28 @@
                             "inclusion",
                             "other"
                         ]
+                    },
+                    "straightened": {
+                        "description": "Was the shape straightened during the processing.",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "smoothed": {
+                        "description": "Was the shape smoothed during the processing.",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "rotated": {
+                        "description": "Was the shape rotated during the processing.",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "notes": {
+                        "description": "Explanatory notes about the straightening, smoothing, and rotation of the shape.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 },
                 "unevaluatedProperties": false,
@@ -878,6 +883,79 @@
                                 "$ref": "#/$defs/sound_speed_units"
                             }
                         }
+                    },
+                    {
+                        "required": [
+                            "geometric_form"
+                        ],
+                        "properties": {
+                            "shape_type": {
+                                "const": "geometric"
+                            },
+                            "geometric_form": {
+                                "description": "Geometric form of this shape",
+                                "type": "string",
+                                "enum": [
+                                    "cylinder",
+                                    "sphere"
+                                ]
+                            }
+                        },
+                        "unevaluatedProperties": false,
+                        "oneOf": [
+                            {
+                                "required": [
+                                    "radius",
+                                    "length",
+                                    "shape_units"
+                                ],
+                                "properties": {
+                                    "geometric_form": {
+                                        "const": "cylinder"
+                                    },
+                                    "radius": {
+                                        "description": "Radius of the cylinder.",
+                                        "type": "number",
+                                        "minimum": 0
+                                    },
+                                    "length": {
+                                        "description": "Length of the cylinder.",
+                                        "type": "number",
+                                        "minimum": 0
+                                    },
+                                    "shape_units": {
+                                        "description": "The units of the radius and length.",
+                                        "type": "string",
+                                        "enum": [
+                                            "m"
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "required": [
+                                    "radius",
+                                    "shape_units"
+                                ],
+                                "properties": {
+                                    "geometric_form": {
+                                        "const": "sphere"
+                                    },
+                                    "radius": {
+                                        "description": "Radius of the sphere.",
+                                        "type": "number",
+                                        "minimum": 0
+                                    },
+                                    "shape_units": {
+                                        "description": "The units of the radius.",
+                                        "type": "string",
+                                        "enum": [
+                                            "m"
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
                     }
                 ]
             }
