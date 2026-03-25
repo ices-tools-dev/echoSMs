@@ -93,7 +93,6 @@ for model_name in d.names():
     specimen['version_time'] = datetime.now(timezone.utc).isoformat()
 
     specimen.update({'specimen_name': m.name, 'specimen_condition': 'unknown',
-                     'straightened': True, 'smoothed': False, 'rotated': True,
                      'length': m.length,
                      'length_units': 'm',
                      'sex': 'unknown',
@@ -107,6 +106,9 @@ for model_name in d.names():
     shape['sound_speed_compressional'] = len(m.body.x) * [m.body.c]
     shape['sound_speed_compressional_units'] = 'm/s'
     shape['shape_units'] = "m"
+    shape['straightened'] = True
+    shape['smoothed'] = False
+    shape['rotated'] = True
     specimen['shapes'].append(shape)
 
     for inc in m.inclusions:
@@ -162,7 +164,6 @@ for model_name in d.names():
     specimen['reference'] = m.source
 
     specimen.update({'specimen_name': m.name, 'specimen_condition': 'unknown',
-                     'straightened': True, 'smoothed': True, 'rotated': True,
                      'length': m.length,
                      'length_units': 'm',
                      'sex': 'unknown',
@@ -171,6 +172,9 @@ for model_name in d.names():
 
     shape = {'anatomical_feature': 'body',
              'shape_units': 'm',
+             'straightened': True,
+             'smoothed': True,
+             'rotated': True,
              'boundary': bt.fluid_filled,
              'x': m.rv_pos[:, 0],
              'y': m.rv_pos[:, 1],
