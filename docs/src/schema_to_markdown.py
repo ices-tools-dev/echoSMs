@@ -8,11 +8,13 @@ from collections import defaultdict
 
 def parse_property(pname, p, required, depends_on, defs):
     """Parse a JSON schema property definition."""
+
     if '$ref' in p:  # is a reference to a definition
         p = defs[p['$ref'][8:]]
 
     desc = p.get('description', '')
     type_ = p.get('type', '')
+    title_ = p.get('title', '')
 
     constraints = []
     if 'enum' in p:
@@ -39,7 +41,7 @@ def parse_property(pname, p, required, depends_on, defs):
     if 'const' in p:
         type_ = f'``{p["const"]}``'
 
-    return pname, req, desc, type_, constraints
+    return pname, req, desc, type_, constraints, title_
 
 
 def parse_object(d, defs):
@@ -60,17 +62,19 @@ def parse_object(d, defs):
     rows = []
     for pname, pdata in d['properties'].items():
         name, required, desc,\
-            type_, constraints = parse_property(pname, pdata,
-                                                pname in prequired,
-                                                drequired.get(pname, []), defs)
+            type_, constraints, title = parse_property(pname, pdata,
+                                                      pname in prequired,
+                                                      drequired.get(pname, []), defs)
 
         # This code doesn't deal with nested arrays (e.g, array of array of array of int).
         # This doesn't occur often with the echoSMs schema, so bodge it...
-        if type_ == 'array':
+        # origin_location is the only array in the $defs, so avoid processing that as
+        # an array or array.
+        if type_ == 'array' and name != 'origin_location':
             name, _, _,\
-                type_, item_constraints = parse_property(pname, pdata['items'],
-                                                         prequired,
-                                                         drequired.get(pname, []), defs)
+                type_, item_constraints, title = parse_property(pname, pdata['items'],
+                                                               prequired,
+                                                               drequired.get(pname, []), defs)
             if type_ != 'object':
                 type_ = 'array of ' + type_
 
@@ -104,6 +108,7 @@ def parse_object(d, defs):
                 rows.append(('normal text',
                              f'and includes these properties as per the value of ``{of_rows[0][0]}``\n'))
                 first = False
+
             rows.append(('normal text', f'=== "{of_rows[0][3]}"\n'))
             rows.append(('start table', 'indent', '', '', ''))
             rows.extend(of_rows[1:])

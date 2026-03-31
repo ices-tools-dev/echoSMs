@@ -447,6 +447,8 @@
                 "unevaluatedProperties": false,
                 "oneOf": [
                     {
+                        "title": "An outline shape.",
+                        "description": "Represents a three-dimensional shape using a dorsal and lateral outline.",
                         "required": [
                             "shape_units",
                             "x",
@@ -591,6 +593,8 @@
                         }
                     },
                     {
+                        "title": "A surface shape.",
+                        "description": "Represents a three-dimensional shape using triangulated mesh.",
                         "required": [
                             "shape_units",
                             "x",
@@ -748,6 +752,8 @@
                         }
                     },
                     {
+                        "title": "A voxel shape.",
+                        "description": "Represents a three-dimensional shape using voxels.",
                         "required": [
                             "voxel_size",
                             "voxel_size_units",
@@ -816,6 +822,8 @@
                         }
                     },
                     {
+                        "title": "A categorised voxel shape.",
+                        "description": "Represents a three-dimensional shape using categorised voxels.",
                         "required": [
                             "voxel_size",
                             "voxel_size_units",
@@ -885,9 +893,35 @@
                         }
                     },
                     {
+                        "title": "A geometric shape.",
+                        "description": "Represents a three-dimensional shape using the combination of one or more geometric shapes.",
                         "required": [
-                            "geometric_form"
+                            "geometric_form",
+                            "origin_location",
+                            "origin_location_units",
+                            "shape_units"
                         ],
+                        "additionalProperties": false,
+                        "dependentRequired": {
+                            "pitch": [
+                                "orientation_units"
+                            ],
+                            "roll": [
+                                "orientation_units"
+                            ],
+                            "yaw": [
+                                "orientation_units"
+                            ],
+                            "mass_density": [
+                                "mass_density_units"
+                            ],
+                            "sound_speed_compressional": [
+                                "sound_speed_compressional_units"
+                            ],
+                            "sound_speed_shear": [
+                                "sound_speed_shear_units"
+                            ]
+                        },
                         "properties": {
                             "shape_type": {
                                 "const": "geometric"
@@ -897,18 +931,69 @@
                                 "type": "string",
                                 "enum": [
                                     "cylinder",
-                                    "sphere"
+                                    "spheroid"
                                 ]
+                            },
+                            "shape_units": {
+                                "description": "The units of the shape dimensions.",
+                                "type": "string",
+                                "enum": [
+                                    "m"
+                                ]
+                            },
+                            "orientation_units": {
+                                "$ref": "#/$defs/orientation_units"
+                            },
+                            "pitch": {
+                                "$ref": "#/$defs/pitch"
+                            },
+                            "roll": {
+                                "$ref": "#/$defs/roll"
+                            },
+                            "yaw": {
+                                "$ref": "#/$defs/yaw"
+                            },
+                            "mass_density": {
+                                "description": "Mass density of the shape.",
+                                "type": "number",
+                                "minimum": 0
+                            },
+                            "mass_density_units": {
+                                "$ref": "#/$defs/mass_density_units"
+                            },
+                            "sound_speed_compressional": {
+                                "description": "Compressional sound speed of the shape.",
+                                "type": "number",
+                                "minimum": 0
+                            },
+                            "sound_speed_compressional_units": {
+                                "$ref": "#/$defs/sound_speed_units"
+                            },
+                            "sound_speed_shear": {
+                                "description": "Transversal (shear) sound speed in shape.",
+                                "type": "number",
+                                "minimum": 0
+                            },
+                            "sound_speed_shear_units": {
+                                "$ref": "#/$defs/sound_speed_units"
+                            },
+                            "origin_location": {
+                                "$ref": "#/$defs/origin_location"
+                            },
+                            "origin_location_units": {
+                                "$ref": "#/$defs/origin_location_units"
                             }
                         },
                         "unevaluatedProperties": false,
                         "oneOf": [
                             {
+                                "title": "Cylinder shape",
+                                "description": "The centre of the cylinder for application of the origin, roll, pitch, and yaw is at radius=0 and halfway along the cylinder length.",
                                 "required": [
                                     "radius",
-                                    "length",
-                                    "shape_units"
+                                    "length"
                                 ],
+                                "additionalProperties": false,
                                 "properties": {
                                     "geometric_form": {
                                         "const": "cylinder"
@@ -922,36 +1007,30 @@
                                         "description": "Length of the cylinder.",
                                         "type": "number",
                                         "minimum": 0
-                                    },
-                                    "shape_units": {
-                                        "description": "The units of the radius and length.",
-                                        "type": "string",
-                                        "enum": [
-                                            "m"
-                                        ]
                                     }
                                 }
                             },
                             {
+                                "title": "Spheroid shape",
+                                "description": "A sphere, prolate spheroid, or oblate spheroid. The polar axis of the spheroids lies along the x-axis of the echoSMs coordinate system (prior to application of any tilt, roll, and yaw). An oblate spheroid occurs when the equatorial radius is greater than the polar radius and a prolate spheroid when the polar radius is greater than the equatorial radius. A sphere is generated when the polar and equatorial radii are the same.",
                                 "required": [
-                                    "radius",
-                                    "shape_units"
+                                    "equatorial_radius",
+                                    "polar_radius"
                                 ],
+                                "additionalProperties": false,
                                 "properties": {
                                     "geometric_form": {
-                                        "const": "sphere"
+                                        "const": "spheroid"
                                     },
-                                    "radius": {
-                                        "description": "Radius of the sphere.",
+                                    "equatorial_radius": {
+                                        "description": "The equatorial radius of the spheroid. In the echoSMs coordinate system the equatorial radius is along the y- and z-axes.",
                                         "type": "number",
                                         "minimum": 0
                                     },
-                                    "shape_units": {
-                                        "description": "The units of the radius.",
-                                        "type": "string",
-                                        "enum": [
-                                            "m"
-                                        ]
+                                    "polar_radius": {
+                                        "description": "The polar radius of the spheroid. In the echoSMs coordinate system the polar axis is the x-axis.",
+                                        "type": "number",
+                                        "minimum": 0
                                     }
                                 }
                             }
@@ -998,6 +1077,50 @@
             "type": "string",
             "enum": [
                 "Pa"
+            ]
+        },
+        "orientation_units": {
+            "description": "The units used for pitch, roll, and yaw attributes",
+            "type": "string",
+            "enum": [
+                "degrees"
+            ]
+        },
+        "pitch": {
+            "description": "The pitch of the shape in the echoSMs coordinate system.",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "default": 0.0
+        },
+        "roll": {
+            "description": "The roll of the shape in the echoSMs coordinate system.",
+            "type": "number",
+            "minimum": -90.0,
+            "maximum": 90.0,
+            "default": 0.0
+        },
+        "yaw": {
+            "description": "The yaw of the shape in the echoSMs coordinate system.",
+            "type": "number",
+            "minimum": -180.0,
+            "maximum": 180.0,
+            "default": 0.0
+        },
+        "origin_location": {
+            "description": "The location of the shape's centre, ordered (x, y, z) as per the echoSMs coordinate system.",
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+                "type": "number"
+            }
+        },
+        "origin_location_units": {
+            "description": "The units of the origin coordinates.",
+            "type": "string",
+            "enum": [
+                "m"
             ]
         }
     }

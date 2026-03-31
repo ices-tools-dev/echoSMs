@@ -24,6 +24,7 @@ dependencies = [
   'tomli >= 1.1.0; python_version < "3.11"',
   'backports.strenum >= 1.3.1; python_version < "3.11"',
   'trimesh',
+  'pymeshlab',
   "shapely",
   "mapbox_earcut",
   'spheroidalwavefunctions',
@@ -62,7 +63,8 @@ addopts = ["--import-mode=importlib",]
 dev = [
   "mkdocstrings[python]",
   "matplotlib",
-  "mkdocs-material",
+  "mkdocs >1.6, <2",
+  "mkdocs-material >=9, <10",
   "twine",
   "pytest",
   "jsonschema_rs",
