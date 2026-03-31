@@ -16,6 +16,7 @@ nav:
     - Anatomical data store:
         - Introduction: datastore_intro.md
         - Data structures: datastore_anatomical.md
+        - Schema: datastore_schema.md
         - Web API: datastore_API.md
         - Using with echoSMs: datastore_models.md
 
@@ -83,8 +84,8 @@ watch:
     - ./src/echosms
     - ./data_store/schema/v1
 
-hooks:
-    - docs/src/make_datastore_schema_md.py
+# hooks:
+    # - docs/src/make_datastore_schema_md.py
     # - docs/src/get_datastore_api_json.py
 
 markdown_extensions:
