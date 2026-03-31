@@ -447,7 +447,7 @@
                 "unevaluatedProperties": false,
                 "oneOf": [
                     {
-                        "title": "An outline shape.",
+                        "title": "Outline",
                         "description": "Represents a three-dimensional shape using a dorsal and lateral outline.",
                         "required": [
                             "shape_units",
@@ -593,8 +593,8 @@
                         }
                     },
                     {
-                        "title": "A surface shape.",
-                        "description": "Represents a three-dimensional shape using triangulated mesh.",
+                        "title": "Surface",
+                        "description": "Represents a three-dimensional shape using a triangulated mesh.",
                         "required": [
                             "shape_units",
                             "x",
@@ -752,7 +752,7 @@
                         }
                     },
                     {
-                        "title": "A voxel shape.",
+                        "title": "Voxel",
                         "description": "Represents a three-dimensional shape using voxels.",
                         "required": [
                             "voxel_size",
@@ -822,7 +822,7 @@
                         }
                     },
                     {
-                        "title": "A categorised voxel shape.",
+                        "title": "Categorised voxel",
                         "description": "Represents a three-dimensional shape using categorised voxels.",
                         "required": [
                             "voxel_size",
@@ -893,7 +893,7 @@
                         }
                     },
                     {
-                        "title": "A geometric shape.",
+                        "title": "Geometric",
                         "description": "Represents a three-dimensional shape using the combination of one or more geometric shapes.",
                         "required": [
                             "geometric_form",
@@ -987,7 +987,7 @@
                         "unevaluatedProperties": false,
                         "oneOf": [
                             {
-                                "title": "Cylinder shape",
+                                "title": "Cylinder",
                                 "description": "The centre of the cylinder for application of the origin, roll, pitch, and yaw is at radius=0 and halfway along the cylinder length.",
                                 "required": [
                                     "radius",
@@ -1011,7 +1011,7 @@
                                 }
                             },
                             {
-                                "title": "Spheroid shape",
+                                "title": "Spheroid",
                                 "description": "A sphere, prolate spheroid, or oblate spheroid. The polar axis of the spheroids lies along the x-axis of the echoSMs coordinate system (prior to application of any tilt, roll, and yaw). An oblate spheroid occurs when the equatorial radius is greater than the polar radius and a prolate spheroid when the polar radius is greater than the equatorial radius. A sphere is generated when the polar and equatorial radii are the same.",
                                 "required": [
                                     "equatorial_radius",
