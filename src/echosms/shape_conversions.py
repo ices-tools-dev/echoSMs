@@ -4,10 +4,11 @@ import numpy as np
 import trimesh
 from trimesh.path.polygons import projected
 from trimesh.creation import triangulate_polygon, Trimesh
+import pymeshlab
 
 from shapely import intersection, LineString, Polygon
 
-def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
+def outline_to_surface(outline: dict, num_pts:int = 20, mesh_len:float = 2.0) -> dict:
     """Convert an outline shape to a surface shape.
 
     Parameters
@@ -16,10 +17,12 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
         An echoSMs outline shape.
     num_pts :
         The number of points to place on each cross-sectional ellipse.
+    mesh_len :
+        The desired typical mesh length as a percentage of overall object size
 
     Returns
     -------
-    :
+    : dict[str, list]
         An echoSMs surface shape with shape metadata as per the input shape.
 
     Notes
@@ -29,6 +32,8 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
     The two ends are meshed using an ear slicing algorithm (using the `mapbox_earcut` package, a
     Python binding to a [C++ implementation](https://github.com/mapbox/earcut.hpp) of the
     algorithm).
+
+    The mesh is then remeshed using the pymeshlab isotropic remeshing algorithm.
     """
     num_discs = len(outline['x'])
 
@@ -44,7 +49,7 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
         pts.extend(np.c_[pts_x, pts_y, pts_z].tolist())
 
     # Create triangles connecting respective points on each ellipse
-    # Same vectorisation comment here as above
+    # Same vectorisation/speed comment here as above
     faces = []
     for disc in range(num_discs-1):
         for pt_i in range(num_pts):
@@ -59,7 +64,6 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
             faces.append(face)
 
     # Create triangles for the two end surfaces
-    # TODO - ensure this works for end surfaces that are a point (e.g. width or height = 0)
     pts2d = [[p[1], p[2]] for p in pts]  # shapely.Polygon wants a 2D polygon, so remove the x coord
 
     _, endcap1_faces = triangulate_polygon(Polygon(pts2d[:num_pts]), engine='earcut')
@@ -71,14 +75,30 @@ def outline_to_surface(outline: dict, num_pts:int = 20) -> dict:
     faces.extend(endcap1_faces)
     faces.extend(endcap2_faces)
 
-    # Put into trimesh to get the face normals
-    mesh = Trimesh(vertices=pts, faces=faces)
+    # Tidy the mesh using pymeshlab
+    ms = pymeshlab.MeshSet()
+    ms.add_mesh(pymeshlab.Mesh(pts, faces))
+    # ms.save_current_mesh('test_before.stl')
+    #ms.meshing_merge_close_vertices()
+    #ms.meshing_remove_t_vertices()
+    #ms.meshing_close_holes()
+    #ms.meshing_repair_non_manifold_edges()
+    #ms.meshing_re_orient_faces_coherently()
+    #ms.meshing_isotropic_explicit_remeshing(targetlen=pymeshlab.PercentageValue(mesh_len),
+    #                                        adaptive=True)
+    # ms.save_current_mesh('test_after.stl')
+    m = ms.current_mesh()
 
-    if not mesh.is_volume:
-        raise ValueError('Mesh is not watertight, not wound consistently, '
-                         'or normals are not facing outwards')
+    # Put into trimesh to get the face normals and do some checks
+    mesh = Trimesh(vertices=m.vertex_matrix(), faces=m.face_matrix())
 
-    # TODO - consider resampling the mesh to give triangles all of a similar size
+    errors = []
+    if not mesh.is_watertight:
+        errors.append('Mesh is not watertight')
+    if not mesh.is_winding_consistent:
+        errors.append('Mesh winding is not consistent')
+    if errors:
+        raise ValueError(', '.join(errors))
 
     # structure as an echoSMs surface dict
     surface = {'x': mesh.vertices[:, 0].tolist(),
