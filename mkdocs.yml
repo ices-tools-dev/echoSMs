@@ -7,7 +7,10 @@ nav:
     - Introduction: index.md
     - Using echoSMs: usage.md
     - Developing echoSMs: developing.md
-    - Training resources: training.md
+    - Training resources:
+        - Introduction: training/training.md
+        - Choosing a model: training/choosing_a_model.md
+        - Links: training/links.md
     - Conventions: conventions.md
     - Benchmarks: benchmark_data.md
     - API reference: api_reference.md
@@ -90,8 +93,10 @@ watch:
 
 markdown_extensions:
     - attr_list
+    - def_list
     - footnotes
     - tables
+    - md_in_html
     - pymdownx.highlight:
        anchor_linenums: true
        line_spans: __span
@@ -100,6 +105,7 @@ markdown_extensions:
     - pymdownx.inlinehilite
     - pymdownx.snippets
     - pymdownx.superfences
+    - pymdownx.blocks.caption
     - admonition
     - pymdownx.details
     - pymdownx.tabbed:
