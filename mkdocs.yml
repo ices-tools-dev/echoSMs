@@ -9,7 +9,12 @@ nav:
     - Developing echoSMs: developing.md
     - Training resources:
         - Introduction: training/training.md
-        - Choosing a model: training/choosing_a_model.md
+        - 2026 WGFAST workshop:
+            - Overview: training/2026 WGFAST workshop/overview.md
+            - Model shapes: training/2026 WGFAST workshop/shapes.md
+            - Using a model: training/2026 WGFAST workshop/models.md
+            - Selecting a model: training/2026 WGFAST workshop/selecting.md
+            - Exercises: training/2026 WGFAST workshop/exercises.md
         - Links: training/links.md
     - Conventions: conventions.md
     - Benchmarks: benchmark_data.md
