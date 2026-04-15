@@ -1,26 +1,17 @@
-## Agenda
+# Introduction
 
-The workshop is from 10:00 to 13:00 (UTC+2) on 19 April 2026. Online participants can join through the meeting link (sent separately).
+The workshop is/was from 10:00 to 13:00 (UTC+2) on 19 April 2026. Online participants can join through the meeting link (sent separately).
 
-1. Introduction
-1. EchoSMs datastore for model shapes
-1. Using echoSMs scattering models
-1. Selecting a scattering model
-1. Exercises
-
-__Ask questions, provide feedback, etc at any time.__
-
-## Introduction
-
-This workshop will cover the running of echoSMs acoustic scattering models, how to select a scattering model, and how to provide data to and get data from the echoSMs shape datastore. 
-
-The aims of this workshop are for you to learn how to:
+The aims of this workshop are for you to:
 
 - Provide shapes to the datastore,
-- Obtain shapes from the datastore
+- Obtain shapes from the datastore,
 - Run echoSMs scattering models,
-- Increase your ability to choose appropriate scattering models, and
-- Provide Mike and I with feedback on the datastore.
+- Help you choose appropriate scattering models
+- Provide feedback on the models and datastore
+
+???+ "Ask questions, provide feedback, etc, at any time"
+    Or talk to or email us later ([Gavin](mailto:gavin@aqualyd.nz), [Mike](mailto:michael.jech@noaa.gov)).
 
 __Shape datastore__
 :    The echoSMs project is developing an online datastore for scattering model shapes and associated metadata. The aim is to facilitate long-term access to good quality scattering model input data, especially the shapes.
@@ -50,3 +41,5 @@ Access to your online computer is entirely via your web browser:
 1. Open a Terminal (click on the new tab icon: `+`) and type these lines to start your own datastore web API:
     1. `cd /data_store_testing`
     1. `fastapi dev`
+
+JupyterHub notebooks are in the `notebooks` directory on your online computer and data files are in the `shapes` directory. You can upload the download files to the online computer using XXXX.

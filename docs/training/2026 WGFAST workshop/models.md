@@ -1,5 +1,9 @@
-## Models
+# Using a model
 
 A tutorial on how to use echoSMs scattering models is included in the echoSMs [documentation](../../usage.md#running-a-model).
 
-A Jupyter notebook that covers the same material is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/src/example_code.py) and in your online computer as `XXXXXX`.
+A JupyterHub notebook that covers the same material is on your online computer: `notebooks/running models.ipynb`.
+
+## Using datastore shapes in a model    
+
+The `notebooks/web shapes to TS.ipynb` notebook show how to get several shapes, calculate their target strength, then plot the results.
