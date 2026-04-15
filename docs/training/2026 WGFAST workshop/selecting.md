@@ -128,13 +128,16 @@ The idea is to talk about the different options to model multiscattering, e.g. s
 
 ## List of model name acronyms
 
-- MSS - Modal Series Solutions  
-- BEM - Boundary Element Model  
+- BEM - Boundary Element Model
+- DCM - Deformed Cylinder scattering Model
+- DWBA - Distorted Wave Born Approximation
 - FEM - Finite Element Model  
 - FMM - Fourier Matching Method  
 - KA - Kirchhoff Approximation  
-- DCM - Deformed Cylinder scattering Model
-- DWBA - Distorted Wave Born Approximation
+- KRM - Kirchhoff-Ray Model
+- MFS - Method of Fundamental Solutions
+- MSS - Modal Series Solutions  
+- SDWBA - Stochastic Distorted Wave Born Approximation
 
 ## References
 

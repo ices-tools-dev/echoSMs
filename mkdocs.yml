@@ -7,10 +7,10 @@ nav:
     - Introduction: index.md
     - Using echoSMs: usage.md
     - Developing echoSMs: developing.md
-    - Training resources:
+    - Training:
         - Introduction: training/training.md
         - 2026 WGFAST workshop:
-            - Overview: training/2026 WGFAST workshop/overview.md
+            - Introduction: training/2026 WGFAST workshop/overview.md
             - Model shapes: training/2026 WGFAST workshop/shapes.md
             - Using a model: training/2026 WGFAST workshop/models.md
             - Selecting a model: training/2026 WGFAST workshop/selecting.md

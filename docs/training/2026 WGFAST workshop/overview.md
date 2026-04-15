@@ -3,34 +3,32 @@
 The workshop is from 10:00 to 13:00 (UTC+2) on 19 April 2026. Online participants can join through the meeting link (sent separately).
 
 1. Introduction
-    - Virtual workshop computer
 1. EchoSMs datastore for model shapes
-    - Formatting shapes for loading to the datastore
-    - Metadata
-    - Shape formats
-    - Retrieving shapes (web API)
 1. Using echoSMs scattering models
-    - EchoSMs models
-    - Calculating backscatter
 1. Selecting a scattering model
-    - Types of scattering models
-1. Tutorials
-    - Example code, exercises, etc
+1. Exercises
 
 __Ask questions, provide feedback, etc at any time.__
 
 ## Introduction
 
-This workshop will cover the running of echoSMs acoustic scattering models, how to select a scattering model, and how to provide data to and get data from the echoSMs shape datastore.
+This workshop will cover the running of echoSMs acoustic scattering models, how to select a scattering model, and how to provide data to and get data from the echoSMs shape datastore. 
+
+The aims of this workshop are for you to learn how to:
+
+- Provide shapes to the datastore,
+- Obtain shapes from the datastore
+- Run echoSMs scattering models,
+- Increase your ability to choose appropriate scattering models, and
+- Provide Mike and I with feedback on the datastore.
 
 __Shape datastore__
-:    The echoSMs project is developing an online datastore for scattering model shapes and associated metadata. The aim is to facilitate long-term
-access to good quality scattering model input data, especially the shapes.
+:    The echoSMs project is developing an online datastore for scattering model shapes and associated metadata. The aim is to facilitate long-term access to good quality scattering model input data, especially the shapes.
 
     Three echoSMs datastore hackathons have been held (21 Jan, 28 Jan, and 24 March 2026) to interested users. The datastore design has benefited considerably from feedback during and after these hackathons and what you'll see today is a near-final version.
 
 __Scattering models__
-:    The echoSMs project provides XX different acousic scattering models for fisheries acoustics. The echoSMs software is written in Python.
+:    The echoSMs scattering models are implemented via a Python package and contains nine acousic scattering models relevant to fish and plankton acoustics.
 
 __Selecting scattering models__
 :    A common request from the echoSMs workshop at the 2025 WGFAST meeting was for guidance on selecting appropriate acoustics scattering models. We have added a short section on that to today's workshop.
