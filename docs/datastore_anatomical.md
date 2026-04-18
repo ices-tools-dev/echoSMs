@@ -70,10 +70,10 @@ Some models use multiple shapes for a single specimen (e.g., a fish body and swi
 
 |Shape data type|Realisation|Models that use this|Example from datastore|Material properties|
 |---------------|-----------|--------------------|-----|--|
-|surface|3D triangular surface mesh|BEM, KA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM003_HOK_hok108/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM003_HOK_hok108/image)|ρ and c per shape|
-|outline|Dorsal and ventral outlines along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/CLAY_HORNE_A/image)|ρ and c per shape (KRM) or per section (DWBA)|
-|voxels|3D rectangular grid|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/GJM001_2/image)|ρ and c for each voxel|
-|categorised voxels|categorised 3D rectangular grid|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/test_categorical_1/image)|ρ and c for each category|
+|surface|3D triangular surface mesh|BEM, KA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/770f19a1-9b9f-4a91-930c-92eaa235b956/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/770f19a1-9b9f-4a91-930c-92eaa235b956/image)|ρ and c per shape|
+|outline|Dorsal and ventral outlines along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/image)|ρ and c per shape (KRM) or per section (DWBA)|
+|voxels|3D rectangular grid|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/image)|ρ and c for each voxel|
+|categorised voxels|categorised 3D rectangular grid|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/image)|ρ and c for each category|
 
 ???+ Note
     The outline shape is a generalised form of the shape definition used for several models:
@@ -93,7 +93,7 @@ The `surface` format contains a 3D triangular surface mesh. The mesh is represen
 ???+ note
     Some scattering models require a closed 3D surface mesh (i.e., without holes), but the `surface` format does not enforce this.
 
-EchoSMs provides a function, [surface_from_stl()][echosms.surface_from_stl], to convert an [STL](https://en.wikipedia.org/wiki/STL_(file_format)) file into the echoSMs surface shape format:
+EchoSMs provides a function, `surface_from_stl()`, to convert an [STL](https://en.wikipedia.org/wiki/STL_(file_format)) file into the echoSMs surface shape format:
 
 ```py
 from echosms import surface_from_stl
@@ -141,11 +141,11 @@ with open('specimen_A.toml', 'wb') as f:
     tomli_w.dump(specimen, f)
 ```
 
-There is a complimentary function to `surface_from_stl()` that takes the echoSMs datastore surface format and returns a [trimesh](https://trimesh.org/) object (see [mesh_from_datastore()][echosms.mesh_from_datastore]), from which an STL file can be written.
+There is a complimentary function to `surface_from_stl()` that takes the echoSMs datastore surface format and returns a [trimesh](https://trimesh.org/) object (see `mesh_from_datastore()`), from which an STL file can be written.
 
 ##### Outline
 
-The `outline` format is a generalised structure that can represent the outline shapes typically used for the DWBA, KRM, and DCM models. It uses a centreline (defined by a list of (_x_, _y_, _z_) coordinates) and a height and width at each centreline point. The [echoSMs coordinate system][coordinate-systems] is used so heights are along the _z_-axis and widths along the _y_-axis. Five numeric arrays are used to represent the shape in the echSMs format with names of `x`, `y`, `z`, `height`, and `width`. The lengths of these arrays must all be the same.
+The `outline` format is a generalised structure that can represent the outline shapes typically used for the DWBA, KRM, and DCM models. It uses a centreline (defined by a list of (_x_, _y_, _z_) coordinates) and a height and width at each centreline point. The echoSMs [coordinate system][coordinate-systems] is used so heights are along the _z_-axis and widths along the _y_-axis. Five numeric arrays are used to represent the shape in the echSMs format with names of `x`, `y`, `z`, `height`, and `width`. The lengths of these arrays must all be the same.
 
 EchoSMs provides functions to convert to and from the outline format into the specific formats typically required by the DWBA, KRM, and DCM models - see the examples below.
 
