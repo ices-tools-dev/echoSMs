@@ -37,14 +37,15 @@ To reduce setup time we provide individual online Linux computers with pre-confi
 Access to your online computer is entirely via your web browser:
 
 1. Click this [link](https://workshop.nmfs-openscapes.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fgavinmacaulay%2FechoSMs-2026-FAST-workshop&urlpath=lab%2Ftree%2FechoSMs-2026-FAST-workshop%2FREADME.md&branch=main) to start your server and download/update the workshop files to your online computer.
-1. Sign in with an email address (any unique email address will work) __If you are attending the echopype hackathon, use a different email address for echoSMs__
+1. Sign in with an email address (any unique email address will work)
 1. The password will be given during the workshop
 1. Choose the `Py-R - echoSMs hackathon - latest` image
 1. The default resource allocation is fine
 1. Click on `Start`
 1. You'll end up in a JupyterHub instance in your web browser - it can take a few minutes to get there
 1. Right click on the file that the link opened and choose `Show Markdown Preview`
-1. Open a Terminal (click on the new tab icon: `+`) and type these lines to start your own datastore web API:
+1. Open a Terminal (click on the new tab icon: `+`) and type these lines:
+    1. `pip install echosms --upgrade`
     1. `cd /data_store_testing`
     1. `fastapi dev`
 

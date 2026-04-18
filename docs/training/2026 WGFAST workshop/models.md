@@ -6,4 +6,4 @@ A JupyterHub notebook that covers the same material is on your online computer: 
 
 ## Using datastore shapes in a model    
 
-The `notebooks/web shapes to TS.ipynb` notebook show how to get several shapes, calculate their target strength, then plot the results.
+The `notebooks/web shapes to TS.ipynb` notebook shows how to get several shapes, calculate their target strength, then plot the results.

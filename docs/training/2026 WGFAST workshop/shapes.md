@@ -39,9 +39,9 @@ In the data format, each shape type has data attributes for storing the shape (d
 
 Input files can be created by hand, but this quickly becomes tedious, especially for the shape data itself. Using a script to create the TOML files is better.
 
-A notebook demonstrating how to create an input data file is `notebooks/creating a datastore input file.ipynb`. Further details are in the echoSMs [documentation](../../datastore_anatomical.md#preparing-datasets-for-the-datastore).
+A notebook demonstrating how to create and validate an input data file is `notebooks/creating a datastore input file.ipynb`. Further details are in the echoSMs [documentation](../../datastore_anatomical.md#preparing-datasets-for-the-datastore).
 
-The `notebooks/validating a TOML datastore file.ipynb` notebook demonstrates how to validate a TOML file with Python. The R [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) and [rjsoncons](https://cran.r-project.org/web/packages/rjsoncons/index.html) packages can also be used (no notebook is provided for this).
+The R [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) and [rjsoncons](https://cran.r-project.org/web/packages/rjsoncons/index.html) packages can also be used for validation (no notebook is provided for this).
 
 Currently, there is no way for you to load an input file to the datastore (it's a manual process that Gavin does).
 
@@ -51,7 +51,7 @@ Currently, there is no way for you to load an input file to the datastore (it's 
 
 ## Getting shapes
 
-This is done with the RESTful web API. This a deliberately simple API that will fit many (but not all) uses.
+This is done with the RESTful web API. This a simple API that will fit many (but not all) uses.
 
 Documentation on the API is [here](https://echosms-data-store-app-ogogm.ondigitalocean.app/docs).
 
@@ -68,4 +68,4 @@ API calls can be tested in a web browser. For example:
 - All data for a specimen with a specific `uuid`: <https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/data>
 - An image of the shape for a specific specimen: <https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/image>
 
-The `notebooks/gettting shapes.ipynb` notebook shows more details on using web API.
+The `notebooks/gettting shapes.ipynb` notebook shows more details on using the web API.
