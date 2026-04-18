@@ -6,12 +6,14 @@ The datastore is an online store of scattering model shapes, metadata, and raw d
 
 Input data to the datastore are TOML- or JSON-formatted text files containing the shapes and metadata, and miscellaneous other files (e.g., raw images). The datastore schema:
 
-- Specifies the data format (required attributes, data, units, valid values, etc)
-- Is the authoritative source of the data format
+- Specifies the data format of the TOML or JSON files (required attributes, data, units, valid values, etc)
+- Is the authoritative source of those data files
 - Is used to validate data files before the datastore will accept them
 - Is implemented as a [JSON Schema](https://json-schema.org/)
 
 The data format has been designed to be easy to work with (supported by multiple programming languages, text-based, readable by people) and general enough to store all types of shapes used in fish and plankton scattering models.
+
+The structure and layout of all other files (raw images, scripts, etc) are not controlled.
 
 ## Data format
 
@@ -23,9 +25,9 @@ There are different shape types:
 - **surface** - 3D triangulated surface mesh
 - **voxels** - 3D grid of density and sound speed values
 - **categorised voxels** - 3D grid of categorised material properties
-- **geometric** - combination of simple shapes (cylinders, spheroids)
+- **geometric** - combinations of simple shapes (cylinders, spheroids) - _not yet fully implemented_
 
-In the data format, each shape type has data attributes for storing the shape (documentation [here](../../datastore_anatomical.md#shapes). Unit and coordinate systems are the same as in [echoSMs](../../conventions.md).
+In the data format, each shape type has data attributes for storing the shape (documentation [here](../../datastore_anatomical.md#shapes)). Unit and coordinate systems are the same as in [echoSMs](../../conventions.md).
 
 - The schema is kept in the echoSMs [github repository](https://github.com/ices-tools-dev/echoSMs/tree/main/data_store/schema/v1)
 - The direct URL to the schema is <https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/heads/main/data_store/schema/v1/anatomical_data_store.json>
