@@ -47,7 +47,17 @@ Currently, there is no way for you to load an input file to the datastore (it's 
 
 ??? "Using a local version of the datastore"
 
-    Your online computer is running a local version of the datastore and you can load an input file to that. Instructions for that are XXXXX.
+    Your online computer can run a local version of the web API using local data files.
+
+    1. Run the `creating a datastore input file.ipynb` notebook. This creates a TOML file for a made-up specimen and stores it in the `~/dataset` directory
+    1. Process that TOML file (and any others in the `~/dataset` directory) into the form needed by the web API:
+        1. `cd ~/echoSMs-2026-FAST-workshop/src`
+        1. `python process_for_datastore.py`
+        1. Fix any datafile errors and repeat until there are none
+    1. Start the local web API:
+        1. `fastapi dev`
+        1. Run the `getting_shapes.ipynb` notebook, uncommenting the `# api_URL = 'http://127.0.0.1:8000'` line
+
 
 ## Getting shapes
 

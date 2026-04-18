@@ -46,7 +46,6 @@ Access to your online computer is entirely via your web browser:
 1. Right click on the file that the link opened and choose `Show Markdown Preview`
 1. Open a Terminal (click on the new tab icon: `+`) and type these lines:
     1. `pip install echosms --upgrade`
-    1. `cd /data_store_testing`
-    1. `fastapi dev`
+    1. `pip install jmespath`
 
-JupyterHub notebooks are in the `notebooks` directory on your online computer and data files are in the `shapes` directory. You can upload the download files to the online computer using XXXX.
+JupyterHub notebooks are in the `notebooks` directory on your online computer and data files are in the `shapes` directory.
