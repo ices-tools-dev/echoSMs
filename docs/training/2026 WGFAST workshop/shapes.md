@@ -49,8 +49,10 @@ Currently, there is no way for you to load an input file to the datastore (it's 
 
     Your online computer can run a local version of the web API using local data files.
 
-    1. Run the `creating a datastore input file.ipynb` notebook. This creates a TOML file for a made-up specimen and stores it in the `~/dataset` directory
-    1. Process that TOML file (and any others in the `~/dataset` directory) into the form needed by the web API:
+    1. Run the `creating a datastore input file.ipynb` notebook. This creates a TOML file for a made-up specimen and stores it in the `~/datasets` directory
+    1. Copy other example files to the `~/datasets` directory:
+        1. `cp -r ~/echoSMs-2026-FAST-workshop/shapes ~/datasets`
+    1. Process the TOML files in the `~/datasets` directory into the form needed by the web API:
         1. `cd ~/echoSMs-2026-FAST-workshop/src`
         1. `python process_for_datastore.py`
         1. Fix any datafile errors and repeat until there are none
@@ -61,7 +63,7 @@ Currently, there is no way for you to load an input file to the datastore (it's 
 
 ## Getting shapes
 
-This is done with the RESTful web API. This a simple API that will fit many (but not all) uses.
+This is done with the RESTful web API. This is a simple API that will fit many (but not all) uses.
 
 Documentation on the API is [here](https://echosms-data-store-app-ogogm.ondigitalocean.app/docs).
 

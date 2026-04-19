@@ -15,7 +15,8 @@ These are all in sub-directories of the `echoSMs-2026-FAST-workshop` directory o
 
 - Example shape data (in the `shapes` subdirectory):
     - A file with one specimen (`specimen A.toml`)
-    - TOML shape file template (`template_metadata.toml`)
+    - Other example specimen files (of the form `specimen_*.toml`)
+    - Shape data not in echoSMs datastore format (`cod_B.txt` and `cod_C.txt`)
 
 ## Suggested activities
 
