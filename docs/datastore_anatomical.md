@@ -74,6 +74,7 @@ Some models use multiple shapes for a single specimen (e.g., a fish body and swi
 |outline|Dorsal and ventral outlines along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/image)|ρ and c per shape (KRM) or per section (DWBA)|
 |voxels|3D rectangular grid|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/image)|ρ and c for each voxel|
 |categorised voxels|categorised 3D rectangular grid|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/image)|ρ and c for each category|
+|geometric|combination of simple shapes|MFS|none yet|none
 
 ???+ Note
     The outline shape is a generalised form of the shape definition used for several models:
@@ -308,3 +309,9 @@ shape = {'voxel_size': [0.005, 0.005, 0.005],
 ##### Categorised voxels
 
 The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of homogenous material properties in the specimen. The category value is used as a zero-based index into associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`. The category matrix is structured the same way as for the voxels format (see above).
+
+##### Geometric
+
+_This section is under construction_
+
+The geometric format uses the combination of simple shapes (bent cylinders and spheroids to date) to create a specimen shape.
