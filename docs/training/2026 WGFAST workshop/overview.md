@@ -32,7 +32,7 @@ __Selecting scattering models__
 
 ## Virtual workshop computer
 
-To reduce setup time we provide individual online Linux computers with pre-configured software and resources. You are welcome to work on your local computer if you want to but we won't have much time to help with configuration problems (the workshop files are available [here](ttps://github.com/gavinmacaulay/echoSMs-2026-FAST-workshop), the web API code [here](https://github.com/gavinmacaulay/data_store_testing.git), and the web API setup script is [here](https://github.com/nmfs-opensci/container-images/blob/main/images/acoustics/Dockerfile) on lines 16-21).
+To reduce setup time we provide individual online Linux computers with pre-configured software and resources. You are welcome to work on your local computer if you want to but we won't have much time to help with configuration problems (the workshop files are available [here](https://github.com/gavinmacaulay/echoSMs-2026-FAST-workshop).
 
 Access to your online computer is entirely via your web browser:
 
