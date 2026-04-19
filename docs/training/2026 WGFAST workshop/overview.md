@@ -32,7 +32,7 @@ __Selecting scattering models__
 
 ## Virtual workshop computer
 
-To reduce setup time we provide individual online Linux computers with pre-configured software and resources. You are welcome to work on your local computer if you want to but we won't have much time to help with configuration problems (the workshop files are available [here](https://github.com/gavinmacaulay/echoSMs-2026-FAST-workshop).
+To reduce setup time we provide individual online Linux computers with pre-configured software and resources. You are welcome to work on your local computer if you want to but we won't have much time to help with configuration problems (the workshop files are available [here](https://github.com/gavinmacaulay/echoSMs-2026-FAST-workshop)).
 
 Access to your online computer is entirely via your web browser:
 
