@@ -57,6 +57,7 @@ Currently, there is no way for you to load an input file to the datastore (it's 
         1. `python process_for_datastore.py`
         1. Fix any datafile errors and repeat until there are none
     1. Start the local web API:
+        1. `pip install jmespath` (only need to do this once)
         1. `fastapi dev`
         1. Run the `getting_shapes.ipynb` notebook, uncommenting the `# api_URL = 'http://127.0.0.1:8000'` line
 
