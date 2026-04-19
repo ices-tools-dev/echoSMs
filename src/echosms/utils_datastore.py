@@ -294,7 +294,6 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
                 a.axis('scaled')
             axs[0].set_title(t)
             _fit_to_axes(fig)
-
         case 'surface':
             fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
             plot_shape_surface(specimen['shapes'], ax)
@@ -304,6 +303,10 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
             plot_shape_voxels(specimen['shapes'][0], t)
         case 'categorised voxels':
             plot_shape_categorised_voxels(specimen['shapes'][0], t)
+        case _:
+            # valid specimen data structures will never get here
+            raise ValueError('Specimen shape_type of "{}" is not yet supported'.format(specimen['shape_type']))
+        
 
     if savefile:
         plt.savefig(savefile, format='png', dpi=dpi, bbox_inches='tight')
