@@ -29,7 +29,7 @@ A dataset ready for uploading to the datastore should contain the following file
 |Path|File(s)|Required|Comment|
 |----|-------|--|-------|
 |/|metadata.toml|no|Metadata common to all specimens, in TOML format. The file name must be `metadata.toml`|
-|/|specimen*.toml|yes|One file per specimen data. File names must start with `specimen` and have a suffix of `.toml`. If a `metadata.toml` files exists, the contents are appended to the specimen file.|
+|/|specimen*.toml|yes|One file per specimen data. File names must start with `specimen` and have a suffix of `.toml`. If a `metadata.toml` file exists, the contents are appended to the specimen file.|
 |/data|Any|no|Raw and processing files in user-supplied directory hierarchy|
 
 There is currently no automated way to upload datasets to the datastore - it is a manual process - raise an [issue](https://github.com/ices-tools-dev/echoSMs/issues) on Github or contact Gavin Macaulay to have datasets uploaded.
