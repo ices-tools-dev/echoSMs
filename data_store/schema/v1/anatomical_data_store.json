@@ -603,9 +603,6 @@
                             "facets_0",
                             "facets_1",
                             "facets_2",
-                            "normals_x",
-                            "normals_y",
-                            "normals_z",
                             "boundary"
                         ],
                         "dependentRequired": {
