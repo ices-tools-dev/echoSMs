@@ -706,16 +706,14 @@
                             },
                             "mass_density": {
                                 "description": "Mass density of shape.",
-                                "type": "number",
-                                "minimum": 0
+                                "$ref": "#/$defs/scalar_or_one_element_number_array"
                             },
                             "mass_density_units": {
                                 "$ref": "#/$defs/mass_density_units"
                             },
                             "sound_speed_compressional": {
                                 "description": "Compressional sound speed in shape.",
-                                "type": "number",
-                                "minimum": 0
+                                "$ref": "#/$defs/scalar_or_one_element_number_array"
                             },
                             "sound_speed_compressional_units": {
                                 "$ref": "#/$defs/sound_speed_units"
@@ -1118,6 +1116,23 @@
             "type": "string",
             "enum": [
                 "m"
+            ]
+        },
+        "scalar_or_one_element_number_array": {
+            "anyOf": [
+                {
+                    "type": "number",
+                    "minimum": 0
+                },
+                {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                        "type": "number",
+                        "minimum": 0
+                    }
+                }
             ]
         }
     }
