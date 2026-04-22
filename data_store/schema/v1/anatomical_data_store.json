@@ -226,6 +226,23 @@
             "description": "Description of processing used to convert raw images into shapes, including any manipulation of image data (for example, smoothing, edge enhancement, rotation, etc).",
             "type": "string"
         },
+        "model_type": {
+            "depreciated": true,
+            "description": "Original scattering model type.",
+            "type": "string",
+            "enum": [
+                "KRM",
+                "KA",
+                "DWBA",
+                "PTDWBA",
+                "FEM",
+                "BEM",
+                "MFS",
+                "other",
+                "unknown",
+                "none"
+            ]
+        },
         "sound_speed_method": {
             "description": "Method used to obtain sound speed in the feature. 'density to sound speed relationship': use of an empirical relationship between density and sound speed; 'time-of-flight': estimated from the time taken for an acoustic pulse to travel from a source to destination transducer through the object being measured; 'pulse-echo': sound speed is determined by measuring the reflection time from the back of a tissue sample using a single transducer (vs the two used in a typical time-of-flight measurement); 'inverted': inferred or inverted from a fitted scattering model or other approach.",
             "type": "string",
