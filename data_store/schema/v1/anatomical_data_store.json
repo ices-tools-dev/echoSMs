@@ -286,7 +286,7 @@
         },
         "radiograph_perspective": {
             "description": "The viewpoint of the imaging x-ray machine to the anatomical feature.",
-            "type": "object",
+            "type": "string",
             "enum": [
                 "lateral",
                 "dorsal",
