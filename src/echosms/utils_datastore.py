@@ -8,7 +8,7 @@ from matplotlib import colors, colormaps
 from math import floor
 from .utils import boundary_type as bt
 
-def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
+def mesh_from_datastore(shapes: list[dict]) -> list[trimesh.Trimesh]:
     """Create trimesh instances from an echoSMs datastore surface shape.
 
     Parameters
@@ -18,6 +18,7 @@ def mesh_from_datastore(shapes: list[dict]) -> list[trimesh]:
 
     Returns
     -------
+    :
         The shapes in trimesh form, in the same order as the input.
 
     """
