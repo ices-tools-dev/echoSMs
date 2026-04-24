@@ -62,7 +62,7 @@ with open(schema_file, 'rb') as f:
     json_bytes = f.read()
     schema = orjson.loads(json_bytes)
 
-validator = jsonschema_rs.validator_for(schema)
+validator = jsonschema_rs.validator_for(schema, validate_formats=True, ignore_unknown_formats=False)
 
 # Read in all .toml files that we can find, add/update the dataset_id and dataset_size
 # attributes, flatten, and generate an image of each specimen. For specimens with large
