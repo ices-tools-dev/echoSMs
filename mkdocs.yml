@@ -18,14 +18,17 @@ nav:
         - Links: training/links.md
     - Conventions: conventions.md
     - Benchmarks: benchmark_data.md
-    - API reference: api_reference.md
+    - API reference: 
+        - Scattering models: api_scattering_models.md
+        - Datastore: api_datastore.md
+        - Utilities: api_utilities.md
     - Historical code & notes: historical_notes.md
     - Other software: other_software.md
     - Anatomical data store:
         - Introduction: datastore_intro.md
         - Data structures: datastore_anatomical.md
         - Schema: datastore_schema.md
-        - Web API: datastore_API.md
+        - Web API: datastore_web_API.md
         - Using with echoSMs: datastore_models.md
 
 theme: 
