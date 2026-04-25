@@ -66,6 +66,7 @@ theme:
 
 plugins:
     - search
+    - glightbox
     - autorefs
     - mkdocstrings:
         handlers:
