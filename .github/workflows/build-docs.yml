@@ -13,6 +13,10 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: 3.x
-      - run: pip install mkdocs mkdocstrings[python] mkdocs-material mkdocs-glightbox
-      - run: mkdocs gh-deploy --force --clean --verbose
+      - name: Install packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --group dev
+      - name: Deploy docs to github
+        run: mkdocs gh-deploy --force --clean --verbose
       
