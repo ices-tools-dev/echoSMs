@@ -244,32 +244,83 @@
             ]
         },
         "sound_speed_method": {
-            "description": "Method used to obtain sound speed in the feature. 'density to sound speed relationship': use of an empirical relationship between density and sound speed; 'time-of-flight': estimated from the time taken for an acoustic pulse to travel from a source to destination transducer through the object being measured; 'pulse-echo': sound speed is determined by measuring the reflection time from the back of a tissue sample using a single transducer (vs the two used in a typical time-of-flight measurement); 'inverted': inferred or inverted from a fitted scattering model or other approach.",
+            "description": "Method used to obtain sound speed in the specimen.",
             "type": "string",
-            "enum": [
-                "density to sound speed relationship",
-                "time-of-flight",
-                "pulse-echo",
-                "inverted",
-                "literature",
-                "unknown",
-                "other"
+            "anyOf": [
+                {
+                    "const": "density to sound speed relationship",
+                    "description": "Use of an empirical relationship between density and sound speed"
+                },
+                {
+                    "const": "time-of-flight",
+                    "description": "Estimated from the time taken for an acoustic pulse to travel from a source to destination transducer through the object being measured"
+                },
+                {
+                    "const": "pulse-echo",
+                    "description": "Sound speed is determined by measuring the reflection time from the back of a tissue sample using a single transducer (vs the two used in a typical time-of-flight measurement)"
+                },
+                {
+                    "const": "inverted",
+                    "description": "Inferred or inverted from a fitted scattering model or other approach"
+                },
+                {
+                    "const": "literature",
+                    "description": "Obtained from an existing publication, report, etc"
+                },
+                {
+                    "const": "unknown",
+                    "description": "The method used to estimate the sound speed is unknown"
+                },
+                {
+                    "const": "other",
+                    "description": "The method used to estimate the sound speed is not one of the listed methods"
+                }
             ]
         },
         "mass_density_method": {
-            "description": "Method used to obtain density in the feature. 'CT density': conversion of computer tomography Hounsfield unit numbers into density; 'liquid displacement': division of object mass by it's  volume, measured using liquid displacement; 'titration': density is determined by mixing two liquids of known densities until the animal reaches neutral buoyancy; 'pipette': gravimetric displacement that determines an animal's volume by weighing the mass of seawater required to return a graduated cylinder to its original volume after the animal has been added; 'dual-density': density is calculated by weighing animals in two different fluids of known densities; 'from composition': weighted average of known densities of an animal's chemical components, such as water, lipids, proteins, and other contribution sources; 'inverted': inferred or inverted from a fitted scattering model or other approach",
+            "description": "Method used to obtain density in the specimen",
             "type": "string",
-            "enum": [
-                "CT density",
-                "liquid displacement",
-                "literature",
-                "titration",
-                "pipette",
-                "dual-density",
-                "from composition",
-                "inverted",
-                "unknown",
-                "other"
+            "anyOf": [
+                {
+                    "const": "CT density",
+                    "description": "Conversion of computer tomography Hounsfield unit numbers into density"
+                },
+                {
+                    "const": "liquid displacement",
+                    "description": "Division of object mass by it's  volume, measured using liquid displacement"
+                },
+                {
+                    "const": "literature",
+                    "description": "Obtained from an existing publication, report, etc"
+                },
+                {
+                    "const": "titration",
+                    "description": "Density is determined by mixing two liquids of known densities until the animal reaches neutral buoyancy"
+                },
+                {
+                    "const": "pipette",
+                    "description": "Gravimetric displacement that determines an animal's volume by weighing the mass of seawater required to return a graduated cylinder to its original volume after the animal has been added"
+                },
+                {
+                    "const": "dual-density",
+                    "description": "Density is calculated by weighing animals in two different fluids of known densities"
+                },
+                {
+                    "const": "from composition",
+                    "description": "Weighted average of known densities of an animal's chemical components, such as water, lipids, proteins, and other contribution sources"
+                },
+                {
+                    "const": "inverted",
+                    "description": "Inferred or inverted from a fitted scattering model or other approach"
+                },
+                {
+                    "const": "unknown",
+                    "description": "The method used to estimate the density is unknown"
+                },
+                {
+                    "const": "other",
+                    "description": "The method used to estimate the density is not one of the listed methods"
+                }
             ]
         },
         "dataset_size": {
