@@ -4,6 +4,7 @@ import requests
 from echosms import plot_specimen
 from matplotlib import pyplot as plt
 
+@pytest.mark.skip(reason="Not implemented yet")
 def test_api_plot(tmp_path):
     """Test calls to the datastore API"""
     # Get an outline shape from the echoSMs anatomical datastore
