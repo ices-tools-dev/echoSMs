@@ -1,12 +1,14 @@
 # Introduction
 
-The workshop is/was from 10:00 to 13:00 (UTC+2) on 19 April 2026. Online participants can join through the meeting link (sent separately).
+The 2026 WGFAST workshop was held on 19 April 2026, prior to the 2026 WGFAST meeting. The
+workshop material is now part of the echoSMs documentation, with some edits to work as
+stand-alone training material.
 
-The workshop presentation (what you are looking at now) is part of the echoSMs documentation, available at:
-
-<https://ices-tools-dev.github.io/echoSMs/training/2026 WGFAST workshop/overview/>
-
-The workshop files and notebooks are automatically on your online computer (and also in a github repository [here](https://github.com/gavinmacaulay/echoSMs-2026-FAST-workshop)).
+???+ note
+    The workshop used an online virtual computer configured with echoSMs and
+    related packages, and Jupyter notebooks. Assuming that this online computer will not
+    continue to be available, the instructions have been updated to work on a local computer or
+    other virtual computers.
 
 The aims of this workshop are for you to:
 
@@ -15,9 +17,6 @@ The aims of this workshop are for you to:
 - Run echoSMs scattering models,
 - Help you choose appropriate scattering models
 - Provide feedback on the models and datastore
-
-???+ "Ask questions, provide feedback, etc, at any time"
-    Or talk to or email us later ([Gavin](mailto:gavin@aqualyd.nz), [Mike](mailto:michael.jech@noaa.gov)).
 
 __Shape datastore__
 :    The echoSMs project is developing an online datastore for scattering model shapes and associated metadata. The aim is to facilitate long-term access to good quality scattering model input data, especially the shapes.
@@ -30,7 +29,23 @@ __Scattering models__
 __Selecting scattering models__
 :    A common request from the echoSMs workshop at the 2025 WGFAST meeting was for guidance on selecting appropriate acoustics scattering models. We have added a short section on that to today's workshop.
 
+The workshop files and notebooks are in a github repository [here](https://github.com/gavinmacaulay/echoSMs-2026-FAST-workshop).
+There is a `notebooks` directory for the Jupyter notebooks and a `shapes` directory for example shape data.
+
+## Manual setup for local or online computer
+
+The workshop requires a recent version of Python with the following packages installed. Use your
+preferred package and virtual environment manager (e.g., uv, pip, pixi, etc) to install the packages.
+Using pip would require this command:
+
+``` sh
+pip install echosms pyworms orjson fastapi[standard] stream_zip rtoml jsonschema_rs jmespath tomli_w
+```
+
 ## Virtual workshop computer
+
+!!! note
+    These instructions only apply to the setup used during the workshop.
 
 To reduce setup time we provide individual online Linux computers with pre-configured software and resources. You are welcome to work on your local computer if you want to but we won't have much time to help with configuration problems (the workshop files are available [here](https://github.com/gavinmacaulay/echoSMs-2026-FAST-workshop)).
 
@@ -48,4 +63,3 @@ Access to your online computer is entirely via your web browser:
     1. `pip install echosms --upgrade`
     1. `pip install jmespath`
 
-JupyterHub notebooks are in the `notebooks` directory on your online computer and data files are in the `shapes` directory.
