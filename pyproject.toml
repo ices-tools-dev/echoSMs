@@ -30,7 +30,8 @@ dependencies = [
   'spheroidalwavefunctions',
   'tqdm',
   'mapply',
-  "matplotlib",
+  "requests",
+  "rtoml"
 ]
 classifiers = [
     'Development Status :: 3 - Alpha',
@@ -59,29 +60,8 @@ local_scheme = "no-local-version"  # otherwise the non-tagged version is not acc
 testpaths = ['tests',]
 addopts = ["--import-mode=importlib",]
 
-[project.optional-dependencies]
-dev = [
-  "mkdocstrings[python]",
-  "matplotlib",
-  "mkdocs >1.6, <2",
-  "mkdocs-material >=9, <10",
-  "mkdocs-glightbox",
-  "twine",
-  "pytest",
-  "jsonschema_rs",
-  "orjson",
-  "rtoml",
-  "rich"
-]
-viewer = [
-    "rtoml",
-    "tomli; python_version < '3.11'",
-    "requests",
-]
-
 [project.scripts]
 echosms-view = "echosms.viewer.app:main"
-
 
 [project.urls]
 Homepage = 'https://github.com/ices-tools-dev/echoSMs'
@@ -89,3 +69,16 @@ Issues = 'https://github.com/ices-tools-dev/echoSMs/issues'
 Documentation = 'https://ices-tools-dev.github.io/echoSMs'
 Repository = 'https://github.com/ices-tools-dev/echoSMs'
 Discussions = 'https://github.com/ices-tools-dev/echoSMs/discussions'
+
+[dependency-groups]
+dev = [
+    "jsonschema-rs>=0.46.3",
+    "matplotlib>=3.10.9",
+    "mkdocs>=1.6.1, <2",
+    "mkdocs-glightbox>=0.5.2",
+    "mkdocs-material>=9.7.6, <10",
+    "mkdocstrings-python>=2.0.3",
+    "orjson>=3.11.8",
+    "pytest>=9.0.3",
+    "rich>=15.0.0"
+]
