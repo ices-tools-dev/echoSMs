@@ -39,7 +39,7 @@ preferred package and virtual environment manager (e.g., uv, pip, pixi, etc) to 
 Using pip would require this command:
 
 ``` sh
-pip install echosms pyworms orjson fastapi[standard] stream_zip rtoml jsonschema_rs jmespath tomli_w
+pip install echosms requests pyworms orjson fastapi[standard] stream_zip rtoml jsonschema_rs jmespath tomli_w
 ```
 
 ## Virtual workshop computer
