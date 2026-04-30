@@ -20,18 +20,18 @@ dependencies = [
 	"numpy",
 	"scipy",
 	"pandas",
-  "xarray",
-  'tomli >= 1.1.0; python_version < "3.11"',
-  'backports.strenum >= 1.3.1; python_version < "3.11"',
-  'trimesh',
-  'pymeshlab',
-  "shapely",
-  "mapbox_earcut",
-  'spheroidalwavefunctions',
-  'tqdm',
-  'mapply',
-  "requests",
-  "rtoml"
+	"xarray",
+	'tomli >= 1.1.0; python_version < "3.11"',
+	'backports.strenum >= 1.3.1; python_version < "3.11"',
+	'trimesh',
+	'pymeshlab',
+	"shapely",
+	"mapbox_earcut",
+	'spheroidalwavefunctions',
+	'tqdm',
+	'mapply',
+	"requests",
+	"rtoml",
 ]
 classifiers = [
     'Development Status :: 3 - Alpha',
@@ -80,5 +80,6 @@ dev = [
     "mkdocstrings-python>=2.0.3",
     "orjson>=3.11.8",
     "pytest>=9.0.3",
-    "rich>=15.0.0"
+    "rich>=15.0.0",
+    "zensical>=0.0.38",
 ]
