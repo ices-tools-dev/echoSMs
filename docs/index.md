@@ -6,7 +6,7 @@
 
 This project is an international collaboration that is, in part, a component of a U.S. NOAA-Fisheries active acoustic strategic initiative, [AA-SI](https://github.com/nmfs-fish-tools/AA-SI/tree/main).
 
-Quantitative interpretation of acoustic echograms requires software expertise to develop advanced analytical methods for echo classification using mathematical models that predict acoustic backscatter (e.g., target strength, TS re 1 m² [dB]). These models and predictions can be used to inform echo classification by validating empirical measurements and generating training data for machine learning (ML), artificial intelligence (AI), and other advanced analytical methods, such as inverse methods. Application of these models to fish and plankton requires anatomical and morphological data that are easily accessible and available to the models.
+Quantitative interpretation of acoustic echograms requires software expertise to develop advanced analytical methods for echo classification using mathematical models that predict acoustic backscatter (e.g., target strength, TS re 1 m² \[dB\]). These models and predictions can be used to inform echo classification by validating empirical measurements and generating training data for machine learning (ML), artificial intelligence (AI), and other advanced analytical methods, such as inverse methods. Application of these models to fish and plankton requires anatomical and morphological data that are easily accessible and available to the models.
 
 The goal of this project is to make acoustic scattering models available to fisheries and plankton acoustic scientists via the world wide web. By providing the models in an open-access and open-source software language (e.g, Python, R) and providing morphological and anatomical data in open data formats (e.g., HDF5, relational databases), the proper and appropriate use of these models can extend to the entire fisheries and plankton acoustics’ community.
 
@@ -14,14 +14,14 @@ The goal of this project is to make acoustic scattering models available to fish
 
 We welcome all contributions to echoSMs, be it code, test cases, bug reports, discussion of models, etc. Please use the [github](https://github.com/ices-tools-dev/echoSMs) facilities for this (i.e., [issues](https://github.com/ices-tools-dev/echoSMs/issues), [pull requests](https://github.com/ices-tools-dev/echoSMs/pulls), and [discussions](https://github.com/ices-tools-dev/echoSMs/discussions)). We are also happy to accept directly code that we can add to echoSMs on your behalf.
 
-An objective of echoSMs is to provide scattering models in a form that is easy to access, use, and compare to other models. To help with that, we [specify][conventions] model parameter units, angle conventions, and required model outputs that code contributions should support. We also suggest coding conventions that should be followed.
+An objective of echoSMs is to provide scattering models in a form that is easy to access, use, and compare to other models. To help with that, we [specify](conventions.md) model parameter units, angle conventions, and required model outputs that code contributions should support. We also suggest coding conventions that should be followed.
 
 ## Scattering Models
 
 The initial set of acoustic scattering models will be those used in [Jech et al. (2015)](https://doi.org/10.1121/1.4937607). Acoustic model development will follow 3–4 phases:
 
-1. Exact solutions and canonical shapes ([see table below][exact-solutions]),
-2. Approximate analytical models applied to canonical shapes ([see table below][approximate-analytical-models-and-shapes]),
+1. Exact solutions and canonical shapes ([see table below](#exact-solutions)),
+2. Approximate analytical models applied to canonical shapes ([see table below](#approximate-analytical-models-and-shapes)),
 3. Approximate analytical models applied to complex shapes approximating biological targets, such as fish and zooplankton,
 4. Numerical models applied to canonical shapes and biological targets (this phase will depend on time and funding).
 

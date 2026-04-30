@@ -56,8 +56,7 @@ class DCMModel(ScatterModelBase):
             Length of the cylinderical target [m].
         theta : float
             Pitch angle to calculate the scattering as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            [coordinate system](conventions.md#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
         boundary_type :

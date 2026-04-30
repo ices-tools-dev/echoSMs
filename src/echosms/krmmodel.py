@@ -72,8 +72,7 @@ class KRMModel(ScatterModelBase):
             Density in the fluid medium surrounding the target [kg/m³]
         theta : float
             Pitch angle to calculate the scattering at, as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            [coordinate system](conventions.md#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
         organism: KRMorganism

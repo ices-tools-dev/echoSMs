@@ -102,16 +102,13 @@ def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
     ----------
     x : Iterable[float]
         x-coordinates [m] of the centreline of the DWBA shape as per the echoSMs
-        [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-        conventions/#coordinate-systems).
+        [coordinate system](conventions.md#coordinate-systems).
     y : Iterable[float]
         y-coordinates [m] of the centreline of the DWBA shape as per the echoSMs
-        [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-        conventions/#coordinate-systems).
+        [coordinate system](conventions.md#coordinate-systems).
     z : Iterable[float]
         z-coordinates [m] of the centreline of the DWBA shape as per the echoSMs
-        [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-        conventions/#coordinate-systems).
+        [coordinate system](conventions.md#coordinate-systems).
     a : Iterable[float]
         radius [m] of the DWBA shape at each centreline (x,y,z) position.
     name :
@@ -185,8 +182,7 @@ class DWBAorganism():
         An iterable of vectors of the 3D positions of the centre of each disc that
         defines the target shape. Each vector should have three values corresponding to
         the _x_, _y_, and _z_ coordinates [m] of the disc centre, as per the echoSMs
-        [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-        conventions/#coordinate-systems).
+        [coordinate system](conventions.md#coordinate-systems).
     a :
         The radii [m] of each disc.
     g :

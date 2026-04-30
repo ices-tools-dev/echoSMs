@@ -55,10 +55,10 @@ To use a model, you need to know what parameters it requires. These are document
 
 |Name|Description|
 |--------------|-----------|
-|medium_c|Sound speed in the fluid medium surrounding the target [m/s]|
-|medium_rho|Density of the fluid medium surrounding the target [kg/m³]|
-|a|Radius of the spherical target [m]|
-|f|Frequency to calculate the scattering at [Hz]|
+|medium_c|Sound speed in the fluid medium surrounding the target \[m/s\]|
+|medium_rho|Density of the fluid medium surrounding the target \[kg/m³\]|
+|a|Radius of the spherical target \[m\]|
+|f|Frequency to calculate the scattering at \[Hz\]|
 |boundary_type|The boundary type. Supported types are `fixed-rigid`, `pressure-release`, and `fluid-filled`|
 
 The simplest way to provide these to the model is a dictionary:

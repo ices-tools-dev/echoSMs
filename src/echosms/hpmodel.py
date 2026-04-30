@@ -65,8 +65,7 @@ class HPModel(ScatterModelBase):
             The boundary type for the model.
         theta : float
             Pitch angle to calculate the scattering as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°]. Only required for the straight cylinder shape.
+            [coordinate system](conventions.md#coordinate-systems) [°]. Only required for the straight cylinder shape.
         L : float
             Total length of the prolate spheroid and straight cylinder, or arc length of
             the bent cylinder [m]. Only required for prolate spheroid, cylinder, and bent cylinder
@@ -93,8 +92,7 @@ class HPModel(ScatterModelBase):
         reading of Stanton (1989) is recommended.
 
         The theta angle convention used in Stanton (1989) is the same as the echoSMs
-        [coordinate system convention](https://ices-tools-dev.github.io/echoSMs/
-        conventions/#coordinate-systems).
+        [coordinate system convention](conventions.md#coordinate-systems).
 
         Stanton (1989) also provides parameters for gas-filled shapes, but more
         prior knowledge is required about the gas for useful results (e.g., damping

@@ -40,8 +40,7 @@ class PTDWBAModel(ScatterModelBase):
             The object to be modelled as a 3D volume of voxels. Array contents should be 0
             for the surrounding medium, then increasing by 1 for each additional material
             type (i.e., 1, 2, 3, etc). `volume` should be arranged as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems), where
+            [coordinate system](conventions.md#coordinate-systems), where
 
             - axis 0 (rows) is the _x_-axis
             - axis 1 (columns) is the _y_-axis
@@ -51,13 +50,11 @@ class PTDWBAModel(ScatterModelBase):
 
         theta : float
             Pitch angle to calculate the scattering as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            [coordinate system](conventions.md#coordinate-systems) [°].
 
         phi : float
             Roll angle to calculate the scattering as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            [coordinate system](conventions.md#coordinate-systems) [°].
 
         f : float
             Frequency to run the model at [Hz]
