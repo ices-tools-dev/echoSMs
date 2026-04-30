@@ -14,6 +14,7 @@ schema = requests.get(schema_url).json()
 
 # Get schema from local file
 schema_file = Path(r'C:\Users\GavinMacaulay\Data - not synced\Code\echoSMs\data_store\schema\v1')
+schema_file = Path(r'E:\repositories\echoSMs\data_store\schema\v1')
 schema_file = schema_file/'anatomical_data_store.json'
 
 with open(schema_file, 'rb') as f:
@@ -25,7 +26,8 @@ validator = jsonschema_rs.validator_for(schema,
                                         validate_formats=True,
                                         ignore_unknown_formats=False)
 
-toml_file = Path('metadata.toml')
+toml_file = Path('specimen.toml')
+toml_file = Path('example_metadata A.toml')
 
 specimen = rtoml.load(toml_file)
 
