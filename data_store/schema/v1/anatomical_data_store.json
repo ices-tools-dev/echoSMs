@@ -227,7 +227,7 @@
             "type": "string"
         },
         "model_type": {
-            "depreciated": true,
+            "deprecated": true,
             "description": "Original scattering model type.",
             "type": "string",
             "enum": [
@@ -246,32 +246,39 @@
         "sound_speed_method": {
             "description": "Method used to obtain sound speed in the specimen.",
             "type": "string",
-            "anyOf": [
+            "oneOf": [
                 {
+                    "title": "density to sound speed relationship",
                     "const": "density to sound speed relationship",
                     "description": "Use of an empirical relationship between density and sound speed"
                 },
                 {
+                    "title": "time-of-flight",
                     "const": "time-of-flight",
                     "description": "Estimated from the time taken for an acoustic pulse to travel from a source to destination transducer through the object being measured"
                 },
                 {
+                    "title": "pulse-echo",
                     "const": "pulse-echo",
                     "description": "Sound speed is determined by measuring the reflection time from the back of a tissue sample using a single transducer (vs the two used in a typical time-of-flight measurement)"
                 },
                 {
+                    "title": "inverted",
                     "const": "inverted",
                     "description": "Inferred or inverted from a fitted scattering model or other approach"
                 },
                 {
+                    "title": "literature",
                     "const": "literature",
                     "description": "Obtained from an existing publication, report, etc"
                 },
                 {
+                    "title": "unknown",
                     "const": "unknown",
                     "description": "The method used to estimate the sound speed is unknown"
                 },
                 {
+                    "title": "other",
                     "const": "other",
                     "description": "The method used to estimate the sound speed is not one of the listed methods"
                 }
@@ -280,44 +287,54 @@
         "mass_density_method": {
             "description": "Method used to obtain density in the specimen",
             "type": "string",
-            "anyOf": [
+            "oneOf": [
                 {
+                    "title": "CT density",
                     "const": "CT density",
                     "description": "Conversion of computer tomography Hounsfield unit numbers into density"
                 },
                 {
+                    "title": "liquid displacement",
                     "const": "liquid displacement",
                     "description": "Division of object mass by it's  volume, measured using liquid displacement"
                 },
                 {
+                    "title": "literature",
                     "const": "literature",
                     "description": "Obtained from an existing publication, report, etc"
                 },
                 {
+                    "title": "titration",
                     "const": "titration",
                     "description": "Density is determined by mixing two liquids of known densities until the animal reaches neutral buoyancy"
                 },
                 {
+                    "title": "pipette",
                     "const": "pipette",
                     "description": "Gravimetric displacement that determines an animal's volume by weighing the mass of seawater required to return a graduated cylinder to its original volume after the animal has been added"
                 },
                 {
+                    "title": "dual-density",
                     "const": "dual-density",
                     "description": "Density is calculated by weighing animals in two different fluids of known densities"
                 },
                 {
+                    "title": "from composition",
                     "const": "from composition",
                     "description": "Weighted average of known densities of an animal's chemical components, such as water, lipids, proteins, and other contribution sources"
                 },
                 {
+                    "title": "inverted",
                     "const": "inverted",
                     "description": "Inferred or inverted from a fitted scattering model or other approach"
                 },
                 {
+                    "title": "unknown",
                     "const": "unknown",
                     "description": "The method used to estimate the density is unknown"
                 },
                 {
+                    "title": "other",
                     "const": "other",
                     "description": "The method used to estimate the density is not one of the listed methods"
                 }
@@ -449,7 +466,7 @@
             ]
         },
         "shapes": {
-            "description": "Shape data.",
+            "description": "Data that specifies the shapes in the specimen.",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -506,6 +523,7 @@
                 "oneOf": [
                     {
                         "title": "Outline",
+                        "type": "object",
                         "description": "Represents a three-dimensional shape using a dorsal and lateral outline.",
                         "required": [
                             "shape_units",
@@ -516,6 +534,7 @@
                             "width",
                             "boundary"
                         ],
+                        "additionalProperties": false,
                         "dependentRequired": {
                             "mass_density": [
                                 "mass_density_units"
@@ -652,6 +671,7 @@
                     },
                     {
                         "title": "Surface",
+                        "type": "object",
                         "description": "Represents a three-dimensional shape using a triangulated mesh.",
                         "required": [
                             "shape_units",
@@ -663,6 +683,7 @@
                             "facets_2",
                             "boundary"
                         ],
+                        "additionalProperties": false,
                         "dependentRequired": {
                             "mass_density": [
                                 "mass_density_units"
@@ -778,26 +799,22 @@
                             },
                             "sound_speed_shear": {
                                 "description": "Transversal (shear) sound speed in shape.",
-                                "type": "number",
-                                "minimum": 0
+                                "$ref": "#/$defs/scalar_or_one_element_number_array"
                             },
                             "sound_speed_shear_units": {
                                 "$ref": "#/$defs/sound_speed_units"
                             },
                             "mass_density_ratio": {
                                 "description": "Ratio of mass densities of the shape and the surrounding material or shape.",
-                                "type": "number",
-                                "minimum": 0
+                                "$ref": "#/$defs/scalar_or_one_element_number_array"
                             },
                             "sound_speed_ratio": {
                                 "description": "Ratio of compressional sound speed of the and the surrounding material or shape.",
-                                "type": "number",
-                                "minimum": 0
+                                "$ref": "#/$defs/scalar_or_one_element_number_array"
                             },
                             "youngs_modulus": {
                                 "description": "Young's modulus, E, of the shape.",
-                                "type": "number",
-                                "minimum": 0
+                                "$ref": "#/$defs/scalar_or_one_element_number_array"
                             },
                             "youngs_modulus_units": {
                                 "$ref": "#/$defs/youngs_modulus_units"
@@ -806,6 +823,7 @@
                     },
                     {
                         "title": "Voxel",
+                        "type": "object",
                         "description": "Represents a three-dimensional shape using voxels.",
                         "required": [
                             "voxel_size",
@@ -815,6 +833,7 @@
                             "sound_speed_compressional",
                             "sound_speed_compressional_units"
                         ],
+                        "additionalProperties": false,
                         "properties": {
                             "shape_type": {
                                 "const": "voxels"
@@ -876,6 +895,7 @@
                     },
                     {
                         "title": "Categorised voxel",
+                        "type": "object",
                         "description": "Represents a three-dimensional shape using categorised voxels.",
                         "required": [
                             "voxel_size",
@@ -886,6 +906,7 @@
                             "sound_speed_compressional",
                             "sound_speed_compressional_units"
                         ],
+                        "additionalProperties": false,
                         "properties": {
                             "shape_type": {
                                 "const": "categorised voxels"
@@ -947,6 +968,7 @@
                     },
                     {
                         "title": "Geometric",
+                        "type": "object",
                         "description": "Represents a three-dimensional shape using the combination of one or more geometric shapes.",
                         "required": [
                             "geometric_form",
@@ -1177,23 +1199,28 @@
             ]
         },
         "date_or_empty_string": {
-            "anyOf": [
+            "oneOf": [
                 {
+                    "title": "Date string",
                     "type": "string",
                     "format": "date"
                 },
                 {
+                    "title": "Empty string",
+                    "type": "string",
                     "const": ""
                 }
             ]
         },
         "scalar_or_one_element_number_array": {
-            "anyOf": [
+            "oneOf": [
                 {
+                    "title": "Scalar",
                     "type": "number",
                     "minimum": 0
                 },
                 {
+                    "title": "Single element array",
                     "type": "array",
                     "minItems": 1,
                     "maxItems": 1,
