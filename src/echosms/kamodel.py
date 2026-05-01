@@ -43,12 +43,10 @@ class KAModel(ScatterModelBase):
             Sound speed in the fluid medium surrounding the target [m/s].
         theta : float
             Pitch angle to calculate the scattering as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            [coordinate system](conventions.md#coordinate-systems) [°].
         phi : float
             Roll angle to calculate the scattering as per the echoSMs
-            [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            [coordinate system](conventions.md#coordinate-systems) [°].
         f : float
             Frequency to calculate the scattering at [Hz].
         mesh : Any

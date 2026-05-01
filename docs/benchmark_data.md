@@ -35,7 +35,7 @@ The column names and descriptions are:
 
 ## TS(θ) at 38 kHz
 
-This dataset contains target strength (TS re 1m² \[dB\]) as a function of insonifying angle of incidence (θ) for the prolate spheroid and cylinder shapes. The data file [Benchmark_Angle_TS.csv](https://github.com/ices-tools-dev/echoSMs/blob/main/src/echosms/resources/BenchMark_Data/Benchmark_Angle_TS.csv) is formatted a comma-separated Ts values given to a precision of two decimal places (i.e., 0.01 dB). Incidence angle is as per the [echoSMs convention](coordinate-systems). The first row in the file contains column labels, indicating the model type for that column. NA represents TS values that were not computed.
+This dataset contains target strength (TS re 1m² \[dB\]) as a function of insonifying angle of incidence (θ) for the prolate spheroid and cylinder shapes. The data file [Benchmark_Angle_TS.csv](https://github.com/ices-tools-dev/echoSMs/blob/main/src/echosms/resources/BenchMark_Data/Benchmark_Angle_TS.csv) is formatted a comma-separated Ts values given to a precision of two decimal places (i.e., 0.01 dB). Incidence angle is as per the [echoSMs convention](conventions.md). The first row in the file contains column labels, indicating the model type for that column. NA represents TS values that were not computed.
 
 The column names and descriptions are:
 
