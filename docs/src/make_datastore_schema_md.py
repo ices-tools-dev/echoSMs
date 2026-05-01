@@ -25,13 +25,13 @@ def on_files(files, config):
             with_footer=False,
             template_name='js',
             )
-
+    
     generate_from_filename(schema_file, formatted_schema_file, config=cc)
 
     # Add to Files object
     mkdfile = File(path=formatted_schema_file.name,
                    src_dir=config["site_dir"],
-                   dest_dir=f'{config["site_dir"]}',
+                   dest_dir=config["site_dir"],
                    use_directory_urls=config["use_directory_urls"])
 
     files.append(mkdfile)
