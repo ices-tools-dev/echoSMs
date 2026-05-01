@@ -31,9 +31,10 @@ toml_file = Path('example_metadata A.toml')
 
 specimen = rtoml.load(toml_file)
 
-json_bytes = orjson.dumps(specimen)
-with open('metadata.json', 'wb') as f:
-    f.write(json_bytes)
+# Write out as json
+# json_bytes = orjson.dumps(specimen)
+# with open('metadata.json', 'wb') as f:
+#     f.write(json_bytes)
 
 error_count = 0
 for i, error in enumerate(validator.iter_errors(specimen)):
