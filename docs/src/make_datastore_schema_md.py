@@ -16,6 +16,7 @@ def on_files(files, config):
     """
     schema_file = Path('data_store')/'schema'/'v1'/'anatomical_data_store.json'
     formatted_schema_file = Path(config["site_dir"])/'schema_doc.html'
+    Path(formatted_schema_file.parent).mkdir(exist_ok=True, parents=True)
 
     # make doc from the JSON schema using json schema for humans
     cc = gc(expand_buttons=True,
