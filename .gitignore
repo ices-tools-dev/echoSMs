@@ -10,3 +10,4 @@ echoSMs.code-workspace
 data_store/src/downloaded_anatomical_datastore.gz
 dontgit/
 .DS_Store
+/.spyproject
