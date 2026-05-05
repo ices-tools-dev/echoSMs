@@ -28,7 +28,7 @@ class PTDWBAModel(ScatterModelBase):
         """
         p = as_dict(params)
 
-    def calculate_ts_single(self, volume: np.array[int], theta: float, phi: float,
+    def calculate_ts_single(self, volume: np.ndarray[int], theta: float, phi: float,
                             f: float, voxel_size: Iterable[float],
                             rho: Iterable[float], c: Iterable[float],
                             validate_parameters: bool=True, **kwargs) -> float:

@@ -214,7 +214,7 @@ class ScatterModelBase(abc.ABC):
             if not all(x in valid_values for x in np.unique(np.atleast_1d(p[name]))):
                 raise ValueError(f"Model parameter '{name}' contains 1 or more invalid values.")
 
-    def _present_and_positive(self, p: dict, names: list, mask: None | np.array =None):
+    def _present_and_positive(self, p: dict, names: list, mask: None | np.ndarray=None):
         """Check that that parameters are present and have a positive value.
 
         Parameters
