@@ -4,6 +4,7 @@ from .scattermodelbase import ScatterModelBase
 from .utils import wavenumber, as_dict, boundary_type as bt
 from math import log10, cos, acos, pi, isclose, radians
 from cmath import exp
+from typing import Iterable
 from scipy.spatial.transform import Rotation as R
 import numpy as np
 from scipy.special import j1
@@ -53,8 +54,12 @@ class DWBAModel(ScatterModelBase):
         if not np.all([isclose(1.0, np.linalg.norm(v)) for v in p['rv_tan']]):
             raise ValueError('All vectors in rv_tan must be of unit length.')
 
-    def calculate_ts_single(self, medium_c, medium_rho, theta, phi, f, target_c, target_rho,
-                            a, rv_pos, rv_tan, phase_sd=0, num_runs=1, validate_parameters=True,
+    def calculate_ts_single(self, medium_c: float, medium_rho: float, theta: float, phi: float,
+                            f: float, target_c: float, target_rho: float,
+                            a: Iterable[float], rv_pos: Iterable[np.ndarray],
+                            rv_tan: Iterable[np.ndarray],
+                            phase_sd: float=0, 
+                            num_runs: int=1, validate_parameters: bool=True,
                             **kwargs) -> float:
         """Distorted-wave Born approximation scattering model.
 
@@ -63,45 +68,45 @@ class DWBAModel(ScatterModelBase):
 
         Parameters
         ----------
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
+        medium_rho :
             Density of the fluid medium surrounding the target [kg/m³].
-        theta : float
+        theta :
             Pitch angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
-        phi : float
+        phi :
             Roll angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
-        f : float
+        f :
             Frequency to run the model at [Hz]
-        target_c : float
+        target_c :
             Sound speed in the fluid inside the target [m/s].
-        target_rho : float
+        target_rho :
             Density of the fluid inside the target [kg/m³].
-        a : iterable
+        a :
             The radii of the discs that define the target shape [m].
-        rv_pos : iterable[np.ndarray]
+        rv_pos :
             An interable of vectors of the 3D positions of the centre of each disc that
             defines the target shape. Each vector should have three values corresponding to
             the _x_, _y_, and _z_ coordinates [m] of the disc centre.
-        rv_tan : iterable[np.ndarray]
+        rv_tan :
             An interable of unit vectors of the tangent to the target body axis at
             the points given in `rv_pos`. Each vector should have three values corresponding to
             the _x_, _y_, and _z_ components of the tangent vector.
-        phase_sd : float
+        phase_sd :
             If non-zero, this model becomes the SDWBA (stochastic DWBA). A random phase is
             applied to each term in the DWBA integral, obtained from a Gaussian distribution
             centered on 0 with standard deviation of `phase_sd` [°].
-        num_runs : int
+        num_runs :
             The number of times to run the SDWBA model. The mean TS (calculated in the
             linear domain) is returned. Intended to be used in conjunction with `phase_sd`.
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) [dB] of the target.
 
         Notes

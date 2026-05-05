@@ -38,41 +38,43 @@ class DCMModel(ScatterModelBase):
                 super()._present_and_positive(p, ['target_c', 'target_rho'],
                                               mask=p['boundary_type'] == t)
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type: bt,
-                            target_c=None, target_rho=None, validate_parameters=True,
-                            **kwargs):
+    def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, b: float,
+                            theta: float, f: float, boundary_type: bt,
+                            target_c: None | float=None, target_rho: None | float=None,
+                            validate_parameters: bool=True,
+                            **kwargs) -> float:
         """
         Calculate the scatter from a finite cylinder using the modal series deformed cylinder model.
 
         Parameters
         ----------
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
+        medium_rho :
             Density of the fluid medium surrounding the target [kg/m³].
-        a : float
+        a :
             Radius of the cylinderical target [m].
-        b : float
+        b :
             Length of the cylinderical target [m].
-        theta : float
+        theta :
             Pitch angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
-        f : float
+        f :
             Frequency to calculate the scattering at [Hz].
         boundary_type :
             The model type. Supported model types are given in the `boundary_types` class attribute.
-        target_c : float, optional
+        target_c :
             Sound speed in the fluid inside the sphere [m/s].
             Only required for `boundary_type` of ``fluid_filled``.
-        target_rho : float, optional
+        target_rho :
             Density of the fluid inside the sphere [kg/m³].
             Only required for `boundary_type` of ``fluid_filled``.
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) of the target [dB].
 
         Notes

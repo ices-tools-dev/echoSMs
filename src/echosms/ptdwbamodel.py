@@ -1,5 +1,6 @@
 """The phase-tracking distorted-wave Born approximation model."""
 
+from typing import Iterable
 import numpy as np
 from scipy import ndimage
 from scipy.spatial.transform import Rotation as R
@@ -27,8 +28,10 @@ class PTDWBAModel(ScatterModelBase):
         """
         p = as_dict(params)
 
-    def calculate_ts_single(self, volume, theta, phi, f, voxel_size, rho, c,
-                            validate_parameters=True, **kwargs):
+    def calculate_ts_single(self, volume: np.array[int], theta: float, phi: float,
+                            f: float, voxel_size: Iterable[float],
+                            rho: Iterable[float], c: Iterable[float],
+                            validate_parameters: bool=True, **kwargs) -> float:
         """Phase-tracking distorted-wave Born approximation scattering model.
 
         Implements the phase-tracking distorted-wave Born approximation
@@ -36,7 +39,7 @@ class PTDWBAModel(ScatterModelBase):
 
         Parameters
         ----------
-        volume : Numpy ndarray[int]
+        volume :
             The object to be modelled as a 3D volume of voxels. Array contents should be 0
             for the surrounding medium, then increasing by 1 for each additional material
             type (i.e., 1, 2, 3, etc). `volume` should be arranged as per the echoSMs
@@ -48,29 +51,29 @@ class PTDWBAModel(ScatterModelBase):
 
             Increasing axes indices correspond to increasing _x_, _y_, and _z_ values.
 
-        theta : float
+        theta :
             Pitch angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
 
-        phi : float
+        phi :
             Roll angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
 
-        f : float
+        f :
             Frequency to run the model at [Hz]
 
-        voxel_size : iterable[float]
+        voxel_size :
             The size of the voxels in `volume` [m], ordered (_x_, _y_, _z_).
             This code assumes that the voxels are cubes so _y_ and _z_ are currently irrelevant.
 
-        rho : iterable[float]
+        rho :
             Densities of each material. Must have at least the same number of entries as unique
             integers in `volume` [kg/m³].
 
-        c : iterable[float]
+        c :
             Sound speed of each material. Must have at least the same number of entries as unique
             integers in `volume` [m/s].
-        validate_parameters : bool
+        validate_parameters : 
             Whether to validate the model parameters.
 
         Returns

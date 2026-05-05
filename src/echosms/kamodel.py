@@ -3,6 +3,7 @@
 from math import log10
 import numpy as np
 from scipy.spatial.transform import Rotation as R
+from typing import Any
 from .utils import wavenumber, wavelength, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
 
@@ -32,24 +33,25 @@ class KAModel(ScatterModelBase):
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_c', 'f'])
 
-    def calculate_ts_single(self, medium_c, theta, phi, f, mesh,
-                            boundary_type: bt, validate_parameters=True, **kwargs) -> float:
+    def calculate_ts_single(self, medium_c: float, theta: float, phi: float, f: float,
+                            mesh: Any, boundary_type: bt,
+                            validate_parameters: bool=True, **kwargs) -> float:
         """
         Calculate the scatter using the ka model for one set of parameters.
 
         Parameters
         ----------
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the target [m/s].
-        theta : float
+        theta :
             Pitch angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
-        phi : float
+        phi :
             Roll angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
-        f : float
+        f :
             Frequency to calculate the scattering at [Hz].
-        mesh : Any
+        mesh :
             The triangular mesh that defines the scattering surface. This parameter must provide
             attributes with names of:
 
@@ -62,12 +64,12 @@ class KAModel(ScatterModelBase):
             definition of a mesh and calculate the above attributes automatically.
         boundary_type :
             The boundary type. Supported types are given in the `boundary_types` class variable.
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) of the target [dB].
 
         Notes

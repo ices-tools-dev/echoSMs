@@ -32,56 +32,57 @@ class HPModel(ScatterModelBase):
             raise ValueError('The boundary_type parameter must be one of: ' +
                              ', '.join(self.boundary_types))
 
-    def calculate_ts_single(self, shape, medium_c, a, f, boundary_type: bt, medium_rho=None,
-                            target_c=None, target_rho=None,
-                            theta=None,
-                            L=None, rho_c=None,
-                            irregular=False,
-                            validate_parameters=True, **kwargs) -> float:
+    def calculate_ts_single(self, shape: str, medium_c: float, a: float, f: float,
+                            boundary_type: bt, medium_rho: None | float=None,
+                            target_c: None | float=None, target_rho: None | float=None,
+                            theta: None | float=None,
+                            L: None | float=None, rho_c: None | float=None,
+                            irregular: bool=False,
+                            validate_parameters: bool=True, **kwargs) -> float:
         """
         Calculate the backscatter using the high pass model for one set of parameters.
 
         Parameters
         ----------
-        shape : str
+        shape :
             The shape to model. Must be one of the shapes given in the `shapes` variable.
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
+        medium_rho :
             Density of the fluid medium surrounding the target [kg/m³]. Not required when
             `boundary_type` is `fixed_rigid`.
-        target_c : float
+        target_c :
             Longitudinal sound speed in the material inside the target [m/s]. Not required when
             `boundary_type` is `fixed_rigid`.
-        target_rho : float
+        target_rho :
             Density of the material inside the target [kg/m³]. Not required when
             `boundary_type` is `fixed_rigid`.
-        a : float
+        a :
             Radius of the sphere, length of semi-minor axis of the prolate spheriod, or cylindrical
             radius of the straight or bent cylinder [m].
-        f : float
+        f :
             Frequency to calculate the scattering at [Hz].
         boundary_type :
             The boundary type for the model.
-        theta : float
+        theta :
             Pitch angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°]. Only required for the straight cylinder shape.
-        L : float
+        L :
             Total length of the prolate spheroid and straight cylinder, or arc length of
             the bent cylinder [m]. Only required for prolate spheroid, cylinder, and bent cylinder
             shapes.
-        rho_c : float
+        rho_c :
             Radius of curvature of the axis of the bent cylinder [m]. Only required for the
             bent cylinder shape.
         irregular :
             Set to `True` if the modelled object is not exactly a sphere, prolate spheroid,
             straight or uniformly beny cylinder.
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) of the sphere [dB].
 
         Notes
