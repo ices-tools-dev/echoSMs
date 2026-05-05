@@ -3,7 +3,6 @@
 from pathlib import Path
 from mkdocs.structure.files import File
 
-# The package that was used, but it generates poor-looking output
 from json_schema_for_humans.generate import generate_from_filename
 from json_schema_for_humans.generation_configuration import GenerationConfiguration as gc
 
@@ -11,7 +10,7 @@ def on_files(files, config):
     """Create the schema markdown file.
 
     This function is called when mkdocs is run and converts the echoSMs anatomical
-    data store schema json file into an html file that is referenced into an
+    data store schema json file into an html file that is referenced by an
     existing markdown file.
     """
     schema_file = Path('data_store')/'schema'/'v1'/'anatomical_data_store.json'

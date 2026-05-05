@@ -74,7 +74,7 @@ Some models use multiple shapes for a single specimen (e.g., a fish body and swi
 |outline|Dorsal and ventral outlines along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/image)|ρ and c per shape (KRM) or per section (DWBA)|
 |voxels|3D rectangular grid|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/image)|ρ and c for each voxel|
 |categorised voxels|categorised 3D rectangular grid|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/image)|ρ and c for each category|
-|geometric|combination of simple shapes|MFS|none yet|none
+|geometric|combination of simple shapes|MFS|none yet|none|
 
 ???+ Note
     The outline shape is a generalised form of the shape definition used for several models:
@@ -99,8 +99,9 @@ EchoSMs provides a function, `surface_from_stl()`, to convert an [STL](https://e
 ```py
 from echosms import surface_from_stl
 
-shape = surface_from_stl('A.stl', dim_scale=1e-3, anatomical_feature='swimbladder',
-                          boundary='pressure-release')
+shape = surface_from_stl('A.stl', dim_scale=1e-3,
+                         anatomical_feature='swimbladder',
+                         boundary='pressure-release')
 ```
 
 This shape can then be combined with specimen metadata and written to a TOML file ready for loading into the echoSMs datastore:
@@ -213,7 +214,7 @@ specimen = {'uuid': str(uuid.uuid4()),
 plot_specimen(specimen)
 ```
 
-In the same way as for the surface mesh example above, the 
+In the same way as for the surface mesh example above, the
 specimen data can be written to a TOML file.
 
 DBWA model implementations tend to use a centreline that is curved in the _z_-axis and body cross-sections that are circular, so there is a separate function for converting DWBA shapes:
