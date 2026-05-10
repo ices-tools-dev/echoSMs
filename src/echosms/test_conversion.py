@@ -1,6 +1,6 @@
 """ """
 
-from echosms import outline_to_surface, plot_specimen
+from echosms import outline_to_surface
 
 import requests
 

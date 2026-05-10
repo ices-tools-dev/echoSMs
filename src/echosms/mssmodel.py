@@ -48,48 +48,50 @@ class MSSModel(ScatterModelBase):
                     super()._present_and_positive(p, ['shell_c', 'shell_rho', 'shell_thickness'],
                                                   mask=mask)
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, f, boundary_type: bt,
-                            target_c=None, target_rho=None,
-                            shell_c=None, shell_rho=None, shell_thickness=None,
-                            validate_parameters=True,
+    def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, f: float,
+                            boundary_type: bt,
+                            target_c: None | float=None, target_rho: None | float=None,
+                            shell_c: None | float=None, shell_rho: None | float=None,
+                            shell_thickness: None | float=None,
+                            validate_parameters: bool=True,
                             **kwargs) -> float:
         """
         Calculate the scatter using the mss model for one set of parameters.
 
         Parameters
         ----------
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
+        medium_rho :
             Density of the fluid medium surrounding the target [kg/m³].
-        a : float
+        a :
             Radius of the spherical target [m].
-        f : float
+        f :
             Frequency to calculate the scattering at [Hz].
         boundary_type :
             The boundary type. Supported types are given in the `boundary_types` class variable.
-        target_c : float, optional
+        target_c :
             Sound speed in the fluid inside the sphere [m/s].
             Only required for `boundary_type` of ``fluid_filled``.
-        target_rho : float, optional
+        target_rho :
             Density of the fluid inside the sphere [kg/m³].
             Only required for `boundary_type` of ``fluid_filled``.
-        shell_c : float, optional
+        shell_c :
             Sound speed in the spherical shell [m/s].
             Only required for `boundary_type`s that include a fluid shell.
-        shell_rho : float, optional
+        shell_rho :
             Density in the spherical shell [kg/m³].
             Only required for `boundary_type`s that include a fluid shell.
-        shell_thickness : float, optional
+        shell_thickness :
             Thickness of the spherical shell [m]. This value is subtracted from ``a`` to give
             the radius of the interior sphere.
             Only required for `boundary_type`s that include a fluid shell.
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) of the target [dB].
 
         Notes
@@ -171,7 +173,8 @@ class MSSModel(ScatterModelBase):
         return 20*log10(abs(fbs))  # ts
 
     @staticmethod
-    def __eqn9(n, k1a, g21, h21, k2a, k2b, k3b, h32, g32):
+    def __eqn9(n: int, k1a: float, g21: float, h21: float, k2a: float, k2b: float,
+               k3b: float, h32: float, g32: float) -> float:
         """Variables in eqn 9 of Jech et al, 2015.
 
         Applies to a fluid interior shell.
@@ -190,7 +193,8 @@ class MSSModel(ScatterModelBase):
         return b1, b2, a11, a21, a12, a22, a32, a13, a23, a33
 
     @staticmethod
-    def __eqn10(n, k1a, g21, h21, ksa, k2a, k2b):
+    def __eqn10(n: int, k1a: float, g21: float, h21: float, ksa: float,
+                k2a: float, k2b: float) -> float:
         """Variables in eqn 10 of Jech et al, 2015.
 
         Applies to a pressure release interior shell.
@@ -203,7 +207,7 @@ class MSSModel(ScatterModelBase):
         return b1, b2, d1, d2, a11, a21
 
     @staticmethod
-    def __eqn9_10_common(n, k1a, g21, h21):
+    def __eqn9_10_common(n: int, k1a: float, g21: float, h21: float) -> float:
         """Variables common to eqn 9 and 10 of Jech et al, 2015."""
         b1 = spherical_jn(n, k1a)
         b2 = g21*h21 * spherical_jn(n, k1a, True)

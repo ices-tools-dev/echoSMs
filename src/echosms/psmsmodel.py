@@ -39,39 +39,41 @@ class PSMSModel(ScatterModelBase):
                 super()._present_and_positive(p, ['target_c', 'target_rho'],
                                               mask=p['boundary_type'] == t)
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, b, theta, f, boundary_type: bt,
-                            target_c=None, target_rho=None, validate_parameters=True):
+    def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, b: float,
+                            theta: float, f: float, boundary_type: bt,
+                            target_c: None | float=None, target_rho: None | float=None,
+                            validate_parameters: bool=True) -> float:
         """Prolate spheroid modal series (PSMS) solution model.
 
         Parameters
         ----------
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
+        medium_rho :
             Density of the fluid medium surrounding the target [kg/m³].
-        a : float
+        a :
             Prolate spheroid major axis radius [m].
-        b : float
+        b :
             Prolate spheroid minor axis radius [m].
-        theta : float
+        theta :
             Pitch angle to calculate the scattering as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
-        f : float
+        f :
             Frequency to calculate the scattering at [Hz].
         boundary_type :
             The model type. Supported model types are given in the `boundary_types` class variable.
-        target_c : float
+        target_c :
             Sound speed in the fluid inside the target [m/s].
             Only required for `boundary_type` of ``fluid_filled``.
-        target_rho : float
+        target_rho :
             Density of the fluid inside the target [kg/m³].
             Only required for `boundary_type` of ``fluid_filled``.
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the input parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) of the target [dB].
 
         Notes
@@ -178,7 +180,8 @@ class PSMSModel(ScatterModelBase):
         return 20*np.log10(np.abs(-2j / km * f_sca))
 
     @staticmethod
-    def _fluidfilled_Emn(m, n, ell, hm, ht, xim, g):
+    def _fluidfilled_Emn(m: int, n: int, ell: float, hm: float, ht: float,
+                         xim: float, g: float) -> tuple[float, float]:
         """Calculate Emn_i values where i = 1 and 3."""
         R1mn_w, dR1mn_w = pro_rad1(m, n, hm, xim)
         R2mn_w, dR2mn_w = pro_rad2(m, n, hm, xim)
@@ -193,7 +196,8 @@ class PSMSModel(ScatterModelBase):
         return E1, E3
 
     @staticmethod
-    def _fluidfilled(m, n_max, hm, ht, xim, g, theta_inc):
+    def _fluidfilled(m: int, n_max: int, hm: float, ht: float, xim: float,
+                     g: float, theta_inc: float) -> float:
         """Calculate Amn for fluid filled prolate spheroids."""
         # Rather than implement eqn (4) in Furusawa (1988), use an alternative form that
         # I found easier to understand. This is eqns 5, 6, 7, and 8 in:
@@ -224,7 +228,7 @@ class PSMSModel(ScatterModelBase):
         return np.linalg.lstsq(Q, f, rcond=None)[0]
 
     @staticmethod
-    def _alpha_int(eta, m, n, ell, hm, ht):
+    def _alpha_int(eta: float, m: int, n: int, ell: float, hm: float, ht: float) -> float:
         """Eqn (8) in Gonzalez et al (2016) ready for integration with respect to eta.
 
         The denominator in eqn (8) is not necessary because of the norm=True

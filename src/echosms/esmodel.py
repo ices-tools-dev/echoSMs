@@ -34,35 +34,35 @@ class ESModel(ScatterModelBase):
                                           'target_longitudinal_c',
                                           'target_transverse_c', 'target_rho'])
 
-    def calculate_ts_single(self, medium_c, medium_rho, a, f,
-                            target_longitudinal_c, target_transverse_c, target_rho,
-                            validate_parameters=True,
+    def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, f: float,
+                            target_longitudinal_c: float, target_transverse_c: float,
+                            target_rho: float, validate_parameters: bool=True,
                             **kwargs) -> float:
         """
         Calculate the backscatter from an elastic sphere for one set of parameters.
 
         Parameters
         ----------
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the sphere [m/s].
-        medium_rho : float
+        medium_rho :
             Density of the fluid medium surrounding the sphere [kg/m³].
-        a : float
+        a :
             Radius of the sphere [m].
-        f : float
+        f :
             Frequency to calculate the scattering at [Hz].
-        target_longitudinal_c : float
+        target_longitudinal_c :
             Longitudinal sound speed in the material inside the sphere [m/s].
-        target_transverse_c : float
+        target_transverse_c :
             Transverse sound speed in the material inside the sphere [m/s].
-        target_rho : float
+        target_rho :
             Density of the material inside the sphere [kg/m³].
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) of the sphere [dB].
 
         Notes

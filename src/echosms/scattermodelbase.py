@@ -5,7 +5,7 @@ import pandas as pd
 import xarray as xr
 import numpy as np
 from tqdm import tqdm
-from .utils import as_dataframe, boundary_type
+from .utils import as_dataframe
 
 
 class ScatterModelBase(abc.ABC):
@@ -59,12 +59,14 @@ class ScatterModelBase(abc.ABC):
         s += '\n'.join(['\t' + str(k) + ' = ' + str(v) for k, v in vars(self).items()])
         return s
 
-    def calculate_ts(self, data, expand=False, inplace=False, multiprocess=False, progress=False):
+    def calculate_ts(self, data: dict | pd.DataFrame | xr.DataArray, expand: bool=False,
+                     inplace: bool=False, multiprocess: bool=False,
+                     progress: bool=False) -> None | list[float] | pd.Series | pd.DataFrame:
         """Calculate the target strength (TS) for many parameters.
 
         Parameters
         ----------
-        data : Pandas DataFrame, Xarray DataArray or dict
+        data :
             Requirements for the different input data types are:
 
             - **DataFrame**: column names must match the function parameter names in
@@ -75,30 +77,30 @@ class ScatterModelBase(abc.ABC):
             - **dict**: keys must match the function parameters in calculate_ts_single().
               TS values will be calculated for all combinations of the dict values.
 
-        multiprocess : bool
+        multiprocess :
             Split the ts calculation across CPU cores. Multiprocessing is currently provided by
             [mapply](https://github.com/ddelange/mapply). For more
             sophisticated uses it may be preferred to use a multiprocessing package of your choice
             directly on the `calculate_ts_single()` method. See the code in this method
             (`calculate_ts()`) for an example.
 
-        expand : bool
+        expand :
             Only applicable if `data` is a dict. If `True`, will use
             [`as_dataframe()`][echosms.utils.as_dataframe]
             to expand the dict into a DataFrame with one column per dict key
             and return that, adding a column named `ts` for the results.
 
-        inplace : bool
+        inplace :
             Only applicable if `data` is a DataFrame. If `True`, the results
             will be added to the input DataFrame in a column named `ts`. If a `ts` column
             already exists, it is overwritten.
 
-        progress : bool
+        progress :
             If `True`, will produce a progress bar while running models
 
         Returns
         -------
-        : None, list[float], Series, or DataFrame
+        :
             The return type and value are determined by the type of the input variable (`data`) and
             the `expand` and `inplace` parameters:
 
@@ -212,7 +214,7 @@ class ScatterModelBase(abc.ABC):
             if not all(x in valid_values for x in np.unique(np.atleast_1d(p[name]))):
                 raise ValueError(f"Model parameter '{name}' contains 1 or more invalid values.")
 
-    def _present_and_positive(self, p: dict, names: list, mask=None):
+    def _present_and_positive(self, p: dict, names: list, mask: None | np.ndarray=None):
         """Check that that parameters are present and have a positive value.
 
         Parameters
@@ -221,7 +223,7 @@ class ScatterModelBase(abc.ABC):
             Model parameters
         name :
             Model parameter names to validate.
-        mask : np.array | None
+        mask :
             When checking for positive values, only check those where the mask is True.
 
         Raises

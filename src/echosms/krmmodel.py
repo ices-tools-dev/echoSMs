@@ -6,20 +6,20 @@ import numpy as np
 from scipy.special import j0, y0, jvp, yvp
 from .utils import wavenumber, as_dict, boundary_type as bt
 from .scattermodelbase import ScatterModelBase
-from .krmdata import KRMshape
+from .krmdata import KRMshape, KRMorganism
 
 
-def _u(x, z, theta):
+def _u(x: float, z: float, theta: float) -> float:
     """KRM coordinate transform from x to u."""
     return np.array(x*sin(theta) - z*cos(theta))  # Eqn (4)
 
 
-def _v(x, z, theta):
+def _v(x: float, z: float, theta: float) -> float:
     """KRM coordinate transform from x to v."""
     return np.array(x*cos(theta) + z*sin(theta))  # Eqn (5)
 
 
-def _deltau(x, theta):
+def _deltau(x: float, theta: float) -> float:
     """KRM projection of delta x onto u."""
     return np.diff(x)*sin(theta)  # Eqn (6)
 
@@ -53,9 +53,10 @@ class KRMModel(ScatterModelBase):
         # if np.any(ka_s <= 0.15):
         #     warnings.warn('Some ka_s is below the limit.')
 
-    def calculate_ts_single(self, medium_c, medium_rho, theta, f, organism,
-                            high_ka_medium='body', low_ka_medium='body',
-                            validate_parameters=True, **kwargs) -> float:
+    def calculate_ts_single(self, medium_c: float, medium_rho: float, theta: float,
+                            f: float, organism: KRMorganism, high_ka_medium: str='body',
+                            low_ka_medium: str='body',
+                            validate_parameters: bool=True, **kwargs) -> float:
         """
         Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
 
@@ -66,19 +67,19 @@ class KRMModel(ScatterModelBase):
 
         Parameters
         ----------
-        medium_c : float
+        medium_c :
             Sound speed in the fluid medium surrounding the target [m/s].
-        medium_rho : float
+        medium_rho :
             Density in the fluid medium surrounding the target [kg/m³]
-        theta : float
+        theta :
             Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](conventions.md#coordinate-systems) [°].
-        f : float
+        f :
             Frequency to calculate the scattering at [Hz].
-        organism: KRMorganism
+        organism :
             The shapes that make up the model. This is typically a shape for the body and zero or
             more enclosed shapes that repesent internal parts of the organism.
-        high_ka_medium:
+        high_ka_medium :
             If set to `body` the sound speed and density of the organism body is used for
             the fluid surrounding any inclusions. If set to anything else (e.g., `water`)
             the sound speed and density given by `medium_c` and `medium_rho` are used.
@@ -86,19 +87,19 @@ class KRMModel(ScatterModelBase):
             the model (i.e., high _ka_) and corresponds to the use (or not) of the
             approximation given in Clay & Horne (1994) on the line immediately below Eqn (13):
             _k_b ≈ k at low contrast_.
-        low_ka_medium:
+        low_ka_medium :
             If set to `body` the sound speed and density of the organism body is used for
             the fluid surrounding any inclusions. If set to anything else (e.g., `water`)
             the sound speed and density given by `medium_c` and `medium_rho` are used.
             This parameter applies to the mode solution part of the model (i.e., low _ka_)
             and corresponds to the use (or not) of the approximation given in Clay & Horne (1994)
             on the line immediately below Eqn (13): _k_b ≈ k at low contrast_.
-        validate_parameters : bool
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
         -------
-        : float
+        :
             The target strength (re 1 m²) of the target [dB].
 
         Notes
@@ -271,7 +272,8 @@ class KRMModel(ScatterModelBase):
 
         return soft_sl
 
-    def _fluid_KA(self, shape, k, k_b, R_wb, TwbTbw, theta):
+    def _fluid_KA(self, shape: KRMshape, k: float, k_b: float, R_wb: float,
+                  TwbTbw: float, theta: float):
         """Backscatter from a fluid object using the Kirchhoff approximation.
 
         Parameters
