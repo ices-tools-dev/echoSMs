@@ -185,6 +185,25 @@ class ScatterModelBase(abc.ABC):
             If any required model parameters are not present.
         """
 
+    def _present(self, p: dict, names: list):
+        """Check that the parameters are present.
+
+        Parameters
+        ----------
+        p :
+            Model parameters.
+        name :
+            Model parameter names to check for.
+
+        Raises
+        ------
+        KeyError
+            If any required model parameters are not present.
+        """
+        for name in names:
+            if name not in p:
+                raise KeyError(f"Models require a '{name}' parameter.")
+
     def _present_and_in(self, p: dict, names: list, valid_values: list):
         """Check that that parameters are present and contains values in `valid_values`.
 
