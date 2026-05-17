@@ -72,8 +72,8 @@ class BEMModel(ScatterModelBase):
         Notes
         -----
         This models implements the classical BEM for pressure release targets
-        using `scipy.linalg.solve` with k/4 diagonal regularization. The cod was
-        kindly provided by Marek Moszyński.
+        using with k/4 diagonal regularization. The code
+        was kindly provided by Marek Moszyński.
         """
 
         # Note: th, ph - incident wave direction angles in radians
