@@ -6,7 +6,7 @@ import numpy as np
 import trimesh
 
 from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
-from echosms import HPModel, KRMModel
+from echosms import HPModel, KRMModel, BEMModel
 from echosms import BenchmarkData, JechEtAlData
 from echosms import ReferenceModels
 from echosms import as_dataframe, as_dataarray, boundary_type as bt
@@ -165,6 +165,48 @@ for name in models:
 # %% ###############################################################################################
 # Run non-benchmark models and compare to the relevant benchmark results.
 ####################################################################################################
+
+# %% ##################################################
+# Test the BEMModel against some of the benchmarks
+model_names = ['pressure release sphere', 'pressure release prolate spheroid']
+               #'pressure release finite cylinder']
+
+# exclude the cylinder as the results are odd. not sure why...
+
+for name in model_names:
+
+    m = rm.parameters(name)
+
+    match rm.specification(name)['shape']:
+        case 'prolate spheroid':
+            mesh = trimesh.creation.icosphere(subdivisions=3, radius=1.0)
+            stretch_matrix = np.diag([m['a'], m['b'], m['b'], 1.0])
+            mesh.apply_transform(stretch_matrix)
+        case 'sphere':
+            mesh = trimesh.creation.icosphere(radius=m['a'], subdivisions=3)
+        case 'finite cylinder':
+            # default cylinder from trimesh lies along the z axis, so need to
+            # rotate it to lie along the x axis
+            mesh = trimesh.creation.cylinder(radius=m['a'], height=m['b'],
+                    sections=10,
+                    transform = \
+                        trimesh.transformations.rotation_matrix(np.pi/2, [0, 1, 0], [0, 0, 0]))
+            # mesh = mesh.subdivide().subdivide()  # needed for better accuracy at higher frequencies
+
+    # Benchmark model for comparison
+    f, bm_ts = bm.freq_data(name)
+    f = f[~np.isnan(bm_ts)]
+    bm_ts = bm_ts[~np.isnan(bm_ts)]
+
+    m |= {'theta': 90, 'phi': 0, 'f': f, 'mesh': mesh}
+
+    mod = BEMModel()
+    print(f'Calculating {rm.specification(name)['shape']} shape')
+    ts_bem = mod.calculate_ts(m, progress=True)
+
+
+    plot_compare_freq(f, bm_ts, 'benchmark', f, ts_bem, 'bem', name)
+
 
 # %% ##################################################
 # Test the KAModel
