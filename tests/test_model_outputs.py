@@ -97,7 +97,7 @@ def test_krmmodel(rm, fname, f, ts):
 # KAModel
 def test_kamodel(rm):
     import trimesh
-    name = 'fixed rigid sphere'
+    name = 'pressure release sphere'
     s = rm.specification(name)
 
     p = {'medium_c': s['medium_c'], 'phi': 0, 'theta': 90.0,
@@ -106,6 +106,21 @@ def test_kamodel(rm):
 
     mod = echosms.KAModel()
     assert np.allclose(mod.calculate_ts(p), -44.4474, atol=0.0001), "Incorrect TS value"
+
+
+###########################################################
+# BEMModel
+def test_bemmodel(rm):
+    import trimesh
+    name = 'pressure release sphere'
+    s = rm.specification(name)
+
+    p = {'medium_c': s['medium_c'], 'phi': 0, 'theta': 90.0,
+         'mesh': trimesh.creation.icosphere(radius=s['a'], subdivisions=4),
+         'boundary_type': 'pressure-release', 'f': 38e3}
+
+    mod = echosms.BEMModel()
+    assert np.allclose(mod.calculate_ts(p), -44.9167, atol=0.0001), "Incorrect TS value"
 
 
 ###########################################################
