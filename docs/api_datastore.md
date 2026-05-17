@@ -1,6 +1,9 @@
-# Anatomical datastore
+# Shapes
 
-This is the API reference for code that works with the echoSMs anatomical datastore.
+This is the API reference for code that works with the echoSMs anatomical datastore
+and associated model shapes.
 
 
-::: echosms.utils_datastore
+::: echosms.plotting
+
+::: echosms.conversions

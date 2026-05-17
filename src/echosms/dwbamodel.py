@@ -36,7 +36,7 @@ class DWBAModel(ScatterModelBase):
     def validate_parameters(self, params):
         """Validate the model parameters.
 
-        See [here][echosms.ScatterModelBase.validate_parameters] for calling details.
+        See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for calling details.
         """
         p = as_dict(params)
         super()._present_and_positive(p, ['medium_rho', 'medium_c', 'target_rho', 'target_c', 'f'])

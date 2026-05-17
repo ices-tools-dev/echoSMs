@@ -4,7 +4,9 @@ This is the API reference for the scattering model part of the echoSMs package.
 
 Each type of model is contained in a separate Python class (with name ending in ``Model``), but with common calling signatures across all model classes, as defined in ``ScatterModelBase``. There are also classes to provide ready access to the benchmark models and reference model definitions.
 
-## ::: echosms.ScatterModelBase
+## ::: echosms.scattermodelbase.ScatterModelBase
+
+## ::: echosms.BEMModel
 
 ## ::: echosms.DCMModel
 

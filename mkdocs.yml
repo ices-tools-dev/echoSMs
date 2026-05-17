@@ -20,7 +20,7 @@ nav:
     - Benchmarks: benchmark_data.md
     - API reference: 
         - Scattering models: api_scattering_models.md
-        - Datastore: api_datastore.md
+        - Shapes: api_datastore.md
         - Utilities: api_utilities.md
     - Historical code & notes: historical_notes.md
     - Other software: other_software.md

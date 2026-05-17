@@ -72,7 +72,7 @@ def _fit_to_axes(fig):
 def plot_shape_outline(shapes: list[dict], axs: list) -> None:
     """Plot an echoSMs anatomical outline shape.
 
-    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
+    Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
 
     Parameters
     ----------
@@ -112,7 +112,7 @@ def plot_shape_outline(shapes: list[dict], axs: list) -> None:
 def plot_shape_surface(shapes, ax):
     """Plot an echoSMs anatomical surface shape.
 
-    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
+    Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
 
     Parameters
     ----------
@@ -142,7 +142,7 @@ def plot_shape_surface(shapes, ax):
 def plot_shape_voxels(s, title=''):
     """Plot the specimen's voxels.
 
-    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
+    Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
 
     Parameters
     ----------
@@ -197,7 +197,7 @@ def plot_shape_voxels(s, title=''):
 def plot_shape_categorised_voxels(s, title=''):
     """Plot the specimen's categorised voxels.
 
-    Normally called via [plot_specimen()][echosms.utils_datastore.plot_specimen].
+    Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
 
     Parameters
     ----------
