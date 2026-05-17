@@ -2,9 +2,9 @@
 
 from typing import Any
 from .scattermodelbase import ScatterModelBase
-from .utils import as_dict, boundary_type as bt
+from .utils import as_dict, boundary_type as bt, wavenumber
 
-from numpy import pi, sqrt, exp, sin, cos, array, zeros, log10
+from numpy import pi, exp, sin, cos, array, log10
 from scipy.linalg import solve
 from numpy import errstate, fill_diagonal
 from scipy.spatial.distance import pdist, squareform
@@ -31,8 +31,9 @@ class BEMModel(ScatterModelBase):
         See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for calling details.
         """
         p = as_dict(params)
-        super()._present_and_in()
-        super()._present_and_positive()
+        super()._present(p, ['theta', 'phi', 'mesh'])
+        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
+        super()._present_and_positive(p, ['medium_c', 'f'])
     
     def calculate_ts_single(self, medium_c: float, theta: float, phi: float,
                             f: float, mesh: Any, boundary_type: bt,
@@ -53,14 +54,11 @@ class BEMModel(ScatterModelBase):
         f :
             Frequency to calculate the scattering at [Hz].
         mesh :
-            The triangular mesh that defines the scattering surface. This parameter must provide
-            attributes with names of:
-
-            - `vertices` (coordinates of the mesh vertices)
-            - `faces` (indices into `vertices` that define the triangular mesh surface)
-
-            A suitable library for creating and manipulating triangular meshes
-            is [trimesh](https://trimesh.org).
+            A triangular mesh that defines the scattering surface.
+            This parameter only needs to have
+            an attribute named `triangules_center`,
+            as per the [trimesh](https://trimesh.org)
+            Python package.
         boundary_type :
             The boundary type. Supported types are given in the `boundary_types` class variable.
         validate_parameters :
@@ -74,35 +72,32 @@ class BEMModel(ScatterModelBase):
         Notes
         -----
         This models implements the classical BEM for pressure release targets
-        using scipy.linalg.solve with k/4 diagonal regularization, kindly provided by
-        Marek Marek Moszyński.
-    
-        References
-        ----------
-
+        using `scipy.linalg.solve` with k/4 diagonal regularization. The cod was
+        kindly provided by Marek Moszyński.
         """
 
         # Note: th, ph - incident wave direction angles in radians
 
-        (f0, c0, th, ph) = (f, medium_c, -theta*pi/180, phi*pi/180 )
-        k = 2*pi*f0/c0
+        th = -theta*pi/180
+        ph = phi*pi/180
+        k = wavenumber(medium_c, f)
         
         # waves directions
-        Rz = array([[cos(ph),-sin(ph),0], [sin(ph),cos(ph),0], [0,0,1]])
-        di = Rz @ [cos(th),    0, sin(th)]        # incident direction
-        r1 = Rz @ [cos(th+pi), 0, sin(th+pi)]     # backscatter direction
+        Rz = array([[cos(ph), -sin(ph), 0],
+                    [sin(ph), cos(ph), 0],
+                    [0, 0, 1]])
 
-        # target surface centers
-        (v, e) = (mesh.vertices, mesh.faces )
-        (n, m) = (len(v), len(e) )
-        # TODO - use trimesh's triangles_center rather than calculate it here ourselves
-        x = [sum([array(v[e[i][j]])/3 for j in range(3)]) for i in range(m)]
+        di = Rz @ [cos(th), 0, sin(th)]  # incident direction
+        r1 = Rz @ [cos(th+pi), 0, sin(th+pi)]  # backscatter direction
 
         # negative incident field on target surface
-        npinc = [-exp(1j*k * xi@di) for xi in x]
+        npinc = [-exp(1j*k * xi @ di) for xi in mesh.triangles_center]
 
-        # Helmholtz single layer boundary operator        
-        
+        # Helmholtz single layer boundary operator
+
+        # This commented out code has been replaced by the faster version below that avoids
+        # the slow looping in Python code.
+    
         # S = zeros((m,m),dtype=complex);
         # for i in range(m):
         #     for j in range(i+1):
@@ -111,13 +106,14 @@ class BEMModel(ScatterModelBase):
         # # surface solution
         # u = solve(S, npinc)
         
-        r = squareform(pdist(x))
+        r = squareform(pdist(mesh.triangles_center))
         with errstate(divide='ignore', invalid='ignore'):
-            S = exp(1j*k*r)/(4*pi*r)
-        fill_diagonal(S, k/4 + 1j*k/(4*pi))
+            S = exp(1j*k*r) / (4*pi*r)
+        fill_diagonal(S, k/4 + 1j*k / (4*pi))
         u = solve(S, npinc, assume_a='sym')
         
         # far field solution at |r1| = 1
-        S = [exp(-1j*k * xi@r1)/(4*pi) for xi in x]
+        S = [exp(-1j*k * xi @ r1) / (4*pi) for xi in mesh.triangles_center]
         psc = S @ u;
+
         return 20*log10(abs(psc))
