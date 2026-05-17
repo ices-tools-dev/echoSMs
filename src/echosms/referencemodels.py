@@ -7,7 +7,9 @@ if sys.version_info >= (3, 11):
     import tomllib
 else:
     import tomli as tomllib
-pd.options.mode.copy_on_write = True
+
+if int(pd.__version__.split('.')[0]) < 3:
+    pd.options.mode.copy_on_write = True
 
 
 class ReferenceModels:
