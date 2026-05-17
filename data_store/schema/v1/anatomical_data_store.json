@@ -471,61 +471,13 @@
             "minItems": 1,
             "items": {
                 "type": "object",
-                "required": [
-                    "anatomical_feature"
-                ],
-                "properties": {
-                    "name": {
-                        "description": "Name for the shape.",
-                        "type": "string"
-                    },
-                    "anatomical_feature": {
-                        "description": "Type of anatomical feature represented by this shape.",
-                        "type": "string",
-                        "enum": [
-                            "body",
-                            "swimbladder",
-                            "backbone",
-                            "bone",
-                            "muscle",
-                            "head",
-                            "eye",
-                            "organs",
-                            "appendages",
-                            "inclusion",
-                            "other"
-                        ]
-                    },
-                    "straightened": {
-                        "description": "Was the shape straightened during the processing.",
-                        "type": "boolean",
-                        "default": "false"
-                    },
-                    "smoothed": {
-                        "description": "Was the shape smoothed during the processing.",
-                        "type": "boolean",
-                        "default": "false"
-                    },
-                    "rotated": {
-                        "description": "Was the shape rotated during the processing.",
-                        "type": "boolean",
-                        "default": "false"
-                    },
-                    "notes": {
-                        "description": "Explanatory notes about the straightening, smoothing, and rotation of the shape.",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                },
-                "unevaluatedProperties": false,
                 "oneOf": [
                     {
                         "title": "Outline",
                         "type": "object",
                         "description": "Represents a three-dimensional shape using a dorsal and lateral outline.",
                         "required": [
+                            "anatomical_feature",
                             "shape_units",
                             "x",
                             "y",
@@ -535,6 +487,7 @@
                             "boundary"
                         ],
                         "additionalProperties": false,
+                        "unevaluatedProperties": false,
                         "dependentRequired": {
                             "mass_density": [
                                 "mass_density_units"
@@ -555,6 +508,24 @@
                             },
                             "shape_units": {
                                 "$ref": "#/$defs/length_units"
+                            },
+                            "name": {
+                                "$ref": "#/$defs/shape_name"
+                            },
+                            "anatomical_feature": {
+                                "$ref": "#/$defs/anatomical_feature"
+                            },
+                            "straightened": {
+                                "$ref": "#/$defs/shape_straightened"
+                            },
+                            "smoothed": {
+                                "$ref": "#/$defs/shape_smoothed"
+                            },
+                            "rotated": {
+                                "$ref": "#/$defs/shape_rotated"
+                            },
+                            "notes": {
+                                "$ref": "#/$defs/shape_notes"
                             },
                             "boundary": {
                                 "$ref": "#/$defs/boundary"
@@ -675,6 +646,7 @@
                         "description": "Represents a three-dimensional shape using a triangulated mesh.",
                         "required": [
                             "shape_units",
+                            "anatomical_feature",
                             "x",
                             "y",
                             "z",
@@ -684,6 +656,7 @@
                             "boundary"
                         ],
                         "additionalProperties": false,
+                        "unevaluatedProperties": false,
                         "dependentRequired": {
                             "mass_density": [
                                 "mass_density_units"
@@ -707,6 +680,24 @@
                             },
                             "boundary": {
                                 "$ref": "#/$defs/boundary"
+                            },
+                            "name": {
+                                "$ref": "#/$defs/shape_name"
+                            },
+                            "anatomical_feature": {
+                                "$ref": "#/$defs/anatomical_feature"
+                            },
+                            "straightened": {
+                                "$ref": "#/$defs/shape_straightened"
+                            },
+                            "smoothed": {
+                                "$ref": "#/$defs/shape_smoothed"
+                            },
+                            "rotated": {
+                                "$ref": "#/$defs/shape_rotated"
+                            },
+                            "notes": {
+                                "$ref": "#/$defs/shape_notes"
                             },
                             "x": {
                                 "description": "x-coordinates of surface nodes.",
@@ -826,6 +817,7 @@
                         "type": "object",
                         "description": "Represents a three-dimensional shape using voxels.",
                         "required": [
+                            "anatomical_feature",
                             "voxel_size",
                             "voxel_size_units",
                             "mass_density",
@@ -834,9 +826,28 @@
                             "sound_speed_compressional_units"
                         ],
                         "additionalProperties": false,
+                        "unevaluatedProperties": false,
                         "properties": {
                             "shape_type": {
                                 "const": "voxels"
+                            },
+                            "name": {
+                                "$ref": "#/$defs/shape_name"
+                            },
+                            "anatomical_feature": {
+                                "$ref": "#/$defs/anatomical_feature"
+                            },
+                            "straightened": {
+                                "$ref": "#/$defs/shape_straightened"
+                            },
+                            "smoothed": {
+                                "$ref": "#/$defs/shape_smoothed"
+                            },
+                            "rotated": {
+                                "$ref": "#/$defs/shape_rotated"
+                            },
+                            "notes": {
+                                "$ref": "#/$defs/shape_notes"
                             },
                             "voxel_size": {
                                 "description": "Voxel size, ordered x, y, z.",
@@ -898,6 +909,7 @@
                         "type": "object",
                         "description": "Represents a three-dimensional shape using categorised voxels.",
                         "required": [
+                            "anatomical_feature",
                             "voxel_size",
                             "voxel_size_units",
                             "categories",
@@ -907,9 +919,28 @@
                             "sound_speed_compressional_units"
                         ],
                         "additionalProperties": false,
+                        "unevaluatedProperties": false,
                         "properties": {
                             "shape_type": {
                                 "const": "categorised voxels"
+                            },
+                            "name": {
+                                "$ref": "#/$defs/shape_name"
+                            },
+                            "anatomical_feature": {
+                                "$ref": "#/$defs/anatomical_feature"
+                            },
+                            "straightened": {
+                                "$ref": "#/$defs/shape_straightened"
+                            },
+                            "smoothed": {
+                                "$ref": "#/$defs/shape_smoothed"
+                            },
+                            "rotated": {
+                                "$ref": "#/$defs/shape_rotated"
+                            },
+                            "notes": {
+                                "$ref": "#/$defs/shape_notes"
                             },
                             "voxel_size": {
                                 "description": "Voxel size, ordered x, y, z.",
@@ -971,12 +1002,14 @@
                         "type": "object",
                         "description": "Represents a three-dimensional shape using the combination of one or more geometric shapes.",
                         "required": [
+                            "anatomical_feature",
                             "geometric_form",
                             "origin_location",
                             "origin_location_units",
                             "shape_units"
                         ],
                         "additionalProperties": false,
+                        "unevaluatedProperties": false,
                         "dependentRequired": {
                             "pitch": [
                                 "orientation_units"
@@ -1000,6 +1033,24 @@
                         "properties": {
                             "shape_type": {
                                 "const": "geometric"
+                            },
+                            "name": {
+                                "$ref": "#/$defs/shape_name"
+                            },
+                            "anatomical_feature": {
+                                "$ref": "#/$defs/anatomical_feature"
+                            },
+                            "straightened": {
+                                "$ref": "#/$defs/shape_straightened"
+                            },
+                            "smoothed": {
+                                "$ref": "#/$defs/shape_smoothed"
+                            },
+                            "rotated": {
+                                "$ref": "#/$defs/shape_rotated"
+                            },
+                            "notes": {
+                                "$ref": "#/$defs/shape_notes"
                             },
                             "geometric_form": {
                                 "description": "Geometric form of this shape",
@@ -1059,7 +1110,6 @@
                                 "$ref": "#/$defs/origin_location_units"
                             }
                         },
-                        "unevaluatedProperties": false,
                         "oneOf": [
                             {
                                 "title": "Cylinder",
@@ -1198,6 +1248,23 @@
                 "m"
             ]
         },
+        "anatomical_feature": {
+            "description": "Type of anatomical feature represented by this shape.",
+            "type": "string",
+            "enum": [
+                "body",
+                "swimbladder",
+                "backbone",
+                "bone",
+                "muscle",
+                "head",
+                "eye",
+                "organs",
+                "appendages",
+                "inclusion",
+                "other"
+            ]
+        },
         "date_or_empty_string": {
             "oneOf": [
                 {
@@ -1230,6 +1297,32 @@
                     }
                 }
             ]
+        },
+        "shape_name": {
+            "description": "Name for the shape.",
+            "type": "string"
+        },
+        "shape_straightened": {
+            "description": "Was the shape straightened during the processing.",
+            "type": "boolean",
+            "default": "false"
+        },
+        "shape_smoothed": {
+            "description": "Was the shape smoothed during the processing.",
+            "type": "boolean",
+            "default": "false"
+        },
+        "shape_rotated": {
+            "description": "Was the shape rotated during the processing.",
+            "type": "boolean",
+            "default": "false"
+        },
+        "shape_notes": {
+            "description": "Explanatory notes about the straightening, smoothing, and rotation of the shape.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     }
 }
