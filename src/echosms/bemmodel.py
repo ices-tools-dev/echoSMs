@@ -114,6 +114,6 @@ class BEMModel(ScatterModelBase):
         
         # far field solution at |r1| = 1
         S = [exp(-1j*k * xi @ r1) / (4*pi) for xi in mesh.triangles_center]
-        psc = S @ u;
+        psc = S @ u
 
         return 20*log10(abs(psc))
