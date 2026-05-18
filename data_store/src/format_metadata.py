@@ -6,7 +6,7 @@
 
 """
 # /// script
-# dependencies = ['orjson', 'rtoml', 'jsonschema_rs', 'rich', 'echosms', 'numpy']
+# dependencies = ['orjson', 'rtoml', 'jsonschema_rs', 'rich', 'echosms', 'numpy', 'matplotlib']
 # ///
 # %%
 from pathlib import Path
@@ -18,23 +18,30 @@ import numpy as np
 import uuid
 import shutil
 import os
+import platform
 from datetime import datetime, timezone
 from echosms import plot_specimen
 from shutil import make_archive
 
-datastore_source_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited'
-                            r'\Documents\Aqualyd\Projects\2024-05 NOAA modelling'
-                            r'\working\anatomical data store')
+# Directories vary depending which development computer this script is run on
+match platform.node():
+    case 'AQUALYD-P14':
+        datastore_source_dir = Path(r'C:\Users\GavinMacaulay\Data - not synced\temp\anatomical data store')
+        datastore_final_dir = Path(r'C:\Users\GavinMacaulay\Data - not synced\temp\echosms_datastore_final')
+        echosms_dir = Path(r'C:\Users\GavinMacaulay\Data - not synced\Code\echoSMs')
+    case 'AQUALYD-P3':
+        datastore_source_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited'
+                                    r'\Documents\Aqualyd\Projects\2024-05 NOAA modelling'
+                                    r'\working\anatomical data store')
+        datastore_final_dir = Path(r'E:\temp\echosms_datastore_final')
+        echosms_dir = Path(r'E:\repositories\echoSMs')
+    case _:
+        raise ValueError('Unsupported development system - edit me and try again')
 
-datastore_final_dir = Path(r'E:\temp\echosms_datastore_final')
 # empty out datastore_final_dir
 if os.path.exists(datastore_final_dir):
     shutil.rmtree(datastore_final_dir)
 datastore_final_dir.mkdir(exist_ok=True)
-
-
-
-echosms_dir = Path(r'E:\repositories\echoSMs')
 
 datasets_dir = datastore_source_dir/'datasets'
 schema_file = echosms_dir/'data_store'/'schema'/'v1'/'anatomical_data_store.json'
@@ -148,7 +155,9 @@ for path in datasets_dir.iterdir():
                 dataset.append(data)
 
 if error_count:
-    rprint(f'[red]{error_count} datasets failed the verification')
+    rprint(f'[red]{error_count} datasets failed the validation')
+
+rprint(f'[green]{len(dataset)} datasets passed the validation')
 
 print('\nWriting a combined metadata file')
 json_bytes = orjson.dumps(dataset)
