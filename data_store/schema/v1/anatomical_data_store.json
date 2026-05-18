@@ -487,7 +487,6 @@
                             "boundary"
                         ],
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "dependentRequired": {
                             "mass_density": [
                                 "mass_density_units"
@@ -656,7 +655,6 @@
                             "boundary"
                         ],
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "dependentRequired": {
                             "mass_density": [
                                 "mass_density_units"
@@ -826,7 +824,6 @@
                             "sound_speed_compressional_units"
                         ],
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "properties": {
                             "shape_type": {
                                 "const": "voxels"
@@ -919,7 +916,6 @@
                             "sound_speed_compressional_units"
                         ],
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "properties": {
                             "shape_type": {
                                 "const": "categorised voxels"
@@ -1009,7 +1005,6 @@
                             "shape_units"
                         ],
                         "additionalProperties": false,
-                        "unevaluatedProperties": false,
                         "dependentRequired": {
                             "pitch": [
                                 "orientation_units"
