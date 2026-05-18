@@ -31,8 +31,9 @@ dependencies = [
 	'tqdm',
 	'mapply',
 	"requests",
-	"rtoml",
-    "urllib3 >= 2.7.0"  # fix security alerts from dependabot
+	"rtoml",  # fix security alerts from dependabot
+	"urllib3 >= 2.7.0",
+	"matplotlib",
 ]
 classifiers = [
     'Development Status :: 3 - Alpha',
