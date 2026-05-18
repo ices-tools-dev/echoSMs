@@ -1,6 +1,13 @@
 """Examples that use the echoSMS RESTful API."""
 # /// script
-# dependencies = ['requests', 'pandas', 'seaborn', 'Pillow', 'matplotlib']
+# requires-python = ">=3.11"
+# dependencies = [
+#     "requests",
+#     "pandas",
+#     "seaborn",
+#     'Pillow',
+#     "matplotlib",
+# ]
 # ///
 
 import requests
@@ -47,8 +54,11 @@ if d.status_code == 200:
     ds = []
     for s in d.json():  # iterate over all specimens with in the datastore
         print(f'Getting all data for specimen {s["specimen_name"]}')
-        specimen = requests.get(baseURI + '/v2/specimen/' + s['uuid'] + '/data')
-        ds.append(specimen.json())
+        specimen = requests.get(baseURI + 'v2/specimens/' + s['uuid'] + '/data')
+        if specimen.status_code == 200:
+            ds.append(specimen.json())
+        else:
+            print(f'Did not get data for specimen {s["uuid"]}')
 
     # Put into a Pandas dataframe
     df = pd.DataFrame(data=ds)

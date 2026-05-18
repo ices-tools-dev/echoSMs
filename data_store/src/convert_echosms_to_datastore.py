@@ -3,6 +3,17 @@
 Converts old echoSMs KRM and DWBA shape data format into the new echoSMs
 anatomical data store metadata and shape formats.
 """
+
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#     "echosms>=0.20.1",
+#     "numpy>=2.4.5",
+#     "requests>=2.34.2",
+#     "tomli-w>=1.2.0",
+# ]
+# ///
+
 import copy
 import numpy as np
 from datetime import datetime, timezone
@@ -11,10 +22,16 @@ import tomli_w
 import requests
 import uuid
 from pathlib import Path
+import platform
 
-
-datastore_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
-                     r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
+match platform.node():
+    case 'AQUALYD-P14':
+        datastore_dir = Path(r'C:\Users\GavinMacaulay\Data - not synced\temp\anatomical data store')
+    case 'AQUALYD-P3':
+        datastore_dir = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited\Documents\Aqualyd'
+                            r'\Projects\2024-05 NOAA modelling\working\anatomical data store')
+    case _:
+        raise ValueError('Unsupported development system - edit me and try again')
 
 worms_url = 'https://www.marinespecies.org/rest/AphiaRecordByAphiaID/'
 

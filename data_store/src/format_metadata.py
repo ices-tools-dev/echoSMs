@@ -3,11 +3,13 @@
 1. Read all dataset metadata .TOML files and populate dataset_id and dataset_size attributes
 2. Validate all datasets against the JSON schema
 3. Create files in a staging directory for uploading to the server
-
 """
+
 # /// script
+# requires-python = ">=3.11"
 # dependencies = ['orjson', 'rtoml', 'jsonschema_rs', 'rich', 'echosms', 'numpy', 'matplotlib']
 # ///
+
 # %%
 from pathlib import Path
 import orjson

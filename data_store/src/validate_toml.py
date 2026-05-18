@@ -1,7 +1,15 @@
 """Code for testing validation of TOML datastore files."""
+
 # /// script
-# dependencies = ['requests', 'rtoml', 'jsonschema_rs', 'orjson']
+# requires-python = ">=3.11"
+# dependencies = [
+#     "requests",
+#     "rtoml",
+#     "jsonschema-rs",
+#     "orjson",
+# ]
 # ///
+
 from pathlib import Path
 import requests
 import rtoml

@@ -1,8 +1,12 @@
-"""
+"""Convert old comsol data files into echoSMs datastore form."""
 
-"""
-
-# convert comsol data files into echoSMs datastore form
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#     "numpy>=2.4.5",
+#     "tomli-w>=1.2.0",
+# ]
+# ///
 
 # Assumes that a metadata.toml file already exists in the directory.
 
