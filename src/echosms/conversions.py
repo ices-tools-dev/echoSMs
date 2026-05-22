@@ -103,8 +103,15 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     def _to_KRMshape(s: dict):
         """Convert echoSMs datstore shape into a KRMshape."""
         # Take mean of sound speed and density in case there is more than one value.
-        c = sum(s['sound_speed_compressional'])/len(s['sound_speed_compressional'])
-        rho = sum(s['mass_density'])/len(s['mass_density'])
+        if 'spound_speed_compressional' in s:
+            c = sum(s['sound_speed_compressional'])/len(s['sound_speed_compressional'])
+        else:
+            c = np.nan
+
+        if 'mass_density' in s:
+            rho = sum(s['mass_density'])/len(s['mass_density'])
+        else:
+            rho = np.nan
 
         height2 = np.array(s['height'])/2.0
         return KRMshape(s['boundary'], np.array(s['x']), np.array(s['width']),
