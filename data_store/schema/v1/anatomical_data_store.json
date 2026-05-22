@@ -48,17 +48,17 @@
             "format": "uuid"
         },
         "version_number": {
-            "description": "A version number that increments whenever this specimen is updated. Populated by the datastore.",
+            "description": "A version number that increments whenever this specimen is updated. Any existing value is overwritten by the datastore.",
             "type": "integer",
             "minimum": 1
         },
         "version_time": {
             "type": "string",
             "format": "date-time",
-            "description": "The timestamp when this specimen dataset was last modified, in [RFC9557](https://datatracker.ietf.org/doc/rfc9557) format, including the timezone. Populated by the datastore."
+            "description": "The timestamp when this specimen dataset was last modified, in [RFC9557](https://datatracker.ietf.org/doc/rfc9557) format, including the timezone. Any existing timestamp is overwritten by the datastore."
         },
         "version_note": {
-            "description": "A note about the changes in this version.",
+            "description": "A note about the changes in this version. Can be an empty string but a short note is very much recommended.",
             "type": "string"
         },
         "version_investigators": {
@@ -341,12 +341,12 @@
             ]
         },
         "dataset_size": {
-            "description": "Size of the entire dataset (including raw data). Populated by the datastore server.",
+            "description": "Size of the entire dataset (including raw data). Any value is overwritten by the datastore server.",
             "type": "number",
             "minimum": 0
         },
         "dataset_size_units": {
-            "description": "Units for dataset_size. Populated by the datastore server.",
+            "description": "Units for dataset_size.",
             "type": "string",
             "enum": [
                 "megabyte"
