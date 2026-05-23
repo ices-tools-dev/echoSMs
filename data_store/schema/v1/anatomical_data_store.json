@@ -97,8 +97,8 @@
         },
         "aphia_id": {
             "type": "integer",
-            "minimum": 1,
-            "description": "The WoRMS [aphiaID](https://www.marinespecies.org/aphia.php) of the species in this dataset."
+            "minimum": 0,
+            "description": "The WoRMS [aphiaID](https://www.marinespecies.org/aphia.php) of the species in this dataset. Use a value of 0 if the shape is not from a species."
         },
         "class": {
             "type": "string",
