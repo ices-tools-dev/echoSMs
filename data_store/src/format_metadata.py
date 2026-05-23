@@ -7,7 +7,15 @@
 
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ['orjson', 'rtoml', 'jsonschema_rs', 'rich', 'echosms', 'numpy', 'matplotlib']
+# dependencies = [
+#     'orjson',
+#     'rtoml',
+#     'jsonschema_rs',
+#     'rich',
+#     'echosms',
+#     'numpy',
+#     'matplotlib',
+# ]
 # ///
 
 # %%
@@ -22,7 +30,7 @@ import shutil
 import os
 import platform
 from datetime import datetime, timezone
-from echosms import plot_specimen
+from echosms import plot_specimen, names_from_aphia_id
 from shutil import make_archive
 
 # Directories vary depending which development computer this script is run on
@@ -110,13 +118,20 @@ for path in datasets_dir.iterdir():
             data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
             data['dataset_size_units'] = 'megabyte'
 
+            # Add in species info if not already there
+            names = names_from_aphia_id(data['aphia_id'])
+
+            for k, v in names.items():
+                if k not in data:
+                    data[k] = v
+
             # Validate the specimen data
             errored = False
             for error in validator.iter_errors(data):
-                print(error.instance_path)
-                print(error.evaluation_path)
-                print(error.schema_path)
-                # rprint(f'\n[yellow] Validation error with {error.message}', end='')
+                #print(error.instance_path)
+                #print(error.evaluation_path)
+                #print(error.schema_path)
+                rprint(f'\n[yellow] Validation error with {error.message}', end='')
                 # rprint('[orange4]' + error.message)
                 errored = True
 
