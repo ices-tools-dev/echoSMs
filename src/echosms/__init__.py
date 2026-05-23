@@ -1,7 +1,7 @@
 """Setup the public API for echoSMs."""
 
 from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_jnpp
-from .utils import pro_rad1, pro_rad2, pro_ang1, boundary_type
+from .utils import pro_rad1, pro_rad2, pro_ang1, boundary_type, names_from_aphia_id
 from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_Sa
 
 from .conversions import mesh_from_datastore, dwbaorganism_from_datastore, krmorganism_from_datastore

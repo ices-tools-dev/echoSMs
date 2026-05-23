@@ -5,6 +5,8 @@ import numpy as np
 from math import pi as π
 import xarray as xr
 import pandas as pd
+import requests
+from functools import cache
 from scipy.special import spherical_jn, spherical_yn
 from collections import namedtuple
 from spheroidalwavefunctions import prolate_swf
@@ -518,3 +520,41 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
         sp = p.r2dc * np.float_power(10.0, p.ir2de)
 
     return s[n-m], sp[n-m]
+
+@cache
+def names_from_aphia_id(aphia_id: int) -> dict:
+    """Returns species name information.
+    
+    Parameters
+    ----------
+    aphia_id :
+        The World Register of Marine Species ([WoRMS](https://www.marinespecies.org/))
+        aphia_id number.
+
+    Returns
+    -------
+    :
+        Species name infomation as used by the echoSMs anatomical datastore or 
+        an empty dict if no species data found.
+
+    Notes
+    -----
+    Queries the WoRMS web service and caches the results to reduce queries to WoRMS.
+    """
+
+    WORMS_URL = 'https://www.marinespecies.org/rest/'
+
+    names = {}
+    r = requests.get(WORMS_URL + 'AphiaRecordByAphiaID/' + str(aphia_id))
+    if r.status_code == 200:
+        names['species'] = r.json()['scientificname']
+        for attr in ['class', 'order', 'family', 'genus']:
+            names[attr] = r.json()[attr]
+
+        r = requests.get(WORMS_URL + 'AphiaVernacularsByAphiaID/' + str(aphia_id))
+        if r.status_code == 200:
+            names['vernacular_names'] = []
+            for vname in r.json():
+                names['vernacular_names'].append(vname['vernacular'])
+
+    return names
