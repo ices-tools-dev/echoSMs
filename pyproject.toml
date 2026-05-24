@@ -31,9 +31,12 @@ dependencies = [
 	'tqdm',
 	'mapply',
 	"requests",
-	"rtoml",  # fix security alerts from dependabot
+	"rtoml",
 	"urllib3 >= 2.7.0",
 	"matplotlib",
+    "rich",
+    "jsonschema-rs",
+    "orjson",
 ]
 classifiers = [
     'Development Status :: 3 - Alpha',
@@ -75,15 +78,12 @@ Discussions = 'https://github.com/ices-tools-dev/echoSMs/discussions'
 [dependency-groups]
 dev = [
     "json-schema-for-humans>=1.5.1",
-    "jsonschema-rs>=0.46.3",
     "matplotlib>=3.10.9",
     "mkdocs>=1.6.1, <2",
     "mkdocs-glightbox>=0.5.2",
     "mkdocs-material>=9.7.6, <10",
     "mkdocstrings-python>=2.0.3",
-    "orjson>=3.11.8",
     "pytest>=9.0.3",
-    "rich>=15.0.0",
     "spyder-kernels>=3.1.4",
     "zensical>=0.0.38",
 ]
