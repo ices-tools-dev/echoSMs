@@ -14,6 +14,7 @@
 from pathlib import Path
 import datetime as dt
 import glob
+import os
 import argparse
 import requests
 import rtoml
@@ -75,18 +76,17 @@ def main():
     
     parser.add_argument('toml_file', help='echoSMs TOML file(s) (can include wildcards)',
                         action='extend', nargs='+')
-    parser.add_argument('-s', '--schema', help='provide the JSON schema file directly '\
-                        '(it is otherwise downloaded from Github)')
+    parser.add_argument('-s', '--schema', help='provide the datastore schema file directly '\
+                        '(it is otherwise downloaded from the echoSMs Github repository)')
     parser.add_argument('-j', '--json', action='store_true',
                         help='write the TOML file out in JSON format to the same directory '\
                              'as the TOML file (works even if the validation fails)')
     args = parser.parse_args()
 
-
-    # Expand out any wildcard file inputs
+    # Expand out any wildcard file inputs and discard non files.
     toml_files = []
-    for f in args.toml_file:
-        toml_files.extend(glob.glob(f))
+    for f_args in args.toml_file:
+        toml_files.extend([Path(f) for f in glob.glob(f_args) if os.path.isfile(f)])
 
     # Get the JSON schema
     if args.schema:
@@ -94,13 +94,21 @@ def main():
             json_bytes = f.read()
             schema = orjson.loads(json_bytes)
     else:
-        schema = requests.get(SCHEMA_URL).json()
+        s = requests.get(SCHEMA_URL)
+        if s.status_code == 200:
+            schema = s.json()
+        else:
+            print('Could not get the datastore schema from Github. Try again or pass '
+                  'a file in with the --schema option.')
+            return
 
     # Parse each TOML file
     for toml in toml_files:
-        # Load the toml file
-        f = Path(toml)
-        specimen = rtoml.load(f)
+        try:
+            specimen = rtoml.load(toml)
+        except rtoml.TomlParsingError:
+            rprint(f'[red]✗[/red] Could not parse [orange3]{toml.name}[/orange3]. Is it a TOML-formatted file?')
+            continue
 
         # Write out to json if requested
         if args.json:
@@ -108,7 +116,7 @@ def main():
             with open(Path(toml).with_suffix('.json'), 'wb') as f:
                 f.write(json_bytes)
 
-        validate_one(schema, specimen, f.name)
+        validate_one(schema, specimen, toml.name)
 
 
 if __name__ == '__main__':
