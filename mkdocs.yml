@@ -82,6 +82,7 @@ plugins:
                     show_symbol_type_heading: true
                     show_symbol_type_toc: true
                     merge_init_into_class: true
+                    members_order: alphabetical
                     show_bases: true
                     inherited_members: true
                     show_root_heading: true
