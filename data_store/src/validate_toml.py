@@ -7,74 +7,108 @@
 #     "rtoml",
 #     "jsonschema-rs",
 #     "orjson",
+#     "rich",
 # ]
 # ///
 
 from pathlib import Path
+import datetime as dt
+import glob
+import argparse
 import requests
 import rtoml
+from rich import print as rprint
 import jsonschema_rs
 import orjson
 
-# Get schema from github
-schema_url = 'https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/heads/main/data_store/schema/v1/anatomical_data_store.json'
-schema = requests.get(schema_url).json()
 
-# Get schema from local file
-schema_file = Path(r'C:\Users\GavinMacaulay\Data - not synced\Code\echoSMs\data_store\schema\v1')
-schema_file = Path(r'E:\repositories\echoSMs\data_store\schema\v1')
-schema_file = schema_file/'anatomical_data_store.json'
-
-with open(schema_file, 'rb') as f:
-    json_bytes = f.read()
-    schema = orjson.loads(json_bytes)
+SCHEMA_URL = 'https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'\
+                     'heads/main/data_store/schema/v1/anatomical_data_store.json'
 
 
-validator = jsonschema_rs.validator_for(schema,
-                                        validate_formats=True,
-                                        ignore_unknown_formats=False)
+def validate_one(schema: dict, specimen: dict, file_label: str):
+    """Valid a single TOML file."""
 
-toml_file = Path('specimen.toml')
-toml_file = Path('example_metadata A.toml')
+    # Add in attributes that the datastore loading process would normally provide
+    if specimen['version_time'] == '':
+        specimen['version_time'] = dt.datetime.now(dt.timezone.utc).isoformat()
+    if 'dataset_size' not in specimen:
+        specimen['dataset_size'] = 0.0
+    if 'dataset_size_units' not in specimen:
+        specimen['dataset_size_units'] = 'megabyte'
 
-specimen = rtoml.load(toml_file)
+    # Create the validator
+    validator = jsonschema_rs.validator_for(schema, validate_formats=True,
+                                            ignore_unknown_formats=False)
 
-# Write out as json
-# json_bytes = orjson.dumps(specimen)
-# with open('metadata.json', 'wb') as f:
-#     f.write(json_bytes)
+    # Validate and report any errors
+    passed = True
+    for error in validator.iter_errors(specimen):
+        if passed:
+            rprint(f'[red]✗ [/red]{file_label} is not valid')
 
-error_count = 0
-for i, error in enumerate(validator.iter_errors(specimen)):
-    error_count += 1
-    msg = error.message
-    if len(msg) > 200:
-        msg = msg[:100] + ' ... ' + msg[-100:]
-    instance_path = '.'.join([str(a) for a in error.instance_path])
-    schema_path = '.'.join(error.schema_path)
+        passed = False
 
-    print(f'Error {i}:')
-    print(f'\tFor attribute "{instance_path}" with schema path of "{schema_path}"')
-    print(f'\t{msg}')
+        msg = error.message
+        if len(msg) > 200:
+            msg = msg[:100] + ' ... ' + msg[-100:]
 
-    # print(error.kind.name)
-    # print(error.kind.as_dict().keys())
-if error_count == 0:
-    print('Input data is valid.')
+        instance_path = '.'.join([str(a) for a in error.instance_path])
+        schema_path = '.'.join(error.schema_path)
 
-#ee = validator.evaluate(specimen)
+        rprint('  [red]error:')
+        print(f'    For attribute "{instance_path}" with schema path of "{schema_path}"')
+        print(f'    {msg}')
 
-# if not ee.valid:
-#     e = ee.list()['details']
-#     for eee in e:
-#         if not eee['valid']:
-#             print(eee['evaluationPath'], eee['instanceLocation'])
-# else:
-#     print('Input data is valid.')
+    if passed:
+         rprint(f'[green]✓ [/green]{file_label} is valid')
 
-# if not validator.is_valid(specimen):
-#     for i, error in enumerate(validator.iter_errors(specimen)):
-#         print(i)
-#         #print(f'{error}')
-# else:
-#     print('Input data is valid.')
+def validate():
+    """Validate TOML files."""
+
+    parser = argparse.ArgumentParser(prog='validate',
+                                     description='Validates an echoSMs datastore TOML file'\
+                                        ' against the schema.',
+                                     epilog='The values of some attributes are populated or modified by the '\
+                                            'datastore and temporary substitutes generated '\
+                                            'when neccessary.')
+    
+    parser.add_argument('toml_file', help='echoSMs TOML file(s) (can include wildcards)',
+                        action='extend', nargs='+')
+    parser.add_argument('-s', '--schema', help='provide the JSON schema file directly '\
+                        '(it is otherwise downloaded from Github)')
+    parser.add_argument('-j', '--json', action='store_true',
+                        help='write the TOML file out in JSON format to the same directory '\
+                             'as the TOML file (works even if the validation fails)')
+    args = parser.parse_args()
+
+
+    # Expand out any wildcard file inputs
+    toml_files = []
+    for f in args.toml_file:
+        toml_files.extend(glob.glob(f))
+
+    # Get the JSON schema
+    if args.schema:
+        with open(args.schema, 'rb') as f:
+            json_bytes = f.read()
+            schema = orjson.loads(json_bytes)
+    else:
+        schema = requests.get(SCHEMA_URL).json()
+
+    # Parse each TOML file
+    for toml in toml_files:
+        # Load the toml file
+        f = Path(toml)
+        specimen = rtoml.load(f)
+
+        # Write out to json if requested
+        if args.json:
+            json_bytes = orjson.dumps(specimen, option=orjson.OPT_INDENT_2)
+            with open(Path(toml).with_suffix('.json'), 'wb') as f:
+                f.write(json_bytes)
+
+        validate_one(schema, specimen, f.name)
+
+if __name__ == '__main__':
+    validate()
