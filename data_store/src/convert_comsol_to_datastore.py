@@ -3,8 +3,8 @@
 # /// script
 # requires-python = ">=3.11"
 # dependencies = [
-#     "numpy>=2.4.5",
-#     "tomli-w>=1.2.0",
+#     "numpy",
+#     "tomli-w",
 # ]
 # ///
 

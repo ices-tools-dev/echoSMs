@@ -3,9 +3,9 @@
 # requires-python = ">=3.11"
 # dependencies = [
 #     "echosms",
-#     "matplotlib>=3.10.9",
+#     "matplotlib",
 #     "numpy",
-#     "requests>=2.34.2",
+#     "requests",
 # ]
 # ///
 
