@@ -1,4 +1,4 @@
-"""Code for testing validation of TOML datastore files."""
+"""Code for testing validity of TOML datastore files."""
 
 # /// script
 # requires-python = ">=3.11"
@@ -30,7 +30,7 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
     """Valid a single TOML file."""
 
     # Add in attributes that the datastore loading process would normally provide
-    if specimen['version_time'] == '':
+    if 'version_time' in specimen and specimen['version_time'] == '':
         specimen['version_time'] = dt.datetime.now(dt.timezone.utc).isoformat()
     if 'dataset_size' not in specimen:
         specimen['dataset_size'] = 0.0
@@ -45,7 +45,7 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
     passed = True
     for error in validator.iter_errors(specimen):
         if passed:
-            rprint(f'[red]✗ [/red]{file_label} is not valid')
+            rprint(f'[red]✗[/red] File [orange3]{file_label}[/orange3] is not valid')
 
         passed = False
 
@@ -61,9 +61,9 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
         print(f'    {msg}')
 
     if passed:
-         rprint(f'[green]✓ [/green]{file_label} is valid')
+         rprint(f'[green]✓[/green] File [orange3]{file_label}[/orange3] is valid')
 
-def validate():
+def main():
     """Validate TOML files."""
 
     parser = argparse.ArgumentParser(prog='validate',
@@ -110,5 +110,6 @@ def validate():
 
         validate_one(schema, specimen, f.name)
 
+
 if __name__ == '__main__':
-    validate()
+    main()
