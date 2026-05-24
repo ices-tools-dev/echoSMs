@@ -8,9 +8,8 @@ anatomical data store metadata and shape formats.
 # requires-python = ">=3.11"
 # dependencies = [
 #     "echosms>=0.20.1",
-#     "numpy>=2.4.5",
-#     "requests>=2.34.2",
-#     "tomli-w>=1.2.0",
+#     "numpy",
+#     "tomli-w",
 # ]
 # ///
 
@@ -18,8 +17,8 @@ import copy
 import numpy as np
 from datetime import datetime, timezone
 from echosms import KRMdata, DWBAdata, outline_from_krm, boundary_type as bt
+from echosms import names_from_aphia_id
 import tomli_w
-import requests
 import uuid
 from pathlib import Path
 import platform
@@ -33,7 +32,6 @@ match platform.node():
     case _:
         raise ValueError('Unsupported development system - edit me and try again')
 
-worms_url = 'https://www.marinespecies.org/rest/AphiaRecordByAphiaID/'
 
 # Datset template
 specimen_t = {'uuid': '',
@@ -65,8 +63,6 @@ specimen_t = {'uuid': '',
              'mass_density_method': "unknown",
              'shapes': []}
 
-if 'aphiaID_cache' not in locals():
-    aphiaID_cache = {}
 
 ########################
 # KRM models
@@ -93,19 +89,12 @@ for model_name in d.names():
     'https://www.fisheries.noaa.gov/data-tools/krm-model. ',
     'This is not necessarily the original source of the shape.']
 
-    if m.aphiaid not in aphiaID_cache:
-        print(f'Querying WoRMS for aphiaID {m.aphiaid}')
-        r = requests.get(worms_url + str(m.aphiaid))
-        if r.status_code == 200:
-            aphiaID_cache[m.aphiaid] = r.json()
-        else:
-            print('Failed to get record for aphiaID = {m.aphiaid}')
+    print(f'Querying WoRMS for aphiaID {m.aphiaid}')
+    names = names_from_aphia_id(m.aphiaid)
+    for k, v in names.items():
+        if k not in names:
+            names[k] = v
 
-    for attr in ['class', 'order', 'family', 'genus']:
-        specimen[attr] = aphiaID_cache[m.aphiaid][attr]
-    specimen['species'] = aphiaID_cache[m.aphiaid]['scientificname']
-
-    specimen['vernacular_names'] = [m.vernacular_name]
     specimen['reference'] = m.source
     specimen['version_time'] = datetime.now(timezone.utc).isoformat()
 
@@ -165,19 +154,12 @@ for model_name in d.names():
     specimen['notes'] = ['Shape obtained from the SDWBA.jl github repository. '
     'This is not necessarily the original source of the shape.']
 
-    if m.aphiaid not in aphiaID_cache:
-        print(f'Querying WoRMS for aphiaID {m.aphiaid}')
-        r = requests.get(worms_url + str(m.aphiaid))
-        if r.status_code == 200:
-            aphiaID_cache[m.aphiaid] = r.json()
-        else:
-            print('Failed to get record for aphiaID = {m.aphiaid}')
+    print(f'Querying WoRMS for aphiaID {m.aphiaid}')
+    names = names_from_aphia_id(m.aphiaid)
+    for k, v in names.items():
+        if k not in names:
+            names[k] = v
 
-    for attr in ['class', 'order', 'family', 'genus']:
-        specimen[attr] = aphiaID_cache[m.aphiaid][attr]
-    specimen['species'] = aphiaID_cache[m.aphiaid]['scientificname']
-
-    specimen['vernacular_names'] = [m.vernacular_name]
     specimen['reference'] = m.source
 
     specimen.update({'specimen_name': m.name, 'specimen_condition': 'unknown',
