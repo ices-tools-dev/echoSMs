@@ -21,10 +21,7 @@ import rtoml
 from rich import print as rprint
 import jsonschema_rs
 import orjson
-
-
-SCHEMA_URL = 'https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'\
-                     'heads/main/data_store/schema/v1/anatomical_data_store.json'
+from echosms import datastore_schema
 
 
 def validate_one(schema: dict, specimen: dict, file_label: str):
@@ -90,14 +87,10 @@ def main():
 
     # Get the JSON schema
     if args.schema:
-        with open(args.schema, 'rb') as f:
-            json_bytes = f.read()
-            schema = orjson.loads(json_bytes)
+        schema = datastore_schema(args.schema)
     else:
-        s = requests.get(SCHEMA_URL)
-        if s.status_code == 200:
-            schema = s.json()
-        else:
+        schema = datastore_schema()
+        if schema == '':
             print('Could not get the datastore schema from Github. Try again or pass '
                   'a file in with the --schema option.')
             return
