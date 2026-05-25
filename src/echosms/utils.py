@@ -1,8 +1,10 @@
 """Miscellaneous utility functions."""
 import sys
 from collections.abc import Iterable
+from pathlib import Path
 import numpy as np
 from math import pi as π
+import orjson
 import xarray as xr
 import pandas as pd
 import requests
@@ -15,6 +17,8 @@ if sys.version_info >= (3, 11):
 else:
     from backports.strenum import StrEnum
 
+SCHEMA_URL = 'https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'\
+                     'heads/main/data_store/schema/v1/anatomical_data_store.json'
 
 swf_t = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
                            'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
@@ -558,3 +562,32 @@ def names_from_aphia_id(aphia_id: int) -> dict:
                 names['vernacular_names'].append(vname['vernacular'])
 
     return names
+
+@cache
+def datastore_schema(schema_file: Path | None = None) -> dict:
+    """Get the echoSMs datastore schema.
+    
+    Parameters
+    ----------
+    schema_file :
+        The schema filename. If None, the schema will be downloaded from the echoSMs github
+        repository
+        
+    Returns
+    -------
+    :
+        The datastore schema in [JSON Schema](https://json-schema.org/) form
+        or an empty string if no schema was found.
+
+    """
+
+    if schema_file is None:
+        s = requests.get(SCHEMA_URL)
+        if s.status_code == 200:
+            return s.json()
+    else:
+        with open(schema_file, 'rb') as f:
+            json_bytes = f.read()
+            return orjson.loads(json_bytes)
+
+    return ''

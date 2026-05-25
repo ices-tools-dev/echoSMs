@@ -68,6 +68,7 @@ addopts = ["--import-mode=importlib",]
 [project.scripts]
 echosms-view = "echosms.viewer.app:main"
 validate-toml = "echosms.datastore.validate_toml:main"
+process-datastore = "echosms.datastore.format_metadata:main"
 
 [project.urls]
 Homepage = 'https://github.com/ices-tools-dev/echoSMs'

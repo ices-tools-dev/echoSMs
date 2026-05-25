@@ -3,6 +3,7 @@
 from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_jnpp
 from .utils import pro_rad1, pro_rad2, pro_ang1, boundary_type, names_from_aphia_id
 from .utils import as_dataframe, as_dataarray, as_dict, split_dict, theoretical_Sa
+from .utils import datastore_schema
 
 from .conversions import mesh_from_datastore, dwbaorganism_from_datastore, krmorganism_from_datastore
 from .conversions import volume_from_datastore, surface_from_stl, outline_from_krm, outline_from_dwba
