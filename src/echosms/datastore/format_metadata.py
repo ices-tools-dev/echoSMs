@@ -84,12 +84,9 @@ def main():
     error_count = 0
     rprint(f'Using datasets in [green]{source_dir}')
     rprint(f'Writing outputs to [green]{temp_path}\n')
-    count = 1
+
     for path in source_dir.iterdir():
         if path.is_dir():
-            if count > 2:
-                break
-            count += 1
             # There may be a metadata.toml file and one or more specimen*.toml files.
 
             meta_file = path/metadata_file
