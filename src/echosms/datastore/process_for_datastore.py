@@ -34,7 +34,7 @@ from shutil import make_archive
 
 
 def main():
-    parser = argparse.ArgumentParser(prog='process_datastore',
+    parser = argparse.ArgumentParser(prog='process_for_datastore',
         description='Converts datastore TOML files into an upload for the echoSMs datastore.')
     
     parser.add_argument('-s', '--source', required=True,
@@ -175,7 +175,7 @@ def main():
     with open(temp_path/metadata_final_filename, 'wb') as f:
         f.write(json_bytes)
 
-    rprint(f'Compressing all data into [green]{output_dir.with_suffix(".zip")}')
+    rprint(f'Compressing all data into [green]{upload_zip_file.with_suffix(".zip")}')
     make_archive(str(upload_zip_file), 'zip', str(temp_path))
 
     temp_dir.cleanup()
