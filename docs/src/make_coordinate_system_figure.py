@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "numpy>=2.4.6",
+#     "pyvista>=0.48.4",
+# ]
+# ///
+
 # %%
 """Create the coordinate system figure for the documentation."""
 import pyvista as pv
@@ -46,7 +54,7 @@ def semi_circular_arrow(
     y = circ_radius * np.sin(t)
     z = np.zeros(body_axial_res)
     body_pts = np.column_stack([x, y, z])
-    body = pv.MultipleLines(body_pts).tube(body_radius, n_sides=body_radial_res)
+    body = pv.MultipleLines(body_pts).tube(radius=body_radius, n_sides=body_radial_res)
 
     # Direction the head points
     dhead = body_pts[-1] - body_pts[-2]
