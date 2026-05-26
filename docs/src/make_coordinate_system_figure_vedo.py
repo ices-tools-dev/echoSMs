@@ -1,3 +1,12 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "k3d>=2.17.0",
+#     "numpy>=2.4.6",
+#     "vedo>=2026.6.1",
+# ]
+# ///
+
 # %%
 """Create the coordinate system figure for the documentation."""
 
