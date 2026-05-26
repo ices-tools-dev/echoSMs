@@ -14,18 +14,18 @@ def on_files(files, config):
     existing markdown file.
     """
     schema_file = Path('data_store')/'schema'/'v1'/'anatomical_data_store.json'
-    formatted_schema_file = Path(config["site_dir"])/'schema_doc.html'
+    formatted_schema_file = Path(config["site_dir"])/'schema'/'schema_doc.html'
     Path(formatted_schema_file.parent).mkdir(exist_ok=True, parents=True)
 
     # make doc from the JSON schema using json schema for humans
     cc = gc(expand_buttons=True,
             link_to_reused_ref=False,
-            collapse_long_descriptions=True,
+            collapse_long_descriptions=False,
             description_is_markdown=True,
             with_footer=False,
             template_name='js',
+            show_breadcrumbs=False,
             )
-    
     generate_from_filename(schema_file, formatted_schema_file, config=cc)
 
     # Add to Files object

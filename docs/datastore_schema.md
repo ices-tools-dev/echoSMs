@@ -18,4 +18,4 @@ It is not necessary to validate your data before submitting it to the datastore,
 
 ## Schema browser
 
-<iframe src="../schema_doc.html" width=100% height=1000px style="border-width: 0"></iframe>
+{{ datastore_schema_as_html() }}

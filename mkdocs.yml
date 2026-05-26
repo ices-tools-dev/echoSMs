@@ -71,6 +71,9 @@ plugins:
     - search
     - glightbox
     - autorefs
+    - macros:
+        module_name: docs/src/macro_build_schema_doc
+        on_error_fail: true
     - mkdocstrings:
         handlers:
             python:
@@ -97,13 +100,13 @@ watch:
     - ./src/echosms
     - ./data_store/schema/v1
 
-hooks:
-    - docs/src/make_datastore_schema_md.py
+# hooks:
+#    - docs/src/make_datastore_schema_md.py
 
 markdown_extensions:
-    - zensical.extensions.macros:
-        module_name: docs/src/macro_build_schema_doc
-        on_error_fail: true
+    # - zensical.extensions.macros:
+    #     module_name: docs/src/macro_build_schema_doc
+    #     on_error_fail: true
     - attr_list
     - def_list
     - footnotes
