@@ -16,7 +16,6 @@ import datetime as dt
 import glob
 import os
 import argparse
-import requests
 import rtoml
 from rich import print as rprint
 import jsonschema_rs
