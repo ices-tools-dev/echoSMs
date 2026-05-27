@@ -1,5 +1,15 @@
-# %%
 """Examples of using the echoSMs code to estimate scatter from objects."""
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "echosms>=0.22.0",
+#     "matplotlib>=3.10.9",
+#     "numpy>=2.4.6",
+#     "trimesh>=4.12.2",
+# ]
+# ///
+
+# %%
 
 import matplotlib.pyplot as plt
 import numpy as np

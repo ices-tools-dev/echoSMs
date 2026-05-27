@@ -1,4 +1,12 @@
 """Script to make a figure showing the outline shape coordinates"""
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "numpy>=2.4.6",
+#     "requests>=2.34.2",
+#     "vedo>=2026.6.1",
+# ]
+# ///
 
 # This script is not complete
 
@@ -11,7 +19,7 @@ import requests
 
 # Use one of the Clay&Horne cod as the example data
 baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
-r = requests.get(baseURI + 'v2/specimen/CLAY_HORNE_A/data')
+r = requests.get(baseURI + 'v2/specimens/48d60557-f9d5-4bb3-a977-00d8db818a56/data')
 specimen = r.json()
 shapes = specimen['shapes']
 
@@ -20,8 +28,8 @@ shapes = specimen['shapes']
 al = 0.050  # axes length
 sr = 0.01  # shaft radius for axes and arrows
 
-bd = [shape for shape in shapes if shape['anatomical_type'] == 'body'][0]
-sb = [shape for shape in shapes if shape['anatomical_type'] == 'swimbladder'][0]
+bd = [shape for shape in shapes if shape['anatomical_feature'] == 'body'][0]
+sb = [shape for shape in shapes if shape['anatomical_feature'] == 'swimbladder'][0]
 
 discs = []
 centrelines = []

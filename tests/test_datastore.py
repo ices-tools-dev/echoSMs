@@ -2,7 +2,6 @@
 import pytest
 import requests
 from echosms import plot_specimen
-from matplotlib import pyplot as plt
 
 @pytest.mark.skip(reason="Not implemented yet")
 def test_api_plot(tmp_path):
