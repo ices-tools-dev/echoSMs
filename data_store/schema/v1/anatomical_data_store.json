@@ -1000,11 +1000,10 @@
                         "required": [
                             "anatomical_feature",
                             "geometric_form",
-                            "origin_location",
                             "origin_location_units",
                             "shape_units"
                         ],
-                        "additionalProperties": false,
+                        "additionalProperties": true,
                         "dependentRequired": {
                             "pitch": [
                                 "orientation_units"
@@ -1113,20 +1112,17 @@
                                     "radius",
                                     "length"
                                 ],
-                                "additionalProperties": false,
+                                "additionalProperties": true,
                                 "properties": {
-                                    "geometric_form": {
-                                        "const": "cylinder"
-                                    },
                                     "radius": {
                                         "description": "Radius of the cylinder.",
                                         "type": "number",
-                                        "minimum": 0
+                                        "minimum": 0.0
                                     },
                                     "length": {
                                         "description": "Length of the cylinder.",
                                         "type": "number",
-                                        "minimum": 0
+                                        "minimum": 0.0
                                     }
                                 }
                             },
@@ -1137,20 +1133,17 @@
                                     "equatorial_radius",
                                     "polar_radius"
                                 ],
-                                "additionalProperties": false,
+                                "additionalProperties": true,
                                 "properties": {
-                                    "geometric_form": {
-                                        "const": "spheroid"
-                                    },
                                     "equatorial_radius": {
                                         "description": "The equatorial radius of the spheroid. In the echoSMs coordinate system the equatorial radius is along the y- and z-axes.",
                                         "type": "number",
-                                        "minimum": 0
+                                        "minimum": 0.0
                                     },
                                     "polar_radius": {
                                         "description": "The polar radius of the spheroid. In the echoSMs coordinate system the polar axis is the x-axis.",
                                         "type": "number",
-                                        "minimum": 0
+                                        "minimum": 0.0
                                     }
                                 }
                             }
@@ -1232,6 +1225,7 @@
             "minItems": 3,
             "maxItems": 3,
             "type": "array",
+            "default": [0, 0, 0],
             "items": {
                 "type": "number"
             }
