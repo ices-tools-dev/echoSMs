@@ -89,7 +89,7 @@ The shape data format is formally specified in the echoSMs anatomical data store
 
 ##### Surface
 
-The `surface` format contains a 3D triangular surface mesh. The mesh is represented with three numeric arrays (`x`, `y`, and `z`) for the x, y, and z coordinates of the surface nodes, three integer arrays (`facets_0`, `facets_1`, `facets_2`) that index into the x, y, and z arrays and specify the nodes that make up individual triangles, and three arrays that give the outward unit normal vector for each triangle (`normals_x`, `normals_y`, and `normals_z`). The lengths of the facets and normals arrays must all be the same.
+The `surface` format contains a 3D triangular surface mesh. The mesh is represented with three numeric arrays (`x`, `y`, and `z`) for the x, y, and z coordinates of the surface nodes, three integer arrays (`facets_0`, `facets_1`, `facets_2`) that index into the x, y, and z arrays and specify the nodes that make up individual triangles, and optionally three arrays that give the outward unit normal vector for each triangle (`normals_x`, `normals_y`, and `normals_z`). The lengths of the facets and normals arrays must all be the same.
 
 ???+ note
     Some scattering models require a closed 3D surface mesh (i.e., without holes), but the `surface` format does not enforce this.
@@ -122,13 +122,10 @@ specimen = {'uuid': str(uuid.uuid4()),
             'description': ['Testing'],
             'anatomical_category': 'organism',
             'aphia_id': 1234,
-            'date_collection': 'unknown',
-            'date_image': 'unknown',
+            'date_collection': '',
+            'date_image': '',
             'imaging_method': 'radiograph',
             'shape_method': 'unknown',
-            'straightened': True,
-            'smoothed': False,
-            'rotated': False,
             'dataset_size': 1.0,
             'dataset_units': 'megabyte',
             'specimen_condition': 'unknown',
@@ -193,13 +190,10 @@ specimen = {'uuid': str(uuid.uuid4()),
             'description': ['Testing'],
             'anatomical_category': 'organism',
             'aphia_id': 1234,
-            'date_collection': 'unknown',
-            'date_image': 'unknown',
+            'date_collection': '',
+            'date_image': '',
             'imaging_method': 'radiograph',
             'shape_method': 'unknown',
-            'straightened': True,
-            'smoothed': False,
-            'rotated': False,
             'dataset_size': 1.0,
             'dataset_units': 'megabyte',
             'specimen_condition': 'unknown',
