@@ -38,14 +38,9 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
     validator = jsonschema_rs.validator_for(schema, validate_formats=True,
                                             ignore_unknown_formats=False)
 
-    # Validate and report any errors
-    passed = True
+    # Validate and accumulate any errors
+    error_msgs = []
     for error in validator.iter_errors(specimen):
-        if passed:
-            rprint(f'[red]✗[/red] File [orange3]{file_label}[/orange3] is not valid')
-
-        passed = False
-
         msg = error.message
         if len(msg) > 200:
             msg = msg[:100] + ' ... ' + msg[-100:]
@@ -53,12 +48,18 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
         instance_path = '.'.join([str(a) for a in error.instance_path])
         schema_path = '.'.join(error.schema_path)
 
-        rprint('  [red]error:')
-        print(f'    For attribute "{instance_path}" with schema path of "{schema_path}"')
-        print(f'    {msg}')
+        error_msgs.append('  [red]Error:')
+        error_msgs.append(f'    For attribute "{instance_path}" with schema path of "{schema_path}"')
+        error_msgs.append(f'    {msg}')
 
-    if passed:
-         rprint(f'[green]✓[/green] File [orange3]{file_label}[/orange3] is valid')
+    # Provide info on pass/fail and any errors
+    if error_msgs:
+        rprint(f'[red]✗[/red] File [orange3]{file_label}[/orange3] is not valid')         
+        for m in error_msgs:
+            rprint(m)
+    else:
+        rprint(f'[green]✓[/green] File [orange3]{file_label}[/orange3] is valid')
+        
 
 def main():
     """Validate TOML files."""
@@ -70,7 +71,8 @@ def main():
                                             'datastore and temporary substitutes generated '\
                                             'when neccessary.')
     
-    parser.add_argument('toml_file', help='echoSMs TOML file(s) (can include wildcards)',
+    parser.add_argument('toml_file', help='echoSMs TOML file(s) (can include wildcards; '\
+                        'use ** to search in subdirectories)',
                         action='extend', nargs='+')
     parser.add_argument('-s', '--schema', help='provide the datastore schema file directly '\
                         '(it is otherwise downloaded from the echoSMs Github repository)')
@@ -82,7 +84,8 @@ def main():
     # Expand out any wildcard file inputs and discard non files.
     toml_files = []
     for f_args in args.toml_file:
-        toml_files.extend([Path(f) for f in glob.glob(f_args) if os.path.isfile(f)])
+        toml_files.extend([Path(f) for f in glob.glob(f_args, recursive=True) 
+                           if os.path.isfile(f) and Path(f).name != 'metadata.toml'])
 
     # Get the JSON schema
     if args.schema:
@@ -98,6 +101,11 @@ def main():
     for toml in toml_files:
         try:
             specimen = rtoml.load(toml)
+            # if there is also a metadata.toml file in the same directory, that needs to be
+            # added to the file we're working on
+            if (metadata_file := toml.parent/'metadata.toml').exists():
+                specimen |= rtoml.load(metadata_file)
+
         except rtoml.TomlParsingError:
             rprint(f'[red]✗[/red] Could not parse [orange3]{toml.name}[/orange3]. Is it a TOML-formatted file?')
             continue
@@ -108,7 +116,7 @@ def main():
             with open(Path(toml).with_suffix('.json'), 'wb') as f:
                 f.write(json_bytes)
 
-        validate_one(schema, specimen, toml.name)
+        validate_one(schema, specimen, Path(toml.parent.name) / toml.name)
 
 
 if __name__ == '__main__':
