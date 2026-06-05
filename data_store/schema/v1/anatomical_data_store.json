@@ -1003,7 +1003,7 @@
                             "origin_location_units",
                             "shape_units"
                         ],
-                        "additionalProperties": false,
+                        "unevaluatedProperties": false,
                         "dependentRequired": {
                             "pitch": [
                                 "orientation_units"
@@ -1112,7 +1112,6 @@
                                     "radius",
                                     "length"
                                 ],
-                                "additionalProperties": false,
                                 "properties": {
                                     "radius": {
                                         "description": "Radius of the cylinder.",
@@ -1133,7 +1132,6 @@
                                     "equatorial_radius",
                                     "polar_radius"
                                 ],
-                                "additionalProperties": false,
                                 "properties": {
                                     "equatorial_radius": {
                                         "description": "The equatorial radius of the spheroid. In the echoSMs coordinate system the equatorial radius is along the y- and z-axes.",
