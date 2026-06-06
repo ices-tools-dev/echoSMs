@@ -546,6 +546,10 @@ def names_from_aphia_id(aphia_id: int) -> dict:
     Queries the WoRMS web service and caches the results to reduce queries to WoRMS.
     """
 
+    if not aphia_id:
+        return {}
+        
+
     WORMS_URL = 'https://www.marinespecies.org/rest/'
 
     names = {}
