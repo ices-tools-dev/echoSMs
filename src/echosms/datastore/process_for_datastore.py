@@ -120,18 +120,24 @@ def main():
                         data[k] = v
 
                 # Validate the specimen data
-                errored = False
+                error_msgs = []
                 for error in validator.iter_errors(data):
-                    #print(error.instance_path)
-                    #print(error.evaluation_path)
-                    #print(error.schema_path)
-                    rprint(f'\n[yellow] Validation error with {error.message}', end='')
-                    # rprint('[orange4]' + error.message)
-                    errored = True
+                    msg = error.message
+                    if len(msg) > 200:
+                        msg = msg[:100] + ' ... ' + msg[-100:]
 
-                if errored:
-                    rprint('\n[red]Validation failed ✗')
+                    instance_path = '.'.join([str(a) for a in error.instance_path])
+                    schema_path = '.'.join(error.schema_path)
+
+                    error_msgs.append(f'    - For attribute "{instance_path}" with schema path of "{schema_path}",')
+                    error_msgs.append(f'      {msg}')
+
+                # Provide info on pass/fail and any errors
+                if error_msgs:
                     error_count += 1
+                    rprint(' [red]Validation failed ✗')
+                    for m in error_msgs:
+                        rprint(m)
                 else:
                     rprint(' [green]Validation passed ✓', end='')
 
