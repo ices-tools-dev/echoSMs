@@ -20,6 +20,9 @@ It is not necessary to validate your data before submitting it to the datastore,
 
 ???+ warning
 
-    The schema browser does not show property dependencies, such as when the presence of an optional property requires that another property be present.  (e.g., if `latitude` is present, then `latitude_units` is required).
+    The schema browser does not show property dependencies, such as when the presence of an optional
+    property requires that another property be present (e.g., if `latitude` is present, 
+    then `latitude_units` is required). Such dependencies are given in the `dependentRequired`
+    sections of the datastore schema.
 
 {{ datastore_schema_as_html() }}

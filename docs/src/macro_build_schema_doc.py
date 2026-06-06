@@ -2,7 +2,7 @@ from pathlib import Path
 from json_schema_for_humans.generate import generate_from_filename
 from json_schema_for_humans.generation_configuration import GenerationConfiguration as gc
 
-# this is a temporary solution until Zensical implements modules and/or there is a plugin
+# This is a temporary solution until Zensical implements modules and/or there is a plugin
 # for including JSON schema into Zensical docs.
 
 def define_env(env):
@@ -11,8 +11,9 @@ def define_env(env):
     @env.macro
     def datastore_schema_as_html():
         schema_file = Path('data_store')/'schema'/'v1'/'anatomical_data_store.json'
+        html_filename = 'schema/schema_doc.html'
 
-        html_file = Path(env.conf['site_dir'])/'schema/schema_doc.html'
+        html_file = Path(env.conf['site_dir'])/html_filename
         html_file.parent.mkdir(parents=True, exist_ok=True)
 
         generate_from_filename(schema_file, html_file,
@@ -27,4 +28,4 @@ def define_env(env):
                 )
             )
 
-        return '<iframe src="../schema/schema_doc.html" width=100% height=1000px style="border-width: 0"></iframe>'
+        return f'<iframe src="../{html_filename}" width=100% height=1000px style="border-width: 0"></iframe>'
