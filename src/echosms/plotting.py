@@ -48,6 +48,12 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
             plot_shape_voxels(specimen['shapes'][0], t)
         case 'categorised voxels':
             plot_shape_categorised_voxels(specimen['shapes'][0], t)
+        case 'geometric':
+            fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
+            plot_shape_geometric(specimen['shapes'], ax)
+            plt.tight_layout()
+            ax.set_title(t)
+
         case _:
             # valid specimen data structures will never get here
             raise ValueError('Specimen shape_type of "{}" is not yet supported'.format(specimen['shape_type']))
@@ -109,7 +115,7 @@ def plot_shape_outline(shapes: list[dict], axs: list) -> None:
             axs[i].yaxis.set_inverted(True)
 
 
-def plot_shape_surface(shapes, ax):
+def plot_shape_surface(shapes: list[dict], ax):
     """Plot an echoSMs anatomical surface shape.
 
     Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
@@ -139,7 +145,7 @@ def plot_shape_surface(shapes, ax):
         ax.yaxis.set_inverted(True)
 
 
-def plot_shape_voxels(s, title=''):
+def plot_shape_voxels(s: list[dict], title: str=''):
     """Plot the specimen's voxels.
 
     Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
@@ -194,7 +200,7 @@ def plot_shape_voxels(s, title=''):
     fig.suptitle(title)
 
 
-def plot_shape_categorised_voxels(s, title=''):
+def plot_shape_categorised_voxels(s: list[dict], title: str=''):
     """Plot the specimen's categorised voxels.
 
     Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
@@ -239,3 +245,54 @@ def plot_shape_categorised_voxels(s, title=''):
     fig.supxlabel('y [mm]')
     fig.supylabel('z [mm]')
     fig.suptitle(title)
+
+
+def plot_shape_geometric(shapes: list[dict], ax):
+    """Plot an echoSMs geometric shape.
+
+    Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
+
+    Parameters
+    ----------
+    shapes :
+        Surface shapes to be plotted
+    ax :
+        A matplotlib axis.
+    """
+
+    for s in shapes:
+        match s['geometric_form']:
+            case 'spheroid':
+                _plot_spheroid(ax, **s)
+            case 'cylinder':
+                _plot_cylinder(ax, **s)
+            case _:
+                raise ValueError('geometric_form of {} is not yet supported'.format(s['geometric_form']))
+
+    ax.set_box_aspect([1, 1, 1])
+
+        
+def _plot_spheroid(ax, equatorial_radius, polar_radius, origin=(0.0, 0.0, 0.0),
+                   pitch=0.0, roll=0.0, yaw=0.0, **kwargs):
+    u = np.linspace(0, 2*np.pi, 100)
+    v = np.linspace(0, np.pi, 100)
+    U, V = np.meshgrid(u, v)
+    # TODO - apply origin rotations and offset
+    X = equatorial_radius * np.cos(U) * np.sin(V)
+    Y = X
+    Z = polar_radius * np.cos(V)
+    ax.plot_surface(X, Y, Z, edgecolor='none', alpha=0.7)
+
+
+def _plot_cylinder(ax, radius, length, origin=(0.0, 0.0, 0.0), pitch=0.0,
+                   roll=0.0, yaw=0.0, **kwargs):
+    theta = np.linspace(0, 2*np.pi, 100)
+    z_vals = np.linspace(0, length, 50)
+    THETA, Z = np.meshgrid(theta, z_vals)
+    # TODO - apply origin rotations and offset
+    x = radius * np.cos(THETA)
+    y = radius * np.sin(THETA)
+    z = Z
+    ax.plot_surface(x, y, z, alpha=0.8, edgecolor='none')
+
+    
