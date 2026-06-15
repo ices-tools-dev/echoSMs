@@ -61,6 +61,10 @@ source = 'vcs'
 [tool.hatch.version.raw-options]
 local_scheme = "no-local-version"  # otherwise the non-tagged version is not accepted by testpypi
 
+[tool.uv]
+exclude-newer = "7 days"
+exclude-newer-package = { zensical = "1 day" }
+
 [tool.pytest.ini_options]
 testpaths = ['tests',]
 addopts = ["--import-mode=importlib",]
