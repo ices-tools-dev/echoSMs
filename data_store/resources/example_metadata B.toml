@@ -1,5 +1,5 @@
 #.schema https://github.com/ices-tools-dev/echoSMs/blob/main/schemas/anatomical_data_store/v1/anatomical_data_store.json
-uuid = ""  # populated by the data storage system
+uuid = "3528c194-f073-439a-9179-942813936f03"
 dataset_uuid = "75f775f9-4404-448d-aacc-6de96cccaf3a"
 version_number = 1  # overwritten by data storage system
 version_time = ""  # overwritten by data storage system
@@ -35,9 +35,6 @@ dataset_size_units = "megabyte"
 
 specimen_name = "B"
 specimen_condition = "fresh"
-smoothed = true
-rotated = true
-straightened = true
 length = 0.156
 weight = 0.034
 length_type = "standard length"

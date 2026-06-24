@@ -1,8 +1,8 @@
 {
-  "uuid": "d118c218-bc80-466d-8255-df8731b497b8",
+  "uuid": "3528c194-f073-439a-9179-942813936f03",
   "dataset_uuid": "75f775f9-4404-448d-aacc-6de96cccaf3a",
   "version_number": 1,
-  "version_time": "2026-02-19T03:01:45.875287+00:00",
+  "version_time": "",
   "version_note": "Initial version",
   "version_investigators": [
     "Clarence Clay",
@@ -30,13 +30,10 @@
   "model_type": "KRM",
   "sound_speed_method": "literature",
   "mass_density_method": "literature",
-  "dataset_size": 1.0,
+  "dataset_size": 0.0,
   "dataset_size_units": "megabyte",
   "specimen_name": "B",
   "specimen_condition": "fresh",
-  "smoothed": true,
-  "rotated": true,
-  "straightened": true,
   "length": 0.156,
   "weight": 0.034,
   "length_type": "standard length",
@@ -84,7 +81,7 @@
         0.0008,
         0.0016,
         0.0008,
-        5e-05,
+        0.00005,
         -0.00035
       ],
       "height": [

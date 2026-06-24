@@ -1,8 +1,8 @@
 {
-  "uuid": "e672630c-069f-4731-b667-535abab0cea4",
+  "uuid": "002805b6-1f47-4467-ae8c-fbeff7ae7200",
   "dataset_uuid": "75f775f9-4404-448d-aacc-6de96cccaf3a",
   "version_number": 1,
-  "version_time": "2026-02-19T03:01:45.874023+00:00",
+  "version_time": "2026-01-01T12:34:45Z",
   "version_note": "Initial version",
   "version_investigators": [
     "Clarence Clay",
@@ -30,13 +30,10 @@
   "model_type": "KRM",
   "sound_speed_method": "literature",
   "mass_density_method": "literature",
-  "dataset_size": 1.0,
+  "dataset_size": 0.0,
   "dataset_size_units": "megabyte",
   "specimen_name": "A",
   "specimen_condition": "fresh",
-  "smoothed": true,
-  "rotated": true,
-  "straightened": true,
   "length": 0.173,
   "weight": 0.048,
   "length_units": "m",
@@ -48,6 +45,9 @@
       "anatomical_feature": "body",
       "boundary": "fluid-filled",
       "shape_units": "m",
+      "smoothed": true,
+      "rotated": true,
+      "straightened": true,
       "x": [
         0.0,
         -0.0177,
@@ -77,14 +77,14 @@
       "z": [
         0.00095,
         -0.0004,
-        5e-05,
+        0.00005,
         0.0014,
         0.0027,
         0.0027,
         0.0032,
         0.00225,
         0.0009,
-        5e-05,
+        0.00005,
         0.0005
       ],
       "height": [
@@ -126,6 +126,9 @@
       "anatomical_feature": "swimbladder",
       "boundary": "pressure-release",
       "shape_units": "m",
+      "smoothed": true,
+      "rotated": true,
+      "straightened": true,
       "x": [
         -0.0487,
         -0.0532,
