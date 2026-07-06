@@ -427,20 +427,23 @@
             ]
         },
         "sex": {
-            "description": "Sex of specimen",
+            "description": "Sex of specimen. Is a superset of the ICES AC_Sex vocabulary",
             "type": "string",
             "enum": [
                 "female",
                 "male",
                 "immature",
+                "not sampled",
+                "unidentified",
                 "unknown"
             ]
         },
         "length_type": {
-            "description": "Type of length measurement.",
+            "description": "Type of length measurement. Is a superset of the ICES AC_LengthMeasurementType vocabulary",
             "type": "string",
             "enum": [
-                "total length",
+                "total length, linear",
+                "total length, curved",
                 "fork length",
                 "standard length",
                 "lower jaw fork length",
@@ -450,6 +453,14 @@
                 "disc width",
                 "stretched total length",
                 "CCAMLR krill - front of eye to tip of telson",
+                "shell width",
+                "wing width",
+                "pinched tail length",
+                "pre-supra-caudal fin length",
+                "pre-anal fin length",
+                "mantle length",
+                "second dorsal fin length",
+                "shell height",
                 "unknown",
                 "other"
             ]

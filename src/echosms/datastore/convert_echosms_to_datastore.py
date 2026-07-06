@@ -102,7 +102,8 @@ for model_name in d.names():
                      'length': m.length,
                      'length_units': 'm',
                      'sex': 'unknown',
-                     'length_type': 'unknown', 'shape_type': 'outline',
+                     'length_type': 'unknown',
+                     'shape_type': 'outline',
                      'shapes': []})
 
     shape = outline_from_krm(m.body.x, m.body.z_U, m.body.z_L,
@@ -166,7 +167,8 @@ for model_name in d.names():
                      'length': m.length,
                      'length_units': 'm',
                      'sex': 'unknown',
-                     'length_type': 'unknown', 'shape_type': 'outline',
+                     'length_type': 'unknown',
+                     'shape_type': 'outline',
                      'shapes': []})
 
     shape = {'anatomical_feature': 'body',
