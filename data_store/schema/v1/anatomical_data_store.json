@@ -44,7 +44,7 @@
     },
     "properties": {
         "license": {
-            "description": "The license that applies to this specimen data. Only some Creative Commons licenses are permitted (to ensure that the data remain freely available and usable.",
+            "description": "The license that applies to this specimen data. Only some Creative Commons licenses are permitted (to ensure that the data remain freely available and usable).",
             "type": "string",
             "oneOf": [
                 {
