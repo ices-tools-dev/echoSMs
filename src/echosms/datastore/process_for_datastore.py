@@ -54,7 +54,15 @@ def main():
     temp_dir = TemporaryDirectory(prefix='echosMs')
     temp_path = Path(temp_dir.name)
 
-    schema = datastore_schema()
+    # Get the JSON schema
+    if args.schema:
+        schema = datastore_schema(args.schema)
+    else:
+        schema = datastore_schema()
+        if schema == '':
+            print('Could not get the datastore schema from Github. Try again or pass '
+                  'a file in with the --schema option.')
+            return
 
     metadata_file = 'metadata.toml'
     metadata_final_filename = 'metadata_all_autogen.json'
