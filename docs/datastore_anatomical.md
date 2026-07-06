@@ -115,6 +115,7 @@ from datetime import datetime, timezone
 # The items here are the mandatory attributes required for the 
 # echoSMs datastore (there are many others that are optional).
 specimen = {'uuid': str(uuid.uuid4()),
+            'license': 'CC0 1.0',
             'specimen_name': 'A',
             'version_number': 1,
             'version_time': datetime.now(timezone.utc).isoformat(),
@@ -183,6 +184,7 @@ print(s.keys())
 
 # Add the shape to some example specimen metadata
 specimen = {'uuid': str(uuid.uuid4()),
+            'license': 'CC0 1.0',
             'specimen_name': 'A',
             'version_number': 1,
             'version_time': datetime.now(timezone.utc).isoformat(),
@@ -241,6 +243,7 @@ print(s.keys())
 
 # Add the shape to some example specimen metadata
 specimen = {'uuid': str(uuid.uuid4()),
+            'license': 'CC0 1.0',
             'specimen_name': '123',
             'version_number': 1,
             'version_time': datetime.now(timezone.utc).isoformat(),

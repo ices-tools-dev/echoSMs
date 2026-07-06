@@ -24,7 +24,8 @@
         "length",
         "length_units",
         "length_type",
-        "shape_type"
+        "shape_type",
+        "license"
     ],
     "additionalProperties": false,
     "dependentRequired": {
@@ -42,6 +43,32 @@
         ]
     },
     "properties": {
+        "license": {
+            "description": "The license that applies to this specimen data. Only selected Creative Commons licenses are permitted.",
+            "type": "string",
+            "oneOf": [
+                {
+                    "title": "no license",
+                    "const": "no license",
+                    "description": "These data have no license. Use this option as a last resort as it can create uncertainty about how the data can be used. May be appropriate for historical data where the data creater or owner cannot provide a license (although CC0 could be used in that case)."
+                },
+                {
+                    "title": "CC0",
+                    "const": "CC0 1.0",
+                    "description": "CC Zero. No Copyright. The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. Canonical URL: <https://creativecommons.org/publicdomain/zero/1.0/>."
+                },
+                {
+                    "title": "CC BY",
+                    "const": "CC BY 4.0",
+                    "description": "CC BY. You are free to:\n __share__ - copy and redistribute the material in any medium or format for any purpose, even commercially,\n __adapt__ - remix, transform, and build upon the material for any purpose, even commercially.\n\n __attribution__ - you must give appropriate credit, provide a link to the license, and indicate if changes were made.\n Canonical URL: <https://creativecommons.org/licenses/by/4.0/>."
+                },
+                {
+                    "title": "CC BY-SA",
+                    "const": "CC BY-SA 4.0",
+                    "description": "CC BY. You are free to:\n __share__ - copy and redistribute the material in any medium or format for any purpose, even commercially,\n __adapt__ - remix, transform, and build upon the material for any purpose, even commercially.\n\n __attribution__ - you must give appropriate credit, provide a link to the license, and indicate if changes were made,\n __sharealike__ - if you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.\n Canonical URL: <https://creativecommons.org/licenses/by-sa/4.0/>."
+                }
+            ]
+        },
         "uuid": {
             "description": "A Universally Unique IDentifier for this specimen as per [RFC9562](https://datatracker.ietf.org/doc/rfc9562). Populated by the datastore if empty.",
             "type": "string",
@@ -432,7 +459,7 @@
             "enum": [
                 "female",
                 "male",
-                "immature",
+                "indeterminate",
                 "not sampled",
                 "unidentified",
                 "unknown"

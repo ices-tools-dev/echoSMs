@@ -35,6 +35,7 @@ match platform.node():
 
 # Datset template
 specimen_t = {'uuid': '',
+             'license': 'CC BY 4.0',
              'dataset_uuid': '',
              'dataset_name': '',
              'description': [''],

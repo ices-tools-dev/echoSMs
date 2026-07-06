@@ -1,5 +1,6 @@
 #.schema https://github.com/ices-tools-dev/echoSMs/blob/main/schemas/anatomical_data_store/v1/anatomical_data_store.json
 uuid = "3528c194-f073-439a-9179-942813936f03"
+license = "CC BY 4.0"
 dataset_uuid = "75f775f9-4404-448d-aacc-6de96cccaf3a"
 version_number = 1  # overwritten by data storage system
 version_time = ""  # overwritten by data storage system
