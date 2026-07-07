@@ -72,7 +72,7 @@ plugins:
     - glightbox
     - autorefs
     - macros:
-        module_name: docs/src/macro_build_schema_doc
+        module_name: docs/src/macros
         on_error_fail: true
     - mkdocstrings:
         handlers:

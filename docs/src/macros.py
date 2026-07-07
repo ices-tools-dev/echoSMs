@@ -1,4 +1,5 @@
 from pathlib import Path
+from echosms import DATASTORE_URI
 from json_schema_for_humans.generate import generate_from_filename
 from json_schema_for_humans.generation_configuration import GenerationConfiguration as gc
 
@@ -6,6 +7,8 @@ from json_schema_for_humans.generation_configuration import GenerationConfigurat
 # for including JSON schema into Zensical docs.
 
 def define_env(env):
+    env.variables['datastore_uri'] = DATASTORE_URI
+
     # Call this in a markdown document via:
     # {{ datastore_schema_as_html() }}
     @env.macro

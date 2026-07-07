@@ -1,15 +1,13 @@
 """ """
 
-from echosms import outline_to_surface
+from echosms import outline_to_surface, DATASTORE_URI
 
 import requests
-
-api_URL = 'https://echosms-data-store-app-ogogm.ondigitalocean.app'
 
 # Force use of IPV4 as sometimes IPV6 get() calls are very slow to complete
 requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
-d = requests.get(api_URL + '/v2/specimens?shape_type=outline')
+d = requests.get(DATASTORE_URI + '/v2/specimens?shape_type=outline')
 
 for spec in d.json():
     print('Converting ' + spec['id'])

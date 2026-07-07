@@ -12,15 +12,12 @@ import requests
 import numpy as np
 import matplotlib.pyplot as plt
 
-# The current location of the echoSMs datastore server
-baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
-
 # Create an instance of the echoSMs KRM model for use below
 m = echosms.KRMModel()
 
 # Get all the datastore organisms from the CLAY_HORNE dataset.
 # This returns the metadata about the specimens but no shape information.
-r = requests.get(baseURI + 'v2/specimens/?dataset_name=CLAY_HORNE')
+r = requests.get(echosms.DATASTORE_URI + 'v2/specimens/?dataset_name=CLAY_HORNE')
 
 for o in r.json():
     print(f'Processing specimen {o["specimen_name"]} from the {o["dataset_name"]} dataset')
@@ -121,8 +118,7 @@ import requests
 from echosms import outline_to_surface, plot_specimen
 
 # Get an outline shape from the echoSMs anatomical datastore
-baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
-r = requests.get(baseURI + 'v2/specimens/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data')
+r = requests.get(echosms.DATASTORE_URI + 'v2/specimens/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data')
 specimen = r.json()
 
 # Plot the outline shapes - there will be a body and swimbladder shape

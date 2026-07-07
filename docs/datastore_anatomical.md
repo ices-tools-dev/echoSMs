@@ -68,13 +68,15 @@ Most anatomical scattering models use one of these three-dimensional representat
 
 Some models use multiple shapes for a single specimen (e.g., a fish body and swimbladder) and multiple shapes per specimen are permitted. Additional shape formats can be added as required (e.g., tetrahedrons as used by the [TetraScatt](https://doi.org/10.1115/1.4067286) scattering model).
 
+{{datastore_uri}}
+
 |Shape data type|Realisation|Models that use this|Example from datastore|Material properties|
 |---------------|-----------|--------------------|-----|--|
-|surface|3D triangular surface mesh|BEM, KA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/770f19a1-9b9f-4a91-930c-92eaa235b956/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/770f19a1-9b9f-4a91-930c-92eaa235b956/image)|ρ and c per shape|
-|outline|Dorsal and ventral outlines along a curved centreline|KRM, DWBA, DCM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/image)|ρ and c per shape (KRM) or per section (DWBA)|
-|voxels|3D rectangular grid|FEM|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/image)|ρ and c for each voxel|
-|categorised voxels|categorised 3D rectangular grid|PT-DWBA|[data](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/data), [image](https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/image)|ρ and c for each category|
-|geometric|combination of simple shapes|MFS|none yet|none|
+|surface|3D triangular surface mesh|BEM, KA|[data]({{datastore_uri}}v2/specimen/770f19a1-9b9f-4a91-930c-92eaa235b956/data), [image]({{datastore_uri}}v2/specimen/770f19a1-9b9f-4a91-930c-92eaa235b956/image)|ρ and c per shape|
+|outline|Dorsal and ventral outlines along a curved centreline|KRM, DWBA, DCM|[data]({{datastore_uri}}v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/data), [image]({{datastore_uri}}v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/image)|ρ and c per shape (KRM) or per section (DWBA)|
+|voxels|3D rectangular grid|FEM|[data]({{datastore_uri}}v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/data), [image]({{datastore_uri}}v2/specimen/658185f5-6e81-4c18-a572-28051c1f6e1d/image)|ρ and c for each voxel|
+|categorised voxels|categorised 3D rectangular grid|PT-DWBA|[data]({{datastore_uri}}v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/data), [image]({{datastore_uri}}v2/specimen/0e78608f-82e0-4ed5-af68-328cf42c9362/image)|ρ and c for each category|
+|geometric|combination of simple shapes|MFS|[data]({{datastore_uri}}v2/specimen/91984396-2daf-433c-a2ac-55393b9a91b3/data), [image]({{datastore_uri}}v2/specimen/91984396-2daf-433c-a2ac-55393b9a91b3/image)|ρ and c per shape|
 
 ???+ Note
     The outline shape is a generalised form of the shape definition used for several models:
@@ -307,6 +309,4 @@ The `categorised voxels` format uses a single 3D matrix of material property cat
 
 ##### Geometric
 
-_This section is under construction_
-
-The geometric format uses the combination of simple shapes (bent cylinders and spheroids to date) to create a specimen shape.
+The geometric format uses the union of simple shapes (cylinders and spheroids to date) to create a specimen shape. A pitch, roll, yaw (about the shape centroid) and translation can be specified for each shape. Sound speed and density are specified for the union of the shapes, not for each simple shape.
