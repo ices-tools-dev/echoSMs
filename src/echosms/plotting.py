@@ -1,7 +1,9 @@
 """Functions to create plots of specimens."""
 import numpy as np
+from scipy.spatial.transform import Rotation as R
 import matplotlib.pyplot as plt
 from matplotlib import colors, colormaps
+import trimesh
 from math import floor
 from .utils import boundary_type as bt
 
@@ -260,39 +262,70 @@ def plot_shape_geometric(shapes: list[dict], ax):
         A matplotlib axis.
     """
 
+    meshes = []
+
     for s in shapes:
         match s['geometric_form']:
             case 'spheroid':
-                _plot_spheroid(ax, **s)
+                meshes.append(_spheroid_mesh(**s))
             case 'cylinder':
-                _plot_cylinder(ax, **s)
+                meshes.append(_cylinder_mesh(**s))
             case _:
                 raise ValueError('geometric_form of {} is not yet supported'.format(s['geometric_form']))
 
-    ax.set_box_aspect([1, 1, 1])
+    # Merge the meshes into one
+    mesh = trimesh.boolean.union(meshes, check_volume=False)
+
+    # plot the mesh
+    p = mesh.vertices
+    ax.plot_trisurf(p[:,0], p[:,1], p[:,2], triangles=mesh.faces, alpha=0.8, shade=True,
+                    cmap='viridis')
+
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z')
+
+    # The plot is currently oriented wrong (z-axis increases upwards when it should be 
+    # shown increasing downwards, as per the echoSMs coordinate convention). Also want to 
+    # have the 'head' of the shape to the left rather than right of the plot.
+
+    # These two options can do some of that, but have undesirable visual effects...
+    # ax.invert_zaxis()
+    # ax.view_init(elev=30, azim=30, vertical_axis='z')
+    scaling = (np.ptp(p[:,0]), np.ptp(p[:,1]), np.ptp(p[:,2]))
+    ax.set_box_aspect(scaling)
 
         
-def _plot_spheroid(ax, equatorial_radius, polar_radius, origin=(0.0, 0.0, 0.0),
-                   pitch=0.0, roll=0.0, yaw=0.0, **kwargs):
-    u = np.linspace(0, 2*np.pi, 100)
-    v = np.linspace(0, np.pi, 100)
-    U, V = np.meshgrid(u, v)
-    # TODO - apply origin rotations and offset
-    X = equatorial_radius * np.cos(U) * np.sin(V)
-    Y = X
-    Z = polar_radius * np.cos(V)
-    ax.plot_surface(X, Y, Z, edgecolor='none', alpha=0.7)
+def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
+                   origin_location: tuple[float]|None=None,
+                   pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs):
+    """Create a spheroid triangulated mesh as per the size and orientation."""
+
+    if origin_location is None:
+        origin_location = (0.0, 0.0, 0.0)
+
+    mesh = trimesh.creation.icosphere(subdivisons=3)
+    scale = np.diag([equatorial_radius, equatorial_radius, polar_radius, 1.0])
+    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location) @ scale)
 
 
-def _plot_cylinder(ax, radius, length, origin=(0.0, 0.0, 0.0), pitch=0.0,
-                   roll=0.0, yaw=0.0, **kwargs):
-    theta = np.linspace(0, 2*np.pi, 100)
-    z_vals = np.linspace(0, length, 50)
-    THETA, Z = np.meshgrid(theta, z_vals)
-    # TODO - apply origin rotations and offset
-    x = radius * np.cos(THETA)
-    y = radius * np.sin(THETA)
-    z = Z
-    ax.plot_surface(x, y, z, alpha=0.8, edgecolor='none')
+def _cylinder_mesh(radius: float, length: float, origin_location: tuple[float]|None=None,
+                  pitch: float=0.0, roll: float=0.0, yaw: float=0.0, **kwargs):
+    """Create a cylinder triangulated mesh as per the size and orientation."""
 
-    
+    if origin_location is None:
+        origin_location = (0.0, 0.0, 0.0)
+
+    mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
+    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location))
+
+
+def _transform(pitch: float, roll: float, yaw: float, o: tuple[float]):
+    """Calculate a rotation and origin shift matrix."""
+
+    rotation = R.from_euler('ZYX', (yaw, pitch-90, -roll), degrees=True)
+    transform = np.eye(4)
+    transform[:3, :3] = rotation.as_matrix()
+    transform[:3, 3] = o
+
+    return transform

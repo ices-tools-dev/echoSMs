@@ -34,9 +34,10 @@ dependencies = [
 	"rtoml",
 	"urllib3 >= 2.7.0",
 	"matplotlib",
-    "rich",
-    "jsonschema-rs",
-    "orjson",
+	"rich",
+	"jsonschema-rs",
+	"orjson",
+	"manifold3d",
 ]
 classifiers = [
     'Development Status :: 3 - Alpha',
