@@ -115,10 +115,10 @@ This code shows how to convert an echoSMs outline shape into an echoSMs surface 
 
 ```py
 import requests
-from echosms import outline_to_surface, plot_specimen
+from echosms import outline_to_surface, plot_specimen, DATASTORE_URI
 
 # Get an outline shape from the echoSMs anatomical datastore
-r = requests.get(echosms.DATASTORE_URI + 'v2/specimens/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data')
+r = requests.get(DATASTORE_URI + 'v2/specimens/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data')
 specimen = r.json()
 
 # Plot the outline shapes - there will be a body and swimbladder shape
