@@ -256,7 +256,7 @@ def plot_shape_geometric(shapes: list[dict], ax):
     Parameters
     ----------
     shapes :
-        Shapes to be plotted
+        Geometric shapes to be plotted
     ax :
         A matplotlib axis.
     """

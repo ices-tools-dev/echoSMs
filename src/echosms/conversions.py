@@ -11,7 +11,7 @@ from scipy.spatial.transform import Rotation as R
 from shapely import intersection, LineString, Polygon
 
 def mesh_from_surface(shapes: list[dict]) -> list[trimesh.Trimesh]:
-    """Create triangulated meshes from echoSMs datastore surface shapes.
+    """Create trimesh instances of an echoSMs datastore surface shapes.
 
     Parameters
     ----------
@@ -499,7 +499,7 @@ def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
 def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
                    origin_location: tuple[float]|None=None,
                    pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs):
-    """Create a spheroid triangulated mesh as per the size and orientation."""
+    """Create a triangulated mesh of a spheroid as per the size and orientation."""
 
     if origin_location is None:
         origin_location = (0.0, 0.0, 0.0)
@@ -511,7 +511,7 @@ def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
 
 def _cylinder_mesh(radius: float, length: float, origin_location: tuple[float]|None=None,
                   pitch: float=0.0, roll: float=0.0, yaw: float=0.0, **kwargs):
-    """Create a cylinder triangulated mesh as per the size and orientation."""
+    """Create a triangulated mesh of a cylinder as per the size and orientation."""
 
     if origin_location is None:
         origin_location = (0.0, 0.0, 0.0)
