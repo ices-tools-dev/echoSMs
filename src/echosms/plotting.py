@@ -131,19 +131,10 @@ def plot_shape_surface(shapes: list[dict], ax):
     for s in shapes:
         c = 'C0' if s['boundary'] == bt.fluid_filled else 'C1'
         facets = np.array([s['facets_0'], s['facets_1'], s['facets_2']]).transpose()
-        x = 1e3 * np.array(s['x'])
-        y = 1e3 * np.array(s['y'])
-        z = 1e3 * np.array(s['z'])
-
-        ax.plot_trisurf(x, y, z, triangles=facets, alpha=0.6, color=c)
-        ax.view_init(elev=210, azim=-60, roll=0)
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z')
-
-        ax.set_aspect('equal')
-        ax.xaxis.set_inverted(True)
-        ax.yaxis.set_inverted(True)
+        _plot_triangulated_surface(ax, 1e3 * np.array(s['x']),
+                                       1e3 * np.array(s['y']),
+                                       1e3 * np.array(s['z']),
+                                       facets=facets, color=c)
 
 
 def plot_shape_voxels(s: list[dict], title: str=''):
@@ -260,28 +251,23 @@ def plot_shape_geometric(shapes: list[dict], ax):
     ax :
         A matplotlib axis.
     """
-
     mesh = mesh_from_geometric(shapes)
-    ax.plot_trisurf(mesh.vertices[:,0]*1e3,
-                    mesh.vertices[:,1]*1e3,
-                    mesh.vertices[:,2]*1e3,
-                    triangles=mesh.faces,
-                    alpha=0.8, shade=True, cmap='viridis')
+    _plot_triangulated_surface(ax, mesh.vertices[:,0]*1e3,
+                                   mesh.vertices[:,1]*1e3,
+                                   mesh.vertices[:,2]*1e3,
+                                   facets=mesh.faces)
 
+
+def _plot_triangulated_surface(ax, x, y, z, facets, color='C1'):
+    """Plot the triangulated surface on the Matplotlib axes."""
+    ax.plot_trisurf(x, y, z, triangles=facets, alpha=0.6, color=color)
+    ax.view_init(elev=210, azim=-60, roll=0)
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z')
 
-    # The plot is currently oriented wrong (z-axis increases upwards when it should be 
-    # shown increasing downwards, as per the echoSMs coordinate convention). Also want to 
-    # have the 'head' of the shape to the left rather than right of the plot.
+    ax.set_aspect('equal')
+    ax.xaxis.set_inverted(True)
+    ax.yaxis.set_inverted(True)
 
-    # These two options can do some of that, but have undesirable visual effects...
-    # ax.invert_zaxis()
-    # ax.view_init(elev=30, azim=30, vertical_axis='z')
 
-    # Make each axes the same scale
-    scaling = (np.ptp(mesh.vertices[:,0]*1e3),
-               np.ptp(mesh.vertices[:,1]*1e3),
-               np.ptp(mesh.vertices[:,2]*1e3))
-    ax.set_box_aspect(scaling)
