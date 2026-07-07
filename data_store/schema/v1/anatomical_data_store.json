@@ -1145,7 +1145,7 @@
                         "oneOf": [
                             {
                                 "title": "Cylinder",
-                                "description": "The centre of the cylinder for application of the origin, roll, pitch, and yaw is at radius=0 and halfway along the cylinder length.",
+                                "description": "The centre of the cylinder for application of the origin, roll, pitch, and yaw is at radius=0 and halfway along the cylinder length. When pitch, roll, and yaw at zero, the cylinder lies along the x-axis of the echoSMs coordinate system.",
                                 "required": [
                                     "radius",
                                     "length"
@@ -1165,7 +1165,7 @@
                             },
                             {
                                 "title": "Spheroid",
-                                "description": "A sphere, prolate spheroid, or oblate spheroid. The polar axis of the spheroids lies along the x-axis of the echoSMs coordinate system (prior to application of any tilt, roll, and yaw). An oblate spheroid occurs when the equatorial radius is greater than the polar radius and a prolate spheroid when the polar radius is greater than the equatorial radius. A sphere is generated when the polar and equatorial radii are the same.",
+                                "description": "A sphere, prolate spheroid, or oblate spheroid. The polar axis of the spheroid lies along the x-axis of the echoSMs coordinate system (prior to application of any tilt, roll, and yaw). An oblate spheroid occurs when the equatorial radius is greater than the polar radius and a prolate spheroid when the polar radius is greater than the equatorial radius. A sphere is generated when the polar and equatorial radii are the same.",
                                 "required": [
                                     "equatorial_radius",
                                     "polar_radius"
