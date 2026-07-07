@@ -7,11 +7,11 @@ from trimesh.path.polygons import projected
 from trimesh.creation import triangulate_polygon, Trimesh
 import pymeshlab
 import numpy.typing as npt
-
+from scipy.spatial.transform import Rotation as R
 from shapely import intersection, LineString, Polygon
 
-def mesh_from_datastore(shapes: list[dict]) -> list[trimesh.Trimesh]:
-    """Create trimesh instances from an echoSMs datastore surface shape.
+def mesh_from_surface(shapes: list[dict]) -> list[trimesh.Trimesh]:
+    """Create triangulated meshes from echoSMs datastore surface shapes.
 
     Parameters
     ----------
@@ -468,3 +468,64 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     outline_shape['width'] = widths
 
     return outline_shape
+
+def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
+    """Create a triangulated mesh from a datastore geometric shape.
+    
+    Parameters
+    ----------
+    shapes :
+        Geometric shapes defined as per the echoSMs datastore schema.
+    
+    Returns
+    -------
+    :
+        The mesh resulting from the merging of the input shapes.
+    """
+    meshes = []
+
+    for s in shapes:
+        match s['geometric_form']:
+            case 'spheroid':
+                meshes.append(_spheroid_mesh(**s))
+            case 'cylinder':
+                meshes.append(_cylinder_mesh(**s))
+            case _:
+                raise ValueError('geometric_form of {} is not yet supported'.format(s['geometric_form']))
+
+    return trimesh.boolean.union(meshes, check_volume=False)
+
+
+def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
+                   origin_location: tuple[float]|None=None,
+                   pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs):
+    """Create a spheroid triangulated mesh as per the size and orientation."""
+
+    if origin_location is None:
+        origin_location = (0.0, 0.0, 0.0)
+
+    mesh = trimesh.creation.icosphere(subdivisons=3)
+    scale = np.diag([equatorial_radius, equatorial_radius, polar_radius, 1.0])
+    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location) @ scale)
+
+
+def _cylinder_mesh(radius: float, length: float, origin_location: tuple[float]|None=None,
+                  pitch: float=0.0, roll: float=0.0, yaw: float=0.0, **kwargs):
+    """Create a cylinder triangulated mesh as per the size and orientation."""
+
+    if origin_location is None:
+        origin_location = (0.0, 0.0, 0.0)
+
+    mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
+    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location))
+
+
+def _transform(pitch: float, roll: float, yaw: float, o: tuple[float]):
+    """Calculate a rotation and origin shift matrix."""
+
+    rotation = R.from_euler('ZYX', (yaw, pitch-90, -roll), degrees=True)
+    transform = np.eye(4)
+    transform[:3, :3] = rotation.as_matrix()
+    transform[:3, 3] = o
+
+    return transform

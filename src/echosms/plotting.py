@@ -1,11 +1,10 @@
 """Functions to create plots of specimens."""
 import numpy as np
-from scipy.spatial.transform import Rotation as R
 import matplotlib.pyplot as plt
 from matplotlib import colors, colormaps
-import trimesh
 from math import floor
 from .utils import boundary_type as bt
+from .conversions import mesh_from_geometric
 
 def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
                   savefile: str|None=None, dpi: float=150) -> None:
@@ -257,29 +256,17 @@ def plot_shape_geometric(shapes: list[dict], ax):
     Parameters
     ----------
     shapes :
-        Surface shapes to be plotted
+        Shapes to be plotted
     ax :
         A matplotlib axis.
     """
 
-    meshes = []
-
-    for s in shapes:
-        match s['geometric_form']:
-            case 'spheroid':
-                meshes.append(_spheroid_mesh(**s))
-            case 'cylinder':
-                meshes.append(_cylinder_mesh(**s))
-            case _:
-                raise ValueError('geometric_form of {} is not yet supported'.format(s['geometric_form']))
-
-    # Merge the meshes into one
-    mesh = trimesh.boolean.union(meshes, check_volume=False)
-
-    # plot the mesh
-    p = mesh.vertices
-    ax.plot_trisurf(p[:,0], p[:,1], p[:,2], triangles=mesh.faces, alpha=0.8, shade=True,
-                    cmap='viridis')
+    mesh = mesh_from_geometric(shapes)
+    ax.plot_trisurf(mesh.vertices[:,0],
+                    mesh.vertices[:,1],
+                    mesh.vertices[:,2],
+                    triangles=mesh.faces,
+                    alpha=0.8, shade=True, cmap='viridis')
 
     ax.set_xlabel('x')
     ax.set_ylabel('y')
@@ -292,40 +279,9 @@ def plot_shape_geometric(shapes: list[dict], ax):
     # These two options can do some of that, but have undesirable visual effects...
     # ax.invert_zaxis()
     # ax.view_init(elev=30, azim=30, vertical_axis='z')
-    scaling = (np.ptp(p[:,0]), np.ptp(p[:,1]), np.ptp(p[:,2]))
+
+    # Make each axes the same scale
+    scaling = (np.ptp(mesh.vertices[:,0]),
+               np.ptp(mesh.vertices[:,1]),
+               np.ptp(mesh.vertices[:,2]))
     ax.set_box_aspect(scaling)
-
-        
-def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
-                   origin_location: tuple[float]|None=None,
-                   pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs):
-    """Create a spheroid triangulated mesh as per the size and orientation."""
-
-    if origin_location is None:
-        origin_location = (0.0, 0.0, 0.0)
-
-    mesh = trimesh.creation.icosphere(subdivisons=3)
-    scale = np.diag([equatorial_radius, equatorial_radius, polar_radius, 1.0])
-    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location) @ scale)
-
-
-def _cylinder_mesh(radius: float, length: float, origin_location: tuple[float]|None=None,
-                  pitch: float=0.0, roll: float=0.0, yaw: float=0.0, **kwargs):
-    """Create a cylinder triangulated mesh as per the size and orientation."""
-
-    if origin_location is None:
-        origin_location = (0.0, 0.0, 0.0)
-
-    mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
-    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location))
-
-
-def _transform(pitch: float, roll: float, yaw: float, o: tuple[float]):
-    """Calculate a rotation and origin shift matrix."""
-
-    rotation = R.from_euler('ZYX', (yaw, pitch-90, -roll), degrees=True)
-    transform = np.eye(4)
-    transform[:3, :3] = rotation.as_matrix()
-    transform[:3, 3] = o
-
-    return transform
