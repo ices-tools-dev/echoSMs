@@ -7,12 +7,12 @@ import requests
 # Force use of IPV4 as sometimes IPV6 get() calls are very slow to complete
 requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
-d = requests.get(DATASTORE_URI + '/v2/specimens?shape_type=outline')
+d = requests.get(DATASTORE_URI + 'v2/specimens?shape_type=outline')
 
 for spec in d.json():
-    print('Converting ' + spec['id'])
+    print('Converting ' + spec['specimen_name'])
 
-    dd = requests.get(api_URL + '/v2/specimen/' + spec['id'] + '/data')
+    dd = requests.get(DATASTORE_URI + 'v2/specimen/' + spec['uuid'] + '/data')
 
     specimen = dd.json()
 
@@ -22,17 +22,10 @@ for spec in d.json():
         try:
             surfaces.append(outline_to_surface(s))
         except ValueError as e:
-            print(f'{spec["id"]} - {s["anatomical_type"]}: {e}')
+            print(f'\t{s["anatomical_feature"]}: {e}')
             continue
 
     specimen['shapes'] = surfaces
     specimen['shape_type'] = 'surface'
 
     # plot_specimen(specimen)
-
-# %%
-# this one causes an invalid surface mesh
-spec_id = 'NOAA_KRM_280187_Corvina_20140331_003_Broadside'
-d = requests.get(api_URL + '/v2/specimen/' + spec_id + '/data')
-specimen = d.json()
-surface = outline_to_surface(specimen['shapes'][1])
