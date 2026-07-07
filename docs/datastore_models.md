@@ -20,15 +20,15 @@ m = echosms.KRMModel()
 
 # Get all the datastore organisms from the CLAY_HORNE dataset.
 # This returns the metadata about the specimens but no shape information.
-r = requests.get(baseURI + 'v2/specimens/?dataset_id=CLAY_HORNE')
+r = requests.get(baseURI + 'v2/specimens/?dataset_name=CLAY_HORNE')
 
 for o in r.json():
-    print(f'Processing specimen {o["specimen_id"]} from the {o["dataset_id"]} dataset')
+    print(f'Processing specimen {o["specimen_name"]} from the {o["dataset_name"]} dataset')
 
     # Get the organism data (including the shape) from the datastore
-    r = requests.get(baseURI + 'v2/specimen/' + o['id'] + '/data')
+    r = requests.get(baseURI + 'v2/specimen/' + o['uuid'] + '/data')
     if r.status_code != 200:
-        print(f'Request for data from specimen {o["id"]} failed - skipping')
+        print(f'Request for data from specimen {o["uuid"]} failed - skipping')
         continue
 
     # Get the model data out of the requests object
@@ -45,10 +45,10 @@ for o in r.json():
     ts = m.calculate_ts(p)
 
     # Add to a plot of all the TS results
-    plt.plot(p['f']*1e-3, ts, label=s['specimen_id'])
+    plt.plot(p['f']*1e-3, ts, label=s['specimen_name'])
 
 plt.legend(title='Specimens')
-plt.title('Dataset ' + s['dataset_id'])
+plt.title('Dataset ' + s['dataset_name'])
 plt.xlabel('Frequency [kHz]')
 plt.ylabel('TS [dB re 1 m$^2$]')
 plt.show()
@@ -67,7 +67,7 @@ from echosms import surface_to_outline, surface_from_stl, plot_specimen
 # Load a example STL file (you'll need to provide your own)
 shape = surface_from_stl('length_44_cm_body.stl',
                           dim_scale=1.0,
-                          anatomical_type='body',
+                          anatomical_feature='body',
                           boundary='pressure-release')
 
 # Flip the STL mesh around to fit the echoSMs coordinate system.
@@ -87,7 +87,7 @@ specimen = {'specimen_id': 'A',
             'specimen_condition': 'fresh',
             'length': 0.044,
             'length_units': 'm',
-            'length_type': 'total length',
+            'length_type': 'total length, linear',
             'shape_type': 'surface',
             'shapes': [shape]}
 
@@ -122,7 +122,7 @@ from echosms import outline_to_surface, plot_specimen
 
 # Get an outline shape from the echoSMs anatomical datastore
 baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
-r = requests.get(baseURI + 'v2/specimen/CLAY_HORNE_B/data')
+r = requests.get(baseURI + 'v2/specimens/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data')
 specimen = r.json()
 
 # Plot the outline shapes - there will be a body and swimbladder shape
