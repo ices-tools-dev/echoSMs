@@ -262,9 +262,9 @@ def plot_shape_geometric(shapes: list[dict], ax):
     """
 
     mesh = mesh_from_geometric(shapes)
-    ax.plot_trisurf(mesh.vertices[:,0],
-                    mesh.vertices[:,1],
-                    mesh.vertices[:,2],
+    ax.plot_trisurf(mesh.vertices[:,0]*1e3,
+                    mesh.vertices[:,1]*1e3,
+                    mesh.vertices[:,2]*1e3,
                     triangles=mesh.faces,
                     alpha=0.8, shade=True, cmap='viridis')
 
@@ -281,7 +281,7 @@ def plot_shape_geometric(shapes: list[dict], ax):
     # ax.view_init(elev=30, azim=30, vertical_axis='z')
 
     # Make each axes the same scale
-    scaling = (np.ptp(mesh.vertices[:,0]),
-               np.ptp(mesh.vertices[:,1]),
-               np.ptp(mesh.vertices[:,2]))
+    scaling = (np.ptp(mesh.vertices[:,0]*1e3),
+               np.ptp(mesh.vertices[:,1]*1e3),
+               np.ptp(mesh.vertices[:,2]*1e3))
     ax.set_box_aspect(scaling)
