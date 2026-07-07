@@ -1,6 +1,7 @@
 """Functions that convert between different echoSMs datastore shape representations."""
 
 from pathlib import Path
+from statistics import fmean
 import numpy as np
 import trimesh
 from trimesh.path.polygons import projected
@@ -103,13 +104,19 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     def _to_KRMshape(s: dict):
         """Convert echoSMs datstore shape into a KRMshape."""
         # Take mean of sound speed and density in case there is more than one value.
-        if 'spound_speed_compressional' in s:
-            c = sum(s['sound_speed_compressional'])/len(s['sound_speed_compressional'])
+        if 'sound_speed_compressional' in s:
+            if isinstance(s['sound_speed_compressional'], (int, float)):
+                c = fmean([s['sound_speed_compressional']])
+            else:
+                c = fmean(s['sound_speed_compressional'])
         else:
             c = np.nan
 
         if 'mass_density' in s:
-            rho = sum(s['mass_density'])/len(s['mass_density'])
+            if isinstance(s['mass_density'], (int, float)):
+                rho = fmean([s['mass_density']])
+            else:
+                rho = fmean(s['mass_density'])
         else:
             rho = np.nan
 
