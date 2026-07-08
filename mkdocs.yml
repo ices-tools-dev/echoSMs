@@ -74,6 +74,7 @@ plugins:
     - macros:
         module_name: docs/src/macros
         on_error_fail: true
+
     - mkdocstrings:
         handlers:
             python:

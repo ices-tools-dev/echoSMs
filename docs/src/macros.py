@@ -1,20 +1,28 @@
 import sys
+import importlib.util
 from pathlib import Path
 from json_schema_for_humans.generate import generate_from_filename
 from json_schema_for_humans.generation_configuration import GenerationConfiguration as gc
 
-# Ensure that this code has access to the checked out echoSMs repository.
-package_path = Path(__file__).parent.parent
-if package_path not in sys.path:
-    sys.path.append(package_path)
+# A convoluted method to import just the constants.py file from the echoSMs
+# source code directory. This is mainly so that when this code runs as a github
+# actions (when an installed echoSMs package is not available), it can get access
+# to a constant in the constants.py file without having to install all of the
+# echoSMs dependencies (as it would if it implicitly imported the __init__.py file in
+# the echoSMs module).
 
-from echosms import DATASTORE_URI  # noqa: E402
+file_path = Path(__file__).parent.parent.parent/'src'/'echosms'/'constants.py'
+module_name = file_path.stem
+spec = importlib.util.spec_from_file_location(module_name, file_path)
+module = importlib.util.module_from_spec(spec)
+sys.modules[module_name] = module
+spec.loader.exec_module(module)
 
 # This is a temporary solution until Zensical implements modules and/or there is a plugin
 # for including JSON schema into Zensical docs.
 
 def define_env(env):
-    env.variables['datastore_uri'] = DATASTORE_URI
+    env.variables['datastore_uri'] = module.DATASTORE_URI
 
     # Call this in a markdown document via:
     # {{ datastore_schema_as_html() }}
