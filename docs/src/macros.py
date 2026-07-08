@@ -1,7 +1,14 @@
+import sys
 from pathlib import Path
-from echosms import DATASTORE_URI
 from json_schema_for_humans.generate import generate_from_filename
 from json_schema_for_humans.generation_configuration import GenerationConfiguration as gc
+
+# Ensure that this code has access to the checked out echoSMs repository.
+package_path = Path(__file__).parent.parent
+if package_path not in sys.path:
+    sys.path.append(package_path)
+
+from echosms import DATASTORE_URI  # noqa: E402
 
 # This is a temporary solution until Zensical implements modules and/or there is a plugin
 # for including JSON schema into Zensical docs.
