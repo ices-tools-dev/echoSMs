@@ -1104,14 +1104,6 @@
                             "orientation_units": {
                                 "$ref": "#/$defs/orientation_units"
                             },
-                            "component_shape": {
-                                "description": "Geometric form of this component",
-                                "type": "string",
-                                "enum": [
-                                    "cylinder",
-                                    "spheroid"
-                                ]
-                            },
                             "components": {
                                 "description": "The simple geometries that make up this shape.",
                                 "type": "array",
