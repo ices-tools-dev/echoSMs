@@ -19,6 +19,4 @@ jobs:
           python -m pip install --group dev
       - name: Deploy docs to github
         run: mkdocs gh-deploy --force --clean --verbose
-        env:
-          PYTHONPATH: ${{ github.workspace }}/src
       
