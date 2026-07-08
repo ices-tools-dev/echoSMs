@@ -1034,24 +1034,14 @@
                     {
                         "title": "Geometric",
                         "type": "object",
-                        "description": "Represents a three-dimensional shape using the combination of one or more geometric shapes.",
+                        "description": "Represents a three-dimensional shape represented by the union of one or more geometric shapes.",
                         "required": [
                             "anatomical_feature",
-                            "geometric_form",
-                            "origin_location_units",
-                            "shape_units"
+                            "shape_units",
+                            "orientation_units"
                         ],
                         "unevaluatedProperties": false,
                         "dependentRequired": {
-                            "pitch": [
-                                "orientation_units"
-                            ],
-                            "roll": [
-                                "orientation_units"
-                            ],
-                            "yaw": [
-                                "orientation_units"
-                            ],
                             "mass_density": [
                                 "mass_density_units"
                             ],
@@ -1084,33 +1074,6 @@
                             "notes": {
                                 "$ref": "#/$defs/shape_notes"
                             },
-                            "geometric_form": {
-                                "description": "Geometric form of this shape",
-                                "type": "string",
-                                "enum": [
-                                    "cylinder",
-                                    "spheroid"
-                                ]
-                            },
-                            "shape_units": {
-                                "description": "The units of the shape dimensions.",
-                                "type": "string",
-                                "enum": [
-                                    "m"
-                                ]
-                            },
-                            "orientation_units": {
-                                "$ref": "#/$defs/orientation_units"
-                            },
-                            "pitch": {
-                                "$ref": "#/$defs/pitch"
-                            },
-                            "roll": {
-                                "$ref": "#/$defs/roll"
-                            },
-                            "yaw": {
-                                "$ref": "#/$defs/yaw"
-                            },
                             "mass_density": {
                                 "description": "Mass density of the shape.",
                                 "type": "number",
@@ -1135,55 +1098,126 @@
                             "sound_speed_shear_units": {
                                 "$ref": "#/$defs/sound_speed_units"
                             },
-                            "origin_location": {
-                                "$ref": "#/$defs/origin_location"
+                            "shape_units": {
+                                "$ref": "#/$defs/length_units"
                             },
-                            "origin_location_units": {
-                                "$ref": "#/$defs/origin_location_units"
-                            }
-                        },
-                        "oneOf": [
-                            {
-                                "title": "Cylinder",
-                                "description": "The centre of the cylinder for application of the origin, roll, pitch, and yaw is at radius=0 and halfway along the cylinder length. When pitch, roll, and yaw at zero, the cylinder lies along the x-axis of the echoSMs coordinate system.",
-                                "required": [
-                                    "radius",
-                                    "length"
-                                ],
-                                "properties": {
-                                    "radius": {
-                                        "description": "Radius of the cylinder.",
-                                        "type": "number",
-                                        "minimum": 0.0
-                                    },
-                                    "length": {
-                                        "description": "Length of the cylinder.",
-                                        "type": "number",
-                                        "minimum": 0.0
-                                    }
-                                }
+                            "orientation_units": {
+                                "$ref": "#/$defs/orientation_units"
                             },
-                            {
-                                "title": "Spheroid",
-                                "description": "A sphere, prolate spheroid, or oblate spheroid. The polar axis of the spheroid lies along the x-axis of the echoSMs coordinate system (prior to application of any tilt, roll, and yaw). An oblate spheroid occurs when the equatorial radius is greater than the polar radius and a prolate spheroid when the polar radius is greater than the equatorial radius. A sphere is generated when the polar and equatorial radii are the same.",
-                                "required": [
-                                    "equatorial_radius",
-                                    "polar_radius"
-                                ],
-                                "properties": {
-                                    "equatorial_radius": {
-                                        "description": "The equatorial radius of the spheroid. In the echoSMs coordinate system the equatorial radius is along the y- and z-axes.",
-                                        "type": "number",
-                                        "minimum": 0.0
-                                    },
-                                    "polar_radius": {
-                                        "description": "The polar radius of the spheroid. In the echoSMs coordinate system the polar axis is the x-axis.",
-                                        "type": "number",
-                                        "minimum": 0.0
-                                    }
+                            "component_shape": {
+                                "description": "Geometric form of this component",
+                                "type": "string",
+                                "enum": [
+                                    "cylinder",
+                                    "spheroid"
+                                ]
+                            },
+                            "components": {
+                                "description": "The simple geometries that make up this shape.",
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "type": "object",
+                                    "oneOf": [
+                                        {
+                                            "title": "Cylinder",
+                                            "type": "object",
+                                            "description": "An optionally bent cylinder. When pitch, roll, and yaw are zero, the cylinder lies along the x-axis of the echoSMs coordinate system.",
+                                            "required": [
+                                                "radius",
+                                                "length"
+                                            ],
+                                            "dependentRequired": {
+                                                "bend_radius": [
+                                                    "bend_origin"
+                                                ]
+                                            },
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "component_shape": {
+                                                    "const": "cylinder"
+                                                },
+                                                "radius": {
+                                                    "description": "Radius of the cylinder.",
+                                                    "type": "number",
+                                                    "minimum": 0.0
+                                                },
+                                                "length": {
+                                                    "description": "Length of the cylinder.",
+                                                    "type": "number",
+                                                    "minimum": 0.0
+                                                },
+                                                "bend_radius": {
+                                                    "description": "Bend radius of the cylinder, taken along the centreline of the cylinder. Bending occurs in the x-z plane. If this property is absent, the cylinder is not bent.",
+                                                    "type": "number",
+                                                    "minimum": 0.0
+                                                },
+                                                "bend_direction": {
+                                                    "description": "The direction in which the cylinder is bent.",
+                                                    "oneOf": [
+                                                        {
+                                                            "title": "Up",
+                                                            "const": "up",
+                                                            "description": "The ends of the cylinder will bend upwards (in the echoSMs coordinate system this in the negative z-direction)."
+                                                        },
+                                                        {
+                                                            "title": "Down",
+                                                            "const": "down",
+                                                            "description": "The ends of the cylinder will bend downwards (in the echoSMs coordinate system this in the positive z-direction)."
+                                                        }
+                                                    ]
+                                                },
+                                                "pitch": {
+                                                    "$ref": "#/$defs/pitch"
+                                                },
+                                                "roll": {
+                                                    "$ref": "#/$defs/roll"
+                                                },
+                                                "yaw": {
+                                                    "$ref": "#/$defs/yaw"
+                                                },
+                                                "centroid_location": {
+                                                    "$ref": "#/$defs/centroid_location"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "title": "Spheroid",
+                                            "description": "A sphere, prolate spheroid, or oblate spheroid. The polar axis of the spheroid lies along the x-axis of the echoSMs coordinate system (prior to application of any tilt, roll, and yaw). An oblate spheroid occurs when the equatorial radius is greater than the polar radius and a prolate spheroid when the polar radius is greater than the equatorial radius. A sphere is generated when the polar and equatorial radii are the same.",
+                                            "required": [
+                                                "equatorial_radius",
+                                                "polar_radius"
+                                            ],
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "component_shape": {
+                                                    "const": "spheroid"
+                                                },
+                                                "equatorial_radius": {
+                                                    "description": "The equatorial radius of the spheroid. In the echoSMs coordinate system the equatorial radius is along the y- and z-axes.",
+                                                    "type": "number",
+                                                    "minimum": 0.0
+                                                },
+                                                "polar_radius": {
+                                                    "description": "The polar radius of the spheroid. In the echoSMs coordinate system the polar axis is the x-axis.",
+                                                    "type": "number",
+                                                    "minimum": 0.0
+                                                },
+                                                "pitch": {
+                                                    "$ref": "#/$defs/pitch"
+                                                },
+                                                "yaw": {
+                                                    "$ref": "#/$defs/yaw"
+                                                },
+                                                "centroid_location": {
+                                                    "$ref": "#/$defs/centroid_location"
+                                                }
+                                            }
+                                        }
+                                    ]
                                 }
                             }
-                        ]
+                        }
                     }
                 ]
             }
@@ -1256,8 +1290,8 @@
             "maximum": 180.0,
             "default": 0.0
         },
-        "origin_location": {
-            "description": "The location of the shape's centre, ordered (x, y, z) as per the echoSMs coordinate system.",
+        "centroid_location": {
+            "description": "The location of the shape's centroid, ordered (x, y, z) as per the echoSMs coordinate system.",
             "minItems": 3,
             "maxItems": 3,
             "type": "array",
@@ -1269,13 +1303,6 @@
             "items": {
                 "type": "number"
             }
-        },
-        "origin_location_units": {
-            "description": "The units of the origin coordinates.",
-            "type": "string",
-            "enum": [
-                "m"
-            ]
         },
         "anatomical_feature": {
             "description": "Type of anatomical feature represented by this shape.",

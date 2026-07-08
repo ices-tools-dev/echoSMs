@@ -492,43 +492,58 @@ def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
     meshes = []
 
     for s in shapes:
-        match s['geometric_form']:
-            case 'spheroid':
-                meshes.append(_spheroid_mesh(**s))
-            case 'cylinder':
-                meshes.append(_cylinder_mesh(**s))
-            case _:
-                raise ValueError('geometric_form of {} is not yet supported'.format(s['geometric_form']))
+        for c in s['components']:
+            match c['component_shape']:
+                case 'spheroid':
+                    meshes.append(_spheroid_mesh(**c))
+                case 'cylinder':
+                    meshes.append(_cylinder_mesh(**c))
+                case _:
+                    raise ValueError('component_shape {} is not yet supported'\
+                        .format(c['component_shape']))
 
     return trimesh.boolean.union(meshes, check_volume=False)
 
 
 def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
-                   origin_location: tuple[float]|None=None,
+                   centroid_location: tuple[float]|None=None,
                    pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs):
     """Create a triangulated mesh of a spheroid as per the size and orientation."""
 
-    if origin_location is None:
-        origin_location = (0.0, 0.0, 0.0)
+    if centroid_location is None:
+        centroid_location = (0.0, 0.0, 0.0)
 
     mesh = trimesh.creation.icosphere(subdivisons=3)
     scale = np.diag([equatorial_radius, equatorial_radius, polar_radius, 1.0])
-    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location) @ scale)
+    return mesh.apply_transform(_transform(pitch, roll, yaw, centroid_location) @ scale)
 
 
-def _cylinder_mesh(radius: float, length: float, origin_location: tuple[float]|None=None,
-                  pitch: float=0.0, roll: float=0.0, yaw: float=0.0, **kwargs):
+def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]|None=None,
+                  pitch: float=0.0, roll: float=0.0, yaw: float=0.0,
+                  bend_radius: float|None=None,
+                  **kwargs):
     """Create a triangulated mesh of a cylinder as per the size and orientation."""
 
-    if origin_location is None:
-        origin_location = (0.0, 0.0, 0.0)
+    if centroid_location is None:
+        centroid_location = (0.0, 0.0, 0.0)
 
     mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
-    return mesh.apply_transform(_transform(pitch, roll, yaw, origin_location))
+
+    if bend_radius is not None:
+        v = mesh.vertices.copy()
+        # the x-coordinate maps directly to the curvature
+        t = v[:, 0] / bend_radius
+
+        v[:, 0] = bend_radius * (1 - np.cos(t)) + v[:, 0] * np.cos(t)
+        v[:, 2] = bend_radius * np.sin(t)
+        mesh.vertices = v
+        mesh.fix_normals()
+
+    return mesh.apply_transform(_transform(pitch, roll, yaw, centroid_location))
 
 
 def _transform(pitch: float, roll: float, yaw: float, o: tuple[float]):
-    """Calculate a rotation and origin shift matrix."""
+    """Calculate a rotation and translation matrix."""
 
     rotation = R.from_euler('ZYX', (yaw, pitch-90, -roll), degrees=True)
     transform = np.eye(4)
