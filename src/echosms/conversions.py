@@ -520,24 +520,63 @@ def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
 
 def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]|None=None,
                   pitch: float=0.0, roll: float=0.0, yaw: float=0.0,
-                  bend_radius: float|None=None,
+                  bend_radius: float|None=None, bend_direction: str = 'up',
                   **kwargs):
     """Create a triangulated mesh of a cylinder as per the size and orientation."""
 
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)
 
-    mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
-
     if bend_radius is not None:
-        v = mesh.vertices.copy()
-        # the x-coordinate maps directly to the curvature
-        t = v[:, 0] / bend_radius
+        # for the bending to work we need a cylinder mesh that has triangles along the cylinder. 
+        # The trimesh.creation.cylinder() function doesn't do that.
 
-        v[:, 0] = bend_radius * (1 - np.cos(t)) + v[:, 0] * np.cos(t)
-        v[:, 2] = bend_radius * np.sin(t)
-        mesh.vertices = v
+        radial_sections = 32
+        vertical_sections = 32
+
+        y_coords = np.linspace(-length/2, length/2, vertical_sections+1)
+            
+        # Profile points
+        profile = np.column_stack((np.full_like(y_coords, radius), y_coords))
+        
+        # Revolve the profile to create the open cylinder tube
+        cylinder_tube = trimesh.creation.revolve(profile, sections=radial_sections)
+        
+        # Create the ends of the cylinder
+        top = trimesh.creation.annulus(r_min=0, r_max=radius, height=0, 
+                                        sections=radial_sections).invert()
+        bottom = trimesh.creation.annulus(r_min=0, r_max=radius, height=0, sections=radial_sections)
+        
+        # Move caps to the top and bottom positions
+        top.apply_translation([0, 0, length/2])
+        bottom.apply_translation([0, 0, -length/2])
+
+        # Merge the tube and caps into a single mesh
+        mesh = trimesh.util.concatenate([cylinder_tube, top, bottom])
+        mesh.merge_vertices()
+
+        # rotate the cylinder to match the echoSMs coordinate system with the cylinder lying along
+        # the x-axis
+        rot = trimesh.transformations.rotation_matrix(angle=np.radians(90),
+                                                    direction=[0, 1, 0],
+                                                    point=[0, 0, 0])
+        mesh = mesh.apply_transform(rot)
         mesh.fix_normals()
+        # TODO - the mesh is not watertight
+
+        # Bend the cylinder
+        # TODO - this code doesn't quite work... 
+        # TODO - incorporate bend_direction
+        # TODO - vectorise this!!!!
+        for vertex in mesh.vertices:
+            x, y, z = vertex
+            # Calculate angle proportional to height (z)
+            theta = z / bend_radius
+            # Map the straight x-axis along a circular arc
+            vertex[0] = (bend_radius + x) * np.sin(theta) - bend_radius
+            vertex[2] = (bend_radius + x) * (1 - np.cos(theta))
+    else:
+        mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32) 
 
     return mesh.apply_transform(_transform(pitch, roll, yaw, centroid_location))
 
