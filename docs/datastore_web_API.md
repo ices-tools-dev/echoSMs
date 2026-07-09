@@ -10,7 +10,7 @@ The anatomical data store API is implemented as a REST web API with calls to:
 1. Obtain specimen information, definitions, and parameters.
 1. Access the full dataset associated with a specimen (this includes the raw data, processing scripts, intermediate data, etc).
 
-A testing server is available with some sample data, along with the API [documentation]({{datastore_uri}}docs). Example Python code that demonstrates use of the API is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/src/echosms/datastore/api_examples.py). That code also includes an example of how to download all specimen data to a local file for offline access.
+A testing server is available with some sample data, along with the API [documentation]({{ds_uri("docs")}}). Example Python code that demonstrates use of the API is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/src/echosms/datastore/api_examples.py). That code also includes an example of how to download all specimen data to a local file for offline access.
 
 The API server URI is available as an echoSMs constant:
 ```python
@@ -25,16 +25,16 @@ API endpoints to modify the data store have not yet been created as the data sto
 
 Some example API calls are:
 
-- A list of all [specimens]({{datastore_uri}}v2/specimens)
-- A list of all [specimens]({{datastore_uri}}v2/specimens?dataset_name=CLAY_HORNE) in the CLAY_HORNE dataset
-- A list of all specimens with a shape type of [outline]({{datastore_uri}}v2/specimens?shape_type=outline)
-- A list of all specimens with genus of [Champsocephalus]({{datastore_uri}}v2/specimens?genus=Champsocephalus)
-- All data from the `B` specimen of the `CLAY_HORNE` [dataset]({{datastore_uri}}v2/specimen/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data) specimen and an [image]({{datastore_uri}}v2/specimen/d9266b95-f5fc-4c38-8d5f-5efc19dca841/image) of that specimen
-- A specimen with a shape type of [voxels]({{datastore_uri}}v2/specimen/bf6cffd4-c796-48da-bc38-28f5af215356/image) (and the [metadata]({{datastore_uri}}v2/specimens?uuid=bf6cffd4-c796-48da-bc38-28f5af215356) about that specimen)
-- A specimen with a shape type of [surface]({{datastore_uri}}v2/specimen/977a6387-cbc7-4205-9bb3-4633f5253b62/image) (and the [metadata]({{datastore_uri}}v2/specimens?uuid=977a6387-cbc7-4205-9bb3-4633f5253b62))
+- A list of all [specimens]({{ds_uri("v2/specimens")}})
+- A list of all [specimens]({{ds_uri("v2/specimens?dataset_name=CLAY_HORNE")}}) in the CLAY_HORNE dataset
+- A list of all specimens with a shape type of [outline]({{ds_uri("v2/specimens?shape_type=outline")}})
+- A list of all specimens with genus of [Champsocephalus]({{ds_uri("v2/specimens?genus=Champsocephalus")}})
+- All data from the `B` specimen of the `CLAY_HORNE` [dataset]({{ds_uri("v2/specimen/d9266b95-f5fc-4c38-8d5f-5efc19dca841/data")}}) specimen and an [image]({{ds_uri("v2/specimen/d9266b95-f5fc-4c38-8d5f-5efc19dca841/image")}}) of that specimen
+- A specimen with a shape type of [voxels]({{ds_uri("v2/specimen/bf6cffd4-c796-48da-bc38-28f5af215356/image")}}) (and the [metadata]({{ds_uri("v2/specimens?uuid=bf6cffd4-c796-48da-bc38-28f5af215356")}}) about that specimen)
+- A specimen with a shape type of [surface]({{ds_uri("v2/specimen/977a6387-cbc7-4205-9bb3-4633f5253b62/image")}}) (and the [metadata]({{ds_uri("v2/specimens?uuid=977a6387-cbc7-4205-9bb3-4633f5253b62")}}))
 
 The API call to get the full raw data is not yet implemented.
 
 ## Use with spreadsheets
 
-Microsoft Excel and Google Sheets can load data directly from the datastore API. For Excel navigate to the `Data` tab and choose `Get data->From Other Sources->From Web`, enter the specimens endpoint (`{{datastore_uri}}v2/specimens`) and then use the Power Query Editor to select columns before loading into Excel. For Google Sheets use one of the many API/Data Connector add-ons (e.g. `API Connector`).
+Microsoft Excel and Google Sheets can load data directly from the datastore API. For Excel navigate to the `Data` tab and choose `Get data->From Other Sources->From Web`, enter the specimens endpoint (`{{ds_uri("v2/specimens")}}`) and then use the Power Query Editor to select columns before loading into Excel. For Google Sheets use one of the many API/Data Connector add-ons (e.g. `API Connector`).

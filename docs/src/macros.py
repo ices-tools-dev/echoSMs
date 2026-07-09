@@ -24,6 +24,10 @@ spec.loader.exec_module(module)
 def define_env(env):
     env.variables['datastore_uri'] = module.DATASTORE_URI
 
+    @env.macro
+    def ds_uri(p):
+        return module.DATASTORE_URI + p
+
     # Call this in a markdown document via:
     # {{ datastore_schema_as_html() }}
     @env.macro
