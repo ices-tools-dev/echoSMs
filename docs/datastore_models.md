@@ -23,7 +23,7 @@ for o in r.json():
     print(f'Processing specimen {o["specimen_name"]} from the {o["dataset_name"]} dataset')
 
     # Get the organism data (including the shape) from the datastore
-    r = requests.get(baseURI + 'v2/specimen/' + o['uuid'] + '/data')
+    r = requests.get(echosms.DATASTORE_URI + 'v2/specimen/' + o['uuid'] + '/data')
     if r.status_code != 200:
         print(f'Request for data from specimen {o["uuid"]} failed - skipping')
         continue
