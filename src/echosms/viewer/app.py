@@ -8,7 +8,7 @@ from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk
 )
 from . import geometry, api
-from ..utils_datastore import outline_from_krm, outline_from_dwba
+from ..conversions import outline_from_krm, outline_from_dwba
 
 # TOML handling
 if sys.version_info >= (3, 11):
