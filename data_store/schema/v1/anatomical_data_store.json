@@ -1121,7 +1121,7 @@
                                             ],
                                             "dependentRequired": {
                                                 "bend_radius": [
-                                                    "bend_origin"
+                                                    "bend_direction"
                                                 ]
                                             },
                                             "additionalProperties": false,

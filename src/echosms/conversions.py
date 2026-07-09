@@ -520,7 +520,7 @@ def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
 
 def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]|None=None,
                   pitch: float=0.0, roll: float=0.0, yaw: float=0.0,
-                  bend_radius: float|None=None, bend_direction: str = 'up',
+                  bend_radius: float|None=None, bend_direction: str = 'down',
                   **kwargs):
     """Create a triangulated mesh of a cylinder as per the size and orientation."""
 
@@ -528,55 +528,50 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
         centroid_location = (0.0, 0.0, 0.0)
 
     if bend_radius is not None:
-        # for the bending to work we need a cylinder mesh that has triangles along the cylinder. 
-        # The trimesh.creation.cylinder() function doesn't do that.
+        # The trimesh.creation.cylinder() function doesn't do bent cylinders, so revolve a circular 
+        # cross-section around an axis to get one.
 
-        radial_sections = 32
-        vertical_sections = 32
+        num_radial_sections = 32
+        num_profile_points = 32
 
-        y_coords = np.linspace(-length/2, length/2, vertical_sections+1)
-            
-        # Profile points
-        profile = np.column_stack((np.full_like(y_coords, radius), y_coords))
+        # A 2D circular cross-section profile
+        angles = np.linspace(0, 2 * np.pi, num_profile_points, endpoint=True)
+        x_coords = radius * np.cos(angles) + bend_radius
+        y_coords = radius * np.sin(angles)
+        cross_section = np.column_stack((x_coords, y_coords))
         
-        # Revolve the profile to create the open cylinder tube
-        cylinder_tube = trimesh.creation.revolve(profile, sections=radial_sections)
-        
-        # Create the ends of the cylinder
-        top = trimesh.creation.annulus(r_min=0, r_max=radius, height=0, 
-                                        sections=radial_sections).invert()
-        bottom = trimesh.creation.annulus(r_min=0, r_max=radius, height=0, sections=radial_sections)
-        
-        # Move caps to the top and bottom positions
-        top.apply_translation([0, 0, length/2])
-        bottom.apply_translation([0, 0, -length/2])
+        # Revolve the cross section around the y-axis (that's what trimesh does) to create a 3D mesh
+        arc_angle = length / bend_radius  # [radians]
+        mesh = trimesh.creation.revolve(linestring=cross_section, sections=num_radial_sections,
+                                        angle=arc_angle, cap=True)
 
-        # Merge the tube and caps into a single mesh
-        mesh = trimesh.util.concatenate([cylinder_tube, top, bottom])
-        mesh.merge_vertices()
+        # Now rotate and translate to fit the echoSMs coordinate system convention
 
-        # rotate the cylinder to match the echoSMs coordinate system with the cylinder lying along
-        # the x-axis
-        rot = trimesh.transformations.rotation_matrix(angle=np.radians(90),
-                                                    direction=[0, 1, 0],
-                                                    point=[0, 0, 0])
-        mesh = mesh.apply_transform(rot)
-        mesh.fix_normals()
-        # TODO - the mesh is not watertight
+        # Rotation to center over the z-axis
+        rot1 = trimesh.transformations.rotation_matrix(-arc_angle/2, [0, 0, 1])
 
-        # Bend the cylinder
-        # TODO - this code doesn't quite work... 
-        # TODO - incorporate bend_direction
-        # TODO - vectorise this!!!!
-        for vertex in mesh.vertices:
-            x, y, z = vertex
-            # Calculate angle proportional to height (z)
-            theta = z / bend_radius
-            # Map the straight x-axis along a circular arc
-            vertex[0] = (bend_radius + x) * np.sin(theta) - bend_radius
-            vertex[2] = (bend_radius + x) * (1 - np.cos(theta))
+        # Translation to put the centre on the origin
+        shift = trimesh.transformations.translation_matrix([-bend_radius, 0, 0])
+
+        # Rotation so that the cylinder lies in the x-z plane (as per the echoSMs coordinate
+        # system) and bends upor down
+        rot2 = trimesh.transformations.rotation_matrix(angle=np.radians(90), direction=[0, 0, 1])
+
+        if bend_direction == 'up':
+            angle = np.pi/2
+        elif bend_direction == 'down':
+            angle = -np.pi/2
+        else:
+            raise ValueError('Bend direction of {} is not supported'.format(bend_direction))
+        rot3 = trimesh.transformations.rotation_matrix(angle=angle, direction=[1, 0, 0])
+
+        # Prepare for the pitch-90 rotation that is done at the end of this function
+        rot4 = trimesh.transformations.rotation_matrix(angle=np.pi/2, direction=[0, 1, 0])
+
+        # Do the rotations and shift
+        mesh = mesh.apply_transform(rot4@rot3@rot2@shift@rot1)
     else:
-        mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32) 
+        mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
 
     return mesh.apply_transform(_transform(pitch, roll, yaw, centroid_location))
 

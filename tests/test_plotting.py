@@ -1,7 +1,9 @@
 """Test plotting of datastore shapes."""
 
 import pytest
+import copy
 from echosms import plot_specimen
+import numpy as np
 
 @pytest.mark.skip(reason="Not implemented yet")
 def plot_geometric():
@@ -62,11 +64,25 @@ def plot_geometric():
                 {
                   "component_shape": "cylinder",
                   "radius": 0.05,
-                  "length": 0.25
+                  "length": 0.25,
+                  "bend_radius": 0.5,
+                  "bend_direction": "down"
                 }
               ]
             }
           ]
         }
 
-    plot_specimen(s)
+    # Locate the spheroids at the ends of the bent cylinder
+    r = s['shapes'][0]['components'][2]['bend_radius']
+    alpha = s['shapes'][0]['components'][2]['length'] / r / 2
+    x1 = r * np.sin(alpha)
+    x2 = -r * np.sin(alpha)
+    z = r - r * np.cos(alpha)
+
+    ss = copy.deepcopy(s)
+
+    ss['shapes'][0]['components'][0]['centroid_location'] = [x1, 0, z]
+    ss['shapes'][0]['components'][1]['centroid_location'] = [x2, 0, z]
+
+    plot_specimen(ss)
