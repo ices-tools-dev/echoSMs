@@ -534,7 +534,7 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
         num_radial_sections = 32
         num_profile_points = 32
 
-        # A 2D circular cross-section profile
+        # A 2D circular cross-section
         angles = np.linspace(0, 2 * np.pi, num_profile_points, endpoint=True)
         x_coords = radius * np.cos(angles) + bend_radius
         y_coords = radius * np.sin(angles)
@@ -554,7 +554,7 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
         shift = trimesh.transformations.translation_matrix([-bend_radius, 0, 0])
 
         # Rotation so that the cylinder lies in the x-z plane (as per the echoSMs coordinate
-        # system) and bends upor down
+        # system) and bends up or down
         rot2 = trimesh.transformations.rotation_matrix(angle=np.radians(90), direction=[0, 0, 1])
 
         if bend_direction == 'up':
@@ -563,13 +563,14 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
             angle = -np.pi/2
         else:
             raise ValueError('Bend direction of {} is not supported'.format(bend_direction))
+
         rot3 = trimesh.transformations.rotation_matrix(angle=angle, direction=[1, 0, 0])
 
         # Prepare for the pitch-90 rotation that is done at the end of this function
         rot4 = trimesh.transformations.rotation_matrix(angle=np.pi/2, direction=[0, 1, 0])
 
         # Do the rotations and shift
-        mesh = mesh.apply_transform(rot4@rot3@rot2@shift@rot1)
+        mesh = mesh.apply_transform(rot4 @ rot3 @ rot2 @ shift @ rot1)
     else:
         mesh = trimesh.creation.cylinder(radius=radius, height=length, sections=32)
 
