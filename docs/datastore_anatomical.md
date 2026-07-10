@@ -307,4 +307,4 @@ The `categorised voxels` format uses a single 3D matrix of material property cat
 
 ##### Geometric
 
-The geometric format uses the union of simple shapes (cylinders and spheroids to date) to create a specimen shape. A pitch, roll, yaw and translation can be applied to each shape component and the cylinder shape can be bent to a radius. The echoSMs [`mesh_from_geometric`](api_datastore.md#echosms.conversions.mesh_from_geometric) function can be used to convert the geometric shape into a triangulated surface mesh.
+The geometric format uses the union of simple shapes (cylinders and spheroids to date) to create a specimen shape. A pitch, roll, yaw and translation can be applied to each shape component and the cylinder shape can be bent to a constant radius. The echoSMs [`mesh_from_geometric`](api_datastore.md#echosms.conversions.mesh_from_geometric) function can be used to convert the geometric shape into a triangulated surface mesh.

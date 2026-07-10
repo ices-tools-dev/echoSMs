@@ -1114,7 +1114,7 @@
                                         {
                                             "title": "Cylinder",
                                             "type": "object",
-                                            "description": "An optionally bent cylinder. When pitch, roll, and yaw are zero, the cylinder lies along the x-axis of the echoSMs coordinate system.",
+                                            "description": "An optionally uniformly bent cylinder. When pitch, roll, and yaw are zero, the cylinder lies along the x-axis of the echoSMs coordinate system.",
                                             "required": [
                                                 "radius",
                                                 "length"
