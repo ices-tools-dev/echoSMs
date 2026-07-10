@@ -49,5 +49,7 @@ def define_env(env):
                 show_breadcrumbs=False,  # just clutters the 'js' template output
                 )
             )
-
-        return f'<iframe src="../{html_filename}" width=100% height=1000px style="border-width: 0"></iframe>'
+        # The large height is enough to show all of the schema when all entries are expanded
+        # Having a height larger than the expanded contents means that a separate scrollbar
+        # is not generated for the iframe (which is confusing)
+        return f'<iframe src="../{html_filename}" width=100% height=30000px style="border-width: 0"></iframe>'

@@ -2,6 +2,17 @@
 hide:
     - toc
 ---
+<!-- Make the window wider so that the schema text displays well -->
+<style>
+  .md-main__inner.md-grid, 
+  .md-grid { 
+    max-width: 100% !important; 
+  }
+  .md-content {
+    max-width: none !important;
+  }
+</style>
+
 # Schema browser
 
 ???+ warning
