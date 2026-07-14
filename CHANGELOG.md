@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.23.1] - 2026-07-15
+
+### Added
+
 - Added this changelog
 
 ### Changed
@@ -16,10 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix typos and grammar in documentation
 - Give the datastore schema browser more window width in the documentation
 - All documentation gets the datastore URL from one source now (it is no longer hard-coded in the documentation)
+- Improved axes labels for 3D plots of datastore surface shapes
 
 ### Deprecated
 
-### Remvoed
+### Removed
 
 ### Fixed
 
@@ -92,7 +107,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - More user-visible code has type annotations
 - Minor rearrangement of API documentation
 
-[unreleased]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.0...HEAD
+[unreleased]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.1...HEAD
+[0.23.1]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.0...v0.23.1
 [0.23.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.22.0...v0.23.0
 [0.22.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.21.1...v0.22.0
 [0.21.1]: https://github.com/ices-tools-dev/echoSMs/compare/v0.21.0...v0.21.1
