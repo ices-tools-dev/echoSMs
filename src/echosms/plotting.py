@@ -58,7 +58,7 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
         case _:
             # valid specimen data structures will never get here
             raise ValueError('Specimen shape_type of "{}" is not yet supported'.format(specimen['shape_type']))
-        
+
 
     if savefile:
         plt.savefig(savefile, format='png', dpi=dpi, bbox_inches='tight')
@@ -262,12 +262,19 @@ def _plot_triangulated_surface(ax, x, y, z, facets, color='C1'):
     """Plot the triangulated surface on the Matplotlib axes."""
     ax.plot_trisurf(x, y, z, triangles=facets, alpha=0.6, color=color)
     ax.view_init(elev=210, azim=-60, roll=0)
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('z')
 
     ax.set_aspect('equal')
     ax.xaxis.set_inverted(True)
     ax.yaxis.set_inverted(True)
 
+    ax.set_xlabel('x', fontsize=6)
+    ax.set_ylabel('y', fontsize=6)
+    ax.set_zlabel('z', fontsize=6)
 
+    ax.tick_params(axis='x', labelsize=6, pad=-25)
+    ax.tick_params(axis='y', labelsize=6, pad=-5)
+    ax.tick_params(axis='z', labelsize=6, pad=-15)
+
+    ax.xaxis.labelpad = -26
+    ax.yaxis.labelpad = -10
+    ax.zaxis.labelpad = -35
