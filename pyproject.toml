@@ -7,7 +7,8 @@ packages = ["src/echosms"]
 
 [project]
 name = 'echosms'
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = ["LICENSE",]
 keywords = ["acoustic", "backscatter", "model"]
 authors = [
   { name="Mike Jech"},
@@ -40,9 +41,9 @@ dependencies = [
 	"manifold3d",
 ]
 classifiers = [
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 4 - Beta',
+    'Environment :: Console',
     'Intended Audience :: Science/Research',
-    'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.10',
@@ -53,6 +54,7 @@ classifiers = [
     'Topic :: Scientific/Engineering',
     'Topic :: Scientific/Engineering :: Physics',
     'Topic :: Scientific/Engineering :: Oceanography',
+    'Natural Language :: English',
 ]
 dynamic = [ 'version']
 
