@@ -50,7 +50,7 @@
                 {
                     "title": "no license",
                     "const": "no license",
-                    "description": "These data have no license. Use this option as a last resort as it can create uncertainty about how the data can be used. May be appropriate for historical data where the data creater or owner cannot provide a license (although CC0 could be used in that case)."
+                    "description": "These data have no license. Use this option as a last resort as it can create uncertainty about how the data can be used. May be appropriate for historical data where the data creator or owner cannot provide a license (although CC0 could be used in that case)."
                 },
                 {
                     "title": "CC0",

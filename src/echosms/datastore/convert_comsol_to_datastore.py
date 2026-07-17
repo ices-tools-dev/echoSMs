@@ -51,7 +51,7 @@ for comsol_data in raw_dir.glob('*.txt'):
             for j in range(len(ypos)):
                 rho[:,j,k] = np.fromstring(f.readline(), sep=' ')
 
-        # Dont' bother reading in the HU values
+        # Don't bother reading in the HU values
 
         # Rotate to fit the echoSMs coordinate system
         rho_r = np.rot90(rho, k=1, axes=(1, 2))
