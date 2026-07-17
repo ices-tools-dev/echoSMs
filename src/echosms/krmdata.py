@@ -137,7 +137,7 @@ class KRMdata():
             # opposite to the echoSMs coordinate convetion, so fix the
             # x-coordinates here when ingesting the data. And set the posterior end
             # of the organism to have x=0
-            m = max(s['x_b'])
+
             body = KRMshape(bt.fluid_filled, -np.array(s['x_b']), np.array(s['w_b']),
                             np.array(s['z_bU']), np.array(s['z_bL']),
                             s['body_c'], s['body_rho'])

@@ -5,7 +5,7 @@ import numpy as np
 from scipy import ndimage
 from scipy.spatial.transform import Rotation as R
 from .scattermodelbase import ScatterModelBase
-from .utils import as_dict, boundary_type as bt
+from .utils import boundary_type as bt
 
 
 class PTDWBAModel(ScatterModelBase):
@@ -26,7 +26,8 @@ class PTDWBAModel(ScatterModelBase):
 
         See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for calling details.
         """
-        p = as_dict(params)
+        # TODO - complete this function...
+        # p = as_dict(params)
 
     def calculate_ts_single(self, volume: np.ndarray[int], theta: float, phi: float,
                             f: float, voxel_size: Iterable[float],

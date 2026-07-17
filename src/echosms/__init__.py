@@ -1,4 +1,5 @@
 """Setup the public API for echoSMs."""
+# ruff: noqa: F401
 
 from .constants import DATASTORE_URI
 from .utils import wavenumber, wavelength, Neumann, h1, prolate_swf, spherical_jnpp

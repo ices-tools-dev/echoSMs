@@ -211,7 +211,7 @@ for name in model_names:
     m |= {'theta': 90, 'phi': 0, 'f': f, 'mesh': mesh}
 
     mod = BEMModel()
-    print(f'Calculating {rm.specification(name)['shape']} shape')
+    print(f'Calculating {rm.specification(name)["shape"]} shape')
     ts_bem = mod.calculate_ts(m, progress=True)
 
 

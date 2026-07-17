@@ -23,7 +23,7 @@ repos:
   #     - id: codespell
   #       args: ["-L", "soop,anc,indx,weill", "--skip=*.ipynb,*.pdf,*.csv", "-w", "docs", "src"]
 
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   rev: v0.15.22
-  #   hooks:
-  #     - id: ruff
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.22
+    hooks:
+      - id: ruff
