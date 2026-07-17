@@ -94,7 +94,7 @@ def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
                           source: str = '', note: str = ''):
     """Create a DWBAorganism instance from shape data.
 
-    Converts a centreline and radius definiton of the DWBA shape into
+    Converts a centreline and radius definition of the DWBA shape into
     that required by the echoSMs implementation of the DWBA (centreline, tangential, and
     radii vectors).
 
@@ -188,7 +188,7 @@ class DWBAorganism():
     g :
         The density contrast between medium and organism (organism divied by medium).
     h :
-        The sound speed contrast betwwen medium and organism (organism divied by medium).
+        The sound speed contrast between medium and organism (organism divied by medium).
     source :
         A link to the source of the data.
     note :

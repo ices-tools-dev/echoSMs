@@ -115,8 +115,8 @@ This table is a modified version of that in [Jech et al. (2015)](https://doi.org
 |BEM|Quasi-exact / Numerical|All shapes, all frequencies, all angles|High computational demands (slightly better with Fast-Multipole BEM)|Francis et al. (1998); Francis and Foote (2003);  Okumura et al. (2003)|
 |FEM|Quasi-exact / Numerical|All shapes, all frequencies, all angles|High computational demands|Zampolli et al. (2007); Macaulay et al. (2013)|
 |FMM|Exact / Analytical|If Axisymmetric - all shapes, all frequencies, all angles|Non-axisymmetric, convergence issues at high aspect ratios|Reeder and Stanton (2004)|
-|KA|Approximate|High frequencies only, near normal incidence, homogenous material|Off-normal incidence, low frequencies, no circumferential waves|Macaulay et al. (2013)|
-|KRM|Approximate|All frequencies, homogenous material; at high frequencies: high aspect ratios; at low frequencies: near-normal incidence|Off-normal incidence, no circumferential waves, no longitudinal modes of vibration near resonance|Horne et al. (2000); Macaulay et al. (2013); Gastauer et al. (2016)|
+|KA|Approximate|High frequencies only, near normal incidence, homogeneous material|Off-normal incidence, low frequencies, no circumferential waves|Macaulay et al. (2013)|
+|KRM|Approximate|All frequencies, homogeneous material; at high frequencies: high aspect ratios; at low frequencies: near-normal incidence|Off-normal incidence, no circumferential waves, no longitudinal modes of vibration near resonance|Horne et al. (2000); Macaulay et al. (2013); Gastauer et al. (2016)|
 |Modal series based DCM|Approximate|Near normal incidence; all frequencies; circular cross-sections; all material|Off-normal incidence, low aspect ratios, irregular shapes with high local slopes|Gorska and Ona (2003); Stanton (1989)|
 |DWBA (incl PT-DWBA,SDWBA)|Approximate|Weak scatterers (g and h < 1.005 i.e. < 5%), all shapes, all angles|Strong scatterers (g and h > 5%)|Chu and Ye (1999); Demer et al. (2003); Calise and Skaret (2011); Gastauer et al. (2019)|
 

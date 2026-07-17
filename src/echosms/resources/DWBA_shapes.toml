@@ -11,7 +11,7 @@
 # negative x direction).
 
 
-# This is commented out becasue the radius values (a) are sometimes negative. The source paper
+# This is commented out because the radius values (a) are sometimes negative. The source paper
 # says that the shape is a prolate spheroid, but the shape in the data obtained from the 
 # SDWBA.jl github repository has these negative values which makes the shape undetermined (or
 # if the absolute value is taken, there are little 'tabs' and send end of the shape.

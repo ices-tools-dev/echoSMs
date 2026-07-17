@@ -81,4 +81,4 @@ API calls can be tested in a web browser. For example:
 - All data for a specimen with a specific `uuid`: <https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/data>
 - An image of the shape for a specific specimen: <https://echosms-data-store-app-ogogm.ondigitalocean.app/v2/specimen/48d60557-f9d5-4bb3-a977-00d8db818a56/image>
 
-The `notebooks/gettting shapes.ipynb` notebook shows more details on using the web API.
+The `notebooks/getting shapes.ipynb` notebook shows more details on using the web API.

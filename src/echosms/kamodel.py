@@ -91,7 +91,7 @@ class KAModel(ScatterModelBase):
                              f'a model type of "{boundary_type}".')
 
         # This model keeps the organism fixed and varies the incident wave vector. So need
-        # to convert the theta and phi echoSMs coordinate sytem Tait-Bryan angles
+        # to convert the theta and phi echoSMs coordinate system Tait-Bryan angles
         # into an (x,y,z) vector.
 
         # Acoustic wave incident vector and its' norm

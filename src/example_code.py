@@ -24,7 +24,7 @@ from echosms import create_dwba_spheroid, create_dwba_cylinder
 from echosms import KRMdata
 from echosms import DWBAdata
 
-# Load the reference model defintiions
+# Load the reference model definitions
 rm = ReferenceModels()
 print('Available reference models are:\n')
 print('\n'.join(rm.names()))
@@ -477,7 +477,7 @@ print(f'Running {np.prod(params_xa.shape)} models!')
 # are a lot of models to run.
 mss.calculate_ts(params_xa, multiprocess=True, progress=False)
 
-# Xarray selections and dimenions names can then be used
+# Xarray selections and dimensions names can then be used
 plt.plot(params_xa.f, params_xa.sel(theta=90, medium_rho=1000, medium_c=1600))
 
 # %% ###############################################################################################

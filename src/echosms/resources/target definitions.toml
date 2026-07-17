@@ -67,7 +67,7 @@ example3_medium_sound_speed_dist = {type="arange", start=1490, stop=1500, step=1
 #
 # The source item in each section should be used to identify the source of the model configuration.
 # It is expected that most model configurations will come from existing reports and/or papers, so use
-# a DOI or URL if avaiable, otherwise use a sufficiently detailed description of the source.
+# a DOI or URL if available, otherwise use a sufficiently detailed description of the source.
 
 [[target]]
 name = "fixed rigid sphere"

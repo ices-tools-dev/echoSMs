@@ -78,7 +78,7 @@ class KRMModel(ScatterModelBase):
             Frequency to calculate the scattering at [Hz].
         organism :
             The shapes that make up the model. This is typically a shape for the body and zero or
-            more enclosed shapes that repesent internal parts of the organism.
+            more enclosed shapes that represent internal parts of the organism.
         high_ka_medium :
             If set to `body` the sound speed and density of the organism body is used for
             the fluid surrounding any inclusions. If set to anything else (e.g., `water`)

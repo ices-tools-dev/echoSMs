@@ -69,7 +69,7 @@ def main():
                                         ' against the schema.',
                                      epilog='The values of some attributes are populated or modified by the '\
                                             'datastore and temporary substitutes generated '\
-                                            'when neccessary.')
+                                            'when necessary.')
 
     parser.add_argument('toml_file', help='echoSMs TOML file(s) (can include wildcards; '\
                         'use ** to search in subdirectories)',

@@ -14,7 +14,7 @@ import warnings
 class DWBAModel(ScatterModelBase):
     """Distorted-wave Born approximation (DWBA) scattering models.
 
-    This class calculates acoustic scatter from piecewise cylindical shapes with weakly
+    This class calculates acoustic scatter from piecewise cylindrical shapes with weakly
     scattering material contrasts. It can also add a stochastic component to provide the
     stochastic DWBA (SDWBA) model.
     """
@@ -87,11 +87,11 @@ class DWBAModel(ScatterModelBase):
         a :
             The radii of the discs that define the target shape [m].
         rv_pos :
-            An interable of vectors of the 3D positions of the centre of each disc that
+            An iterable of vectors of the 3D positions of the centre of each disc that
             defines the target shape. Each vector should have three values corresponding to
             the _x_, _y_, and _z_ coordinates [m] of the disc centre.
         rv_tan :
-            An interable of unit vectors of the tangent to the target body axis at
+            An iterable of unit vectors of the tangent to the target body axis at
             the points given in `rv_pos`. Each vector should have three values corresponding to
             the _x_, _y_, and _z_ components of the tangent vector.
         phase_sd :

@@ -58,7 +58,7 @@ class HPModel(ScatterModelBase):
             Density of the material inside the target [kg/m³]. Not required when
             `boundary_type` is `fixed_rigid`.
         a :
-            Radius of the sphere, length of semi-minor axis of the prolate spheriod, or cylindrical
+            Radius of the sphere, length of semi-minor axis of the prolate spheroid, or cylindrical
             radius of the straight or bent cylinder [m].
         f :
             Frequency to calculate the scattering at [Hz].

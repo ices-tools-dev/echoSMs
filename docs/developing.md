@@ -18,7 +18,7 @@ We want echoSMs to be a software package that is easy to maintain, understand, u
 - good example code to help learn how to use echoSMs
 - scattering model code that closely follows the terminology and structure of the papers that the models are implemented from
 - a preference for clear code over computational efficiency
-- minimial dependencies on other software (e.g., other Python packages)
+- minimal dependencies on other software (e.g., other Python packages)
 
 ### Style
 

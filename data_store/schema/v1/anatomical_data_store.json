@@ -1034,7 +1034,7 @@
                     {
                         "title": "Geometric",
                         "type": "object",
-                        "description": "Represents a three-dimensional shape fromed by the union of one or more geometric shapes.",
+                        "description": "Represents a three-dimensional shape formed by the union of one or more geometric shapes.",
                         "required": [
                             "anatomical_feature",
                             "shape_units",

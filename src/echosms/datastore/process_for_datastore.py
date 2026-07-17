@@ -85,7 +85,7 @@ def main():
 
     # Read in all .toml files that we can find, add/update the dataset_id and dataset_size
     # attributes, flatten, and generate an image of each specimen. For specimens with large
-    # shape data, save that to a seprate json file. Then write out a json file with all specimen
+    # shape data, save that to a separate json file. Then write out a json file with all specimen
     # data in it (except for the large shape data).
 
     dataset = []

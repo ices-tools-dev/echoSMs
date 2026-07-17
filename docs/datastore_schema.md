@@ -2,7 +2,7 @@
 
 The dataset contents are specified by a [JSON schema](https://json-schema.org/) file stored in the echoSMs repository. The schema specifies the required attributes, their structure, valid values, etc.
 
-- [View](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json) the raw JSON schema file. This is the authorative source of the schema.
+- [View](https://github.com/ices-tools-dev/echoSMs/blob/main/data_store/schema/v1/anatomical_data_store.json) the raw JSON schema file. This is the authoritative source of the schema.
 - [Browse](datastore_schema_browser.md#schema-browser) an interactive version of the schema.
 - [View](https://github.com/ices-tools-dev/echoSMs/tree/main/data_store/resources) an example datastore file.
 

@@ -303,7 +303,7 @@ shape = {'voxel_size': [0.005, 0.005, 0.005],
 
 ##### Categorised voxels
 
-The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of homogenous material properties in the specimen. The category value is used as a zero-based index into associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`. The category matrix is structured the same way as for the voxels format (see above).
+The `categorised voxels` format uses a single 3D matrix of material property categories (named `categories` in the schema) - for echoSMs these categories must be integers starting at 0. The categories define regions of homogeneous material properties in the specimen. The category value is used as a zero-based index into associated `mass_density` and `sounds_speed_compressional` vectors. Hence, the length of the density and sound speed arrays must be at least one more than the highest category number in `categories`. The category matrix is structured the same way as for the voxels format (see above).
 
 ##### Geometric
 

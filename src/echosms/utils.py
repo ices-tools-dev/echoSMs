@@ -538,7 +538,7 @@ def names_from_aphia_id(aphia_id: int) -> dict:
     Returns
     -------
     :
-        Species name infomation as used by the echoSMs anatomical datastore or
+        Species name information as used by the echoSMs anatomical datastore or
         an empty dict if no species data found.
 
     Notes

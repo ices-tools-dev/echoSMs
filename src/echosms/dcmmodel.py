@@ -114,10 +114,10 @@ class DCMModel(ScatterModelBase):
                 Kda = K/h*a
 
                 def Cm(m):
-                    numer = (jvp(m, Kda)*yv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka))\
+                    numerator = (jvp(m, Kda)*yv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka))\
                         - gh*(yvp(m, Ka)/jvp(m, Ka))
                     denom = (jvp(m, Kda)*jv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka)) - gh
-                    return numer/denom
+                    return numerator/denom
 
                 series = map(lambda m: 1j**(2*m) * Neumann(m) / (1 + 1j*Cm(m)), m)
             case _:

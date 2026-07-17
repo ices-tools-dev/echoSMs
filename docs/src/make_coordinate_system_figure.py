@@ -178,7 +178,7 @@ for t in [pv.themes.DocumentTheme(), pv.themes.DarkTheme()]:
     # no greek symbols and scale > 1 loses some of the text
     # p.screenshot('coordinate_system2.png', transparent_background=True, scale=1)
 
-    # Best option for the moment. Html would be preferrable if the text showed up
+    # Best option for the moment. Html would be preferable if the text showed up
     if t.name == 'dark':
         savefile = resourcesDir/'coordinate_system_dark.svg'
     else:

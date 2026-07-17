@@ -33,7 +33,7 @@ The following models are available in echoSMs:
 |----------|----------|-----------|
 |Boundary element method|BEMModel|Arbitrary shapes. The current implementation only does pressure release surfaces and has spurious results at internal resonance frequencies and does not include the CHIEF technique to avoid these|
 |Deformed cylinder|DCMModel|Truncated cylinders with various boundary conditions|
-|Distorted-wave Born approximation|DWBAModel|Weakly scattering objects with piecewise circular cross-sections and homogenous interiors with an optional stochastic variant (the SDWBA)|
+|Distorted-wave Born approximation|DWBAModel|Weakly scattering objects with piecewise circular cross-sections and homogeneous interiors with an optional stochastic variant (the SDWBA)|
 |Elastic sphere|ESModel|Elastic spheres, such as echosounder calibration spheres|
 |High-pass|HPModel|Approximate models for simple shapes|
 |Kirchhoff approximation|KAModel|Surfaces that are mainly convex|

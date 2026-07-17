@@ -483,7 +483,7 @@ z_sbL = [-0.000251, -0.001320, -0.002178, -0.002825, -0.003181, -0.003538, -0.00
 
 [[shape]]
 name = "AtlanticMackerel_26.94cm"
-vernacular = "Altantic mackerel"
+vernacular = "Atlantic mackerel"
 aphiaid = 127023
 length = 0.2694
 data_format = "echosms_krm"
@@ -503,7 +503,7 @@ z_sbL = [0.015444, 0.014829, 0.014158, 0.013382, 0.012416, 0.011532, 0.010753, 0
 
 [[shape]]
 name = "AtlanticMackerel_backbone_26.94cm"
-vernacular = "Altantic mackerel"
+vernacular = "Atlantic mackerel"
 aphiaid = 127023
 length = 0.2694
 data_format = "echosms_krm"
@@ -523,7 +523,7 @@ z_sbL = [0.014609, 0.012975, 0.011901, 0.010780, 0.010793, 0.010912, 0.011031, 0
 
 [[shape]]
 name = "AtlanticMackerel_backboneSkull_26.94cm"
-vernacular = "Altantic mackerel"
+vernacular = "Atlantic mackerel"
 aphiaid = 127023
 length = 0.2694
 data_format = "echosms_krm"
@@ -543,7 +543,7 @@ z_sbL = [0.000912, -0.000979, -0.001959, -0.002938, -0.003462, -0.004103, -0.004
 
 [[shape]]
 name = "AtlanticMackerel_19.52cm"
-vernacular = "Altantic mackerel"
+vernacular = "Atlantic mackerel"
 aphiaid = 127023
 length = 0.1952
 data_format = "echosms_krm"
@@ -563,7 +563,7 @@ z_sbL = [0.000923, 0.000823, 0.000724, 0.000625, 0.000526, 0.000427, 0.000328, 0
 
 [[shape]]
 name = "AtlanticMackerel_backbone_19.52cm"
-vernacular = "Altantic mackerel"
+vernacular = "Atlantic mackerel"
 aphiaid = 127023
 length = 0.1952
 data_format = "echosms_krm"
@@ -583,7 +583,7 @@ z_sbL = [0.005175, 0.004624, 0.004373, 0.004212, 0.004132, 0.004132, 0.004212, 0
 
 [[shape]]
 name = "AtlanticMackerel_backboneSkull_19.52cm"
-vernacular = "Altantic mackerel"
+vernacular = "Atlantic mackerel"
 aphiaid = 127023
 length = 0.1952
 data_format = "echosms_krm"

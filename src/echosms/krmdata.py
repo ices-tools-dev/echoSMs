@@ -20,7 +20,7 @@ class KRMshape():
     Attributes
     ----------
     boundary : bt
-        The shape bounday condition - either `pressure_release` or `fluid_filled`.
+        The shape boundary condition - either `pressure_release` or `fluid_filled`.
     x :
         The _x_-axis coordinates [m].
     w :
@@ -134,7 +134,7 @@ class KRMdata():
         self.krm_models = {}
         for s in shapes['shape']:
             # These KRM data have the head pointing in the -ve x direction,
-            # opposite to the echoSMs coordinate convetion, so fix the
+            # opposite to the echoSMs coordinate convention, so fix the
             # x-coordinates here when ingesting the data. And set the posterior end
             # of the organism to have x=0
 

@@ -33,7 +33,7 @@ match platform.node():
         raise ValueError('Unsupported development system - edit me and try again')
 
 
-# Datset template
+# Dataset template
 specimen_t = {'uuid': '',
              'license': 'CC BY 4.0',
              'dataset_uuid': '',
