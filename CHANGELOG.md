@@ -55,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update descriptions in datastore schema
 - Prototype datastore server address is now available as `echosms.DATASTORE_URI`
 - Sdjust some datastore schema property values to match relevant ICES vocabularies
- 
+
 ### Fixed
 
 - Miscellaneous bug fixes

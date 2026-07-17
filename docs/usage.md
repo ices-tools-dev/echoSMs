@@ -67,7 +67,7 @@ The simplest way to provide these to the model is a dictionary:
 ```py
 p = {'medium_rho': 1026.8,
      'medium_c': 1477.4,
-     'a': 0.01, 
+     'a': 0.01,
      'boundary_type': 'pressure-release',
      'f': 38000}
 ```
@@ -137,7 +137,7 @@ model = PTDWBAModel()
 
 m = {'volume': np.full((5,5,5), 0),
      'f': np.arange(10, 100, 1)*1000,
-     'rho': [1024, 1025],  
+     'rho': [1024, 1025],
      'c': [1500, 1501],
      'voxel_size': (0.001, 0.001, 0.001),
      'theta': 90,
@@ -155,7 +155,7 @@ For the PTDWBA model, only `theta` and `phi` are expandable, so `p` contains thr
 p.attrs['parameters']
 ```
 
-Note that while `rho` and `c` look like parameters that would be expanded, they are in the list of non-expandable parameters, so are not expanded. This is because the structure of the PTDWBA model means that it it not sensible to have variable parameters for `rho` and `c`. 
+Note that while `rho` and `c` look like parameters that would be expanded, they are in the list of non-expandable parameters, so are not expanded. This is because the structure of the PTDWBA model means that it it not sensible to have variable parameters for `rho` and `c`.
 
 If you pass the dictionary form of the parameters to a model, this treatment of non-expanding parameters is done automatically, where
 

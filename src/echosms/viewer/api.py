@@ -29,7 +29,7 @@ def fetch_online_shapes_index():
                 name = v_names[0]
             else:
                 name = item.get('specimen_name') or "Unknown"
-            
+
             sid = item.get('uuid')
             m_type = item.get('model_type', 'Unknown')
             display_name = f"{name} ({sid}) [{m_type}]"

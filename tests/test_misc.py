@@ -56,4 +56,3 @@ def test_benchmark_data(bm):
 
     assert len(bm.freq_names()) > 0
     assert len(bm.angle_names()) > 0
-

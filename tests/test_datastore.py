@@ -13,7 +13,7 @@ def test_api_plot(tmp_path):
     r = requests.get(baseURI + 'v2/specimens?shape_type=outline')
     specimens = r.json()
     uuids = [s['uuid'] for s in specimens]
-    
+
     for uuid in uuids:
         # Get the full specimen data (including the shape)
         r = requests.get(baseURI + 'v2/specimen/' + uuid + '/data')

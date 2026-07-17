@@ -2,7 +2,7 @@
 
 ???+ Note
 
-    This page contains the draft specification and documentation for the echoSMs anatomical datastore. It is a work in progress. The specification here may not always be 
+    This page contains the draft specification and documentation for the echoSMs anatomical datastore. It is a work in progress. The specification here may not always be
     consistent with the example data available from the web API.
 
 ## Data store contents and structure
@@ -112,7 +112,7 @@ import uuid
 from datetime import datetime, timezone
 
 # Create specimen metadata and add in the shape
-# The items here are the mandatory attributes required for the 
+# The items here are the mandatory attributes required for the
 # echoSMs datastore (there are many others that are optional).
 specimen = {'uuid': str(uuid.uuid4()),
             'license': 'CC0 1.0',
@@ -205,7 +205,7 @@ specimen = {'uuid': str(uuid.uuid4()),
             'shape_type': 'outline',
             'shapes': [s]}
 
-# And use an echoSMs function to plot the shape 
+# And use an echoSMs function to plot the shape
 # (to compare to the one from KRMdata above()).
 plot_specimen(specimen)
 ```
@@ -264,7 +264,7 @@ specimen = {'uuid': str(uuid.uuid4()),
             'shape_type': 'outline',
             'shapes': [s]}
 
-# And use an echoSMs function to plot the shape 
+# And use an echoSMs function to plot the shape
 # (to compare to the one from DWBAdata above()).
 plot_specimen(specimen)
 ```

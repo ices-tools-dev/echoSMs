@@ -478,12 +478,12 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
 
 def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
     """Create a triangulated mesh from a datastore geometric shape.
-    
+
     Parameters
     ----------
     shapes :
         Geometric shapes defined as per the echoSMs datastore schema.
-    
+
     Returns
     -------
     :
@@ -528,7 +528,7 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
         centroid_location = (0.0, 0.0, 0.0)
 
     if bend_radius is not None:
-        # The trimesh.creation.cylinder() function doesn't do bent cylinders, so revolve a circular 
+        # The trimesh.creation.cylinder() function doesn't do bent cylinders, so revolve a circular
         # cross-section around an axis to get one.
 
         num_radial_sections = 32
@@ -539,7 +539,7 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
         x_coords = radius * np.cos(angles) + bend_radius
         y_coords = radius * np.sin(angles)
         cross_section = np.column_stack((x_coords, y_coords))
-        
+
         # Revolve the cross section around the y-axis (that's what trimesh does) to create a 3D mesh
         arc_angle = length / bend_radius  # [radians]
         mesh = trimesh.creation.revolve(linestring=cross_section, sections=num_radial_sections,

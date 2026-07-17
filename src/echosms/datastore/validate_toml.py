@@ -54,12 +54,12 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
 
     # Provide info on pass/fail and any errors
     if error_msgs:
-        rprint(f'[red]✗[/red] File [orange3]{file_label}[/orange3] is not valid')         
+        rprint(f'[red]✗[/red] File [orange3]{file_label}[/orange3] is not valid')
         for m in error_msgs:
             rprint(m)
     else:
         rprint(f'[green]✓[/green] File [orange3]{file_label}[/orange3] is valid')
-        
+
 
 def main():
     """Validate TOML files."""
@@ -70,7 +70,7 @@ def main():
                                      epilog='The values of some attributes are populated or modified by the '\
                                             'datastore and temporary substitutes generated '\
                                             'when neccessary.')
-    
+
     parser.add_argument('toml_file', help='echoSMs TOML file(s) (can include wildcards; '\
                         'use ** to search in subdirectories)',
                         action='extend', nargs='+')
@@ -84,7 +84,7 @@ def main():
     # Expand out any wildcard file inputs and discard non files.
     toml_files = []
     for f_args in args.toml_file:
-        toml_files.extend([Path(f) for f in glob.glob(f_args, recursive=True) 
+        toml_files.extend([Path(f) for f in glob.glob(f_args, recursive=True)
                            if os.path.isfile(f) and Path(f).name != 'metadata.toml'])
 
     # Get the JSON schema

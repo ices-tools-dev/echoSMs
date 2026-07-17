@@ -528,7 +528,7 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
 @cache
 def names_from_aphia_id(aphia_id: int) -> dict:
     """Returns species name information.
-    
+
     Parameters
     ----------
     aphia_id :
@@ -538,7 +538,7 @@ def names_from_aphia_id(aphia_id: int) -> dict:
     Returns
     -------
     :
-        Species name infomation as used by the echoSMs anatomical datastore or 
+        Species name infomation as used by the echoSMs anatomical datastore or
         an empty dict if no species data found.
 
     Notes
@@ -548,7 +548,7 @@ def names_from_aphia_id(aphia_id: int) -> dict:
 
     if not aphia_id:
         return {}
-        
+
 
     WORMS_URL = 'https://www.marinespecies.org/rest/'
 
@@ -570,13 +570,13 @@ def names_from_aphia_id(aphia_id: int) -> dict:
 @cache
 def datastore_schema(schema_file: Path | None = None) -> dict:
     """Get the echoSMs datastore schema.
-    
+
     Parameters
     ----------
     schema_file :
         The schema filename. If None, the schema will be downloaded from the echoSMs github
         repository
-        
+
     Returns
     -------
     :

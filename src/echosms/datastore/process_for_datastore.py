@@ -36,7 +36,7 @@ from shutil import make_archive
 def main():
     parser = argparse.ArgumentParser(prog='process_for_datastore',
         description='Converts datastore TOML files into an upload for the echoSMs datastore.')
-    
+
     parser.add_argument('-s', '--source', required=True,
                         help='the directory that contains sub-directories '
                         'of datastore TOML files')

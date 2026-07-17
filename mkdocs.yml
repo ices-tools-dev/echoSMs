@@ -18,7 +18,7 @@ nav:
         - Links: training/links.md
     - Conventions: conventions.md
     - Benchmarks: benchmark_data.md
-    - API reference: 
+    - API reference:
         - Scattering models: api_scattering_models.md
         - Shapes: api_datastore.md
         - Utilities: api_utilities.md
@@ -27,14 +27,14 @@ nav:
     - Anatomical data store:
         - Introduction: datastore_intro.md
         - Data structures: datastore_anatomical.md
-        - Schema: 
+        - Schema:
             - Introduction: datastore_schema.md
             - Browser: datastore_schema_browser.md
         - Web API: datastore_web_API.md
         - Using with echoSMs: datastore_models.md
 
-theme: 
-    name: material 
+theme:
+    name: material
     logo: resources/echoSMs_logo_auto_colour.svg
     favicon: resources/echoSMs_logo_auto_colour.svg
     icon:
@@ -55,7 +55,7 @@ theme:
 
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
-      scheme: default 
+      scheme: default
       primary: amber
       toggle:
         icon: material/brightness-7

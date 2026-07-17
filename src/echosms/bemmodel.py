@@ -11,7 +11,7 @@ from scipy.spatial.distance import pdist, squareform
 
 class BEMModel(ScatterModelBase):
     """Boundary element method (BEM) scattering model.
-    
+
     This class calculates acoustic scatter arbitrary surfaces.
     """
 
@@ -34,7 +34,7 @@ class BEMModel(ScatterModelBase):
         super()._present(p, ['theta', 'phi', 'mesh'])
         super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_c', 'f'])
-    
+
     def calculate_ts_single(self, medium_c: float, theta: float, phi: float,
                             f: float, mesh: Any, boundary_type: bt,
                             validate_parameters: bool=True, **kwargs) -> float:
@@ -62,7 +62,7 @@ class BEMModel(ScatterModelBase):
         boundary_type :
             The boundary type. Supported types are given in the `boundary_types` class variable.
         validate_parameters :
-            Whether to validate the model parameters.        
+            Whether to validate the model parameters.
 
         Returns
         -------
@@ -81,7 +81,7 @@ class BEMModel(ScatterModelBase):
         th = -theta*pi/180
         ph = phi*pi/180
         k = wavenumber(medium_c, f)
-        
+
         # waves directions
         Rz = array([[cos(ph), -sin(ph), 0],
                     [sin(ph), cos(ph), 0],
@@ -97,7 +97,7 @@ class BEMModel(ScatterModelBase):
 
         # This commented out code has been replaced by the faster version below that avoids
         # the slow looping in Python code.
-    
+
         # S = zeros((m,m),dtype=complex);
         # for i in range(m):
         #     for j in range(i+1):
@@ -105,13 +105,13 @@ class BEMModel(ScatterModelBase):
         #         S[i][j] = S[j][i] = exp(1j*k*r)/(4*pi*r) if r!=0 else k/4 + 1j*k/(4*pi)
         # # surface solution
         # u = solve(S, npinc)
-        
+
         r = squareform(pdist(mesh.triangles_center))
         with errstate(divide='ignore', invalid='ignore'):
             S = exp(1j*k*r) / (4*pi*r)
         fill_diagonal(S, k/4 + 1j*k / (4*pi))
         u = solve(S, npinc, assume_a='sym')
-        
+
         # far field solution at |r1| = 1
         S = [exp(-1j*k * xi @ r1) / (4*pi) for xi in mesh.triangles_center]
         psc = S @ u

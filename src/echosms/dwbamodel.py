@@ -58,7 +58,7 @@ class DWBAModel(ScatterModelBase):
                             f: float, target_c: float, target_rho: float,
                             a: Iterable[float], rv_pos: Iterable[np.ndarray],
                             rv_tan: Iterable[np.ndarray],
-                            phase_sd: float=0, 
+                            phase_sd: float=0,
                             num_runs: int=1, validate_parameters: bool=True,
                             **kwargs) -> float:
         """Distorted-wave Born approximation scattering model.

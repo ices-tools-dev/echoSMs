@@ -62,4 +62,3 @@ Access to your online computer is entirely via your web browser:
 1. Open a Terminal (click on the new tab icon: `+`) and type these lines:
     1. `pip install echosms --upgrade`
     1. `pip install jmespath`
-

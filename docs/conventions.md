@@ -51,4 +51,3 @@ incident_vector = rot.apply([0, 0, 1])
 ```
 
 [^1]: [ISO. 2019.](https://www.iso.org/obp/ui/en/#iso:std:iso:80000:-2:ed-2:v2:en) ISO 80000-2. Part 2: Mathematics.
-

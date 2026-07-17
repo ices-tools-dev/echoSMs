@@ -49,7 +49,7 @@ in the top level of the echoSMs repository. The documentation is then available 
 EchoSMs uses the pytest testing framework. After installing pytest, run the tests using
 
     pytest -v
-    
+
 in the top level of the echoSMs repository.
 
 ## Adding a new scattering model

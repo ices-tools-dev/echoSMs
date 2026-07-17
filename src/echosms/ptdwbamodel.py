@@ -73,7 +73,7 @@ class PTDWBAModel(ScatterModelBase):
         c :
             Sound speed of each material. Must have at least the same number of entries as unique
             integers in `volume` [m/s].
-        validate_parameters : 
+        validate_parameters :
             Whether to validate the model parameters.
 
         Returns
