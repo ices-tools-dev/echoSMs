@@ -30,6 +30,12 @@ Python code should follow [PEP8](https://peps.python.org/pep-0008) and docstring
 
 EchoSMs is a pure Python package. The build configuration is done via a [pyproject.toml](https://github.com/ices-tools-dev/echoSMs/blob/main/pyproject.toml) file and [`hatchling`](https://hatch.pypa.io/latest/) is used to produce packages.
 
+A Python wheel and source package are generated using:
+
+    uv build
+
+## Working with github
+
 A github [action](https://github.com/ices-tools-dev/echoSMs/blob/main/.github/workflows/publish-to-pypi.yml) in the echoSMS repository will generate a Python wheel and source package and upload these to [PyPI](https://pypi.org/project/echosms/). This action is triggered whenever a tagged commit occurs to the repository. The tag is used as the new version number. EchoSMs version numbers follow the [semantic versioning](http://semver.org) convention.
 
 Every commit to the echoSMs repository will generate a development package being uploaded to [TestPyPI](https://test.pypi.org/project/echosms/#history). This is used to always check that a commit does not prevent production of a package and is where a package containing the latest commit can be obtained.
@@ -40,17 +46,20 @@ The echoSMs documentation is produced using [`mkdocs`](https://www.mkdocs.org/) 
 
 Documentation edits can be tested locally by running:
 
-    mkdocs serve
+    uv run mkdocs serve
 
-in the top level of the echoSMs repository. The documentation is then available at <http://127.0.0.1:8000>.
+in the top level of the echoSMs repository. The documentation is then available at <http://127.0.0.1:8000>. A migration to [zensical](https://zensical.org/) is in progress and can be tested using:
+
+    uv run zensical serve
 
 ## Tests
 
-EchoSMs uses the pytest testing framework. After installing pytest, run the tests using
+EchoSMs uses the pytest testing framework. Run the tests using
 
-    pytest -v
+    uv run pytest -v -n=auto
 
-in the top level of the echoSMs repository.
+in the top level of the echoSMs repository. The `-n=auto` option is optional and if present
+will distribute the tests across as many CPU cores are on your computer.
 
 ## Adding a new scattering model
 

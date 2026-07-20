@@ -93,6 +93,7 @@ dev = [
     "mkdocs-material>=9.7.6, <10",
     "mkdocstrings-python>=2.0.3",
     "pytest>=9.0.3",
+    "pytest-xdist>=3.8.0",
     "spyder-kernels>=3.1.4",
     "zensical>=0.0.38",
 ]
