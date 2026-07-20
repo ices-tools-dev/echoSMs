@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.24.0]
+
+### Changed
+
+- Minimum supported Python version is now 3.11 (was 3.10)
+- Update docs to mention that we'll soon follow SPEC 0
+- Move project status to beta
+- Setup for manual pre-commit checks
+
 ## [0.23.1] - 2026-07-15
 
 ### Added
@@ -108,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minor rearrangement of API documentation
 
 [unreleased]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.1...HEAD
+[0.24.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.1...v0.24.0
 [0.23.1]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.0...v0.23.1
 [0.23.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.22.0...v0.23.0
 [0.22.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.21.1...v0.22.0
