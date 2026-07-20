@@ -7,10 +7,7 @@ import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 from .utils import boundary_type as bt
-if sys.version_info >= (3, 11):
-    import tomllib
-else:
-    import tomli as tomllib
+import tomllib
 
 
 @dataclass

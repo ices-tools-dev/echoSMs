@@ -16,14 +16,12 @@ authors = [
 ]
 description = 'Acoustic backscattering models used in aquatic ecosystem research'
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
 	"numpy",
 	"scipy",
 	"pandas",
 	"xarray",
-	'tomli >= 1.1.0; python_version < "3.11"',
-	'backports.strenum >= 1.3.1; python_version < "3.11"',
 	'trimesh',
 	'pymeshlab',
 	"shapely",
@@ -46,7 +44,6 @@ classifiers = [
     'Intended Audience :: Science/Research',
     'Operating System :: OS Independent',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-import sys
 import threading
+import tomllib
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (
@@ -9,12 +9,6 @@ from matplotlib.backends.backend_tkagg import (
 )
 from . import geometry, api
 from ..conversions import outline_from_krm, outline_from_dwba
-
-# TOML handling
-if sys.version_info >= (3, 11):
-    import tomllib
-else:
-    import tomli as tomllib
 
 try:
     import rtoml

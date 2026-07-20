@@ -12,10 +12,7 @@ from functools import cache
 from scipy.special import spherical_jn, spherical_yn
 from collections import namedtuple
 from spheroidalwavefunctions import prolate_swf
-if sys.version_info >= (3, 11):
-    from enum import StrEnum
-else:
-    from backports.strenum import StrEnum
+from enum import StrEnum
 
 SCHEMA_URL = 'https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'\
                      'heads/main/data_store/schema/v1/anatomical_data_store.json'

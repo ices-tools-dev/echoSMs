@@ -3,10 +3,7 @@
 from pathlib import Path
 import sys
 import pandas as pd
-if sys.version_info >= (3, 11):
-    import tomllib
-else:
-    import tomli as tomllib
+import tomllib
 
 if int(pd.__version__.split('.')[0]) < 3:
     pd.options.mode.copy_on_write = True
