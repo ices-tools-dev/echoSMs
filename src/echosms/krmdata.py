@@ -1,6 +1,5 @@
 """Classes to help store KRM model data."""
 
-import sys
 from pathlib import Path
 from typing import List
 import numpy as np

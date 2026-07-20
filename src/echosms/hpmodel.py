@@ -20,7 +20,8 @@ class HPModel(ScatterModelBase):
     def validate_parameters(self, params):
         """Validate the model parameters.
 
-        See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for calling details.
+        See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for
+        calling details.
         """
         p = as_dict(params)
         super()._present_and_positive(p, ['medium_c', 'a', 'f'])
@@ -66,7 +67,8 @@ class HPModel(ScatterModelBase):
             The boundary type for the model.
         theta :
             Pitch angle to calculate the scattering as per the echoSMs
-            [coordinate system](conventions.md#coordinate-systems) [°]. Only required for the straight cylinder shape.
+            [coordinate system](conventions.md#coordinate-systems) [°]. Only required for the
+            straight cylinder shape.
         L :
             Total length of the prolate spheroid and straight cylinder, or arc length of
             the bent cylinder [m]. Only required for prolate spheroid, cylinder, and bent cylinder

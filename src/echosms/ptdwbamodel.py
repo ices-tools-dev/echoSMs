@@ -24,7 +24,8 @@ class PTDWBAModel(ScatterModelBase):
     def validate_parameters(self, params):
         """Validate the model parameters.
 
-        See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for calling details.
+        See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for
+        calling details.
         """
         # TODO - complete this function...
         # p = as_dict(params)

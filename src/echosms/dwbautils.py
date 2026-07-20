@@ -1,7 +1,6 @@
 """Miscellaneous functions for the DWBA models."""
 import numpy as np
 from pathlib import Path
-import sys
 from dataclasses import dataclass
 from scipy.interpolate import splprep, splev
 import tomllib

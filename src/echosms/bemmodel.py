@@ -1,4 +1,5 @@
-"""A class that provides an implementation of the classical boundary element method for pressure release targets."""
+"""A class that provides an implementation of the classical boundary element method for pressure
+release targets."""
 
 from typing import Any
 from .scattermodelbase import ScatterModelBase
@@ -28,7 +29,8 @@ class BEMModel(ScatterModelBase):
     def validate_parameters(self, params):
         """Validate the model parameters.
 
-        See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for calling details.
+        See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for
+        calling details.
         """
         p = as_dict(params)
         super()._present(p, ['theta', 'phi', 'mesh'])

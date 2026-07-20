@@ -57,7 +57,9 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
 
         case _:
             # valid specimen data structures will never get here
-            raise ValueError('Specimen shape_type of "{}" is not yet supported'.format(specimen['shape_type']))
+            raise ValueError(
+                'Specimen shape_type of "{}" is not yet supported'.\
+                    format(specimen['shape_type']))
 
 
     if savefile:

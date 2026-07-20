@@ -201,7 +201,7 @@ for name in model_names:
                     sections=10,
                     transform = \
                         trimesh.transformations.rotation_matrix(np.pi/2, [0, 1, 0], [0, 0, 0]))
-            # mesh = mesh.subdivide().subdivide()  # needed for better accuracy at higher frequencies
+            # mesh = mesh.subdivide().subdivide()  # for better accuracy at higher frequencies
 
     # Benchmark model for comparison
     f, bm_ts = bm.freq_data(name)

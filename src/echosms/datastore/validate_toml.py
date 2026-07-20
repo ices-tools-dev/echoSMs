@@ -49,7 +49,9 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
         schema_path = '.'.join(error.schema_path)
 
         error_msgs.append('  [red]Error:')
-        error_msgs.append(f'    For attribute "{instance_path}" with schema path of "{schema_path}"')
+        error_msgs.append(
+            f'    For attribute "{instance_path}" with schema path of '
+            f'"{schema_path}"')
         error_msgs.append(f'    {msg}')
 
     # Provide info on pass/fail and any errors
@@ -67,7 +69,8 @@ def main():
     parser = argparse.ArgumentParser(prog='validate',
                                      description='Validates an echoSMs datastore TOML file'\
                                         ' against the schema.',
-                                     epilog='The values of some attributes are populated or modified by the '\
+                                     epilog='The values of some attributes are populated or '\
+                                            'modified by the '\
                                             'datastore and temporary substitutes generated '\
                                             'when necessary.')
 
@@ -107,7 +110,8 @@ def main():
                 specimen |= rtoml.load(metadata_file)
 
         except rtoml.TomlParsingError:
-            rprint(f'[red]✗[/red] Could not parse [orange3]{toml.name}[/orange3]. Is it a TOML-formatted file?')
+            rprint(f'[red]✗[/red] Could not parse [orange3]{toml.name}[/orange3]. '\
+                'Is it a TOML-formatted file?')
             continue
 
         # Write out to json if requested

@@ -81,7 +81,11 @@ def main():
         if row['shape_type'] == 'surface' and len(row['shapes'][0]['x']) > 500:
             return True
 
-    validator = jsonschema_rs.validator_for(schema, validate_formats=True, ignore_unknown_formats=False)
+    validator = jsonschema_rs.validator_for(
+        schema,
+        validate_formats=True,
+        ignore_unknown_formats=False,
+    )
 
     # Read in all .toml files that we can find, add/update the dataset_id and dataset_size
     # attributes, flatten, and generate an image of each specimen. For specimens with large
@@ -117,7 +121,9 @@ def main():
                 if data['uuid'] == '':
                     data['uuid'] = str(uuid.uuid4())
                 data['version_time'] = datetime.now(timezone.utc).isoformat()
-                data['dataset_size'] = sum(file.stat().st_size for file in Path(path).rglob('*'))/2**20
+                data['dataset_size'] = (
+                    sum(file.stat().st_size for file in Path(path).rglob('*')) / 2**20
+                )
                 data['dataset_size_units'] = 'megabyte'
 
                 # Add in species info if not already there
@@ -137,7 +143,8 @@ def main():
                     instance_path = '.'.join([str(a) for a in error.instance_path])
                     schema_path = '.'.join(error.schema_path)
 
-                    error_msgs.append(f'    - For attribute "{instance_path}" with schema path of "{schema_path}",')
+                    error_msgs.append(
+                        f'    - For attribute "{instance_path}" with schema "{schema_path}",')
                     error_msgs.append(f'      {msg}')
 
                 # Provide info on pass/fail and any errors
