@@ -497,7 +497,7 @@ requires-dist = [
     { name = "spheroidalwavefunctions" },
     { name = "tqdm" },
     { name = "trimesh" },
-    { name = "urllib3", specifier = ">=2.7.0" },
+    { name = "urllib3" },
     { name = "xarray" },
 ]
 

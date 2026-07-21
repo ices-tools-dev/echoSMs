@@ -31,7 +31,7 @@ dependencies = [
 	'mapply',
 	"requests",
 	"rtoml",
-	"urllib3 >= 2.7.0",
+	"urllib3",
 	"matplotlib",
 	"rich",
 	"jsonschema-rs",
