@@ -2,9 +2,6 @@
 requires = ["hatchling", 'hatch-vcs']
 build-backend = "hatchling.build"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/echosms"]
-
 [project]
 name = 'echosms'
 import-names = ["echosms"]
@@ -56,20 +53,6 @@ classifiers = [
 ]
 dynamic = [ 'version']
 
-[tool.hatch.version]
-source = 'vcs'
-
-[tool.hatch.version.raw-options]
-local_scheme = "no-local-version"  # otherwise the non-tagged version is not accepted by testpypi
-
-[tool.uv]
-exclude-newer = "7 days"
-exclude-newer-package = { zensical = "1 day" }
-
-[tool.pytest.ini_options]
-testpaths = ['tests',]
-addopts = ["--import-mode=importlib",]
-
 [project.scripts]
 echosms-view = "echosms.viewer.app:main"
 validate-toml = "echosms.datastore.validate_toml:main"
@@ -80,7 +63,6 @@ Homepage = 'https://github.com/ices-tools-dev/echoSMs'
 Issues = 'https://github.com/ices-tools-dev/echoSMs/issues'
 Documentation = 'https://ices-tools-dev.github.io/echoSMs'
 Repository = 'https://github.com/ices-tools-dev/echoSMs'
-Discussions = 'https://github.com/ices-tools-dev/echoSMs/discussions'
 
 [dependency-groups]
 dev = [
@@ -95,3 +77,20 @@ dev = [
     "spyder-kernels>=3.1.4",
     "zensical>=0.0.38",
 ]
+
+[tool.hatch.version]
+source = 'vcs'
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/echosms"]
+
+[tool.hatch.version.raw-options]
+local_scheme = "no-local-version"  # otherwise the non-tagged version is not accepted by testpypi
+
+[tool.uv]
+exclude-newer = "7 days"
+exclude-newer-package = { zensical = "1 day" }
+
+[tool.pytest.ini_options]
+testpaths = ['tests',]
+addopts = ["--import-mode=importlib",]
