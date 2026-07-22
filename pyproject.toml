@@ -37,6 +37,7 @@ dependencies = [
 	"jsonschema-rs",
 	"orjson",
 	"manifold3d",
+	"pre-commit>=4.6.0",
 ]
 classifiers = [
     'Development Status :: 4 - Beta',

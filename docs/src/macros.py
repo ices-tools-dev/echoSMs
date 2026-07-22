@@ -34,7 +34,7 @@ def define_env(env):
     def supported_python_versions():
         try:
             toml_path = Path('pyproject.toml')
-            
+
             if not toml_path.exists():
                 return f"Error: {toml_path} not found"
 
