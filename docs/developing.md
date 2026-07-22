@@ -4,10 +4,9 @@ This page contains notes and instructions on developing and adding new models to
 
 ## Supported versions
 
-EchoSMs will, in future, follow Scientific Python's [SPEC 0](https://scientific-python.org/specs/spec-0000/)
-to determine which Python versions and dependencies are supported. Supported versions of Python are listed
-in the `requires-python` entry in the [pyproject.toml](https://github.com/ices-tools-dev/echoSMs/blob/main/pyproject.toml)
-file.
+EchoSMs follows Scientific Python's [SPEC 0](https://scientific-python.org/specs/spec-0000/)
+to determine which Python and dependency versions are supported. Python
+versions {{ supported_python_versions() }} are currently supported.
 
 ## Obtaining the source code
 

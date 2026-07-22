@@ -1,6 +1,7 @@
 import sys
 import importlib.util
 from pathlib import Path
+import tomllib
 from json_schema_for_humans.generate import generate_from_filename
 from json_schema_for_humans.generation_configuration import GenerationConfiguration as gc
 
@@ -27,6 +28,27 @@ def define_env(env):
     @env.macro
     def ds_uri(p):
         return module.DATASTORE_URI + p
+
+
+    @env.macro
+    def supported_python_versions():
+        try:
+            toml_path = Path('pyproject.toml')
+            
+            if not toml_path.exists():
+                return f"Error: {toml_path} not found"
+
+            with open(toml_path, "rb") as f:
+                data = tomllib.load(f)
+
+            if "project" in data and "requires-python" in data["project"]:
+                return data["project"]["requires-python"].replace('>=', '≥').replace('<=', '≤')
+
+            return f"Python version not found in {toml_path.name}"
+
+        except Exception as e:
+            return f"Error reading Python version: {str(e)}"
+
 
     # Call this in a markdown document via:
     # {{ datastore_schema_as_html() }}
