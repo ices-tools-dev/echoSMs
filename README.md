@@ -3,6 +3,8 @@
 [![Static badge](https://img.shields.io/pypi/v/echosms.svg)](https://pypi.org/project/echosms/)
 [![Static badge](https://img.shields.io/github/license/ices-tools-dev/echosms)](https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/heads/main/LICENSE)
 [![python](https://img.shields.io/pypi/pyversions/echosms.svg?logo=python&logoColor=white)](https://pypi.org/project/echosms/)
+[![SPEC 0 — Minimum Supported Dependencies](https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&color=%235CA038)](https://scientific-python.org/specs/spec-0000/)
+
 
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ices-tools-dev/echoSMs/publish-to-pypi.yml)](https://github.com/ices-tools-dev/echoSMs/actions/workflows/publish-to-pypi.yml)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ices-tools-dev/echoSMs/build-docs.yml?label=docs)](https://github.com/ices-tools-dev/echoSMs/actions/workflows/build-docs.yml)
