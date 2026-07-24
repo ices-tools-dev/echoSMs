@@ -23,7 +23,7 @@ jobs:
           enable-cache: true
           cache-suffix: ${{ matrix.python-version }}
       - name: Run tests
-        run: uv run pytest -v -s
+        run: uv run --locked pytest -v -s
 
   build:
     name: Build distribution
