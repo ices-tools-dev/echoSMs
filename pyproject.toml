@@ -98,7 +98,15 @@ testpaths = ['tests',]
 addopts = ["--import-mode=importlib",]
 
 [tool.ruff.lint]
-extend-select = ["S"]
+select = ["E", "F", "S",] # also D, UP, B, C90, I, N
+ignore = [
+    "E501", # line too long
+    "D103", # missing docstring in public function
+    "D100", # missing docstring in public module
+    "D102", # missing docstring in public method
+    "D101", # missing docstring in public class
+    "D107", # missing docstring in __init__
+]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"] # disables assert warnings in testing
