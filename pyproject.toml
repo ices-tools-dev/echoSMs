@@ -90,6 +90,9 @@ local_scheme = "no-local-version"  # otherwise the non-tagged version is not acc
 [tool.uv]
 exclude-newer = "7 days"
 exclude-newer-package = { zensical = "1 day" }
+audit = {'malware-check' = true}
+preview-features = ["audit-command", "malware-check"]  # silences the preview features warnings
+
 
 [tool.pytest.ini_options]
 testpaths = ['tests',]
