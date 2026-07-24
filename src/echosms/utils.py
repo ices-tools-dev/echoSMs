@@ -551,13 +551,13 @@ def names_from_aphia_id(aphia_id: int) -> dict:
     WORMS_URL = 'https://www.marinespecies.org/rest/'
 
     names = {}
-    r = requests.get(WORMS_URL + 'AphiaRecordByAphiaID/' + str(aphia_id))
+    r = requests.get(WORMS_URL + 'AphiaRecordByAphiaID/' + str(aphia_id), timeout=5)
     if r.status_code == 200:
         names['species'] = r.json()['scientificname']
         for attr in ['class', 'order', 'family', 'genus']:
             names[attr] = r.json()[attr]
 
-        r = requests.get(WORMS_URL + 'AphiaVernacularsByAphiaID/' + str(aphia_id))
+        r = requests.get(WORMS_URL + 'AphiaVernacularsByAphiaID/' + str(aphia_id), timeout=5)
         if r.status_code == 200:
             names['vernacular_names'] = []
             for vname in r.json():
@@ -584,7 +584,7 @@ def datastore_schema(schema_file: Path | None = None) -> dict:
     """
 
     if schema_file is None:
-        s = requests.get(SCHEMA_URL)
+        s = requests.get(SCHEMA_URL, timeout=5)
         if s.status_code == 200:
             return s.json()
     else:

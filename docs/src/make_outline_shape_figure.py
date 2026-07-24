@@ -19,7 +19,7 @@ import requests
 
 # Use one of the Clay&Horne cod as the example data
 baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
-r = requests.get(baseURI + 'v2/specimens/48d60557-f9d5-4bb3-a977-00d8db818a56/data')
+r = requests.get(baseURI + 'v2/specimens/48d60557-f9d5-4bb3-a977-00d8db818a56/data', timeout=5)
 specimen = r.json()
 shapes = specimen['shapes']
 

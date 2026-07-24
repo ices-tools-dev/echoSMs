@@ -22,13 +22,13 @@ m = echosms.KRMModel()
 
 # Get all the datastore organisms from the CLAY_HORNE dataset. This returns the metadata
 # about the specimens but no shape information.
-r = requests.get(baseURI + 'v2/specimens/?dataset_name=CLAY_HORNE')
+r = requests.get(baseURI + 'v2/specimens/?dataset_name=CLAY_HORNE', timeout=5)
 
 for o in r.json():
     print(f'Processing specimen {o["specimen_name"]} from the {o["dataset_name"]} dataset')
 
     # Get the organism data (including the shape) from the datastore
-    r = requests.get(baseURI + 'v2/specimen/' + o['uuid'] + '/data')
+    r = requests.get(baseURI + 'v2/specimen/' + o['uuid'] + '/data', timeout=5)
     if r.status_code != 200:
         print(f'Request for data from specimen {o["uuid"]} failed - skipping')
         continue

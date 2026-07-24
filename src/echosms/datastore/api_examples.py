@@ -26,7 +26,7 @@ baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
 # Examples using the v2 version of the API
 
 print('Getting all specimen metadata')
-d = requests.get(baseURI + 'v2/specimens')
+d = requests.get(baseURI + 'v2/specimens', timeout=5)
 
 if d.status_code == 200:
     df = pd.DataFrame(data=d.json())
@@ -48,13 +48,13 @@ if d.status_code == 200:
 # and store (and access) them locally.
 
 # Get all specimens with shape type of 'outline'.
-d = requests.get(baseURI + 'v2/specimens?shape_type=outline')
+d = requests.get(baseURI + 'v2/specimens?shape_type=outline', timeout=5)
 
 if d.status_code == 200:
     ds = []
     for s in d.json():  # iterate over all specimens with in the datastore
         print(f'Getting all data for specimen {s["specimen_name"]}')
-        specimen = requests.get(baseURI + 'v2/specimens/' + s['uuid'] + '/data')
+        specimen = requests.get(baseURI + 'v2/specimens/' + s['uuid'] + '/data', timeout=5)
         if specimen.status_code == 200:
             ds.append(specimen.json())
         else:
@@ -68,7 +68,7 @@ if d.status_code == 200:
 
     # That file can be read back and used without
     # online access to the echoSMs datastore API
-    dff = pd.read_pickle('downloaded_anatomical_datastore.gz')
+    dff = pd.read_pickle('downloaded_anatomical_datastore.gz') # noqa: S301
 
     # An example of querying the dataframe
     print(dff.query('genus == "Gadus"')[['vernacular_names', 'shape_type', 'imaging_method']])

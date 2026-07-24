@@ -964,8 +964,8 @@ class ShapeViewerComboApp:
                         g_max_y = max(g_max_y, ly / 2)
                         g_min_z = min(g_min_z, -lz / 2)
                         g_max_z = max(g_max_z, lz / 2)
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        print(f"Error estimate voxel bounds: {e}")
 
                 if len(tx) > 0:
                     g_min_x = min(g_min_x, np.min(tx))

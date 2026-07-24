@@ -7,12 +7,12 @@ import requests
 # Force use of IPV4 as sometimes IPV6 get() calls are very slow to complete
 requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
-d = requests.get(DATASTORE_URI + 'v2/specimens?shape_type=outline')
+d = requests.get(DATASTORE_URI + 'v2/specimens?shape_type=outline', timeout=5)
 
 for spec in d.json():
     print('Converting ' + spec['specimen_name'])
 
-    dd = requests.get(DATASTORE_URI + 'v2/specimen/' + spec['uuid'] + '/data')
+    dd = requests.get(DATASTORE_URI + 'v2/specimen/' + spec['uuid'] + '/data', timeout=5)
 
     specimen = dd.json()
 

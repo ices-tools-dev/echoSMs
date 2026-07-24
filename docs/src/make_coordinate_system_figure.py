@@ -192,7 +192,7 @@ for t in [pv.themes.DocumentTheme(), pv.themes.DarkTheme()]:
     # p.close()
 
     # Modify the generate svg to make the labels properly italic
-    tree = ET.parse(savefile)
+    tree = ET.parse(savefile) # noqa: S314
     root = tree.getroot()
 
     for text in root.iter('{http://www.w3.org/2000/svg}text'):
