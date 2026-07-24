@@ -19,6 +19,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install uv
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          enable-cache: true
+          cache-suffix: ${{ matrix.python-version }}
       - name: Run tests
         run: uv run pytest -v -s
 
@@ -35,6 +38,10 @@ jobs:
         python-version-file: ".python-version"
     - name: Install uv
       uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+      with:
+        enable-cache: true
+        cache-suffix: ${{ matrix.python-version }}
+
     - name: Get history and tags for SCM versioning to work
       run: |
         git branch
