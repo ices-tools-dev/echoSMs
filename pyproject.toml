@@ -97,10 +97,12 @@ preview-features = ["audit-command", "malware-check"]  # silences the preview fe
 testpaths = ['tests',]
 addopts = ["--import-mode=importlib",]
 
+[tool.ruff]
+line-length = 100
+
 [tool.ruff.lint]
-select = ["E", "F", "S",] # also D, UP, B, C90, I, N
+select = ["E", "F", "S",] # also D, UP, B, C90, I, N, or ALL
 ignore = [
-    "E501", # line too long
     "D103", # missing docstring in public function
     "D100", # missing docstring in public module
     "D102", # missing docstring in public method
