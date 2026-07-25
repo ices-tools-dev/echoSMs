@@ -96,6 +96,8 @@ class KRMModel(ScatterModelBase):
             on the line immediately below Eqn (13): _k_b ≈ k at low contrast_.
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------

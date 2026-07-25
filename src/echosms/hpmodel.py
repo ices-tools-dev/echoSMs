@@ -80,6 +80,8 @@ class HPModel(ScatterModelBase):
             straight or uniformly beny cylinder.
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------

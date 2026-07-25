@@ -5,7 +5,7 @@ from echosms import plot_specimen
 
 @pytest.mark.skip(reason="Not implemented yet")
 def test_api_plot(tmp_path):
-    """Test calls to the datastore API"""
+    """Test calls to the datastore API."""
     # Get an outline shape from the echoSMs anatomical datastore
     baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
     baseURI = 'http://127.0.0.1:8000/'

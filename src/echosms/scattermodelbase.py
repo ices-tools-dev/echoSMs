@@ -194,7 +194,7 @@ class ScatterModelBase(abc.ABC):
         ----------
         p :
             Model parameters.
-        name :
+        names :
             Model parameter names to check for.
 
         Raises
@@ -214,7 +214,7 @@ class ScatterModelBase(abc.ABC):
         ----------
         p :
             Model parameters.
-        name :
+        names :
             Model parameter names to validate.
         valid_values :
             List of valid parameter values.
@@ -244,7 +244,7 @@ class ScatterModelBase(abc.ABC):
         ----------
         p :
             Model parameters
-        name :
+        names :
             Model parameter names to validate.
         mask :
             When checking for positive values, only check those where the mask is True.

@@ -59,6 +59,8 @@ class ESModel(ScatterModelBase):
             Density of the material inside the sphere [kg/m³].
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------

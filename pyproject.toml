@@ -107,7 +107,10 @@ ignore = [
     "D100", # missing docstring in public module
     "D102", # missing docstring in public method
     "D101", # missing docstring in public class
+    "D104", # missing docstring in public package
     "D107", # missing docstring in __init__
+    "D203", # blank line before class
+    "D213", # mulitline summary second line
 ]
 
 [tool.ruff.lint.per-file-ignores]

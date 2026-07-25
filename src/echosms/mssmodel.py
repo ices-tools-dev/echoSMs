@@ -88,6 +88,8 @@ class MSSModel(ScatterModelBase):
             Only required for `boundary_type`s that include a fluid shell.
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------

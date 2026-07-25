@@ -44,7 +44,7 @@ class DCMModel(ScatterModelBase):
                             target_c: None | float=None, target_rho: None | float=None,
                             validate_parameters: bool=True,
                             **kwargs) -> float:
-        """Calculate the scatter from a finite cylinder using the modal series deformed cylinder model.
+        """Calculate scatter from a finite cylinder using the modal series deformed cylinder model.
 
         Parameters
         ----------
@@ -71,6 +71,8 @@ class DCMModel(ScatterModelBase):
             Only required for `boundary_type` of ``fluid_filled``.
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------

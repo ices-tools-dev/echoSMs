@@ -63,6 +63,8 @@ class BEMModel(ScatterModelBase):
             The boundary type. Supported types are given in the `boundary_types` class variable.
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------

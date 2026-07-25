@@ -535,7 +535,7 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
 
 @cache
 def names_from_aphia_id(aphia_id: int) -> dict:
-    """Returns species name information.
+    """Return species name information.
 
     Parameters
     ----------

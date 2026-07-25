@@ -104,6 +104,8 @@ class DWBAModel(ScatterModelBase):
             linear domain) is returned. Intended to be used in conjunction with `phase_sd`.
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------

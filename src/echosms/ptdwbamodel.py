@@ -77,6 +77,8 @@ class PTDWBAModel(ScatterModelBase):
             integers in `volume` [m/s].
         validate_parameters :
             Whether to validate the model parameters.
+        kwargs :
+            Additional names arguments are ignored.
 
         Returns
         -------
