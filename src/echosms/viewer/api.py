@@ -13,8 +13,7 @@ BASE_URL = "https://echosms-data-store-app-ogogm.ondigitalocean.app/v2"
 
 
 def fetch_online_shapes_index():
-    """Fetches the list of available shapes from the official datastore index.
-    """
+    """Fetch the list of available shapes from the official datastore index."""
     url = f"{BASE_URL}/specimens"
     try:
         response = requests.get(url, timeout=60)
@@ -41,8 +40,8 @@ def fetch_online_shapes_index():
 
 
 def fetch_shape_data(specimen_id, progress_callback=None):
-    """
-    Fetches detailed anatomical data for a specific specimen.
+    """Fetch detailed anatomical data for a specific specimen.
+
     Supports local caching and large file streaming.
     Returns a dict compatible with ShapeViewerComboApp:
     {'data': json_dict, 'model_type': 'DATASTORE'}

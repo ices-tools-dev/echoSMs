@@ -1356,9 +1356,7 @@ class ShapeViewerComboApp:
         self.canvas.draw()
 
     def set_axes_equal(self, ax):
-        """Make axes of 3D plot have equal scale and force a cubic
-        bounding box.
-        """
+        """Make axes of 3D plot have equal scale and force a cubic bounding box."""
         try:
             # Get current limits
             xlim = ax.get_xlim3d()

@@ -1,4 +1,4 @@
-"""Script to make a figure showing the outline shape coordinates"""
+"""Script to make a figure showing the outline shape coordinates."""
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
