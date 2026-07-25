@@ -24,6 +24,12 @@ We want echoSMs to be a software package that is easy to maintain, understand, u
 - a preference for clear code over computational efficiency
 - minimal dependencies on other software (e.g., other Python packages)
 
+Pre-commit checks can be manually run with:
+
+```bash
+uv run pre-commit run --all-files
+```
+
 ### Style
 
 Contributions of code should follow standardised or community-agreed styles and be provided in (or added to) a structure suitable for packaging and uploading to package libraries. For Python this includes `pip` and/or `conda`, for R this would be `CRAN`, for Matlab this would be a toolbox on the MATLAB File Exchange, etc.
