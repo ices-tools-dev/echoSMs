@@ -35,6 +35,7 @@ class ReferenceModels:
     Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
     Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
     Journal of the Acoustical Society of America 138, 3742–3764. <https://doi.org/10.1121/1.4937607>
+
     """
 
     def __init__(self):
@@ -71,6 +72,7 @@ class ReferenceModels:
         -------
         : iterable of str
             All model names in the ``target definitions.toml`` file.
+
         """
         return [n['name'] for n in self.definitions['target']]
 
@@ -87,6 +89,7 @@ class ReferenceModels:
         :
             The model definitions for the requested model or an empty dict if no model
             with that name.
+
         """
         s = [t for t in self.definitions['target'] if t['name'] == name]
         if not s:

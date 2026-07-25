@@ -56,8 +56,7 @@ class MSSModel(ScatterModelBase):
                             shell_thickness: None | float=None,
                             validate_parameters: bool=True,
                             **kwargs) -> float:
-        """
-        Calculate the scatter using the mss model for one set of parameters.
+        """Calculate the scatter using the mss model for one set of parameters.
 
         Parameters
         ----------
@@ -106,6 +105,7 @@ class MSSModel(ScatterModelBase):
         Comparisons among ten models of acoustic backscattering used in aquatic ecosystem
         research. Journal of the Acoustical Society of America 138, 3742–3764.
         <https://doi.org/10.1121/1.4937607>
+
         """
         if validate_parameters:
             self.validate_parameters(locals())

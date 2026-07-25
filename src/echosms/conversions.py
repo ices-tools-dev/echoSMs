@@ -60,6 +60,7 @@ def dwbaorganism_from_datastore(shape: dict):
 
     If `mass_density_ratio` and `sound_speed_ratio` are present into the shape dict,
     these are used. If not, default values are used by DWBorganism().
+
     """
     from echosms import create_dwba_from_xyza  # here to avoid a circular import
     a = np.array(shape['height']) * 0.5
@@ -151,6 +152,7 @@ def volume_from_datastore(voxels: list):
     Returns
     -------
         A numpy 3D array.
+
     """
     return np.array(voxels)  # TODO - check ordering is correct!
 
@@ -183,6 +185,7 @@ def surface_from_stl(stl_file: str | Path,
     This function uses a call to `load_mesh()` from the `trimesh` library to read the
     .stl file. If there are problems with loading your .stl file, please refer to the
     `trimesh` documentation.
+
     """
     mesh = trimesh.load_mesh(stl_file)
 
@@ -204,8 +207,7 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
                      width: npt.ArrayLike,
                      anatomical_feature: str = "body",
                      boundary: str = 'pressure-release') -> dict:
-    """
-    Convert KRM shape representation to the echoSMs outline shape representation.
+    """Convert KRM shape representation to the echoSMs outline shape representation.
 
     Parameters
     ----------
@@ -229,6 +231,7 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
     Returns
     -------
      An echoSMs outline shape representation.
+
     """
     y = np.zeros(len(x))
     height = np.array(height_u) - np.array(height_l)
@@ -245,8 +248,7 @@ def outline_from_krm(x: npt.ArrayLike, height_u: npt.ArrayLike, height_l: npt.Ar
 
 def outline_from_dwba(x, z, radius, anatomical_feature: str = "body",
                       boundary: str = 'pressure-release') -> dict:
-    """
-    Convert DWBA shape to the echoSMs outline shape representation.
+    """Convert DWBA shape to the echoSMs outline shape representation.
 
     Parameters
     ----------
@@ -303,6 +305,7 @@ def outline_to_surface(outline: dict, num_pts:int = 20, mesh_len:float = 2.0) ->
     algorithm).
 
     The mesh is then remeshed using the pymeshlab isotropic remeshing algorithm.
+
     """
     num_discs = len(outline['x'])
 
@@ -406,6 +409,7 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
     -----
     The conversion projects the surface shape to get dorsal and lateral outlines and then
     slices along the _x_-axis at a configurable resolution to produce the outline shape.
+
     """
     # Put the shape into a trimesh mesh
     v = np.array([shape['x'], shape['y'], shape['z']]).T
@@ -488,6 +492,7 @@ def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
     -------
     :
         The mesh resulting from the merging of the input shapes.
+
     """
     meshes = []
 
@@ -509,7 +514,6 @@ def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
                    centroid_location: tuple[float]|None=None,
                    pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs):
     """Create a triangulated mesh of a spheroid as per the size and orientation."""
-
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)
 
@@ -523,7 +527,6 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
                   bend_radius: float|None=None, bend_direction: str = 'down',
                   **kwargs):
     """Create a triangulated mesh of a cylinder as per the size and orientation."""
-
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)
 
@@ -579,7 +582,6 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
 
 def _transform(pitch: float, roll: float, yaw: float, o: tuple[float]):
     """Calculate a rotation and translation matrix."""
-
     rotation = R.from_euler('ZYX', (yaw, pitch-90, -roll), degrees=True)
     transform = np.eye(4)
     transform[:3, :3] = rotation.as_matrix()

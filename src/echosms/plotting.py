@@ -90,6 +90,7 @@ def plot_shape_outline(shapes: list[dict], axs: list) -> None:
     axs :
         Two matplotlib axes - one for the dorsal view and one for the
         lateral view
+
     """
     for s in shapes:
         c = 'C0' if s['boundary'] == bt.fluid_filled else 'C1'
@@ -129,6 +130,7 @@ def plot_shape_surface(shapes: list[dict], ax):
         Surface shapes to be plotted
     ax :
         A matplotlib axis.
+
     """
     for s in shapes:
         c = 'C0' if s['boundary'] == bt.fluid_filled else 'C1'
@@ -205,6 +207,7 @@ def plot_shape_categorised_voxels(s: list[dict], title: str=''):
         The categorised voxel shape data structure as per the echoSMs datastore.
     title :
         Title for the plot.
+
     """
     d = np.array(s['categories'])
     voxel_size = np.array(s['voxel_size'])
@@ -252,6 +255,7 @@ def plot_shape_geometric(shapes: list[dict], ax):
         Geometric shapes to be plotted
     ax :
         A matplotlib axis.
+
     """
     mesh = mesh_from_geometric(shapes)
     _plot_triangulated_surface(ax, mesh.vertices[:,0]*1e3,

@@ -39,8 +39,7 @@ class ESModel(ScatterModelBase):
                             target_longitudinal_c: float, target_transverse_c: float,
                             target_rho: float, validate_parameters: bool=True,
                             **kwargs) -> float:
-        """
-        Calculate the backscatter from an elastic sphere for one set of parameters.
+        """Calculate the backscatter from an elastic sphere for one set of parameters.
 
         Parameters
         ----------
@@ -75,6 +74,7 @@ class ESModel(ScatterModelBase):
         MacLennan, D. N. (1981). The Theory of Solid Spheres as Sonar Calibration Targets.
         Scottish Fisheries Research Report Number 22. Department of Agriculture and Fisheries
         for Scotland. <https://archive.org/details/scottish-fisheries-research-reports_1981_22>
+
         """
         if validate_parameters:
             self.validate_parameters(locals())

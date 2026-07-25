@@ -58,8 +58,7 @@ class KRMModel(ScatterModelBase):
                             f: float, organism: KRMorganism, high_ka_medium: str='body',
                             low_ka_medium: str='body',
                             validate_parameters: bool=True, **kwargs) -> float:
-        """
-        Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
+        """Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
 
         Warning
         --------
@@ -130,6 +129,7 @@ class KRMModel(ScatterModelBase):
         Horne, J. K., & J. M. Jech. (1999). Multi–frequency estimates of fish abundance:
         constraints of rather high frequencies. ICES Journal of Marine Science, 56 (2), 184–199.
         <https://doi.org/10.1006/jmsc.1998.0432>
+
         """
         if validate_parameters:
             self.validate_parameters(locals())
@@ -204,6 +204,7 @@ class KRMModel(ScatterModelBase):
         -------
         :
             The scattering length [m].
+
         """
         # Note: equation references in this function are to Clay (1992)
         if h == 0.0:
@@ -250,6 +251,7 @@ class KRMModel(ScatterModelBase):
         -------
         :
             The scattering length [m].
+
         """
         # Not low-ka model
         # Reflection coefficient: between water and body
@@ -299,6 +301,7 @@ class KRMModel(ScatterModelBase):
         -------
         :
             The scattering length [m].
+
         """
         a = (shape.w[0:-1] + shape.w[1:])/4  # Eqn (12)
 

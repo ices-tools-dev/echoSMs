@@ -1,5 +1,4 @@
-"""A class that provides an implementation of the classical boundary element method for pressure
-release targets."""
+"""Implements the classical boundary element method for pressure release targets."""
 
 from typing import Any
 from .scattermodelbase import ScatterModelBase
@@ -40,8 +39,7 @@ class BEMModel(ScatterModelBase):
     def calculate_ts_single(self, medium_c: float, theta: float, phi: float,
                             f: float, mesh: Any, boundary_type: bt,
                             validate_parameters: bool=True, **kwargs) -> float:
-        """
-        Calculate the scatter using the boundary element method for one set of parameters.
+        """Calculate the scatter using the boundary element method for one set of parameters.
 
         Parameters
         ----------
@@ -76,8 +74,8 @@ class BEMModel(ScatterModelBase):
         This models implements the classical BEM for pressure release targets
         using with k/4 diagonal regularization. The code
         was kindly provided by Marek Moszyński.
-        """
 
+        """
         # Note: th, ph - incident wave direction angles in radians
 
         th = -theta*pi/180

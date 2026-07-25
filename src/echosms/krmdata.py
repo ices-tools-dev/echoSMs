@@ -29,6 +29,7 @@ class KRMshape():
         Sound speed in the shape [m/s].
     rho :
         Density of the shape material [kg/m³].
+
     """
 
     boundary: bt
@@ -46,6 +47,7 @@ class KRMshape():
         -------
         :
             The volume of the shape [m³].
+
         """
         thickness = np.diff(self.x)
         thickness = np.append(thickness, thickness[1])
@@ -58,6 +60,7 @@ class KRMshape():
         -------
         :
             The length of the shape [m].
+
         """
         return self.x[-1] - self.x[0]
 
@@ -82,6 +85,7 @@ class KRMorganism():
         The length of the organism (m)
     vernacular_name :
         A vernacular name of the organism
+
     """
 
     name: str

@@ -37,6 +37,7 @@ def create_dwba_spheroid(major_radius: float, minor_radius: float, spacing: floa
         the _x_, _y_, and _z_ components of the tangent vector.
     a : iterable
         The radii [m] of the discs that define the spheroid.
+
     """
     v = np.linspace(0, np.pi, int(round(2*major_radius/spacing)))
     a = minor_radius*np.sin(v)  # radius at points along the spheroid
@@ -77,6 +78,7 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
         the _x_, _y_, and _z_ components of the tangent vector.
     a : iterable
         The radii [m] of the discs that define the spheroid.
+
     """
     pos = np.linspace(0, length, int(round(length/spacing)))
     rv_pos = [np.array([x, 0, 0]) for x in pos]
@@ -151,6 +153,7 @@ def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
     shape = create_dwba_from_xyza(s['x'], s['y'], s['z'], s['a'], name=filepath, g=1.05, h=1.05)
 
     ```
+
     """
     # Estimate rv_tan from a spline through (x,y).
     tck, u = splprep([x, y, z])
@@ -194,6 +197,7 @@ class DWBAorganism():
         the points given by (_x_, _y_, _z_). Each vector has three values corresponding to
         the _x_, _y_, and _z_ components of the tangent vector [m]. If not given, unit
         vectors pointing along the positive _x_-axis are used.
+
     """
 
     rv_pos: np.ndarray

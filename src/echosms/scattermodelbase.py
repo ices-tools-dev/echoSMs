@@ -40,6 +40,7 @@ class ScatterModelBase(abc.ABC):
             The model parameters that are not expanded into Pandas DataFrame columns or
             Xarray DataArray coordinates. They will instead end up as a dict in the DataFrame or
             DataArray `attrs` attribute.
+
         """
         self.long_name = ''
         self.short_name = ''
@@ -183,6 +184,7 @@ class ScatterModelBase(abc.ABC):
             If any of the model parameters are invalid.
         KeyError
             If any required model parameters are not present.
+
         """
 
     def _present(self, p: dict, names: list):
@@ -199,6 +201,7 @@ class ScatterModelBase(abc.ABC):
         ------
         KeyError
             If any required model parameters are not present.
+
         """
         for name in names:
             if name not in p:
@@ -222,6 +225,7 @@ class ScatterModelBase(abc.ABC):
             If any of the model parameters are invalid.
         KeyError
             If any required model parameters are not present.
+
         """
         # The values in p can be any iterable or scalar variable. This function has to cope
         # with all of these. A simple way to deal with this is to use np.atleast_1d() to
@@ -251,6 +255,7 @@ class ScatterModelBase(abc.ABC):
             If any of the model parameters are invalid.
         KeyError
             If any required model parameters are not present.
+
         """
         # The values in p can be any iterable or scalar variable. This function has to cope
         # with all of these. A simple way to deal with this is to use np.atleast_1d() to

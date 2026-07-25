@@ -20,6 +20,7 @@ class BenchmarkData:
     Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
     Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
     Journal of the Acoustical Society of America 138, 3742-3764. <https://doi.org/10.1121/1.4937607>
+
     """
 
     f_rename = {'Sphere_WeaklyScattering': 'weakly scattering sphere',
@@ -92,6 +93,7 @@ class BenchmarkData:
         -------
         :
             List of model names.
+
         """
         return self.freq_dataset.columns.values.tolist()
 
@@ -107,6 +109,7 @@ class BenchmarkData:
         -------
         :
             Tuple containing the frequencies (Hz) and TS (dB) for the requested benchmark model.
+
         """
         if name not in self.freq_names():
             raise ValueError(f'The requested model ({name}) '
@@ -125,6 +128,7 @@ class BenchmarkData:
         -------
         :
             Tuple containing the angles (°) and TS (dB) for the requested benchmark model.
+
         """
         if name not in self.angle_names():
             raise ValueError(f'The requested model ({name}) is not in the angle benchmark dataset.')
@@ -137,6 +141,7 @@ class BenchmarkData:
         -------
         :
             Dataframe containing the benchmark data.
+
         """
         return self.angle_dataset
 
@@ -147,5 +152,6 @@ class BenchmarkData:
         -------
         :
             Dataframe containing the benchmark data.
+
         """
         return self.freq_dataset

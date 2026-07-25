@@ -37,8 +37,7 @@ class KAModel(ScatterModelBase):
     def calculate_ts_single(self, medium_c: float, theta: float, phi: float, f: float,
                             mesh: Any, boundary_type: bt,
                             validate_parameters: bool=True, **kwargs) -> float:
-        """
-        Calculate the scatter using the ka model for one set of parameters.
+        """Calculate the scatter using the ka model for one set of parameters.
 
         Parameters
         ----------

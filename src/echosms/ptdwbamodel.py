@@ -98,6 +98,7 @@ class PTDWBAModel(ScatterModelBase):
         wave Born approximation to predict scattering by inhomogeneous objects:
         Application to squid. The Journal of the Acoustical Society of America,
         125(1), 73-88. <https://doi.org/10.1121/1.3021298>
+
         """
         if validate_parameters:
             self.validate_parameters(locals())

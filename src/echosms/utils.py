@@ -87,6 +87,7 @@ def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)
     when calibrating an echosounder using a sphere. The difference between
     the theoretical and measured can be used to calculate the calibration gain for an
     echosounder (when the sphere is on-axis).
+
     """
     if eba > 0.0:
         raise ValueError('A positive eba value is not supported.')
@@ -109,6 +110,7 @@ def Neumann(m: int) -> int:
     -------
     :
         The Neumann number.
+
     """
     if m == 0:
         return 1
@@ -130,6 +132,7 @@ def wavenumber(c: float, f: float) -> float:
     -------
     :
         The acoustic wavenumber [m⁻¹].
+
     """
     return 2*π*f/c
 
@@ -149,6 +152,7 @@ def wavelength(c: float, f: float) -> float:
     -------
     :
         The acoustic wavelength [m].
+
     """
     return c/f
 
@@ -186,6 +190,7 @@ def h1(n: int, z: float, derivative=False) -> complex:
     [1] <https://dlmf.nist.gov/10.47.E10>
 
     [2] <https://dlmf.nist.gov/10.51.E2>
+
     """
     if n < 0:
         raise ValueError('Negative n values are not supported for spherical Hankel functions.')
@@ -230,6 +235,7 @@ def split_dict(d: dict, s: list) -> tuple[dict, dict]:
     : tuple(dict, dict)
         The `input` dict split into two dicts based on the keys in `s`. The first tuple item
         contains the items that do not have keys in `s`.
+
     """
     contains = {k: v for k, v in d.items() if k in s}
     ncontains = {k: v for k, v in d.items() if k not in s}
@@ -321,6 +327,7 @@ def as_dict(params: dict | pd.DataFrame | xr.DataArray) -> dict:
     -------
     :
         A dict containing the model parameters.
+
     """
     if isinstance(params, dict):
         return params
@@ -381,6 +388,7 @@ def pro_ang1(m: int, n: int, c: float, eta: float, norm=False) -> tuple[float, f
     Van Buren, A. L., & Boisvert, J. E. (2004). Improved Calculation of Prolate Spheroidal
     Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
+
     """
     if m < 0:
         raise ValueError('The m parameter must be positive.')
@@ -443,6 +451,7 @@ def pro_rad1(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     Van Buren, A. L., & Boisvert, J. E. (2004). Improved Calculation of Prolate Spheroidal
     Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
+
     """
     if m < 0:
         raise ValueError('The m parameter must be positive.')
@@ -498,6 +507,7 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     Van Buren, A. L., & Boisvert, J. E. (2004). Improved Calculation of Prolate Spheroidal
     Radial Functions of the Second Kind and Their First Derivatives. Quarterly of Applied
     Mathematics, 62(3), 493-507. <https://doi.org/10.1090/qam/2086042>
+
     """
     if m < 0:
         raise ValueError('The m parameter must be positive.')
@@ -542,8 +552,8 @@ def names_from_aphia_id(aphia_id: int) -> dict:
     Notes
     -----
     Queries the WoRMS web service and caches the results to reduce queries to WoRMS.
-    """
 
+    """
     if not aphia_id:
         return {}
 
@@ -582,7 +592,6 @@ def datastore_schema(schema_file: Path | None = None) -> dict:
         or an empty string if no schema was found.
 
     """
-
     if schema_file is None:
         s = requests.get(SCHEMA_URL, timeout=5)
         if s.status_code == 200:

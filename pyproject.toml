@@ -101,7 +101,7 @@ addopts = ["--import-mode=importlib",]
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "S",] # also D, UP, B, C90, I, N, or ALL
+select = ["E", "F", "S", "D"] # also D, UP, B, C90, I, N, or ALL
 ignore = [
     "D103", # missing docstring in public function
     "D100", # missing docstring in public module

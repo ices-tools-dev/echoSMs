@@ -40,8 +40,7 @@ class HPModel(ScatterModelBase):
                             L: None | float=None, rho_c: None | float=None,
                             irregular: bool=False,
                             validate_parameters: bool=True, **kwargs) -> float:
-        """
-        Calculate the backscatter using the high pass model for one set of parameters.
+        """Calculate the backscatter using the high pass model for one set of parameters.
 
         Parameters
         ----------
@@ -109,6 +108,7 @@ class HPModel(ScatterModelBase):
         by spherical and elongated objects. The Journal of the Acoustical Society of
         America, 86(4), 1499-1510.
         <https://doi.org/10.1121/1.398711>
+
         """
         if validate_parameters:
             self.validate_parameters(locals())

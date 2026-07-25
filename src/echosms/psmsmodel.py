@@ -9,10 +9,11 @@ from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict, b
 class PSMSModel(ScatterModelBase):
     """Prolate spheroidal modal series (PSMS) scattering model.
 
-    Note
+    Note:
     ----
     The fluid filled boundary type implementation is under development and is of limited use
     at the moment.
+
     """
 
     def __init__(self):
@@ -92,6 +93,7 @@ class PSMSModel(ScatterModelBase):
         Furusawa, M., Miyanohana, Y., Ariji, M., and Sawada, Y. (1994).
             “Prediction of krill target strength by liquid prolate spheroid
             model,” Fish. Sci., 60, 261-265. <https://doi.org/10.2331/FISHSCI.60.261>
+
         """
         if validate_parameters:
             self.validate_parameters(locals())
