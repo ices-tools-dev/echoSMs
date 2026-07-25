@@ -15,16 +15,17 @@ EchoSMs provides acoustic scattering models for fisheries and plankton acoustic 
 
 ## Install
 
-EchoSMs is available on the python Package Index as [echosms](https://pypi.org/project/echosms/) and will be available on conda-forge in the future.
+EchoSMs is available on the python Package Index as [echosms](https://pypi.org/project/echosms/). To install it:
 
-To install the core library:
+
 ```bash
-pip install echosms
+uv add echosms
 ```
 
-To install with the optional GUI shape viewer:
+or with pip:
+
 ```bash
-pip install echosms[viewer]
+pip install echosms
 ```
 
 ## Documentation
@@ -33,7 +34,13 @@ EchoSMs documentation is available [here](https://ices-tools-dev.github.io/echoS
 
 ## Viewer
 
-EchoSMs includes a GUI tool for visualizing organism shapes. If installed with the `[viewer]` option, you can launch it using:
+EchoSMs includes a tool for visualizing organism shapes. If using uv, start it with:
+
+```bash
+uv run echosms-view
+```
+
+or if installed with pip:
 
 ```bash
 echosms-view
