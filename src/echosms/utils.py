@@ -242,7 +242,7 @@ def split_dict(d: dict, s: list) -> tuple[dict, dict]:
     return ncontains, contains
 
 
-def as_dataarray(params: dict, no_expand: list = []) -> xr.DataArray:
+def as_dataarray(params: dict, no_expand: list|None = None) -> xr.DataArray:
     """Convert model parameters from dict form to a Xarray DataArray.
 
     Parameters
@@ -264,6 +264,9 @@ def as_dataarray(params: dict, no_expand: list = []) -> xr.DataArray:
         dimension names are the dict keys, and the coordinate variables are the dict values.
 
     """
+    if no_expand is None:
+        no_expand = []
+
     expand, nexpand = split_dict(params, no_expand)
 
     # Convert scalars to iterables so xarray is happy
@@ -277,7 +280,7 @@ def as_dataarray(params: dict, no_expand: list = []) -> xr.DataArray:
                                'parameters': nexpand})
 
 
-def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
+def as_dataframe(params: dict, no_expand: list|None = None) -> pd.DataFrame:
     """Convert model parameters from dict form to a Pandas DataFrame.
 
     Parameters
@@ -298,6 +301,9 @@ def as_dataframe(params: dict, no_expand: list = []) -> pd.DataFrame:
         non-expandable items.
 
     """
+    if no_expand is None:
+        no_expand = []
+
     expand, nexpand = split_dict(params, no_expand)
 
     # Use meshgrid to do the Cartesian product then create a Pandas DataFrame from that, having

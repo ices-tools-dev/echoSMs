@@ -101,7 +101,7 @@ addopts = ["--import-mode=importlib",]
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "S", "D"] # also D, UP, B, C90, I, N, or ALL
+select = ["E", "W", "F", "S", "D"] # also D, UP, B, C90, I, N, or ALL
 ignore = [
     "D103", # missing docstring in public function
     "D100", # missing docstring in public module
@@ -111,6 +111,24 @@ ignore = [
     "D107", # missing docstring in __init__
     "D203", # blank line before class
     "D213", # mulitline summary second line
+    "Q000", # single quotes found but double quotes preferred
+    "COM812", # trailing comma missing
+    # These are temporary ignores when select = ["ALL"]
+    "EM102",
+    "FBT001",
+    "FBT002",
+    "ANN001",
+    "ANN201",
+    "PLC0415",
+    "PT011",
+    "I001",
+    "N806",
+    "N802",
+    "T201",
+
+]
+extend-select = [
+    "B006", # do not use mutable structures for argument defaults
 ]
 
 [tool.ruff.lint.per-file-ignores]
