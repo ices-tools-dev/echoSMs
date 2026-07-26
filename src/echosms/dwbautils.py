@@ -39,7 +39,7 @@ def create_dwba_spheroid(major_radius: float, minor_radius: float, spacing: floa
         The radii [m] of the discs that define the spheroid.
 
     """
-    v = np.linspace(0, np.pi, int(round(2*major_radius/spacing)))
+    v = np.linspace(0, np.pi, round(2*major_radius/spacing))
     a = minor_radius*np.sin(v)  # radius at points along the spheroid
     x = major_radius-major_radius*np.cos(v)  # shift so that origin is at one end
 
@@ -80,7 +80,7 @@ def create_dwba_cylinder(radius: float, length: float, spacing: float = 0.0001):
         The radii [m] of the discs that define the spheroid.
 
     """
-    pos = np.linspace(0, length, int(round(length/spacing)))
+    pos = np.linspace(0, length, round(length/spacing))
     rv_pos = [np.array([x, 0, 0]) for x in pos]
     rv_tan = [np.array([1, 0, 0])] * len(pos)
     a = [radius] * len(pos)
@@ -172,7 +172,7 @@ def create_dwba_from_xyza(x, y, z, a, name: str, g: float = 1.0, h: float = 1.0,
 
 
 @dataclass
-class DWBAorganism():
+class DWBAorganism:
     """DWBA shape and property class to represent an organism.
 
     Attributes
@@ -216,7 +216,7 @@ class DWBAorganism():
     def plot(self):
         """Do a simple plot of the DWBA model data."""
         import matplotlib.pyplot as plt
-        fig, axs = plt.subplots(2, 1, layout='compressed')
+        _, axs = plt.subplots(2, 1, layout='compressed')
         x = self.rv_pos[:, 0]*1e3
         outline1 = (-self.rv_pos[:, 1] + self.a)*1e3
         outline2 = (-self.rv_pos[:, 1] - self.a)*1e3
@@ -244,13 +244,13 @@ class DWBAorganism():
         plt.show()
 
 
-class DWBAdata():
+class DWBAdata:
     """Example datasets for the SDWBA and DWBA models."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Load in the shapes data
         self.file = Path(__file__).parent/Path('resources')/Path('DWBA_shapes.toml')
-        with open(self.file, 'rb') as f:
+        with Path.open(self.file, 'rb') as f:
             try:
                 shapes = tomllib.load(f)
             except tomllib.TOMLDecodeError as e:
@@ -273,7 +273,7 @@ class DWBAdata():
 
             organism = DWBAorganism(rv_pos, np.array(s['a']), np.array(s['g']), np.array(s['h']),
                                     s['name'], s.get('source', ''), s.get('note', ''), rv_tan,
-                                    s['aphiaid'], s['length'], s['vernacular'],)
+                                    s['aphiaid'], s['length'], s['vernacular'])
             self.dwba_models[s['name']] = organism
 
     def names(self):

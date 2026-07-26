@@ -18,14 +18,14 @@ def rm():
 
 ###########################################################
 # MSSModel
-@pytest.mark.parametrize("reference_model, f, ts",
+@pytest.mark.parametrize(('reference_model', 'f', 'ts'),
                     [('fixed rigid sphere', 38e3, -49.0894),
                      ('pressure release sphere', 38e3, -44.9979),
                      ('gas filled sphere', 38e3, -44.9889),
                      ('weakly scattering sphere', 38e3, -94.1345),
                      ('spherical fluid shell with pressure release interior', 38e3, -45.7530),
                      ('spherical fluid shell with gas interior', 38e3, -45.7758),
-                     ('spherical fluid shell with weakly scattering interior', 38e3, -88.2482),])
+                     ('spherical fluid shell with weakly scattering interior', 38e3, -88.2482)])
 def test_mssmodel(rm, reference_model, f, ts):
     mod = echosms.MSSModel()
     m = rm.parameters(reference_model)
@@ -36,11 +36,11 @@ def test_mssmodel(rm, reference_model, f, ts):
 
 ###########################################################
 # DCMModel
-@pytest.mark.parametrize("reference_model, f, theta, ts",
+@pytest.mark.parametrize(('reference_model', 'f', 'theta', 'ts'),
                          [('fixed rigid finite cylinder', 38e3, 90, -33.6223),
                           ('pressure release finite cylinder', 38e3, 90, -31.5363),
                           ('gas filled finite cylinder', 38e3, 90, -31.5626),
-                          ('weakly scattering finite cylinder', 38e3, 90, -84.8007),])
+                          ('weakly scattering finite cylinder', 38e3, 90, -84.8007)])
 def test_dcmmodel(rm, reference_model, f, theta, ts):
     mod = echosms.DCMModel()
     m = rm.parameters(reference_model)
@@ -52,7 +52,7 @@ def test_dcmmodel(rm, reference_model, f, theta, ts):
 
 ###########################################################
 # PSMSModel
-@pytest.mark.parametrize("reference_model, f, theta, ts",
+@pytest.mark.parametrize(('reference_model', 'f', 'theta', 'ts'),
                          [('fixed rigid prolate spheroid', 38e3, 90, -30.0710),
                           ('pressure release prolate spheroid', 38e3, 90, -28.6241),
                           ('gas filled prolate spheroid', 38e3, 90, -28.6236),
@@ -68,9 +68,9 @@ def test_psmsmodel(rm, reference_model, f, theta, ts):
 
 ###########################################################
 # ESModel
-@pytest.mark.parametrize("reference_model, f, ts",
+@pytest.mark.parametrize(('reference_model', 'f', 'ts'),
                          [('WC38.1 calibration sphere', 38e3, -42.3297),
-                          ('Cu60 calibration sphere', 38e3, -33.5507),])
+                          ('Cu60 calibration sphere', 38e3, -33.5507)])
 def test_esmodel(rm, reference_model, f, ts):
     mod = echosms.ESModel()
     m = rm.parameters(reference_model)
@@ -81,10 +81,10 @@ def test_esmodel(rm, reference_model, f, ts):
 
 ###########################################################
 # KRMModel
-@pytest.mark.parametrize("fname, f, ts",
+@pytest.mark.parametrize(('fname', 'f', 'ts'),
                          [('Sardine', 38e3, -46.6249),
-                          ('Cod', 38e3, -34.1059),])
-def test_krmmodel(rm, fname, f, ts):
+                          ('Cod', 38e3, -34.1059)])
+def test_krmmodel(fname, f, ts):
     fish = echosms.KRMdata().model(fname)
     m = {'medium_c': 1490, 'medium_rho': 1030, 'organism': fish, 'theta': 90,
          'f': f, 'high_ka_medium': 'water', 'low_ka_medium': 'water'}
@@ -125,10 +125,10 @@ def test_bemmodel(rm):
 
 ###########################################################
 # HPModel
-@pytest.mark.parametrize('model, f, ts',
+@pytest.mark.parametrize(('model', 'f', 'ts'),
                          [('fixed-rigid', 38e3, -46.2576),
                           ('elastic', 38e3, -58.1926),
-                          ('fluid-filled', 38e3, -94.4968),])
+                          ('fluid-filled', 38e3, -94.4968)])
 def test_hpmodel(model, f, ts):
     mod = echosms.HPModel()
     p = {'boundary_type': model, 'shape': 'sphere', 'medium_c': 1500, 'a': 0.01, 'f': f}
@@ -173,7 +173,7 @@ def test_ptdwbamodel(rm):
 
 ###########################################################
 # DWBAModel
-@pytest.mark.parametrize("reference_model, f, theta, ts",
+@pytest.mark.parametrize(('reference_model', 'f', 'theta', 'ts'),
                          [('weakly scattering sphere', 38e3, 90, -94.0910),
                           ('weakly scattering prolate spheroid', 38e3, 90, -77.1887),
                           ('weakly scattering finite cylinder', 38e3, 90, -84.7720)])

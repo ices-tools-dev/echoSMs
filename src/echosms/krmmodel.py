@@ -27,7 +27,7 @@ def _deltau(x: float, theta: float) -> float:
 class KRMModel(ScatterModelBase):
     """Kirchhoff ray mode (KRM) scattering model."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'Kirchhoff ray mode'
         self.short_name = 'krm'
@@ -36,6 +36,8 @@ class KRMModel(ScatterModelBase):
         self.shapes = ['closed surfaces']
         self.max_ka = 20  # [1]
         self.no_expand_parameters = ['bodies']
+        self.theta_min = 65 # [deg]
+        self.theta_max = 115 # [deg]
 
     def validate_parameters(self, params):
         """Validate the model parameters.
@@ -46,7 +48,8 @@ class KRMModel(ScatterModelBase):
         p = as_dict(params)
         super()._present_and_positive(p, ['medium_c', 'f'])
 
-        if np.any(np.atleast_1d(p['theta']) < 65) or np.any(np.atleast_1d(p['theta']) > 115):
+        if np.any(np.atleast_1d(p['theta']) < self.theta_min) or\
+             np.any(np.atleast_1d(p['theta']) > self.theta_max):
             raise KeyError('Incidence angle(s) (theta) are outside 65 to 115°')
 
         # k = wavenumber(p['medium_c'], p['f'])
@@ -57,7 +60,7 @@ class KRMModel(ScatterModelBase):
     def calculate_ts_single(self, medium_c: float, medium_rho: float, theta: float,
                             f: float, organism: KRMorganism, high_ka_medium: str='body',
                             low_ka_medium: str='body',
-                            validate_parameters: bool=True, **kwargs) -> float:
+                            validate_parameters: bool=True, **kwargs: dict) -> float:
         """Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
 
         Warning
@@ -121,15 +124,15 @@ class KRMModel(ScatterModelBase):
         ----------
         Clay, C. S. (1992). Composite ray-mode approximations for backscattered sound from
         gas-filled cylinders and swimbladders. The Journal of the Acoustical Society of
-        America, 92(4), 2173–2180.
+        America, 92(4), 2173-2180.
         <https://doi.org/10.1121/1.405211>
 
         Clay, C. S., & Horne, J. K. (1994). Acoustic models of fish: The Atlantic cod
-        (_Gadus morhua_). The Journal of the Acoustical Society of America, 96(3), 1661–1668.
+        (_Gadus morhua_). The Journal of the Acoustical Society of America, 96(3), 1661-1668.
         <https://doi.org/10.1121/1.410245>
 
-        Horne, J. K., & J. M. Jech. (1999). Multi–frequency estimates of fish abundance:
-        constraints of rather high frequencies. ICES Journal of Marine Science, 56 (2), 184–199.
+        Horne, J. K., & J. M. Jech. (1999). Multi-frequency estimates of fish abundance:
+        constraints of rather high frequencies. ICES Journal of Marine Science, 56 (2), 184-199.
         <https://doi.org/10.1006/jmsc.1998.0432>
 
         """
@@ -162,7 +165,7 @@ class KRMModel(ScatterModelBase):
             a_e = sqrt(incl.volume() / (pi * incl.length()))
 
             # Choose which modelling approach to use
-            if k*a_e < 0.15:  # Do the mode solution for the inclusion
+            if k*a_e < 0.15:  # Do the mode solution for the inclusion # noqa: PLR2004
                 if low_ka_medium != 'body':
                     gp = incl.rho / medium_rho
                     hp = incl.c / medium_c
@@ -181,7 +184,7 @@ class KRMModel(ScatterModelBase):
 
         return 20*log10(abs(body_sl + sum(sl)))
 
-    def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float,
+    def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float, # noqa: N803
                        theta: float) -> float:
         """Backscatter from a soft shape at low ka.
 
@@ -224,12 +227,10 @@ class KRMModel(ScatterModelBase):
 
         delta = k*L_e*cos(theta)  # Eqn (4)
 
-        S_M = (exp(1j*(chi - pi/4)) * L_e)/pi * sin(delta)/delta * b_0  # Eqn (15)
+        return (exp(1j*(chi - pi/4)) * L_e)/pi * sin(delta)/delta * b_0  # Eqn (15)
 
-        return S_M
-
-    def _soft_KA(self, shape: KRMshape, k: float, k_b: float, R_bc: float,
-                 TwbTbw: float, theta: float) -> float:
+    def _soft_KA(self, shape: KRMshape, k: float, k_b: float, R_bc: float, # noqa: N803
+                 TwbTbw: float, theta: float) -> float: # noqa: N803
         """Backscatter from a soft object using the Kirchhoff approximation.
 
         Parameters
@@ -271,14 +272,12 @@ class KRMModel(ScatterModelBase):
         deltau = _deltau(shape.x, theta)
 
         # This is Eqn (11)
-        soft_sl = -1j*R_bc*TwbTbw/(2*sqrt(pi))\
+        return -1j*R_bc*TwbTbw/(2*sqrt(pi))\
             * np.sum(A_sb * (np.sqrt((k_b*a+1)*sin(theta))
                              * np.exp(-1j*(2*k_b*v+psi_p))*deltau))
 
-        return soft_sl
-
-    def _fluid_KA(self, shape: KRMshape, k: float, k_b: float, R_wb: float,
-                  TwbTbw: float, theta: float):
+    def _fluid_KA(self, shape: KRMshape, k: float, k_b: float, R_wb: float, # noqa: N803
+                  TwbTbw: float, theta: float) -> float: # noqa: N803
         """Backscatter from a fluid object using the Kirchhoff approximation.
 
         Parameters
@@ -318,8 +317,6 @@ class KRMModel(ScatterModelBase):
         v_L = (v_bL[0:-1] + v_bL[1:])/2
 
         # Eqn (16)
-        fluid_sl = -1j*R_wb/(2*sqrt(pi))\
+        return -1j*R_wb/(2*sqrt(pi))\
             * np.sum(np.sqrt(k*a) * _deltau(shape.x, theta)
                      * (np.exp(-2j*k*v_U) - TwbTbw*np.exp(-2j*k*v_U + 2j*k_b*(v_U-v_L) + 1j*psi_b)))
-
-        return fluid_sl

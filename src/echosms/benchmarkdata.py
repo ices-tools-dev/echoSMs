@@ -52,7 +52,7 @@ class BenchmarkData:
                 'ProlateSpheroid_WeaklyScattering': 'weakly scattering prolate spheroid',
                 'Angle_deg': 'angle (deg)'}
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         data_directory = Path(__file__).parent/Path('resources')/Path('BenchMark_Data')
 

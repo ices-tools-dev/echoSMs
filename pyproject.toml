@@ -102,6 +102,7 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "S", "D"] # also D, UP, B, C90, I, N, or ALL
+# select = ['ALL']
 ignore = [
     "D103", # missing docstring in public function
     "D100", # missing docstring in public module
@@ -125,6 +126,16 @@ ignore = [
     "N806",
     "N802",
     "T201",
+    "CPY001",
+    "INP001",
+    "EM101",
+    "TRY003",
+    "ERA001",
+    "PLR0912", # too many branches
+    "C901", # too complex
+    "PLR0917", # too many positional arguments
+    "PLR0913", # too many arguments in function definition
+    "PLR0915", # too many statements
 
 ]
 extend-select = [

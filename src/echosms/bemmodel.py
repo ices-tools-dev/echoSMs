@@ -15,7 +15,7 @@ class BEMModel(ScatterModelBase):
     This class calculates acoustic scatter arbitrary surfaces.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'Boundary Element Method'
         self.short_name = 'bem'
@@ -38,7 +38,7 @@ class BEMModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, theta: float, phi: float,
                             f: float, mesh: Any, boundary_type: bt,
-                            validate_parameters: bool=True, **kwargs) -> float:
+                            validate_parameters: bool=True, **kwargs: dict) -> float:
         """Calculate the scatter using the boundary element method for one set of parameters.
 
         Parameters

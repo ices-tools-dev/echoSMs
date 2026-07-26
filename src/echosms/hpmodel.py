@@ -8,7 +8,7 @@ from .scattermodelbase import ScatterModelBase
 class HPModel(ScatterModelBase):
     """High-pass (HP) scattering model."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'high pass'
         self.short_name = 'hp'
@@ -34,12 +34,12 @@ class HPModel(ScatterModelBase):
                              ', '.join(self.boundary_types))
 
     def calculate_ts_single(self, shape: str, medium_c: float, a: float, f: float,
-                            boundary_type: bt, medium_rho: None | float=None,
-                            target_c: None | float=None, target_rho: None | float=None,
-                            theta: None | float=None,
-                            L: None | float=None, rho_c: None | float=None,
+                            boundary_type: bt, medium_rho: float|None=None,
+                            target_c: float|None=None, target_rho: float|None=None,
+                            theta: float|None=None,
+                            L: float|None=None, rho_c: float|None=None,  # noqa: N803
                             irregular: bool=False,
-                            validate_parameters: bool=True, **kwargs) -> float:
+                            validate_parameters: bool=True, **kwargs: dict) -> float:
         """Calculate the backscatter using the high pass model for one set of parameters.
 
         Parameters
@@ -128,7 +128,7 @@ class HPModel(ScatterModelBase):
         G = 1.0
         F = 1.0
 
-        def alpha_pic(g, h):
+        def alpha_pic(g, h) -> float:
             return (1-g*h*h)/(2*g*h*h) + (1-g)/(1+g)
 
         match shape:

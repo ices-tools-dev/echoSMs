@@ -34,16 +34,16 @@ class ReferenceModels:
     Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
     Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
     Comparisons among ten models of acoustic backscattering used in aquatic ecosystem research.
-    Journal of the Acoustical Society of America 138, 3742–3764. <https://doi.org/10.1121/1.4937607>
+    Journal of the Acoustical Society of America 138, 3742-3764. <https://doi.org/10.1121/1.4937607>
 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.defs_filename = Path(__file__).parent/Path('resources')/Path('target definitions.toml')
 
         self.definitions = []
 
-        with open(self.defs_filename, 'rb') as f:
+        with Path.open(self.defs_filename, 'rb') as f:
             try:
                 self.definitions = tomllib.load(f)
             except tomllib.TOMLDecodeError as e:

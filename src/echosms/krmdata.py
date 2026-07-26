@@ -1,7 +1,6 @@
 """Classes to help store KRM model data."""
 
 from pathlib import Path
-from typing import List
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass
@@ -10,7 +9,7 @@ import tomllib
 
 
 @dataclass
-class KRMshape():
+class KRMshape:
     """KRM shape and property class.
 
     Attributes
@@ -35,8 +34,8 @@ class KRMshape():
     boundary: bt
     x: np.ndarray
     w: np.ndarray
-    z_U: np.ndarray
-    z_L: np.ndarray
+    z_U: np.ndarray # noqa: N815
+    z_L: np.ndarray # noqa: N815
     c: float
     rho: float
 
@@ -66,7 +65,7 @@ class KRMshape():
 
 
 @dataclass
-class KRMorganism():
+class KRMorganism:
     """KRM body and inclusion shape(s).
 
     Attributes
@@ -91,7 +90,7 @@ class KRMorganism():
     name: str
     source: str
     body: KRMshape
-    inclusions: List[KRMshape]
+    inclusions: list[KRMshape]
     aphiaid: int = 1
     length: float = 0.0
     vernacular_name: str = ''
@@ -117,13 +116,13 @@ class KRMorganism():
         plt.show()
 
 
-class KRMdata():
+class KRMdata:
     """Example datasets for the KRM model."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Load in the NOAA KRM shapes data
         self.file = Path(__file__).parent/Path('resources')/Path('KRM_shapes.toml')
-        with open(self.file, 'rb') as f:
+        with Path.open(self.file, 'rb') as f:
             try:
                 shapes = tomllib.load(f)
             except tomllib.TOMLDecodeError as e:

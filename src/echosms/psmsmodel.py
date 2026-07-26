@@ -2,7 +2,7 @@
 
 import numpy as np
 from .scattermodelbase import ScatterModelBase
-import scipy.integrate as integrate
+from scipy import integrate
 from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict, boundary_type as bt
 
 
@@ -16,7 +16,7 @@ class PSMSModel(ScatterModelBase):
 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'prolate spheroidal modal series'
         self.short_name = 'psms'
@@ -43,7 +43,7 @@ class PSMSModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, b: float,
                             theta: float, f: float, boundary_type: bt,
-                            target_c: None | float=None, target_rho: None | float=None,
+                            target_c: float|None=None, target_rho: float|None=None,
                             validate_parameters: bool=True) -> float:
         """Prolate spheroid modal series (PSMS) solution model.
 
@@ -217,7 +217,7 @@ class PSMSModel(ScatterModelBase):
             for n in range(m, n_max+1):
                 Smn_w_inc, _ = pro_ang1(m, n, hm, np.cos(theta_inc), norm=True)
 
-                if not Smn_w_inc == 0.0:  # reduces CPU effort as this happens often
+                if Smn_w_inc != 0.0:  # reduces CPU effort as this happens often
                     E1, E3 = PSMSModel._fluidfilled_Emn(m, n, ell, hm, ht, xim, g)
 
                     alpha_nl = integrate.quad(PSMSModel._alpha_int, -1, 1, (m, n, ell, hm, ht))[0]

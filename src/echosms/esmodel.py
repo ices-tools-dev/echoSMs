@@ -14,7 +14,7 @@ class ESModel(ScatterModelBase):
     This class calculates acoustic backscatter from elastic spheres.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'elastic sphere'
         self.short_name = 'es'
@@ -22,6 +22,7 @@ class ESModel(ScatterModelBase):
         self.boundary_types = [bt.elastic]
         self.shapes = ['sphere']
         self.max_ka = 20  # [1]
+        self.max_iterations = 200
 
     def validate_parameters(self, params):
         """Validate the model parameters.
@@ -38,7 +39,7 @@ class ESModel(ScatterModelBase):
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, f: float,
                             target_longitudinal_c: float, target_transverse_c: float,
                             target_rho: float, validate_parameters: bool=True,
-                            **kwargs) -> float:
+                            **kwargs: dict) -> float:
         """Calculate the backscatter from an elastic sphere for one set of parameters.
 
         Parameters
@@ -88,14 +89,14 @@ class ESModel(ScatterModelBase):
         beta = (target_rho/medium_rho) * (target_longitudinal_c/medium_c)**2 - alpha
 
         # Use n instead of l (ell) because l looks like 1.
-        def S(n):
+        def S(n) -> complex:
             A2 = (n**2 + n-2) * spherical_jn(n, q2) + q2**2 * spherical_jnpp(n, q2)
-            A1 = 2*n*(n+1) * (q1*spherical_jn(n, q1, True) - spherical_jn(n, q1))
+            A1 = 2*n*(n+1) * (q1*spherical_jn(n, q1, derivative=True) - spherical_jn(n, q1))
             B2 = A2*q1**2 * (beta*spherical_jn(n, q1) - alpha*spherical_jnpp(n, q1))\
-                - A1*alpha * (spherical_jn(n, q2) - q2*spherical_jn(n, q2, True))
-            B1 = q * (A2*q1*spherical_jn(n, q1, True) - A1*spherical_jn(n, q2))
-            eta_n = atan(-(B2*spherical_jn(n, q, True) - B1*spherical_jn(n, q))
-                         / (B2*spherical_yn(n, q, True) - B1*spherical_yn(n, q)))
+                - A1*alpha * (spherical_jn(n, q2) - q2*spherical_jn(n, q2, derivative=True))
+            B1 = q * (A2*q1*spherical_jn(n, q1, derivative=True) - A1*spherical_jn(n, q2))
+            eta_n = atan(-(B2*spherical_jn(n, q, derivative=True) - B1*spherical_jn(n, q))
+                         / (B2*spherical_yn(n, q, derivative=True) - B1*spherical_yn(n, q)))
 
             return (-1)**n * (2*n+1) * sin(eta_n) * exp(1j*eta_n)
 
@@ -105,9 +106,9 @@ class ESModel(ScatterModelBase):
         while abs(S(n_max)) > tol:
             n_max += 10
 
-        if n_max > 200:
+        if n_max > self.max_iterations:
             warn('TS results may be inaccurate because the modal series required a large '
-                 f'number ({n_max}) of terms to converge.')
+                 f'number ({n_max}) of terms to converge.', stacklevel=2)
 
         n = range(n_max)
 

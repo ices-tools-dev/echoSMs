@@ -14,7 +14,7 @@ class MSSModel(ScatterModelBase):
     boundary conditions, as listed in the ``boundary_types`` class attribute.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'modal series solution'
         self.short_name = 'mss'
@@ -51,11 +51,11 @@ class MSSModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, f: float,
                             boundary_type: bt,
-                            target_c: None | float=None, target_rho: None | float=None,
-                            shell_c: None | float=None, shell_rho: None | float=None,
-                            shell_thickness: None | float=None,
+                            target_c: float|None=None, target_rho: float|None=None,
+                            shell_c: float|None=None, shell_rho: float|None=None,
+                            shell_thickness: float|None=None,
                             validate_parameters: bool=True,
-                            **kwargs) -> float:
+                            **kwargs: dict) -> float:
         """Calculate the scatter using the mss model for one set of parameters.
 
         Parameters
@@ -88,7 +88,7 @@ class MSSModel(ScatterModelBase):
             Only required for `boundary_type`s that include a fluid shell.
         validate_parameters :
             Whether to validate the model parameters.
-        kwargs :
+        **kwargs :
             Additional names arguments are ignored.
 
         Returns
@@ -105,7 +105,7 @@ class MSSModel(ScatterModelBase):
         Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N.,
         Jones, B., Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
         Comparisons among ten models of acoustic backscattering used in aquatic ecosystem
-        research. Journal of the Acoustical Society of America 138, 3742–3764.
+        research. Journal of the Acoustical Society of America 138, 3742-3764.
         <https://doi.org/10.1121/1.4937607>
 
         """
@@ -118,20 +118,22 @@ class MSSModel(ScatterModelBase):
 
         match boundary_type:
             case bt.fixed_rigid:
-                A = list(map(lambda x: -spherical_jn(x, ka, True) / h1(x, ka, True), n))
+                A = list(map(lambda x: -spherical_jn(x, ka, derivative=True) /
+                                         h1(x, ka, derivative=True), n))
             case bt.pressure_release:
                 A = list(map(lambda x: -spherical_jn(x, ka) / h1(x, ka), n))
             case bt.fluid_filled:
                 k1a = wavenumber(target_c, f)*a
                 gh = target_rho/medium_rho * target_c/medium_c
 
-                def Cn_fr(n):
+                def Cn_fr(n) -> complex:
                     return\
-                        ((spherical_jn(n, k1a, True)*spherical_yn(n, ka))
-                            / (spherical_jn(n, k1a)*spherical_jn(n, ka, True))
-                            - gh*(spherical_yn(n, ka, True)/spherical_jn(n, ka, True)))\
-                        / ((spherical_jn(n, k1a, True)*spherical_jn(n, ka))
-                           / (spherical_jn(n, k1a)*spherical_jn(n, ka, True))-gh)
+                        ((spherical_jn(n, k1a, derivative=True)*spherical_yn(n, ka))
+                            / (spherical_jn(n, k1a)*spherical_jn(n, ka, derivative=True))
+                            - gh*(spherical_yn(n, ka, derivative=True)/\
+                                spherical_jn(n, ka, derivative=True)))\
+                        / ((spherical_jn(n, k1a, derivative=True)*spherical_jn(n, ka))
+                           / (spherical_jn(n, k1a)*spherical_jn(n, ka, derivative=True))-gh)
 
                 A = -1/(1 + 1j*np.asarray(list(map(Cn_fr, n)), dtype=complex))
             case bt.fluid_shell_fluid_interior:
@@ -146,7 +148,7 @@ class MSSModel(ScatterModelBase):
                 k2 = wavenumber(shell_c, f)
                 k3b = wavenumber(target_c, f) * b
 
-                def Cn_fsfi(n):
+                def Cn_fsfi(n) -> complex:
                     (b1, b2, a11, a21, a12, a22, a32, a13, a23, a33) =\
                         MSSModel.__eqn9(n, k1a, g21, h21, k2*a, k2*b, k3b, h32, g32)
                     return (b1*a22*a33 + a13*b2*a32 - a12*b2*a33 - b1*a23*a32)\
@@ -163,7 +165,7 @@ class MSSModel(ScatterModelBase):
                 k2 = wavenumber(shell_c, f)
                 ksa = k2 * a  # ksa is used in the paper, but isn't that the same as k2a?
 
-                def Cn_fspri(n):
+                def Cn_fspri(n) -> complex:
                     (b1, b2, d1, d2, a11, a21) = MSSModel.__eqn10(n, k1a, g21, h21, ksa, k2*a, k2*b)
                     return (b1*d2-d1*b2) / (a11*d2-d1*a21)
 
@@ -185,13 +187,13 @@ class MSSModel(ScatterModelBase):
         (b1, b2, a11, a21) = MSSModel.__eqn9_10_common(n, k1a, g21, h21)
         # a31 = 0.0
         a12 = spherical_jn(n, k2a)
-        a22 = spherical_jn(n, k2a, True)
-        a32 = spherical_jn(n, k2b)*spherical_jn(n, k3b, True)\
-            - g32*h32*spherical_jn(n, k2b, True)*spherical_jn(n, k3b)
+        a22 = spherical_jn(n, k2a, derivative=True)
+        a32 = spherical_jn(n, k2b)*spherical_jn(n, k3b, derivative=True)\
+            - g32*h32*spherical_jn(n, k2b, derivative=True)*spherical_jn(n, k3b)
         a13 = spherical_yn(n, k2a)
-        a23 = spherical_yn(n, k2a, True)
-        a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, True)\
-            - g32*h32*spherical_yn(n, k2b, True)*spherical_jn(n, k3b)
+        a23 = spherical_yn(n, k2a, derivative=True)
+        a33 = spherical_yn(n, k2b)*spherical_jn(n, k3b, derivative=True)\
+            - g32*h32*spherical_yn(n, k2b, derivative=True)*spherical_jn(n, k3b)
 
         return b1, b2, a11, a21, a12, a22, a32, a13, a23, a33
 
@@ -204,8 +206,8 @@ class MSSModel(ScatterModelBase):
         """
         (b1, b2, a11, a21) = MSSModel.__eqn9_10_common(n, k1a, g21, h21)
         d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b) - spherical_jn(n, k2b)*spherical_yn(n, k2a)
-        d2 = spherical_jn(n, ksa, True)*spherical_yn(n, k2b)\
-            - spherical_jn(n, k2b)*spherical_yn(n, k2a, True)
+        d2 = spherical_jn(n, ksa, derivative=True)*spherical_yn(n, k2b)\
+            - spherical_jn(n, k2b)*spherical_yn(n, k2a, derivative=True)
 
         return b1, b2, d1, d2, a11, a21
 
@@ -213,8 +215,8 @@ class MSSModel(ScatterModelBase):
     def __eqn9_10_common(n: int, k1a: float, g21: float, h21: float) -> float:
         """Variables common to eqn 9 and 10 of Jech et al, 2015."""
         b1 = spherical_jn(n, k1a)
-        b2 = g21*h21 * spherical_jn(n, k1a, True)
+        b2 = g21*h21 * spherical_jn(n, k1a, derivative=True)
         a11 = -h1(n, k1a)
-        a21 = -g21*h21 * h1(n, k1a, True)
+        a21 = -g21*h21 * h1(n, k1a, derivative=True)
 
         return b1, b2, a11, a21

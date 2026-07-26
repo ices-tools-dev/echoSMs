@@ -4,7 +4,7 @@ from .scattermodelbase import ScatterModelBase
 from .utils import wavenumber, as_dict, boundary_type as bt
 from math import log10, cos, acos, pi, isclose, radians
 from cmath import exp
-from typing import Iterable
+from collections.abc import Iterable
 from scipy.spatial.transform import Rotation as R
 import numpy as np
 from scipy.special import j1
@@ -19,7 +19,7 @@ class DWBAModel(ScatterModelBase):
     stochastic DWBA (SDWBA) model.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'distorted-wave Born approximation'
         self.short_name = 'dwba'
@@ -45,10 +45,10 @@ class DWBAModel(ScatterModelBase):
         g = p['target_rho'] / p['medium_rho']
         h = p['target_c'] / p['medium_c']
 
-        if (np.any(g < self.g_range[0])) or np.any((g > self.g_range[1])):
+        if (np.any(g < self.g_range[0])) or np.any(g > self.g_range[1]):
             warnings.warn('Ratio of target and medium densities (g) is outside the DWBA limits.')
 
-        if (np.any(h < self.h_range[0])) or np.any((h > self.h_range[1])):
+        if (np.any(h < self.h_range[0])) or np.any(h > self.h_range[1]):
             warnings.warn('Ratio of target and medium sound speeds (h) are '
                           'outside the DWBA limits.')
 
@@ -61,7 +61,7 @@ class DWBAModel(ScatterModelBase):
                             rv_tan: Iterable[np.ndarray],
                             phase_sd: float=0,
                             num_runs: int=1, validate_parameters: bool=True,
-                            **kwargs) -> float:
+                            **kwargs: dict) -> float:
         """Distorted-wave Born approximation scattering model.
 
         Implements the distorted-wave Born approximation and stochastic DWBA
@@ -139,7 +139,7 @@ class DWBAModel(ScatterModelBase):
         if validate_parameters:
             self.validate_parameters(locals())
 
-        do_sdwba = False if phase_sd == 0.0 else True
+        do_sdwba = phase_sd != 0.0
 
         # The structure of this code follows closely the formulae in Stanton et al (1998). Where
         # relevant, the equation numbers from that paper are given.
@@ -156,7 +156,8 @@ class DWBAModel(ScatterModelBase):
         # Calculate the distance between each disc using the disc position vectors. The Euclidean
         # distance is the L2 norm so use np.norm(). Could also use
         # scipy.spatial.distance.euclidean(), but that is apparently a lot slower.
-        dist = np.array([np.linalg.norm(r1-r0) for r0, r1 in zip(rv_pos[0:-1], rv_pos[1:])])  # [m]
+        dist = np.array([np.linalg.norm(r1-r0)
+            for r0, r1 in zip(rv_pos[0:-1], rv_pos[1:], strict=True)])  # [m]
 
         # Thickness of each disc based on the distance between discs. The first and last
         # discs are treated differently.
@@ -173,12 +174,13 @@ class DWBAModel(ScatterModelBase):
         phase_factors = np.ones(len(a))  # for DWBA
         runs = []
 
-        for run in range(int(num_runs)):  # is only ever 1 run for the DWBA
+        for _run in range(int(num_runs)):  # is only ever 1 run for the DWBA
             if do_sdwba:
                 phase_factors = np.exp(1j*self.rng.normal(scale=radians(phase_sd), size=len(a)))
 
             integral = 0.0
-            for a_, r_pos, d_r_pos, r_tan, p in zip(a, rv_pos, d_rv_pos, rv_tan, phase_factors):
+            for a_, r_pos, d_r_pos, r_tan, p in zip(a, rv_pos, d_rv_pos, rv_tan,
+                                                    phase_factors, strict=True):
                 # The round() is here because sometimes the dot product gets values slightly outside
                 # the [-1, 1] range (due to floating point inaccuracies) and cos will complain.
                 cbeta_tilt = cos(pi/2 - acos(round(k_hat_i @ r_tan, 8)))

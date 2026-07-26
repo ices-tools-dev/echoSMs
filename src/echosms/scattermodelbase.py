@@ -16,7 +16,7 @@ class ScatterModelBase(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise.
 
         Attributes
@@ -50,11 +50,11 @@ class ScatterModelBase(abc.ABC):
         self.max_ka = np.nan
         self.no_expand_parameters = []
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return a representation of the object."""
         return 'Name: ' + self.__class__.__name__ + ', vars: ' + str(vars(self))
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return user-friendly representation of the object."""
         s = self.__class__.__name__ + " class with attributes of:\n"
         s += '\n'.join(['\t' + str(k) + ' = ' + str(v) for k, v in vars(self).items()])
@@ -62,7 +62,7 @@ class ScatterModelBase(abc.ABC):
 
     def calculate_ts(self, data: dict | pd.DataFrame | xr.DataArray, expand: bool=False,
                      inplace: bool=False, multiprocess: bool=False,
-                     progress: bool=False) -> None | list[float] | pd.Series | pd.DataFrame:
+                     progress: bool=False) -> list[float]|pd.Series|pd.DataFrame|None:
         """Calculate the target strength (TS) for many parameters.
 
         Parameters
@@ -163,7 +163,7 @@ class ScatterModelBase(abc.ABC):
                 raise AssertionError('This code should never be reached - unsupported input data '
                                      f'type of {type(data)}.')
 
-    def __ts_helper(self, *args):
+    def __ts_helper(self, *args: dict) -> float:
         """Convert function arguments and call calculate_ts_single()."""
         p = args[0].to_dict()  # so we can use it for keyword arguments
         p |= args[1]  # merge in the dict of non-expandable model parameters
@@ -187,7 +187,7 @@ class ScatterModelBase(abc.ABC):
 
         """
 
-    def _present(self, p: dict, names: list):
+    def _present(self, p: dict, names: list) -> None:
         """Check that the parameters are present.
 
         Parameters
@@ -207,7 +207,7 @@ class ScatterModelBase(abc.ABC):
             if name not in p:
                 raise KeyError(f"Models require a '{name}' parameter.")
 
-    def _present_and_in(self, p: dict, names: list, valid_values: list):
+    def _present_and_in(self, p: dict, names: list, valid_values: list) -> None:
         """Check that that parameters are present and contains values in `valid_values`.
 
         Parameters
@@ -237,7 +237,7 @@ class ScatterModelBase(abc.ABC):
             if not all(x in valid_values for x in np.unique(np.atleast_1d(p[name]))):
                 raise ValueError(f"Model parameter '{name}' contains 1 or more invalid values.")
 
-    def _present_and_positive(self, p: dict, names: list, mask: None | np.ndarray=None):
+    def _present_and_positive(self, p: dict, names: list, mask: np.ndarray|None=None) -> None:
         """Check that that parameters are present and have a positive value.
 
         Parameters
@@ -267,7 +267,7 @@ class ScatterModelBase(abc.ABC):
             if p[name] is None:
                 raise ValueError(f"Model parameter '{name}' must not be None.")
             if mask is None:
-                mask = np.full(len(p[name]), True)
+                mask = np.full(len(p[name]), fill_value=True)
             if np.min(np.atleast_1d(p[name])[mask]) <= 0:
                 raise ValueError(f"Model parameter '{name}' must be greater than zero.")
 

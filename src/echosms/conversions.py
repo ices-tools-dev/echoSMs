@@ -102,7 +102,7 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     """
     from echosms import KRMorganism, KRMshape  # here to avoid a circular import
 
-    def _to_KRMshape(s: dict):
+    def _to_KRMshape(s: dict) -> KRMshape:
         """Convert echoSMs datstore shape into a KRMshape."""
         # Take mean of sound speed and density in case there is more than one value.
         if 'sound_speed_compressional' in s:
@@ -512,7 +512,7 @@ def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
 
 def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
                    centroid_location: tuple[float]|None=None,
-                   pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs):
+                   pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs: dict):
     """Create a triangulated mesh of a spheroid as per the size and orientation."""
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)
@@ -525,7 +525,7 @@ def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
 def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]|None=None,
                   pitch: float=0.0, roll: float=0.0, yaw: float=0.0,
                   bend_radius: float|None=None, bend_direction: str = 'down',
-                  **kwargs):
+                  **kwargs: dict):
     """Create a triangulated mesh of a cylinder as per the size and orientation."""
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)

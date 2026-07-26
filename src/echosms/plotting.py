@@ -28,14 +28,14 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
 
     """
     labels = ['Dorsal', 'Lateral']
-    t = title if title else dataset_label + ' ' + specimen['specimen_name']
+    t = title or dataset_label + ' ' + specimen['specimen_name']
 
     match specimen['shape_type']:
         case 'outline':
             fig, axs = plt.subplots(2, 1, sharex=True, layout='tight')
             fig.set_layout_engine('tight', h_pad=1, w_pad=1)
             plot_shape_outline(specimen['shapes'], axs)
-            for label, a in zip(labels, axs):
+            for label, a in zip(labels, axs, strict=True):
                 a.set_title(label, loc='left', fontsize=8)
                 a.axis('scaled')
             axs[0].set_title(t)
@@ -57,10 +57,8 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
 
         case _:
             # valid specimen data structures will never get here
-            raise ValueError(
-                'Specimen shape_type of "{}" is not yet supported'.\
-                    format(specimen['shape_type']))
-
+            msg = 'Specimen shape_type of "{}" is not yet supported'.format(specimen['shape_type'])
+            raise ValueError(msg)
 
     if savefile:
         plt.savefig(savefile, format='png', dpi=dpi, bbox_inches='tight')
@@ -68,7 +66,7 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
     else:
         plt.show()
 
-def _fit_to_axes(fig):
+def _fit_to_axes(fig) -> None:
     """Change figure size to fit the axes."""
     w = h = 0.0
     for a in fig.axes:
@@ -173,8 +171,8 @@ def plot_shape_voxels(s: list[dict], title: str=''):
     fig, axs = plt.subplots(5, 5, sharex=True, sharey=True)
     cols = np.linspace(0, shape[1]-1, num=25)
 
-    for col, ax in zip(cols, axs.flat):
-        c = int(floor(col))
+    for col, ax in zip(cols, axs.flat, strict=True):
+        c = floor(col)
         # The [::-1] and .invert_ axis calls give the appropriate
         # x and y axes directions in the plots.
         im = ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:,c,:],
@@ -225,8 +223,8 @@ def plot_shape_categorised_voxels(s: list[dict], title: str=''):
     fig, axs = plt.subplots(5, 5, sharex=True, sharey=True)
     cols = np.linspace(0, shape[1]-1, num=25)
 
-    for col, ax in zip(cols, axs.flat):
-        c = int(floor(col))
+    for col, ax in zip(cols, axs.flat, strict=True):
+        c = floor(col)
         # The [::-1] and .invert_ axis calls give the appropriate
         # x and y axes directions in the plots.
         ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:,c,:],
@@ -264,7 +262,7 @@ def plot_shape_geometric(shapes: list[dict], ax):
                                    facets=mesh.faces)
 
 
-def _plot_triangulated_surface(ax, x, y, z, facets, color='C1'):
+def _plot_triangulated_surface(ax, x, y, z, facets, color='C1') -> None:
     """Plot the triangulated surface on the Matplotlib axes."""
     ax.plot_trisurf(x, y, z, triangles=facets, alpha=0.6, color=color)
     ax.view_init(elev=210, azim=-60, roll=0)

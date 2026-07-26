@@ -23,6 +23,6 @@ class JechEtAlData:
 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.data_directory = Path(__file__).parent/Path('resources')/Path('Jechetal_allmodels')
         self.data = {f.stem: pd.read_csv(f) for f in self.data_directory.glob('*.csv')}

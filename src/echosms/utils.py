@@ -3,24 +3,24 @@ import sys
 from collections.abc import Iterable
 from pathlib import Path
 import numpy as np
-from math import pi as π
+from math import pi
 import orjson
 import xarray as xr
 import pandas as pd
 import requests
 from functools import cache
 from scipy.special import spherical_jn, spherical_yn
-from collections import namedtuple
+from typing import NamedTuple
 from spheroidalwavefunctions import prolate_swf
 from enum import StrEnum
 
-SCHEMA_URL = 'https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'\
-                     'heads/main/data_store/schema/v1/anatomical_data_store.json'
+SCHEMA_URL = ('https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'
+                     'heads/main/data_store/schema/v1/anatomical_data_store.json')
 
-swf_t = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
+swf_t = NamedTuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
                            'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
 
-class boundary_type(StrEnum):
+class boundary_type(StrEnum): # noqa: N801
     """Scattering model boundary types."""
 
     fixed_rigid = 'fixed-rigid'
@@ -94,7 +94,7 @@ def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)
     if r <= 0.0:
         raise ValueError('An r value less than or equal to 0 is not supported.')
 
-    factor = 10.0*np.log10(4.0*π*1852.0**2) if nautical else 0.0
+    factor = 10.0*np.log10(4.0*pi*1852.0**2) if nautical else 0.0
     return ts - eba - 20.0*np.log10(r) + factor
 
 
@@ -134,7 +134,7 @@ def wavenumber(c: float, f: float) -> float:
         The acoustic wavenumber [m⁻¹].
 
     """
-    return 2*π*f/c
+    return 2*pi*f/c
 
 
 def wavelength(c: float, f: float) -> float:
@@ -311,7 +311,8 @@ def as_dataframe(params: dict, no_expand: list|None = None) -> pd.DataFrame:
     # This preserves the differing dtypes in each column compared to other ways of
     # constructing the DataFrame).
     df = pd.DataFrame({k: t.flatten()
-                       for k, t in zip(expand.keys(), np.meshgrid(*tuple(expand.values())))})
+                       for k, t in zip(expand.keys(), np.meshgrid(*tuple(expand.values())),
+                       strict=True)})
     df.attrs = {'parameters': nexpand}
     return df
 
@@ -339,11 +340,12 @@ def as_dict(params: dict | pd.DataFrame | xr.DataArray) -> dict:
         return params
 
     # Get the non-expandable model parameters
-    p = params.attrs['parameters'] if 'parameters' in params.attrs else {}
+    p = params.attrs.get('parameters', {})
 
     if isinstance(params, xr.DataArray):
-        return dict(zip(params.coords, params.indexes.values())) | p
-    elif isinstance(params, pd.DataFrame):
+        return dict(zip(params.coords, params.indexes.values(), strict=True)) | p
+
+    if isinstance(params, pd.DataFrame):
         # params.attrs = {}  # otherwise to_dict() exposes a bug in pandas?
         return params.to_dict(orient='series') | p
 
@@ -522,7 +524,7 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     if xi < 1.0:
         raise ValueError('The xi parameter must be greater than or equal to 1')
 
-    ioprad = 1 if xi-1.0 < 1e-10 else 2
+    ioprad = 1 if xi-1.0 < 1e-10 else 2 # noqa: PLR2004
 
     # Add +2 to lnum instead of +1 as it exposes a bug in the Fortran code - if n = 0, zeros
     # are returned instead of the correct value.
@@ -568,13 +570,13 @@ def names_from_aphia_id(aphia_id: int) -> dict:
 
     names = {}
     r = requests.get(WORMS_URL + 'AphiaRecordByAphiaID/' + str(aphia_id), timeout=5)
-    if r.status_code == 200:
+    if r.status_code == requests.ok:
         names['species'] = r.json()['scientificname']
         for attr in ['class', 'order', 'family', 'genus']:
             names[attr] = r.json()[attr]
 
         r = requests.get(WORMS_URL + 'AphiaVernacularsByAphiaID/' + str(aphia_id), timeout=5)
-        if r.status_code == 200:
+        if r.status_code == requests.ok:
             names['vernacular_names'] = []
             for vname in r.json():
                 names['vernacular_names'].append(vname['vernacular'])
@@ -600,10 +602,10 @@ def datastore_schema(schema_file: Path | None = None) -> dict:
     """
     if schema_file is None:
         s = requests.get(SCHEMA_URL, timeout=5)
-        if s.status_code == 200:
+        if s.status_code == requests.ok:
             return s.json()
     else:
-        with open(schema_file, 'rb') as f:
+        with Path.open(schema_file, 'rb') as f:
             json_bytes = f.read()
             return orjson.loads(json_bytes)
 

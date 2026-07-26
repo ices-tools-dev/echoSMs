@@ -14,7 +14,7 @@ class KAModel(ScatterModelBase):
     This class calculates acoustic scatter from arbitrary surfaces.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'Kirchhoff approximation'
         self.short_name = 'ka'
@@ -36,7 +36,7 @@ class KAModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, theta: float, phi: float, f: float,
                             mesh: Any, boundary_type: bt,
-                            validate_parameters: bool=True, **kwargs) -> float:
+                            validate_parameters: bool=True, **kwargs: dict) -> float:
         """Calculate the scatter using the ka model for one set of parameters.
 
         Parameters
@@ -81,7 +81,7 @@ class KAModel(ScatterModelBase):
         References
         ----------
         Foote, K. G. (1985). Rather-high-frequency sound scattering of swimbladdered fish.
-        The Journal of the Acoustical Society of America, 78(2), 688–700.
+        The Journal of the Acoustical Society of America, 78(2), 688-700.
         <https://doi.org/10.1121/1.392438>
 
         """

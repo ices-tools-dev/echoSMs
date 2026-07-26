@@ -14,7 +14,7 @@ class DCMModel(ScatterModelBase):
     various boundary conditions.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.long_name = 'deformed cylinder model'
         self.short_name = 'dcm'
@@ -41,9 +41,9 @@ class DCMModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, b: float,
                             theta: float, f: float, boundary_type: bt,
-                            target_c: None | float=None, target_rho: None | float=None,
+                            target_c: float|None=None, target_rho: float|None=None,
                             validate_parameters: bool=True,
-                            **kwargs) -> float:
+                            **kwargs: dict) -> float:
         """Calculate scatter from a finite cylinder using the modal series deformed cylinder model.
 
         Parameters
@@ -88,7 +88,7 @@ class DCMModel(ScatterModelBase):
         Jech, J.M., Horne, J.K., Chu, D., Demer, D.A., Francis, D.T.I., Gorska, N., Jones, B.,
         Lavery, A.C., Stanton, T.K., Macaulay, G.J., Reeder, D.B., Sawada, K., 2015.
         Comparisons among ten models of acoustic backscattering used in aquatic ecosystem
-        research. Journal of the Acoustical Society of America 138, 3742–3764.
+        research. Journal of the Acoustical Society of America 138, 3742-3764.
         <https://doi.org/10.1121/1.4937607>
 
         """
@@ -116,7 +116,7 @@ class DCMModel(ScatterModelBase):
                 gh = g*h
                 Kda = K/h*a
 
-                def Cm(m):
+                def Cm(m) -> complex:
                     numerator = (jvp(m, Kda)*yv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka))\
                         - gh*(yvp(m, Ka)/jvp(m, Ka))
                     denom = (jvp(m, Kda)*jv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka)) - gh
