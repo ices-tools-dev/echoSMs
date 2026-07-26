@@ -100,6 +100,7 @@ addopts = ["--import-mode=importlib",]
 
 [tool.ruff]
 line-length = 100
+extend-exclude = ["src/otherCode"]
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "S", "D"] # also D, UP, B, C90, I, N, or ALL

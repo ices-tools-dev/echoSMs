@@ -51,7 +51,7 @@ def fetch_shape_data(specimen_id, progress_callback=None):
     # Check cache first
     if cache_path.exists():
         try:
-            with open(cache_path, 'r', encoding='utf-8') as f:
+            with Path.open(cache_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 return {
                     'data': data,
@@ -85,7 +85,7 @@ def fetch_shape_data(specimen_id, progress_callback=None):
 
         # Save to cache
         try:
-            with open(cache_path, 'w', encoding='utf-8') as f:
+            with Path.open(cache_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f)
         except Exception as e:
             print(f"Cache write error: {e}")

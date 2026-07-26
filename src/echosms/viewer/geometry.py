@@ -64,8 +64,8 @@ def generate_bent_cylinder(radius, length, rho_c, num_points=100):
     y_c = np.zeros_like(x_c)
     a = np.full_like(x_c, radius)
 
-    name_str = f"Bent Cyl (a={radius*100:.1f}, L={length*100:.1f}, " \
-               f"rho={rho_c*100:.1f}cm)"
+    name_str = (f"Bent Cyl (a={radius*100:.1f}, L={length*100:.1f}, "
+               f"rho={rho_c*100:.1f}cm)")
 
     return {
         "name": name_str,

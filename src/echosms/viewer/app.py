@@ -17,7 +17,7 @@ except ImportError:
 
 
 class ShapeViewerComboApp:
-    def __init__(self, root):
+    def __init__(self, root) -> None:
         self.root = root
         self.root.title("Shape Viewer V0.2 - J.TONG 2026")
         self.root.geometry("1400x1200")  # Set initial window size
@@ -282,7 +282,7 @@ class ShapeViewerComboApp:
         self.update_status("Fetching index from Datastore...", "red")
         self.root.update_idletasks()
 
-        def run_fetch():
+        def run_fetch() -> None:
             try:
                 # Returns dict: "Name" -> "ID"
                 index = api.fetch_online_shapes_index()
@@ -329,7 +329,7 @@ class ShapeViewerComboApp:
         self.update_status(f"Fetching {specimen_id}...", "red")
         self.root.config(cursor="wait")
 
-        def progress_cb(downloaded, total):
+        def progress_cb(downloaded, total) -> None:
             mb_downloaded = downloaded / (1024 * 1024)
             if total > 0:
                 percent = (downloaded / total) * 100
@@ -339,7 +339,7 @@ class ShapeViewerComboApp:
             # Thread-safe UI update
             self.root.after(0, lambda: self.update_status(msg, "orange"))
 
-        def run_detail_fetch():
+        def run_detail_fetch() -> None:
             try:
                 shape_entry = api.fetch_shape_data(
                     specimen_id, progress_callback=progress_cb
@@ -381,7 +381,7 @@ class ShapeViewerComboApp:
         shape_type = self.reg_shape_type.get()
 
         # Helper to add field
-        def add_field(label_text, var_name, default_val):
+        def add_field(label_text, var_name, default_val) -> None:
             f = ttk.Frame(self.params_frame)
             f.pack(fill=tk.X, pady=2)
             ttk.Label(f, text=label_text).pack(
@@ -667,7 +667,7 @@ class ShapeViewerComboApp:
         # Defer execution slightly to let UI update
         self.root.after(10, self._refresh_plot_internal)
 
-    def _refresh_plot_internal(self):
+    def _refresh_plot_internal(self) -> None:
         try:
             selected_name = self.shape_selector.get()
             if selected_name in self.all_shapes:
@@ -1394,7 +1394,7 @@ class ShapeViewerComboApp:
         self.info_text.config(state=tk.NORMAL)
         self.info_text.delete(1.0, tk.END)
 
-        def summarize(val):
+        def summarize(val) -> str:
             if isinstance(val, np.ndarray):
                 return f"<Array shape={val.shape} dtype={val.dtype}>"
             elif isinstance(val, list):
