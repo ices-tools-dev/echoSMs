@@ -10,14 +10,14 @@ import pandas as pd
 import requests
 from functools import cache
 from scipy.special import spherical_jn, spherical_yn
-from typing import NamedTuple
+from collections import namedtuple
 from spheroidalwavefunctions import prolate_swf
 from enum import StrEnum
 
 SCHEMA_URL = ('https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'
                      'heads/main/data_store/schema/v1/anatomical_data_store.json')
 
-swf_t = NamedTuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
+swf_t = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
                            'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
 
 class boundary_type(StrEnum): # noqa: N801

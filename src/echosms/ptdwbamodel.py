@@ -1,6 +1,6 @@
 """The phase-tracking distorted-wave Born approximation model."""
 
-from collections.abs import Iterable
+from collections.abc import Iterable
 import numpy as np
 from scipy import ndimage
 from scipy.spatial.transform import Rotation as R
