@@ -570,13 +570,13 @@ def names_from_aphia_id(aphia_id: int) -> dict:
 
     names = {}
     r = requests.get(WORMS_URL + 'AphiaRecordByAphiaID/' + str(aphia_id), timeout=5)
-    if r.status_code == requests.ok:
+    if r.status_code == requests.codes.ok:
         names['species'] = r.json()['scientificname']
         for attr in ['class', 'order', 'family', 'genus']:
             names[attr] = r.json()[attr]
 
         r = requests.get(WORMS_URL + 'AphiaVernacularsByAphiaID/' + str(aphia_id), timeout=5)
-        if r.status_code == requests.ok:
+        if r.status_code == requests.codes.ok:
             names['vernacular_names'] = []
             for vname in r.json():
                 names['vernacular_names'].append(vname['vernacular'])

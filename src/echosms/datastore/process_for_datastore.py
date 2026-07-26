@@ -28,7 +28,7 @@ import jsonschema_rs
 from rich import print as rprint
 import numpy as np
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from echosms import plot_specimen, names_from_aphia_id, datastore_schema
 from shutil import make_archive
 
@@ -42,8 +42,8 @@ def main():
                         'of datastore TOML files')
     parser.add_argument('-o', '--output', required=True,
                         help='the directory to write the upload package to')
-    parser.add_argument('--schema', help='provide the datastore schema file directly '\
-                        '(it is otherwise downloaded from the echoSMs Github repository)')
+    parser.add_argument('--schema', help=('provide the datastore schema file directly '
+                        '(it is otherwise downloaded from the echoSMs Github repository)'))
     args = parser.parse_args()
 
     source_dir = Path(args.source)
@@ -69,7 +69,7 @@ def main():
     upload_filename = 'echosms_datastore_upload'
     upload_zip_file = output_dir / upload_filename
 
-    def large_shape(row):
+    def large_shape(row) -> bool:
         """Identify large shape datasets."""
         if row['shape_type'] == 'voxels' and np.array(row['shapes'][0]['mass_density']).size > 1e3:
             return True
@@ -80,6 +80,8 @@ def main():
 
         if row['shape_type'] == 'surface' and len(row['shapes'][0]['x']) > 500:
             return True
+
+        return False
 
     validator = jsonschema_rs.validator_for(
         schema,
@@ -102,10 +104,7 @@ def main():
             # There may be a metadata.toml file and one or more specimen*.toml files.
 
             meta_file = path/metadata_file
-            if meta_file.exists():
-                metadata = rtoml.load(meta_file)
-            else:
-                metadata = {}
+            metadata = rtoml.load(meta_file) if meta_file.exists() else {}
 
             rprint('Reading dataset [orange1]' + path.name)
 
@@ -120,7 +119,7 @@ def main():
                 # Update things the datastore is responsible for
                 if data['uuid'] == '':
                     data['uuid'] = str(uuid.uuid4())
-                data['version_time'] = datetime.now(timezone.utc).isoformat()
+                data['version_time'] = datetime.now(UTC).isoformat()
                 data['dataset_size'] = (
                     sum(file.stat().st_size for file in Path(path).rglob('*')) / 2**20
                 )
@@ -169,7 +168,7 @@ def main():
 
                         # write out the shape information
                         json_bytes = orjson.dumps(data['shapes'])
-                        with open(temp_path/large_shape_file, 'wb') as f:
+                        with Path.open(temp_path/large_shape_file, 'wb') as f:
                             f.write(json_bytes)
                         data['large_shape_ref'] = large_shape_file
 
@@ -182,7 +181,7 @@ def main():
 
                         data['shapes'] = s_metadata
 
-                    print('')
+                    print()
 
                     dataset.append(data)
 
@@ -193,7 +192,7 @@ def main():
 
     print('\nWriting a combined metadata file')
     json_bytes = orjson.dumps(dataset)
-    with open(temp_path/metadata_final_filename, 'wb') as f:
+    with Path.open(temp_path/metadata_final_filename, 'wb') as f:
         f.write(json_bytes)
 
     rprint(f'Compressing all data into [green]{upload_zip_file.with_suffix(".zip")}')

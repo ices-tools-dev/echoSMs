@@ -86,9 +86,9 @@ for model_name in d.names():
     specimen['shape_method'] = 'unknown'
     specimen['model_type'] = 'KRM'
     specimen['description'] = ['Shape data for KRM models']
-    specimen['notes'] = ['Shape obtained from the KRM shapes available at '
-    'https://www.fisheries.noaa.gov/data-tools/krm-model. ',
-    'This is not necessarily the original source of the shape.']
+    specimen['notes'] = [('Shape obtained from the KRM shapes available at '
+                         'https://www.fisheries.noaa.gov/data-tools/krm-model. '
+                         'This is not necessarily the original source of the shape.')]
 
     print(f'Querying WoRMS for aphiaID {m.aphiaid}')
     names = names_from_aphia_id(m.aphiaid)
@@ -97,7 +97,7 @@ for model_name in d.names():
             names[k] = v
 
     specimen['reference'] = m.source
-    specimen['version_time'] = datetime.now(timezone.utc).isoformat()
+    specimen['version_time'] = datetime.now(timezone.UTC).isoformat()
 
     specimen.update({'specimen_name': m.name, 'specimen_condition': 'unknown',
                      'length': m.length,
@@ -153,8 +153,8 @@ for model_name in d.names():
     specimen['model_type'] = 'DWBA'
     specimen['description'] = ['Some DWBA shapes found on the internet.']
     specimen['model_type'] = 'DWBA'
-    specimen['notes'] = ['Shape obtained from the SDWBA.jl github repository. '
-    'This is not necessarily the original source of the shape.']
+    specimen['notes'] = [('Shape obtained from the SDWBA.jl github repository. '
+                        'This is not necessarily the original source of the shape.')]
 
     print(f'Querying WoRMS for aphiaID {m.aphiaid}')
     names = names_from_aphia_id(m.aphiaid)
@@ -193,20 +193,17 @@ for model_name in d.names():
 specimens_cp = copy.deepcopy(specimens)
 for ds in specimens_cp:
     for s in ds['shapes']:
-        for k in s.keys():
+        for k in s:
             if isinstance(s[k], np.ndarray):
                 s[k] = s[k].tolist()
 
 # Write out each specimen to a echoSMS datastore format toml file
 for sp in specimens_cp:
-    if sp['model_type'] == 'DWBA':
-        directory = 'SDWBA.jl_github'
-    else:
-        directory = 'NOAA_KRM'
+    directory = 'SDWBA.jl_github' if sp['model_type'] == 'DWBA' else 'NOAA_KRM'
 
     file_name = datastore_dir/'datasets'/directory/('specimen_' + sp['uuid'])
     # Add .toml suffix even when the name already has a full stop in it
     file_name = file_name.with_name(f'{file_name.name}.toml')
     Path.mkdir(file_name.parent, parents=True, exist_ok=True)
-    with open(file_name, 'wb') as f:
+    with Path.open(file_name, 'wb') as f:
         tomli_w.dump(sp, f)

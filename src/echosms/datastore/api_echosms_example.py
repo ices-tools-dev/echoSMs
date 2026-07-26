@@ -15,7 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # The current location of the echoSMs datastore server
-baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
+baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/' # noqa: N816
 
 # Create an instance of the echoSMs KRM model for use below
 m = echosms.KRMModel()
@@ -29,7 +29,7 @@ for o in r.json():
 
     # Get the organism data (including the shape) from the datastore
     r = requests.get(baseURI + 'v2/specimen/' + o['uuid'] + '/data', timeout=5)
-    if r.status_code != 200:
+    if r.status_code != requests.codes.ok:
         print(f'Request for data from specimen {o["uuid"]} failed - skipping')
         continue
 

@@ -32,7 +32,7 @@ lw = {'1': (.324, .214, 'bf6cffd4-c796-48da-bc38-28f5af215356'),
 for comsol_data in raw_dir.glob('*.txt'):
 
     print(f'Processing {comsol_data.name}')
-    with open(comsol_data, 'r') as f:
+    with Path.open(comsol_data, 'r') as f:
         f.readline()  # % Grid
         xpos = np.fromstring(f.readline(), sep=' ')
         ypos = np.fromstring(f.readline(), sep=' ')
@@ -89,5 +89,5 @@ for comsol_data in raw_dir.glob('*.txt'):
     print('Writing TOML file')
     name = 'specimen_' + comsol_data.name[:6]
     toml_file = (dataset_dir/name).with_suffix('.toml')
-    with open(toml_file, 'wb') as f:
+    with Path.open(toml_file, 'wb') as f:
             tomli_w.dump(specimen, f)

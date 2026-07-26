@@ -8,11 +8,12 @@
 #     "jsonschema-rs",
 #     "orjson",
 #     "rich",
+#     "echosms",
 # ]
 # ///
 
 from pathlib import Path
-import datetime as dt
+from datetime import datetime, UTC
 import glob
 import os
 import argparse
@@ -27,7 +28,7 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
     """Validate a single TOML file."""
     # Add in attributes that the datastore loading process would normally provide
     if 'version_time' in specimen and specimen['version_time'] == '':
-        specimen['version_time'] = dt.datetime.now(dt.timezone.utc).isoformat()
+        specimen['version_time'] = datetime.now(UTC).isoformat()
     if 'dataset_size' not in specimen:
         specimen['dataset_size'] = 0.0
     if 'dataset_size_units' not in specimen:
@@ -65,21 +66,21 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
 def main():
     """Validate TOML files."""
     parser = argparse.ArgumentParser(prog='validate',
-                                     description='Validates an echoSMs datastore TOML file'\
-                                        ' against the schema.',
-                                     epilog='The values of some attributes are populated or '\
-                                            'modified by the '\
-                                            'datastore and temporary substitutes generated '\
-                                            'when necessary.')
+                                     description=('Validates an echoSMs datastore TOML file'
+                                        ' against the schema.'),
+                                     epilog=('The values of some attributes are populated or '
+                                            'modified by the '
+                                            'datastore and temporary substitutes generated '
+                                            'when necessary.'))
 
-    parser.add_argument('toml_file', help='echoSMs TOML file(s) (can include wildcards; '\
-                        'use ** to search in subdirectories)',
+    parser.add_argument('toml_file', help=('echoSMs TOML file(s) (can include wildcards; '
+                        'use ** to search in subdirectories)'),
                         action='extend', nargs='+')
-    parser.add_argument('-s', '--schema', help='provide the datastore schema file directly '\
-                        '(it is otherwise downloaded from the echoSMs Github repository)')
+    parser.add_argument('-s', '--schema', help=('provide the datastore schema file directly '
+                        '(it is otherwise downloaded from the echoSMs Github repository)'))
     parser.add_argument('-j', '--json', action='store_true',
-                        help='write the TOML file out in JSON format to the same directory '\
-                             'as the TOML file (works even if the validation fails)')
+                        help=('write the TOML file out in JSON format to the same directory '
+                             'as the TOML file (works even if the validation fails)'))
     args = parser.parse_args()
 
     # Expand out any wildcard file inputs and discard non files.
@@ -115,7 +116,7 @@ def main():
         # Write out to json if requested
         if args.json:
             json_bytes = orjson.dumps(specimen, option=orjson.OPT_INDENT_2)
-            with open(Path(toml).with_suffix('.json'), 'wb') as f:
+            with Path.open(Path(toml).with_suffix('.json'), 'wb') as f:
                 f.write(json_bytes)
 
         validate_one(schema, specimen, Path(toml.parent.name) / toml.name)

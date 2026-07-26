@@ -15,12 +15,13 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pprint
+import echosms
 
 # API documentation is available here:
 # https://echosms-data-store-app-ogogm.ondigitalocean.app/docs
 
-baseURI = 'http://127.0.0.1:8000/'
-baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
+baseURI = 'http://127.0.0.1:8000/' #noqa: N816
+baseURI = echosms.DATASTORE_URI  #noqa: N816
 
 # %%
 # Examples using the v2 version of the API
@@ -28,13 +29,13 @@ baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
 print('Getting all specimen metadata')
 d = requests.get(baseURI + 'v2/specimens', timeout=5)
 
-if d.status_code == 200:
+if d.status_code == requests.codes.ok:
     df = pd.DataFrame(data=d.json())
     print(df[['vernacular_names', 'model_type']])
 
     # A plot of specimen length/weight, coloured by species.
     # Filter out data where weight is NaN (i.e., not present)
-    obj = sns.scatterplot(data=df[df['weight'].notnull()],
+    obj = sns.scatterplot(data=df[df['weight'].notna()],
                           x='length', y='weight',
                           hue='species', style='imaging_method')
     obj.set_title('Specimens with length and weight values')
@@ -50,12 +51,12 @@ if d.status_code == 200:
 # Get all specimens with shape type of 'outline'.
 d = requests.get(baseURI + 'v2/specimens?shape_type=outline', timeout=5)
 
-if d.status_code == 200:
+if d.status_code == requests.codes.ok:
     ds = []
     for s in d.json():  # iterate over all specimens with in the datastore
         print(f'Getting all data for specimen {s["specimen_name"]}')
         specimen = requests.get(baseURI + 'v2/specimens/' + s['uuid'] + '/data', timeout=5)
-        if specimen.status_code == 200:
+        if specimen.status_code == requests.codes.ok:
             ds.append(specimen.json())
         else:
             print(f'Did not get data for specimen {s["uuid"]}')

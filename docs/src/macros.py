@@ -26,19 +26,19 @@ def define_env(env):
     env.variables['datastore_uri'] = module.DATASTORE_URI
 
     @env.macro
-    def ds_uri(p):
+    def ds_uri(p) -> str:
         return module.DATASTORE_URI + p
 
 
     @env.macro
-    def supported_python_versions():
+    def supported_python_versions() -> str:
         try:
             toml_path = Path('pyproject.toml')
 
             if not toml_path.exists():
                 return f"Error: {toml_path} not found"
 
-            with open(toml_path, "rb") as f:
+            with Path.open(toml_path, "rb") as f:
                 data = tomllib.load(f)
 
             if "project" in data and "requires-python" in data["project"]:
@@ -53,7 +53,7 @@ def define_env(env):
     # Call this in a markdown document via:
     # {{ datastore_schema_as_html() }}
     @env.macro
-    def datastore_schema_as_html():
+    def datastore_schema_as_html() -> str:
         schema_file = Path('data_store')/'schema'/'v1'/'anatomical_data_store.json'
         html_filename = 'schema/schema_doc.html'
 
