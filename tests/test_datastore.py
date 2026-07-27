@@ -29,10 +29,10 @@ def test_api_scripts(datastore_dir, script):
     assert result.returncode == 0
 
 
-def test_validate_cmd(pytestconfig):
-    """Test the validate_toml script on the example toml files."""
+def test_validate_cmd(pytestconfig, datastore_dir):
+    """Test the validate_toml command line program on the example toml files."""
     result = subprocess.run(['uv', 'run', # noqa: S607, S603
-                str(pytestconfig.rootpath/'src'/'echosms'/'datastore'/'validate_toml.py'),
+                str(datastore_dir/'validate_toml.py'),
                 str(pytestconfig.rootpath/'data_store'/'resources/example*.toml')],
                 capture_output=False, text=True, check=True)
 
@@ -57,3 +57,13 @@ def test_api_plot(tmp_path):
         filename = tmp_path/(uuid + '.png')
         plot_specimen(sp, savefile=filename)
         assert filename.exists()
+
+
+def test_process_for_datastore(datastore_dir):
+    """Test the process for datastore command line program starts."""
+    result = subprocess.run(['uv', 'run', # noqa: S607, S603
+                            str(datastore_dir/'process_for_datastore.py'),
+                            '-h'],
+                            capture_output=False, text=True, check=True)
+
+    assert result.returncode == 0
