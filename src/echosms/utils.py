@@ -602,7 +602,7 @@ def datastore_schema(schema_file: Path | None = None) -> dict:
     """
     if schema_file is None:
         s = requests.get(SCHEMA_URL, timeout=5)
-        if s.status_code == requests.ok:
+        if s.status_code == requests.codes.ok:
             return s.json()
     else:
         with Path.open(schema_file, 'rb') as f:

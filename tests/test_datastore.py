@@ -17,9 +17,9 @@ def datastore_dir(pytestconfig):
 def test_api_scripts(datastore_dir, script):
     """Run a Python script.
 
-    The script needs to use script dependencies to indicate which packages it 
+    The script needs to use script dependencies to indicate which packages it
     requires. If the echosms package is used that need to be in the script
-    dependencies too. Note that running this script uses the lastest published
+    dependencies too. Note that running this script uses the latest published
     echoSMs package, not the editable install on the testing server.
     """
     result = subprocess.run(['uv', 'run', # noqa: S607, S603
