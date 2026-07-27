@@ -97,6 +97,9 @@ preview-features = ["audit-command", "malware-check"]  # silences the preview fe
 [tool.pytest.ini_options]
 testpaths = ['tests',]
 addopts = ["--import-mode=importlib",]
+markers = [
+    "internet: tests that require internet access (mostly to the echoSMs datastore)",
+]
 
 [tool.ruff]
 line-length = 100

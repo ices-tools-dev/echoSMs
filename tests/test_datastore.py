@@ -11,6 +11,7 @@ def datastore_dir(pytestconfig):
     return pytestconfig.rootpath/'src'/'echosms'/'datastore'
 
 
+@pytest.mark.internet
 @pytest.mark.parametrize('script',
                         [('api_echosms_example.py'),
                          ('api_examples.py'),])
@@ -29,6 +30,7 @@ def test_api_scripts(datastore_dir, script):
     assert result.returncode == 0
 
 
+@pytest.mark.internet
 def test_validate_cmd(pytestconfig, datastore_dir):
     """Test the validate_toml command line program on the example toml files."""
     result = subprocess.run(['uv', 'run', # noqa: S607, S603
@@ -39,6 +41,7 @@ def test_validate_cmd(pytestconfig, datastore_dir):
     assert result.returncode == 0
 
 
+@pytest.mark.internet
 def test_api_plot(tmp_path):
     """Test calls to the datastore API."""
     # Get an outline shape from the echoSMs anatomical datastore
@@ -59,6 +62,7 @@ def test_api_plot(tmp_path):
         assert filename.exists()
 
 
+@pytest.mark.internet
 def test_process_for_datastore(datastore_dir):
     """Test the process for datastore command line program starts."""
     result = subprocess.run(['uv', 'run', # noqa: S607, S603

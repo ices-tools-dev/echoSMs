@@ -11,6 +11,7 @@ def test_datastore_schema():
     assert len(s) > 0
 
 
+@pytest.mark.internet
 def test_names_from_aphia_id():
     """Test access to the WoRMS API."""
     s = echosms.names_from_aphia_id(126436) # Atlantic cod
