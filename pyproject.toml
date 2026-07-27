@@ -35,8 +35,6 @@ dependencies = [
 	"jsonschema-rs",
 	"orjson",
 	"manifold3d",
-	"pre-commit>=4.6.0",
-	"ruff>=0.15.22",
 ]
 classifiers = [
     'Development Status :: 4 - Beta',
@@ -73,8 +71,11 @@ dev = [
     "mkdocs-macros-plugin>=1.5.0",
     "mkdocs-material>=9.7.6, <10",
     "mkdocstrings-python>=2.0.3",
+    "pre-commit>=4.6.0",
     "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
     "pytest-xdist>=3.8.0",
+    "ruff>=0.15.22",
     "spyder-kernels>=3.1.4",
     "zensical>=0.0.38",
 ]
@@ -96,10 +97,19 @@ preview-features = ["audit-command", "malware-check"]  # silences the preview fe
 
 [tool.pytest.ini_options]
 testpaths = ['tests',]
-addopts = ["--import-mode=importlib",]
+addopts = ["--import-mode=importlib", "--cov=echosms", "--cov-report=html"]
 markers = [
     "internet: tests that require internet access (mostly to the echoSMs datastore)",
 ]
+
+[tool.coverage.run]
+omit = ["src/echosms/viewer/*.py",]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.coverage.html]
+directory = "coverage_report"
 
 [tool.ruff]
 line-length = 100
