@@ -16,7 +16,8 @@ or when using pip:
 pip install echosms
 ```
 
-EchoSMs follows the [SPEC 0](https://scientific-python.org/specs/spec-0000/) recommendation for minimum
+EchoSMs follows [Scientific Python](https://scientific-python.org/)'s 
+[SPEC 0](https://scientific-python.org/specs/spec-0000/) recommendation for minimum
 supported versions of Python and dependencies. Support for Python versions is dropped three years
 after their initial release and for core numerical packages (e.g., numpy, scipy, matplotlib, xarray)
 two years after their initial release.
