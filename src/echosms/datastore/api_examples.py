@@ -11,6 +11,8 @@
 # ]
 # ///
 
+import tempfile
+from pathlib import Path
 import requests
 import pandas as pd
 import seaborn as sns
@@ -66,11 +68,14 @@ if d.status_code == requests.codes.ok:
     df = pd.DataFrame(data=ds)
 
     # Save the dataframe to a compressed file for later use
-    df.to_pickle('downloaded_anatomical_datastore.gz')
+    temp_dir = Path(tempfile.mkdtemp())
+    print(f'Saving data to {temp_dir}')
+
+    df.to_pickle(temp_dir/'downloaded_anatomical_datastore.gz')
 
     # That file can be read back and used without
     # online access to the echoSMs datastore API
-    dff = pd.read_pickle('downloaded_anatomical_datastore.gz') # noqa: S301
+    dff = pd.read_pickle(temp_dir/'downloaded_anatomical_datastore.gz') # noqa: S301
 
     # An example of querying the dataframe
     print(dff.query('genus == "Gadus"')[['vernacular_names', 'shape_type', 'imaging_method']])
