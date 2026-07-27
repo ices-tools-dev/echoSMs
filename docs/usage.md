@@ -6,7 +6,15 @@ EchoSMs is (currently) a Python package that implements acoustic scattering mode
 
 EchoSMs is available on [PyPi](https://pypi.org) as [`echosms`](https://pypi.org/project/echosms/). Install it with:
 
-    pip install echosms
+```bash
+uv add echosms
+```
+
+or when using pip:
+
+```bash
+pip install echosms
+```
 
 ## Versions
 
@@ -21,7 +29,13 @@ version('echosms')
 
 To upgrade echosms to the latest version use:
 
-```py
+```bash
+uv sync --upgrade-package echosms
+```
+
+or with pip:
+
+```bash
 pip install echosms --upgrade
 ```
 
@@ -307,19 +321,15 @@ bm.angle_as_dataframe()
 
 ## Shape Viewer
 
-EchoSMs includes an optional graphical user interface (GUI) for inspecting organism shapes and anatomical data. This is particularly useful for verifying geometric models (like DWBA or KRM shapes) before running acoustic simulations.
+EchoSMs includes a graphical user interface (GUI) for inspecting organism shapes and anatomical data. This is particularly useful for verifying geometric models (like DWBA or KRM shapes) before running acoustic simulations.
 
-### Installation
-
-The viewer requires additional dependencies. To install echoSMs with the viewer support:
+After installing echosms, the viewer is started from the command line:
 
 ```bash
-pip install echosms[viewer]
+uv run echosms-view
 ```
 
-### Usage
-
-Once installed, you can launch the viewer from the command line:
+or if using pip:
 
 ```bash
 echosms-view
