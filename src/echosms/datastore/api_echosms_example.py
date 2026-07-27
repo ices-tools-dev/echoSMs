@@ -1,6 +1,6 @@
 """An example of how to use echoSMs with model shapes from the echoSMs datastore API."""
 # /// script
-# requires-python = ">=3.11"
+# requires-python = ">=3.12"
 # dependencies = [
 #     "echosms",
 #     "matplotlib",
@@ -53,4 +53,4 @@ plt.legend(title='Specimens')
 plt.title('Dataset ' + s['dataset_name'])
 plt.xlabel('Frequency [kHz]')
 plt.ylabel('TS [dB re 1 m$^2$]')
-plt.show()
+plt.show(block=False) # block is so that this script can be run in testing code

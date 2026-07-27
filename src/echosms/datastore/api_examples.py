@@ -1,12 +1,13 @@
 """Examples that use the echoSMS RESTful API."""
 # /// script
-# requires-python = ">=3.11"
+# requires-python = ">=3.12"
 # dependencies = [
 #     "requests",
 #     "pandas",
 #     "seaborn",
-#     'Pillow',
+#     "Pillow",
 #     "matplotlib",
+#     "echosms",
 # ]
 # ///
 
@@ -41,7 +42,7 @@ if d.status_code == requests.codes.ok:
     obj.set_title('Specimens with length and weight values')
     # Move legend to outside of the axes
     sns.move_legend(obj, 'upper right', bbox_to_anchor=(1.6, 1))
-    plt.show()
+    plt.show(block=False)  # block is so that this script can be run in testing code
 
 
 # %%

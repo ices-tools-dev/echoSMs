@@ -12,6 +12,7 @@
 # ]
 # ///
 
+import sys
 from pathlib import Path
 from datetime import datetime, UTC
 import glob
@@ -24,7 +25,7 @@ import orjson
 from echosms import datastore_schema
 
 
-def validate_one(schema: dict, specimen: dict, file_label: str):
+def validate_one(schema: dict, specimen: dict, file_label: str) -> bool:
     """Validate a single TOML file."""
     # Add in attributes that the datastore loading process would normally provide
     if 'version_time' in specimen and specimen['version_time'] == '':
@@ -56,11 +57,14 @@ def validate_one(schema: dict, specimen: dict, file_label: str):
 
     # Provide info on pass/fail and any errors
     if error_msgs:
-        rprint(f'[red]✗[/red] File [orange3]{file_label}[/orange3] is not valid')
+        rprint(f'[red]X[/red] File [orange3]{file_label}[/orange3] is not valid')
         for m in error_msgs:
             rprint(m)
+        return False
     else:
-        rprint(f'[green]✓[/green] File [orange3]{file_label}[/orange3] is valid')
+        rprint(f'[green]V[/green] File [orange3]{file_label}[/orange3] is valid')
+
+    return True
 
 
 def main():
@@ -100,6 +104,7 @@ def main():
             return
 
     # Parse each TOML file
+    all_succeed = True
     for toml in toml_files:
         try:
             specimen = rtoml.load(toml)
@@ -109,8 +114,9 @@ def main():
                 specimen |= rtoml.load(metadata_file)
 
         except rtoml.TomlParsingError:
-            rprint(f'[red]✗[/red] Could not parse [orange3]{toml.name}[/orange3]. '\
+            rprint(f'[red]X[/red] Could not parse [orange3]{toml.name}[/orange3]. '\
                 'Is it a TOML-formatted file?')
+            all_succeed = False
             continue
 
         # Write out to json if requested
@@ -119,8 +125,12 @@ def main():
             with Path.open(Path(toml).with_suffix('.json'), 'wb') as f:
                 f.write(json_bytes)
 
-        validate_one(schema, specimen, Path(toml.parent.name) / toml.name)
+        s = validate_one(schema, specimen, Path(toml.parent.name) / toml.name)
+        if not s:
+            all_succeed = False
+
+    return all_succeed
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(not main())
