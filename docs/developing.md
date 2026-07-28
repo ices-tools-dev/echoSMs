@@ -28,9 +28,7 @@ We want echoSMs to be a software package that is easy to maintain, understand, u
 
 Pre-commit checks can be manually run with:
 
-```bash
-uv run pre-commit run --all-files
-```
+    uv run pre-commit run --all-files
 
 ### Style
 

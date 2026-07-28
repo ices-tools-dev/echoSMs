@@ -129,7 +129,8 @@ The TS will be calculated for all combinations of the parameters. To do this, ec
 model.calculate_ts(p, expand=True)
 ```
 
-An introductory [Jupyter notebook](https://github.com/ices-tools-dev/echoSMs/blob/main/docs/tutorial.ipynb) is available that covers the above concepts and a Python script that covers this and more is available [here](https://github.com/ices-tools-dev/echoSMs/blob/main/src/example_code.py).
+An introductory [Jupyter notebook](https://github.com/ices-tools-dev/echoSMs/blob/main/docs/tutorial.ipynb) is available that covers the above concepts and a Python script that covers this and more is
+[provided here](https://github.com/ices-tools-dev/echoSMs/blob/main/src/example_code.py).
 
 ## Using DataFrames and DataArrays directly
 
