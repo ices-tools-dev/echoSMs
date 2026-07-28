@@ -22,6 +22,7 @@ spec.loader.exec_module(module)
 # This is a temporary solution until Zensical implements modules and/or there is a plugin
 # for including JSON schema into Zensical docs.
 
+
 def define_env(env):
     env.variables['datastore_uri'] = module.DATASTORE_URI
 
@@ -29,26 +30,38 @@ def define_env(env):
     def ds_uri(p) -> str:
         return module.DATASTORE_URI + p
 
-
     @env.macro
     def supported_python_versions() -> str:
-        try:
-            toml_path = Path('pyproject.toml')
 
-            if not toml_path.exists():
-                return f"Error: {toml_path} not found"
+        toml_path = Path('pyproject.toml')
 
-            with Path.open(toml_path, "rb") as f:
-                data = tomllib.load(f)
+        if not toml_path.exists():
+            return f"Error: {toml_path} not found"
 
-            if "project" in data and "requires-python" in data["project"]:
-                return data["project"]["requires-python"].replace('>=', '≥').replace('<=', '≤')
+        with Path.open(toml_path, "rb") as f:
+            data = tomllib.load(f)
 
-            return f"Python version not found in {toml_path.name}"
+        if "project" in data and "requires-python" in data["project"]:
+            return data["project"]["requires-python"].replace('>=', '≥').replace('<=', '≤')
 
-        except Exception as e:
-            return f"Error reading Python version: {str(e)}"
+        return f"Python version not found in {toml_path.name}"
 
+    @env.macro
+    def min_python_version() -> str:
+
+        toml_path = Path('pyproject.toml')
+
+        if not toml_path.exists():
+            return f"Error: {toml_path} not found"
+
+        with Path.open(toml_path, "rb") as f:
+            data = tomllib.load(f)
+
+        if "project" in data and "requires-python" in data["project"]:
+            # Simplistic way that will fail if the version identifier is not >=
+            return data["project"]["requires-python"].replace('>=', '')[:4]
+
+        return f"Python version not found in {toml_path.name}"
 
     # Call this in a markdown document via:
     # {{ datastore_schema_as_html() }}
