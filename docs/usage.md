@@ -16,12 +16,6 @@ or when using pip:
 pip install echosms
 ```
 
-EchoSMs follows [Scientific Python](https://scientific-python.org/)'s
-[SPEC 0](https://scientific-python.org/specs/spec-0000/) recommendation for minimum
-supported versions of Python and dependencies. Support for Python versions is dropped three years
-after their initial release and for core numerical packages (e.g., numpy, scipy, matplotlib, xarray)
-two years after their initial release.
-
 Currently, echoSMs requires Python {{ supported_python_versions() }}. If `uv add` reports
 a `requires-python` mismatch,
 point your project at a compatible interpreter with `uv python pin {{ min_python_version() }}`

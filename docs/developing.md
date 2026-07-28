@@ -4,9 +4,11 @@ This page contains notes and instructions on developing and adding new models to
 
 ## Supported versions
 
-EchoSMs follows Scientific Python's [SPEC 0](https://scientific-python.org/specs/spec-0000/)
-to determine which Python and dependency versions are supported. Python
-versions {{ supported_python_versions() }} are currently supported.
+EchoSMs follows [Scientific Python](https://scientific-python.org/)'s
+[SPEC 0](https://scientific-python.org/specs/spec-0000/) recommendation for minimum
+supported versions of Python and dependencies. Support for Python versions is dropped three years
+after their initial release and for core numerical packages (e.g., numpy, scipy, matplotlib, xarray)
+two years after their initial release. Python versions {{ supported_python_versions() }} are currently supported.
 
 ## Obtaining the source code
 
