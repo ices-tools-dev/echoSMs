@@ -48,13 +48,13 @@ def test_api_plot(tmp_path):
     baseURI = DATASTORE_URI
     # baseURI = 'http://127.0.0.1:8000/'
 
-    r = requests.get(baseURI + 'v2/specimens?shape_type=outline', timeout=5)
+    r = requests.get(baseURI + 'v2/specimens?shape_type=outline', timeout=15)
     specimens = r.json()
     uuids = [s['uuid'] for s in specimens]
 
     for uuid in uuids:
         # Get the full specimen data (including the shape)
-        r = requests.get(baseURI + 'v2/specimen/' + uuid + '/data', timeout=5)
+        r = requests.get(baseURI + 'v2/specimen/' + uuid + '/data', timeout=15)
         sp = r.json()
         assert 'shapes' in sp
         filename = tmp_path/(uuid + '.png')
