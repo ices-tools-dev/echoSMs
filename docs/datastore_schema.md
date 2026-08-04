@@ -10,13 +10,13 @@ The dataset contents are specified by a [JSON schema](https://json-schema.org/) 
 
 Datastore dataset files can be validated against the schema with:
 
-- the `validate-toml` command line script that is installed when echoSMs is installed.
+- the `validate-toml` command line script that is installed when echoSMs is installed,
 - online validators (e.g., [jsonschema](https://jsonschema.dygalo.dev), [JSON Schema Validator](https://www.jsonschemavalidator.net/),
   [JSONSchema.dev](https://jsonschema.dev/),
   or [JSON Validator](https://www.liquid-technologies.com/online-json-schema-validator)),
 - your own code using a JSON schema validation library
   (e.g., [jsonschema-rs](https://github.com/Stranger6667/jsonschema/tree/master/crates/jsonschema-py)
-  for Python and [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) for R), or
+  for Python and [jsonvalidate](https://cran.r-project.org/web/packages/jsonvalidate/vignettes/jsonvalidate.html) for R).
 
 It is not necessary to validate your data before submitting it to the datastore, but it will help the uploading happen faster (a validation is done during the uploading process and any dataset format problems will be identified then).
 
