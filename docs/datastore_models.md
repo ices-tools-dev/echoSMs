@@ -2,6 +2,20 @@
 
 This section contains examples of using echoSMs datastore data.
 
+## Obtaining specimen metadata
+
+Metadata for all the specimens in the datastore can be easily loaded into a Pandas DataFrame:
+
+```py
+import echosms
+import pandas as pd
+
+df = pd.read_json(echosms.DATASTORE_URI + 'v2/specimens')
+```
+
+Note that this excludes the actual shape data - individual API calls using the `/data` endpoint
+are needed to get the shapes (see example below).
+
 ## Calculating TS from a datastore specimen
 
 Here is an example of getting model shapes from the datastore and estimating the target strength using an echoSMs model.
