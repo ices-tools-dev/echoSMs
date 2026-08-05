@@ -395,7 +395,10 @@ plt.ylabel('TS re 1m$2$ [dB]')
 # Try the KRM model and compare to the NOAA online KRM calculator results
 mod = KRMModel()
 
-fishes = ['Sardine', 'Cod', 'Bocaccio', 'SkipjackTuna_46.54cm']
+# Test with all available NOAA shapes.
+fishes = KRMdata().names()
+# Or one could also just test a few by naming them directly:
+# fishes = ['Sardine', 'Cod', 'Bocaccio', 'SkipjackTuna_46.54cm']
 
 for fname in fishes:
     fish = KRMdata().model(fname)
@@ -414,10 +417,13 @@ for fname in fishes:
 
     krm_ts = mod.calculate_ts(p, progress=True)
 
-    # Get the TS from the NOAA KRM webpage (cached locally)
+    # Get the TS from the NOAA KRM webpage (cached locally), if available
     noaa_ts = KRMdata.ts(fname)
-    plot_compare_freq(p['f'], krm_ts,
-                      'KRM echoSMs', p['f'], noaa_ts[' TS (dB).1'], 'KRM NOAA', fname)
+    if noaa_ts is None:
+        print(f'No NOAA ts results available for model "{fname}"')
+    else:
+        plot_compare_freq(p['f'], krm_ts,
+                          'KRM echoSMs', p['f'], noaa_ts[' TS (dB).1'], 'KRM NOAA', fname)
 
 # %% ###############################################################################################
 # Some other ways to run models.
