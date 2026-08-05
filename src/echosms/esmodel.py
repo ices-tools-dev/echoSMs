@@ -38,7 +38,7 @@ class ESModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, f: float,
                             target_longitudinal_c: float, target_transverse_c: float,
-                            target_rho: float, validate_parameters: bool=True,
+                            target_rho: float, validate_parameters: bool = True,
                             **kwargs: dict) -> float:
         """Calculate the backscatter from an elastic sphere for one set of parameters.
 

@@ -28,7 +28,6 @@ def models():
     return models
 
 
-
 def test_theoretical_Sa():
     with pytest.raises(ValueError):
         theoretical_Sa(ts=-45.0, eba=20.1, r=10)

@@ -9,6 +9,7 @@ from scipy.linalg import solve
 from numpy import errstate, fill_diagonal
 from scipy.spatial.distance import pdist, squareform
 
+
 class BEMModel(ScatterModelBase):
     """Boundary element method (BEM) scattering model.
 
@@ -38,7 +39,7 @@ class BEMModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, theta: float, phi: float,
                             f: float, mesh: Any, boundary_type: bt,
-                            validate_parameters: bool=True, **kwargs: dict) -> float:
+                            validate_parameters: bool = True, **kwargs: dict) -> float:
         """Calculate the scatter using the boundary element method for one set of parameters.
 
         Parameters

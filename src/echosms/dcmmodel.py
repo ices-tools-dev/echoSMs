@@ -41,8 +41,8 @@ class DCMModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, b: float,
                             theta: float, f: float, boundary_type: bt,
-                            target_c: float|None=None, target_rho: float|None=None,
-                            validate_parameters: bool=True,
+                            target_c: float | None = None, target_rho: float | None = None,
+                            validate_parameters: bool = True,
                             **kwargs: dict) -> float:
         """Calculate scatter from a finite cylinder using the modal series deformed cylinder model.
 

@@ -51,10 +51,10 @@ class MSSModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, f: float,
                             boundary_type: bt,
-                            target_c: float|None=None, target_rho: float|None=None,
-                            shell_c: float|None=None, shell_rho: float|None=None,
-                            shell_thickness: float|None=None,
-                            validate_parameters: bool=True,
+                            target_c: float | None = None, target_rho: float | None = None,
+                            shell_c: float | None = None, shell_rho: float | None = None,
+                            shell_thickness: float | None = None,
+                            validate_parameters: bool = True,
                             **kwargs: dict) -> float:
         """Calculate the scatter using the mss model for one set of parameters.
 
@@ -130,7 +130,7 @@ class MSSModel(ScatterModelBase):
                     return\
                         ((spherical_jn(n, k1a, derivative=True)*spherical_yn(n, ka))
                             / (spherical_jn(n, k1a)*spherical_jn(n, ka, derivative=True))
-                            - gh*(spherical_yn(n, ka, derivative=True)/\
+                            - gh*(spherical_yn(n, ka, derivative=True)/
                                 spherical_jn(n, ka, derivative=True)))\
                         / ((spherical_jn(n, k1a, derivative=True)*spherical_jn(n, ka))
                            / (spherical_jn(n, k1a)*spherical_jn(n, ka, derivative=True))-gh)

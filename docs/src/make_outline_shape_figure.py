@@ -48,8 +48,8 @@ for s, c in zip([bd, sb], ['green', 'blue']):
     centrelines.append(vd.Line(pts, c='black', lw=2))
 
     for i, _ in enumerate(x):
-        discs.append(vd.Cylinder(pos=(x[i],y[i],z[i]), r=h[i]/2, height=spacing,
-                                 axis=(-1,0,0), alpha=1, c=c))
+        discs.append(vd.Cylinder(pos=(x[i], y[i], z[i]), r=h[i]/2, height=spacing,
+                                 axis=(-1, 0, 0), alpha=1, c=c))
 
 
 # Axes arrows
@@ -62,14 +62,12 @@ axes = vd.Arrows(start_pts=[[0, 0, 0],
                  shaft_radius=sr, head_radius=0.02, head_length=0.1, res=15)
 
 
-
 plt = vd.Plotter(size=(800, 600), bg='white')
 plt.show(discs, centrelines, axes)
 
 
 # %%
 resourcesDir = Path(r'../resources')
-
 
 
 # the fish model came from: https://3dmag.org/en/market/download/item/6255/

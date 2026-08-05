@@ -5,6 +5,7 @@ import echosms
 import pandas
 import xarray
 
+
 def test_datastore_schema():
     s = echosms.datastore_schema()
     assert isinstance(s, dict)
@@ -14,7 +15,7 @@ def test_datastore_schema():
 @pytest.mark.internet
 def test_names_from_aphia_id():
     """Test access to the WoRMS API."""
-    s = echosms.names_from_aphia_id(126436) # Atlantic cod
+    s = echosms.names_from_aphia_id(126436)  # Atlantic cod
 
     assert isinstance(s, dict)
     assert s['species'] == 'Gadus morhua'
@@ -57,6 +58,7 @@ def test_h1():
     assert v.real == pytest.approx(-0.1625370306360667)
     assert v.imag == pytest.approx(4.469181324769897)
 
+
 def test_theoretical_Sa():
     """Test calculation of Sa from TS."""
     v = echosms.theoretical_Sa(-42.4, -20.5, 15.0)
@@ -69,13 +71,15 @@ def test_boundary_type():
     assert echosms.boundary_type.fixed_rigid == echosms.boundary_type.hard
     assert echosms.boundary_type.pressure_release == echosms.boundary_type.soft
     assert echosms.boundary_type.fluid_filled == echosms.boundary_type.fluid
-    assert len(echosms.boundary_type) == 6 # num of unique enums
+    assert len(echosms.boundary_type) == 6  # num of unique enums
+
 
 def test_neumann():
     """Test the Neumann function."""
     assert echosms.Neumann(0) == 1
     assert echosms.Neumann(1) == 2
     assert echosms.Neumann(3) == 2
+
 
 def test_split_dict():
     """Test the split_dict function."""

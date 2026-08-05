@@ -34,12 +34,12 @@ class HPModel(ScatterModelBase):
                              ', '.join(self.boundary_types))
 
     def calculate_ts_single(self, shape: str, medium_c: float, a: float, f: float,
-                            boundary_type: bt, medium_rho: float|None=None,
-                            target_c: float|None=None, target_rho: float|None=None,
-                            theta: float|None=None,
-                            L: float|None=None, rho_c: float|None=None,  # noqa: N803
-                            irregular: bool=False,
-                            validate_parameters: bool=True, **kwargs: dict) -> float:
+                            boundary_type: bt, medium_rho: float | None = None,
+                            target_c: float | None = None, target_rho: float | None = None,
+                            theta: float | None = None,
+                            L: float | None = None, rho_c: float | None = None,
+                            irregular: bool = False,
+                            validate_parameters: bool = True, **kwargs: dict) -> float:
         """Calculate the backscatter using the high pass model for one set of parameters.
 
         Parameters

@@ -16,7 +16,6 @@ import sys
 from pathlib import Path
 from datetime import datetime, UTC
 import glob
-import os
 import argparse
 import rtoml
 from rich import print as rprint

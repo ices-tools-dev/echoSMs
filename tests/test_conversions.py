@@ -4,6 +4,7 @@ from pathlib import Path
 import echosms
 import tomllib
 
+
 @pytest.fixture
 def datastore_dir(pytestconfig) -> Path:
     """Shape example directory."""
@@ -16,7 +17,7 @@ def test_krmorganism_from_datastore(datastore_dir):
         organism = tomllib.load(f)
 
     shapes = organism['shapes']
-    krm = echosms.krmorganism_from_datastore(shapes = shapes)
+    krm = echosms.krmorganism_from_datastore(shapes=shapes)
 
     assert krm.body.boundary == 'fluid-filled'
     assert len(krm.inclusions) == 1

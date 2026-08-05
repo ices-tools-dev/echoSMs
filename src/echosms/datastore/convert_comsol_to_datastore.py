@@ -44,12 +44,12 @@ for comsol_data in raw_dir.glob('*.txt'):
         f.readline()  # % Data
         for k in range(len(zpos)):
             for j in range(len(ypos)):
-                c[:,j,k] = np.fromstring(f.readline(), sep=' ')
+                c[:, j, k] = np.fromstring(f.readline(), sep=' ')
 
         f.readline()  # % Data
         for k in range(len(zpos)):
             for j in range(len(ypos)):
-                rho[:,j,k] = np.fromstring(f.readline(), sep=' ')
+                rho[:, j, k] = np.fromstring(f.readline(), sep=' ')
 
         # Don't bother reading in the HU values
 

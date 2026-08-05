@@ -37,6 +37,7 @@ def test_missing_parameter(rm):
     with pytest.raises(KeyError):
         mod.calculate_ts(m)
 
+
 # Test that models raise an error when input parameters are out of valid ranges
 def test_negative_parameter(rm):
     from echosms import MSSModel

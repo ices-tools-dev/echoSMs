@@ -60,9 +60,9 @@ class ScatterModelBase(abc.ABC):
         s += '\n'.join(['\t' + str(k) + ' = ' + str(v) for k, v in vars(self).items()])
         return s
 
-    def calculate_ts(self, data: dict | pd.DataFrame | xr.DataArray, expand: bool=False,
-                     inplace: bool=False, multiprocess: bool=False,
-                     progress: bool=False) -> list[float]|pd.Series|pd.DataFrame|None:
+    def calculate_ts(self, data: dict | pd.DataFrame | xr.DataArray, expand: bool = False,
+                     inplace: bool = False, multiprocess: bool = False,
+                     progress: bool = False) -> list[float] | pd.Series | pd.DataFrame | None:
         """Calculate the target strength (TS) for many parameters.
 
         Parameters
@@ -237,7 +237,7 @@ class ScatterModelBase(abc.ABC):
             if not all(x in valid_values for x in np.unique(np.atleast_1d(p[name]))):
                 raise ValueError(f"Model parameter '{name}' contains 1 or more invalid values.")
 
-    def _present_and_positive(self, p: dict, names: list, mask: np.ndarray|None=None) -> None:
+    def _present_and_positive(self, p: dict, names: list, mask: np.ndarray | None = None) -> None:
         """Check that that parameters are present and have a positive value.
 
         Parameters

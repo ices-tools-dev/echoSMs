@@ -18,7 +18,7 @@ hide:
 ???+ warning
 
     The schema browser currently does not show:
-    
+
     - property dependencies, such as when the presence of an optional
     property requires that another property be present (e.g., if `latitude` is present,
     then `latitude_units` is required), or

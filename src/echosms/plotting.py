@@ -6,8 +6,9 @@ from math import floor
 from .utils import boundary_type as bt
 from .conversions import mesh_from_geometric
 
-def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
-                  savefile: str|None=None, dpi: float=150) -> None:
+
+def plot_specimen(specimen: dict, dataset_label: str = '', title: str = '',
+                  savefile: str | None = None, dpi: float = 150) -> None:
     """Plot the specimen shape.
 
     Produces a relevant plot for all echoSMs anatomical datastore shape types.
@@ -65,6 +66,7 @@ def plot_specimen(specimen: dict, dataset_label: str='', title: str='',
         plt.close()
     else:
         plt.show()
+
 
 def _fit_to_axes(fig) -> None:
     """Change figure size to fit the axes."""
@@ -139,7 +141,7 @@ def plot_shape_surface(shapes: list[dict], ax):
                                        facets=facets, color=c)
 
 
-def plot_shape_voxels(s: list[dict], title: str=''):
+def plot_shape_voxels(s: list[dict], title: str = ''):
     """Plot the specimen's voxels.
 
     Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
@@ -175,7 +177,7 @@ def plot_shape_voxels(s: list[dict], title: str=''):
         c = floor(col)
         # The [::-1] and .invert_ axis calls give the appropriate
         # x and y axes directions in the plots.
-        im = ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:,c,:],
+        im = ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:, c, :],
                            norm=norm, cmap=cmap)
 
         ax.set_aspect('equal')
@@ -194,7 +196,7 @@ def plot_shape_voxels(s: list[dict], title: str=''):
     fig.suptitle(title)
 
 
-def plot_shape_categorised_voxels(s: list[dict], title: str=''):
+def plot_shape_categorised_voxels(s: list[dict], title: str = ''):
     """Plot the specimen's categorised voxels.
 
     Normally called via [plot_specimen()][echosms.plotting.plot_specimen].
@@ -227,7 +229,7 @@ def plot_shape_categorised_voxels(s: list[dict], title: str=''):
         c = floor(col)
         # The [::-1] and .invert_ axis calls give the appropriate
         # x and y axes directions in the plots.
-        ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:,c,:],
+        ax.pcolormesh(slice_dim[::-1], row_dim[::-1], d[:, c, :],
                       norm=norm, cmap=cmap)
 
         ax.set_aspect('equal')
@@ -256,9 +258,9 @@ def plot_shape_geometric(shapes: list[dict], ax):
 
     """
     mesh = mesh_from_geometric(shapes)
-    _plot_triangulated_surface(ax, mesh.vertices[:,0]*1e3,
-                                   mesh.vertices[:,1]*1e3,
-                                   mesh.vertices[:,2]*1e3,
+    _plot_triangulated_surface(ax, mesh.vertices[:, 0]*1e3,
+                                   mesh.vertices[:, 1]*1e3,
+                                   mesh.vertices[:, 2]*1e3,
                                    facets=mesh.faces)
 
 

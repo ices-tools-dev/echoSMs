@@ -11,6 +11,7 @@ import numpy.typing as npt
 from scipy.spatial.transform import Rotation as R
 from shapely import intersection, LineString, Polygon
 
+
 def mesh_from_surface(shapes: list[dict]) -> list[trimesh.Trimesh]:
     """Create trimesh instances of an echoSMs datastore surface shapes.
 
@@ -279,7 +280,7 @@ def outline_from_dwba(x, z, radius, anatomical_feature: str = "body",
             'width': (2*np.array(radius)).tolist()}
 
 
-def outline_to_surface(outline: dict, num_pts:int = 20, mesh_len:float = 2.0) -> dict:
+def outline_to_surface(outline: dict, num_pts: int = 20, mesh_len: float = 2.0) -> dict:
     """Convert an outline shape to a surface shape.
 
     Parameters
@@ -351,12 +352,12 @@ def outline_to_surface(outline: dict, num_pts:int = 20, mesh_len:float = 2.0) ->
     ms = pymeshlab.MeshSet()
     ms.add_mesh(pymeshlab.Mesh(pts, faces))
     # ms.save_current_mesh('test_before.stl')
-    #ms.meshing_merge_close_vertices()
-    #ms.meshing_remove_t_vertices()
-    #ms.meshing_close_holes()
-    #ms.meshing_repair_non_manifold_edges()
-    #ms.meshing_re_orient_faces_coherently()
-    #ms.meshing_isotropic_explicit_remeshing(targetlen=pymeshlab.PercentageValue(mesh_len),
+    # ms.meshing_merge_close_vertices()
+    # ms.meshing_remove_t_vertices()
+    # ms.meshing_close_holes()
+    # ms.meshing_repair_non_manifold_edges()
+    # ms.meshing_re_orient_faces_coherently()
+    # ms.meshing_isotropic_explicit_remeshing(targetlen=pymeshlab.PercentageValue(mesh_len),
     #                                        adaptive=True)
     # ms.save_current_mesh('test_after.stl')
     m = ms.current_mesh()
@@ -385,12 +386,12 @@ def outline_to_surface(outline: dict, num_pts:int = 20, mesh_len:float = 2.0) ->
                }
 
     # Copy across other attributes from the outline shape
-    attrs = {k:v for k, v in outline.items() if k not in ['x', 'y', 'z', 'height', 'width']}
+    attrs = {k: v for k, v in outline.items() if k not in ['x', 'y', 'z', 'height', 'width']}
 
     return attrs | surface
 
 
-def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
+def surface_to_outline(shape: dict, slice_thickness: float = 5e-3) -> dict:
     """Convert a surface shape to an outline shape.
 
     Parameters
@@ -480,6 +481,7 @@ def surface_to_outline(shape: dict, slice_thickness: float=5e-3) -> dict:
 
     return outline_shape
 
+
 def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
     """Create a triangulated mesh from a datastore geometric shape.
 
@@ -504,15 +506,15 @@ def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
                 case 'cylinder':
                     meshes.append(_cylinder_mesh(**c))
                 case _:
-                    raise ValueError('component_shape {} is not yet supported'\
+                    raise ValueError('component_shape {} is not yet supported'
                         .format(c['component_shape']))
 
     return trimesh.boolean.union(meshes, check_volume=False)
 
 
 def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
-                   centroid_location: tuple[float]|None=None,
-                   pitch: float=0.0, roll: float=0.0, yaw:float=0.0, **kwargs: dict):
+                   centroid_location: tuple[float] | None = None,
+                   pitch: float = 0.0, roll: float = 0.0, yaw: float = 0.0, **kwargs: dict):
     """Create a triangulated mesh of a spheroid as per the size and orientation."""
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)
@@ -522,9 +524,9 @@ def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
     return mesh.apply_transform(_transform(pitch, roll, yaw, centroid_location) @ scale)
 
 
-def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]|None=None,
-                  pitch: float=0.0, roll: float=0.0, yaw: float=0.0,
-                  bend_radius: float|None=None, bend_direction: str = 'down',
+def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float] | None = None,
+                  pitch: float = 0.0, roll: float = 0.0, yaw: float = 0.0,
+                  bend_radius: float | None = None, bend_direction: str = 'down',
                   **kwargs: dict):
     """Create a triangulated mesh of a cylinder as per the size and orientation."""
     if centroid_location is None:
@@ -565,7 +567,7 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
         elif bend_direction == 'down':
             angle = -np.pi/2
         else:
-            raise ValueError('Bend direction of {} is not supported'.format(bend_direction))
+            raise ValueError(f'Bend direction of {bend_direction} is not supported')
 
         rot3 = trimesh.transformations.rotation_matrix(angle=angle, direction=[1, 0, 0])
 

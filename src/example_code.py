@@ -179,7 +179,7 @@ for name in models:
 # %% ##################################################
 # Test the BEMModel against some of the benchmarks
 model_names = ['pressure release sphere', 'pressure release prolate spheroid']
-               #'pressure release finite cylinder']
+               # 'pressure release finite cylinder']
 
 # exclude the cylinder as the results are odd. not sure why...
 
@@ -199,8 +199,7 @@ for name in model_names:
             # rotate it to lie along the x axis
             mesh = trimesh.creation.cylinder(radius=m['a'], height=m['b'],
                     sections=10,
-                    transform = \
-                        trimesh.transformations.rotation_matrix(np.pi/2, [0, 1, 0], [0, 0, 0]))
+                    transform=trimesh.transformations.rotation_matrix(np.pi/2, [0, 1, 0], [0, 0, 0]))
             # mesh = mesh.subdivide().subdivide()  # for better accuracy at higher frequencies
 
     # Benchmark model for comparison
@@ -213,7 +212,6 @@ for name in model_names:
     mod = BEMModel()
     print(f'Calculating {rm.specification(name)["shape"]} shape')
     ts_bem = mod.calculate_ts(m, progress=True)
-
 
     plot_compare_freq(f, bm_ts, 'benchmark', f, ts_bem, 'bem', name)
 

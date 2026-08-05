@@ -43,8 +43,8 @@ class PSMSModel(ScatterModelBase):
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, a: float, b: float,
                             theta: float, f: float, boundary_type: bt,
-                            target_c: float|None=None, target_rho: float|None=None,
-                            validate_parameters: bool=True) -> float:
+                            target_c: float | None = None, target_rho: float | None = None,
+                            validate_parameters: bool = True) -> float:
         """Prolate spheroid modal series (PSMS) solution model.
 
         Parameters

@@ -5,6 +5,7 @@ import copy
 from echosms import plot_specimen
 import numpy as np
 
+
 @pytest.mark.skip(reason="Not implemented yet")
 def plot_geometric():
     s = {
