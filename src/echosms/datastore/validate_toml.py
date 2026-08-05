@@ -49,11 +49,8 @@ def validate_one(schema: dict, specimen: dict, file_label: str) -> bool:
         instance_path = '.'.join([str(a) for a in error.instance_path])
         schema_path = '.'.join(error.schema_path)
 
-        error_msgs.append('  [red]Error:')
-        error_msgs.append(
-            f'    For attribute "{instance_path}" with schema path of '
-            f'"{schema_path}"')
-        error_msgs.append(f'    {msg}')
+        error_msgs.append(f'  [red]Error:    For attribute "{instance_path}" '
+                          f'with schema path of "{schema_path}"    {msg}')
 
     # Provide info on pass/fail and any errors
     if error_msgs:
@@ -61,8 +58,8 @@ def validate_one(schema: dict, specimen: dict, file_label: str) -> bool:
         for m in error_msgs:
             rprint(m)
         return False
-    else:
-        rprint(f'[green]V[/green] File [orange3]{file_label}[/orange3] is valid')
+
+    rprint(f'[green]V[/green] File [orange3]{file_label}[/orange3] is valid')
 
     return True
 
@@ -101,7 +98,7 @@ def main():
         if schema == '':
             print('Could not get the datastore schema from Github. Try again or pass '
                   'a file in with the --schema option.')
-            return
+            return False
 
     # Parse each TOML file
     all_succeed = True
@@ -114,7 +111,7 @@ def main():
                 specimen |= rtoml.load(metadata_file)
 
         except rtoml.TomlParsingError:
-            rprint(f'[red]X[/red] Could not parse [orange3]{toml.name}[/orange3]. '\
+            rprint(f'[red]X[/red] Could not parse [orange3]{toml.name}[/orange3]. '
                 'Is it a TOML-formatted file?')
             all_succeed = False
             continue
