@@ -19,6 +19,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.26.0]
+
+### Added
+
+- TS results for all NOAA KRM shapes are now provided via the KRMData() class
+
+### Changed
+
+- Minimum supported Python version is 3.12
+- EchoSMs now follows SPEC 0 for minimum supported versions of dependencies
+- Applied ruff code checks and resolved or disabled most warnings
+- Updated documentation to put uv ahead of pip and be clear on use of SPEC 0
+- Added more unit tests
+- For the datastore, added more options for specimen_condition
+- For the datastore, refined constraints on dataset_name and aphia_id
+
 ## [0.25.0]
 
 ### Changed
@@ -123,7 +139,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - More user-visible code has type annotations
 - Minor rearrangement of API documentation
 
-[unreleased]: https://github.com/ices-tools-dev/echoSMs/compare/v0.25.0...HEAD
+[unreleased]: https://github.com/ices-tools-dev/echoSMs/compare/v0.26.0...HEAD
+[0.26.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.25.0...v0.26.0
 [0.25.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.24.0...v0.25.0
 [0.24.0]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.1...v0.24.0
 [0.23.1]: https://github.com/ices-tools-dev/echoSMs/compare/v0.23.0...v0.23.1
