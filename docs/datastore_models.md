@@ -24,7 +24,7 @@ for o in r.json():
 
     # Get the organism data (including the shape) from the datastore
     r = requests.get(echosms.DATASTORE_URI + 'v2/specimen/' + o['uuid'] + '/data')
-    if r.status_code != 200:
+    if r.status_code != requests.codes.ok:
         print(f'Request for data from specimen {o["uuid"]} failed - skipping')
         continue
 
