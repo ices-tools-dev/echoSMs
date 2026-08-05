@@ -85,10 +85,12 @@ def main():
     args = parser.parse_args()
 
     # Expand out any wildcard file inputs and discard non files.
+    # Use glob.glob() here instead of Path.glob() because the latter doesn't support
+    # absolute globs and glob.glob() does.
     toml_files = []
     for f_args in args.toml_file:
-        toml_files.extend([Path(f) for f in glob.glob(f_args, recursive=True)
-                           if os.path.isfile(f) and Path(f).name != 'metadata.toml'])
+        toml_files.extend([ff for f in glob.glob(f_args, recursive=True)  # noqa: PTH207
+                           if (ff := Path(f)).is_file() and ff.name != 'metadata.toml'])
 
     # Get the JSON schema
     if args.schema:
