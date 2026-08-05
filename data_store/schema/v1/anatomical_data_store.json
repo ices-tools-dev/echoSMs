@@ -423,13 +423,15 @@
             "type": "string"
         },
         "specimen_condition": {
-            "description": "Condition of the specimen when it was imaged.",
+            "description": "Condition of the specimen when it was imaged. All options imply that the specimen is dead except for 'other', 'alive', and 'anaesthetised'.",
             "type": "string",
             "enum": [
                 "fresh",
                 "frozen",
                 "thawed",
                 "unknown",
+                "alive",
+                "anaesthetised",
                 "other"
             ]
         },
