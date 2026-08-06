@@ -62,7 +62,7 @@ The following models are available in echoSMs:
 |Prolate spheroidal modal series|PSMSModel|Prolate spheroids with various boundary conditions|
 |Phase-tracking distorted-wave Born approximation|PTDWBAModel|Weakly scattering objects of any shape with inhomogeneous interiors|
 
-Future models will include the Fourier matching method and potentially the finite element and boundary element models. We welcome contributions or suggestions of additional models.
+We welcome contributions or suggestions of additional models.
 
 ## Running a model
 
