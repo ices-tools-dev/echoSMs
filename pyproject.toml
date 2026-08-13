@@ -104,9 +104,11 @@ markers = [
 
 [tool.coverage.run]
 omit = ["src/echosms/viewer/*.py",]
+parallel = true
 
 [tool.coverage.report]
 show_missing = true
+sort = "cover"
 
 [tool.coverage.html]
 directory = "coverage_report"

@@ -20,7 +20,8 @@ SCHEMA_URL = ('https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'
 swf_t = namedtuple('swf', ['r1c', 'ir1e', 'r1dc', 'ir1de', 'r2c', 'ir2e', 'r2dc', 'ir2de',
                            'naccr', 's1c', 'is1e', 's1dc', 'is1de', 'naccs'])
 
-class boundary_type(StrEnum): # noqa: N801
+
+class boundary_type(StrEnum):
     """Scattering model boundary types."""
 
     fixed_rigid = 'fixed-rigid'
@@ -52,6 +53,9 @@ class boundary_type(StrEnum): # noqa: N801
 
     fluid = 'fluid-filled'
     """A synonym for `fluid_filled`."""
+
+    none = 'none'
+    """Used for testing."""
 
 def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)\
                    -> float | np.ndarray:

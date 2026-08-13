@@ -267,7 +267,7 @@ class ScatterModelBase(abc.ABC):
             if p[name] is None:
                 raise ValueError(f"Model parameter '{name}' must not be None.")
             if mask is None:
-                mask = np.full(len(p[name]), fill_value=True)
+                mask = np.full(len(np.atleast_1d(p[name])), fill_value=True)
             if np.min(np.atleast_1d(p[name])[mask]) <= 0:
                 raise ValueError(f"Model parameter '{name}' must be greater than zero.")
 

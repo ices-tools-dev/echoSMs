@@ -2,6 +2,7 @@
 import pytest
 import echosms
 from echosms import ReferenceModels, BenchmarkData, theoretical_Sa
+import pandas as pd
 
 
 @pytest.fixture
@@ -34,8 +35,8 @@ def test_theoretical_Sa():
         theoretical_Sa(ts=-45.0, eba=-20.1, r=0.0)
 
 
-# Test that all models have the required instance variables.
 def test_test_instance(models):
+    """Test that all models have the required instance variables."""
     for m in models:
         assert isinstance(m.long_name, str)
         assert isinstance(m.short_name, str)
@@ -45,13 +46,43 @@ def test_test_instance(models):
         assert m.max_ka > 0.0
 
 
-# Test that reference model data is present.
-def test_reference_models(rm):
+def test_reference_names(rm):
+    """Test aspects of the reference model API."""
     assert len(rm.names()) > 0
 
+    assert rm.specification('an invalid model name') == {}
+    assert rm.parameters('an invalid model name') == {}
 
-# Test that benchmarkdata are present
+
 def test_benchmark_data(bm):
-
+    """Test that benchmarkdata are present."""
     assert len(bm.freq_names()) > 0
     assert len(bm.angle_names()) > 0
+
+
+def test_benchmark_freq(bm):
+    """Test that frequency data are available from the benchmark class."""
+    name = bm.freq_names()[0]
+    f, ts = bm.freq_data(name)
+    assert len(f) > 0
+    assert len(f) == len(ts)
+
+    with pytest.raises(ValueError):
+        bm.freq_data('not a benchmark name')
+
+
+def test_benchmark_angle(bm):
+    """Test that angle data are available from the benchmark class."""
+    name = bm.angle_names()[0]
+    angle, ts = bm.angle_data(name)
+    assert len(angle) > 0
+    assert len(angle) == len(ts)
+
+    with pytest.raises(ValueError):
+        bm.angle_data('not a benchmark name')
+
+
+def test_benchmark_return_dataframe(bm):
+    """Test that the benchmark returns dataframes."""
+    assert isinstance(bm.angle_as_dataframe(), pd.DataFrame)
+    assert isinstance(bm.freq_as_dataframe(), pd.DataFrame)

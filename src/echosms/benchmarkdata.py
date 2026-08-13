@@ -23,36 +23,36 @@ class BenchmarkData:
 
     """
 
-    f_rename = {'Sphere_WeaklyScattering': 'weakly scattering sphere',
-                'Sphere_Rigid': 'fixed rigid sphere',
-                'Sphere_PressureRelease': 'pressure release sphere',
-                'Sphere_Gas': 'gas filled sphere',
-                'ShellSphere_PressureRelease':
-                    'spherical fluid shell with pressure release interior',
-                'ShellSphere_Gas': 'spherical fluid shell with gas interior',
-                'ShellSphere_WeaklyScattering':
-                    'spherical fluid shell with weakly scattering interior',
-                'Cylinder_Rigid': 'fixed rigid finite cylinder',
-                'Cylinder_PressureRelease': 'pressure release finite cylinder',
-                'Cylinder_Gas': 'gas filled finite cylinder',
-                'Cylinder_WeaklyScattering': 'weakly scattering finite cylinder',
-                'ProlateSpheroid_Rigid': 'fixed rigid prolate spheroid',
-                'ProlateSpheroid_PressureRelease': 'pressure release prolate spheroid',
-                'ProlateSpheroid_Gas': 'gas filled prolate spheroid',
-                'ProlateSpheroid_WeaklyScattering': 'weakly scattering prolate spheroid',
-                'Frequency_kHz': 'frequency (kHz)'}
-
-    a_rename = {'Cylinder_Rigid': 'fixed rigid finite cylinder',
-                'Cylinder_PressureRelease': 'pressure release finite cylinder',
-                'Cylinder_Gas': 'gas filled finite cylinder',
-                'Cylinder_WeaklyScattering': 'weakly scattering finite cylinder',
-                'ProlateSpheroid_Rigid': 'fixed rigid prolate spheroid',
-                'ProlateSpheroid_PressureRelease': 'pressure release prolate spheroid',
-                'ProlateSpheroid_Gas': 'gas filled prolate spheroid',
-                'ProlateSpheroid_WeaklyScattering': 'weakly scattering prolate spheroid',
-                'Angle_deg': 'angle (deg)'}
-
     def __init__(self) -> None:
+
+        f_rename = {'Sphere_WeaklyScattering': 'weakly scattering sphere',
+                    'Sphere_Rigid': 'fixed rigid sphere',
+                    'Sphere_PressureRelease': 'pressure release sphere',
+                    'Sphere_Gas': 'gas filled sphere',
+                    'ShellSphere_PressureRelease':
+                        'spherical fluid shell with pressure release interior',
+                    'ShellSphere_Gas': 'spherical fluid shell with gas interior',
+                    'ShellSphere_WeaklyScattering':
+                        'spherical fluid shell with weakly scattering interior',
+                    'Cylinder_Rigid': 'fixed rigid finite cylinder',
+                    'Cylinder_PressureRelease': 'pressure release finite cylinder',
+                    'Cylinder_Gas': 'gas filled finite cylinder',
+                    'Cylinder_WeaklyScattering': 'weakly scattering finite cylinder',
+                    'ProlateSpheroid_Rigid': 'fixed rigid prolate spheroid',
+                    'ProlateSpheroid_PressureRelease': 'pressure release prolate spheroid',
+                    'ProlateSpheroid_Gas': 'gas filled prolate spheroid',
+                    'ProlateSpheroid_WeaklyScattering': 'weakly scattering prolate spheroid',
+                    'Frequency_kHz': 'frequency (kHz)'}
+
+        a_rename = {'Cylinder_Rigid': 'fixed rigid finite cylinder',
+                    'Cylinder_PressureRelease': 'pressure release finite cylinder',
+                    'Cylinder_Gas': 'gas filled finite cylinder',
+                    'Cylinder_WeaklyScattering': 'weakly scattering finite cylinder',
+                    'ProlateSpheroid_Rigid': 'fixed rigid prolate spheroid',
+                    'ProlateSpheroid_PressureRelease': 'pressure release prolate spheroid',
+                    'ProlateSpheroid_Gas': 'gas filled prolate spheroid',
+                    'ProlateSpheroid_WeaklyScattering': 'weakly scattering prolate spheroid',
+                    'Angle_deg': 'angle (deg)'}
 
         data_directory = Path(__file__).parent/Path('resources')/Path('BenchMark_Data')
 
@@ -63,8 +63,8 @@ class BenchmarkData:
         self.freq_dataset = pd.read_csv(freq_data_file)
 
         # Change the column names to match the reference model names used in ReferenceModels
-        self.angle_dataset.rename(columns=BenchmarkData.a_rename, inplace=True)
-        self.freq_dataset.rename(columns=BenchmarkData.f_rename, inplace=True)
+        self.angle_dataset.rename(columns=a_rename, inplace=True)
+        self.freq_dataset.rename(columns=f_rename, inplace=True)
 
         self.freq_dataset['frequency (kHz)'] *= 1e3  # want Hz not kHz
 

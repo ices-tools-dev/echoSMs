@@ -33,6 +33,14 @@ def test_mssmodel(rm, reference_model, f, ts):
 
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
+    # Test the validate_parameters option
+    mod.calculate_ts_single(**m, validate_parameters=True)
+
+    # Test for an unsupported boundary type exception
+    m['boundary_type'] = echosms.boundary_type.none
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**m, validate_parameters=False)
+
 
 ###########################################################
 # DCMModel
@@ -65,6 +73,12 @@ def test_psmsmodel(rm, reference_model, f, theta, ts):
 
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
+    mod.calculate_ts_single(**m, validate_parameters=True)
+
+    with pytest.raises(ValueError):
+        m['boundary_type'] = echosms.boundary_type.none
+        mod.calculate_ts_single(**m, validate_parameters=False)
+
 
 ###########################################################
 # ESModel
@@ -75,7 +89,7 @@ def test_esmodel(rm, reference_model, f, ts):
     mod = echosms.ESModel()
     m = rm.parameters(reference_model)
     m['f'] = f
-    print(mod.calculate_ts(m))
+
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
 
@@ -105,7 +119,17 @@ def test_kamodel(rm):
          'boundary_type': 'pressure-release', 'f': 38e3}
 
     mod = echosms.KAModel()
+
+    # check the parameter validation code
+    mod.calculate_ts_single(**p, validate_parameters=True)
+
+    # check the TS output
     assert np.allclose(mod.calculate_ts(p), -44.4474, atol=0.0001), "Incorrect TS value"
+
+    # check the invalid boundary type code
+    with pytest.raises(ValueError):
+        p['boundary_type'] = echosms.boundary_type.none
+        mod.calculate_ts_single(**p, validate_parameters=False)
 
 
 ###########################################################
@@ -120,6 +144,7 @@ def test_bemmodel(rm):
          'boundary_type': 'pressure-release', 'f': 38e3}
 
     mod = echosms.BEMModel()
+    mod.validate_parameters(p)
     assert np.allclose(mod.calculate_ts(p), -44.9167, atol=0.0001), "Incorrect TS value"
 
 

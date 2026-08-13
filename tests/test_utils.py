@@ -71,7 +71,7 @@ def test_boundary_type():
     assert echosms.boundary_type.fixed_rigid == echosms.boundary_type.hard
     assert echosms.boundary_type.pressure_release == echosms.boundary_type.soft
     assert echosms.boundary_type.fluid_filled == echosms.boundary_type.fluid
-    assert len(echosms.boundary_type) == 6  # num of unique enums
+    assert len(echosms.boundary_type) == 7  # num of unique enums
 
 
 def test_neumann():
