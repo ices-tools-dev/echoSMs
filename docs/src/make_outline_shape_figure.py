@@ -29,8 +29,8 @@ shapes = specimen['shapes']
 al = 0.050  # axes length
 sr = 0.01  # shaft radius for axes and arrows
 
-bd = [shape for shape in shapes if shape['anatomical_feature'] == 'body'][0]
-sb = [shape for shape in shapes if shape['anatomical_feature'] == 'swimbladder'][0]
+bd = next(shape for shape in shapes if shape['anatomical_feature'] == 'body')
+sb = next(shape for shape in shapes if shape['anatomical_feature'] == 'swimbladder')
 
 discs = []
 centrelines = []

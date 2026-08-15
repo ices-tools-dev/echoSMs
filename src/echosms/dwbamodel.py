@@ -1,5 +1,6 @@
 """The distorted-wave Born approximation model."""
 
+import itertools
 import warnings
 from cmath import exp
 from collections.abc import Iterable
@@ -160,7 +161,7 @@ class DWBAModel(ScatterModelBase):
         # distance is the L2 norm so use np.norm(). Could also use
         # scipy.spatial.distance.euclidean(), but that is apparently a lot slower.
         dist = np.array([np.linalg.norm(r1-r0)
-            for r0, r1 in zip(rv_pos[0:-1], rv_pos[1:], strict=True)])  # [m]
+            for r0, r1 in itertools.pairwise(rv_pos)])  # [m]
 
         # Thickness of each disc based on the distance between discs. The first and last
         # discs are treated differently.

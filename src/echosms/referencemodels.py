@@ -1,5 +1,6 @@
 """Reference model parameters."""
 
+import contextlib
 import tomllib
 from pathlib import Path
 
@@ -61,10 +62,8 @@ class ReferenceModels:
         # parameters.
         for t in self.definitions['target']:
             for k, v in t.items():
-                try:
+                with contextlib.suppress(KeyError, TypeError):
                     t[k] = self.definitions['parameters'][v]
-                except (KeyError, TypeError):
-                    pass
 
     def names(self):
         """Names of all model definitions.

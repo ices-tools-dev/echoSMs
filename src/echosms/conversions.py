@@ -30,8 +30,8 @@ def mesh_from_surface(shapes: list[dict]) -> list[trimesh.Trimesh]:
 
     def _to_trimesh(s: dict) -> trimesh.Trimesh:
         """Put echoSMs datstore shape into a trimesh instance."""
-        faces = [f for f in zip(s['facets_0'], s['facets_1'], s['facets_2'])]
-        vertices = [v for v in zip(s['x'], s['y'], s['z'])]
+        faces = list(zip(s['facets_0'], s['facets_1'], s['facets_2']))
+        vertices = list(zip(s['x'], s['y'], s['z']))
 
         return trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
 

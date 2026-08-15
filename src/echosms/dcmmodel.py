@@ -110,9 +110,9 @@ class DCMModel(ScatterModelBase):
 
         match boundary_type:
             case bt.fixed_rigid:
-                series = map(lambda m: (-1)**m * Neumann(m)*(jvp(m, Ka) / h1vp(m, Ka)), m)
+                series = ((-1)**mm * Neumann(mm)*(jvp(mm, Ka) / h1vp(mm, Ka)) for mm in m)
             case bt.pressure_release:
-                series = map(lambda m: (-1)**m * Neumann(m)*(jv(m, Ka) / hankel1(m, Ka)), m)
+                series = ((-1)**mm * Neumann(mm)*(jv(mm, Ka) / hankel1(mm, Ka)) for mm in m)
             case bt.fluid_filled:
                 g = target_rho/medium_rho
                 h = target_c/medium_c
@@ -125,7 +125,7 @@ class DCMModel(ScatterModelBase):
                     denom = (jvp(m, Kda)*jv(m, Ka)) / (jv(m, Kda)*jvp(m, Ka)) - gh
                     return numerator/denom
 
-                series = map(lambda m: 1j**(2*m) * Neumann(m) / (1 + 1j*Cm(m)), m)
+                series = (1j**(2*mm) * Neumann(mm) / (1 + 1j*Cm(mm)) for mm in m)
             case _:
                 raise ValueError(f'The {self.long_name} model does not support '
                                  f'a model type of "{boundary_type}".')

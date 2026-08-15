@@ -80,10 +80,7 @@ def main():
         np.array(row['shapes'][0]['categories']).size > 1e3:
             return True
 
-        if row['shape_type'] == 'surface' and len(row['shapes'][0]['x']) > 500:
-            return True
-
-        return False
+        return row['shape_type'] == 'surface' and len(row['shapes'][0]['x']) > 500
 
     validator = jsonschema_rs.validator_for(
         schema,
@@ -144,7 +141,7 @@ def main():
                     instance_path = '.'.join([str(a) for a in error.instance_path])
                     schema_path = '.'.join(error.schema_path)
 
-                    error_msgs.append(
+                    error_msgs.append(  # ruff: ignore[repeated-append]
                         f'    - For attribute "{instance_path}" with schema "{schema_path}",')
                     error_msgs.append(f'      {msg}')
 

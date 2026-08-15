@@ -148,4 +148,4 @@ extend-select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101"] # disables assert warnings in testing
+"tests/**/*.py" = ["S101"] # disables assert warnings in test code

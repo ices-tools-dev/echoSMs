@@ -121,10 +121,9 @@ class MSSModel(ScatterModelBase):
 
         match boundary_type:
             case bt.fixed_rigid:
-                A = list(map(lambda x: -spherical_jn(x, ka, derivative=True) /
-                                         h1(x, ka, derivative=True), n))
+                A = [-spherical_jn(x, ka, derivative=True) / h1(x, ka, derivative=True) for x in n]
             case bt.pressure_release:
-                A = list(map(lambda x: -spherical_jn(x, ka) / h1(x, ka), n))
+                A = [-spherical_jn(x, ka) / h1(x, ka) for x in n]
             case bt.fluid_filled:
                 k1a = wavenumber(target_c, f)*a
                 gh = target_rho/medium_rho * target_c/medium_c
