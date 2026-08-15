@@ -23,7 +23,7 @@ jobs:
           enable-cache: auto
           cache-suffix: ${{ matrix.python-version }}
       - name: Run tests
-        run: uv run --locked pytest -v -s -n auto
+        run: uv run --locked pytest -v -s -m "not internet" -n auto
 
   build:
     name: Build distribution
