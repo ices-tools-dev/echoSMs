@@ -30,6 +30,8 @@ Pre-commit checks can be manually run with:
 
     uv run pre-commit run --all-files
 
+The pre-commit checks are configured in the `.pre-commit-config.yaml` file and the `pyproject.toml` file for the `ruff` checks.
+
 ### Style
 
 Contributions of code should follow standardised or community-agreed styles and be provided in (or added to) a structure suitable for packaging and uploading to package libraries. For Python this includes `pip` and/or `conda`, for R this would be `CRAN`, for Matlab this would be a toolbox on the MATLAB File Exchange, etc.
