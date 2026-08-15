@@ -1,7 +1,8 @@
-import sys
 import importlib.util
-from pathlib import Path
+import sys
 import tomllib
+from pathlib import Path
+
 from json_schema_for_humans.generate import generate_from_filename
 from json_schema_for_humans.generation_configuration import GenerationConfiguration as gc
 

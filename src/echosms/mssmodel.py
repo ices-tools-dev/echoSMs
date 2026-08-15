@@ -1,10 +1,13 @@
 """A class that provides the modal series solution scattering model."""
 
 from math import log10
+
 import numpy as np
 from scipy.special import spherical_jn, spherical_yn
-from .utils import h1, wavenumber, as_dict, boundary_type as bt
+
 from .scattermodelbase import ScatterModelBase
+from .utils import as_dict, h1, wavenumber
+from .utils import boundary_type as bt
 
 
 class MSSModel(ScatterModelBase):

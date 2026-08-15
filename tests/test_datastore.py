@@ -1,8 +1,10 @@
 """Functions to test the echoSMs datastore API."""
 import subprocess
+
 import pytest
 import requests
-from echosms import plot_specimen, DATASTORE_URI
+
+from echosms import DATASTORE_URI, plot_specimen
 
 
 @pytest.fixture
@@ -23,7 +25,7 @@ def test_api_scripts(datastore_dir, script):
     dependencies too. Note that running this script uses the latest published
     echoSMs package, not the editable install on the testing server.
     """
-    result = subprocess.run(['uv', 'run', # noqa: S607, S603
+    result = subprocess.run(['uv', 'run',
                             str(datastore_dir/script)],
                             capture_output=True, text=True, check=True)
 
@@ -33,7 +35,7 @@ def test_api_scripts(datastore_dir, script):
 @pytest.mark.internet
 def test_validate_cmd(pytestconfig, datastore_dir):
     """Test the validate_toml command line program on the example toml files."""
-    result = subprocess.run(['uv', 'run', # noqa: S607, S603
+    result = subprocess.run(['uv', 'run',
                 str(datastore_dir/'validate_toml.py'),
                 str(pytestconfig.rootpath/'data_store'/'resources/example*.toml')],
                 capture_output=False, text=True, check=True)
@@ -65,7 +67,7 @@ def test_api_plot(tmp_path):
 @pytest.mark.internet
 def test_process_for_datastore(datastore_dir):
     """Test the process for datastore command line program starts."""
-    result = subprocess.run(['uv', 'run', # noqa: S607, S603
+    result = subprocess.run(['uv', 'run',
                             str(datastore_dir/'process_for_datastore.py'),
                             '-h'],
                             capture_output=False, text=True, check=True)

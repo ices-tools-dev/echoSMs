@@ -14,14 +14,16 @@ anatomical data store metadata and shape formats.
 # ///
 
 import copy
-import numpy as np
-from datetime import datetime, timezone
-from echosms import KRMdata, DWBAdata, outline_from_krm, boundary_type as bt
-from echosms import names_from_aphia_id
-import tomli_w
-import uuid
-from pathlib import Path
 import platform
+import uuid
+from datetime import datetime, timezone
+from pathlib import Path
+
+import numpy as np
+import tomli_w
+
+from echosms import DWBAdata, KRMdata, names_from_aphia_id, outline_from_krm
+from echosms import boundary_type as bt
 
 match platform.node():
     case 'AQUALYD-P14':

@@ -10,10 +10,11 @@
 
 # This script is not complete
 
-import vedo as vd
-import numpy as np
 from pathlib import Path
+
+import numpy as np
 import requests
+import vedo as vd
 
 # This code generates the figure
 

@@ -1,14 +1,17 @@
 """The distorted-wave Born approximation model."""
 
-from .scattermodelbase import ScatterModelBase
-from .utils import wavenumber, as_dict, boundary_type as bt
-from math import log10, cos, acos, pi, isclose, radians
+import warnings
 from cmath import exp
 from collections.abc import Iterable
-from scipy.spatial.transform import Rotation as R
+from math import acos, cos, isclose, log10, pi, radians
+
 import numpy as np
+from scipy.spatial.transform import Rotation as R
 from scipy.special import j1
-import warnings
+
+from .scattermodelbase import ScatterModelBase
+from .utils import as_dict, wavenumber
+from .utils import boundary_type as bt
 
 
 class DWBAModel(ScatterModelBase):

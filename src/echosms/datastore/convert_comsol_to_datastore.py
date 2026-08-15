@@ -10,9 +10,10 @@
 
 # Assumes that a metadata.toml file already exists in the directory.
 
+from pathlib import Path
+
 import numpy as np
 import tomli_w
-from pathlib import Path
 
 dataset_base = Path(r'C:\Users\GavinMacaulay\OneDrive - Aqualyd Limited'
                     r'\Documents\Aqualyd\Projects\2024-05 NOAA modelling'
@@ -90,4 +91,4 @@ for comsol_data in raw_dir.glob('*.txt'):
     name = 'specimen_' + comsol_data.name[:6]
     toml_file = (dataset_dir/name).with_suffix('.toml')
     with Path.open(toml_file, 'wb') as f:
-            tomli_w.dump(specimen, f)
+        tomli_w.dump(specimen, f)

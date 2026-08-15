@@ -19,18 +19,20 @@
 # ///
 
 # %%
-from pathlib import Path
 import argparse
+import uuid
+from datetime import UTC, datetime
+from pathlib import Path
+from shutil import make_archive
 from tempfile import TemporaryDirectory
+
+import jsonschema_rs
+import numpy as np
 import orjson
 import rtoml
-import jsonschema_rs
 from rich import print as rprint
-import numpy as np
-import uuid
-from datetime import datetime, UTC
-from echosms import plot_specimen, names_from_aphia_id, datastore_schema
-from shutil import make_archive
+
+from echosms import datastore_schema, names_from_aphia_id, plot_specimen
 
 
 def main():

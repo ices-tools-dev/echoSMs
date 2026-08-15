@@ -1,9 +1,10 @@
 """Test functions in the utils.py file."""
 
+import pandas as pd
 import pytest
-import echosms
-import pandas
 import xarray
+
+import echosms
 
 
 def test_datastore_schema():
@@ -99,7 +100,7 @@ def test_as_dataarray():
 def test_as_dataframe():
     p = {'a': 1, 'b': 2}
     v = echosms.as_dataframe(p)
-    assert isinstance(v, pandas.DataFrame)
+    assert isinstance(v, pd.DataFrame)
 
 
 def test_as_dict():

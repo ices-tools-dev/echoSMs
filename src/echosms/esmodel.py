@@ -1,11 +1,14 @@
 """A class that provides the elastic scattering model."""
 
-from math import log10, sin, atan
 from cmath import exp
+from math import atan, log10, sin
 from warnings import warn
+
 from scipy.special import spherical_jn, spherical_yn
-from .utils import wavenumber, spherical_jnpp, as_dict, boundary_type as bt
+
 from .scattermodelbase import ScatterModelBase
+from .utils import as_dict, spherical_jnpp, wavenumber
+from .utils import boundary_type as bt
 
 
 class ESModel(ScatterModelBase):

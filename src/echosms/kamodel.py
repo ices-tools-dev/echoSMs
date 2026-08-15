@@ -1,11 +1,14 @@
 """A class that provides the Kirchhoff approximation scattering model."""
 
 from math import log10
+from typing import Any
+
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-from typing import Any
-from .utils import wavenumber, wavelength, as_dict, boundary_type as bt
+
 from .scattermodelbase import ScatterModelBase
+from .utils import as_dict, wavelength, wavenumber
+from .utils import boundary_type as bt
 
 
 class KAModel(ScatterModelBase):

@@ -1,11 +1,13 @@
 """Classes to help store KRM model data."""
 
+import tomllib
+from dataclasses import dataclass
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
-from dataclasses import dataclass
+
 from .utils import boundary_type as bt
-import tomllib
 
 
 @dataclass
@@ -34,8 +36,8 @@ class KRMshape:
     boundary: bt
     x: np.ndarray
     w: np.ndarray
-    z_U: np.ndarray # noqa: N815
-    z_L: np.ndarray # noqa: N815
+    z_U: np.ndarray
+    z_L: np.ndarray
     c: float
     rho: float
 

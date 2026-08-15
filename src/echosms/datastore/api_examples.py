@@ -11,20 +11,22 @@
 # ]
 # ///
 
+import pprint
 import tempfile
 from pathlib import Path
-import requests
-import pandas as pd
-import seaborn as sns
+
 import matplotlib.pyplot as plt
-import pprint
+import pandas as pd
+import requests
+import seaborn as sns
+
 import echosms
 
 # API documentation is available here:
 # https://echosms-data-store-app-ogogm.ondigitalocean.app/docs
 
-baseURI = 'http://127.0.0.1:8000/' #noqa: N816
-baseURI = echosms.DATASTORE_URI  #noqa: N816
+baseURI = 'http://127.0.0.1:8000/'
+baseURI = echosms.DATASTORE_URI
 
 # %%
 # Examples using the v2 version of the API
@@ -75,7 +77,7 @@ if d.status_code == requests.codes.ok:
 
     # That file can be read back and used without
     # online access to the echoSMs datastore API
-    dff = pd.read_pickle(temp_dir/'downloaded_anatomical_datastore.gz') # noqa: S301
+    dff = pd.read_pickle(temp_dir/'downloaded_anatomical_datastore.gz')
 
     # An example of querying the dataframe
     print(dff.query('genus == "Gadus"')[['vernacular_names', 'shape_type', 'imaging_method']])

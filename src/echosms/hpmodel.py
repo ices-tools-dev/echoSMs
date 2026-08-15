@@ -1,8 +1,10 @@
 """A class that provides a high-pass fluid sphere scattering model."""
 
-from math import log10, pi, sin, cos, exp, radians
-from .utils import wavenumber, as_dict, boundary_type as bt
+from math import cos, exp, log10, pi, radians, sin
+
 from .scattermodelbase import ScatterModelBase
+from .utils import as_dict, wavenumber
+from .utils import boundary_type as bt
 
 
 class HPModel(ScatterModelBase):

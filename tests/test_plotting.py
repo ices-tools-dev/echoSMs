@@ -1,9 +1,11 @@
 """Test plotting of datastore shapes."""
 
-import pytest
 import copy
-from echosms import plot_specimen
+
 import numpy as np
+import pytest
+
+from echosms import plot_specimen
 
 
 @pytest.mark.skip(reason="Not implemented yet")

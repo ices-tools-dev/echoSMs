@@ -1,8 +1,9 @@
 """Reference model parameters."""
 
-from pathlib import Path
-import pandas as pd
 import tomllib
+from pathlib import Path
+
+import pandas as pd
 
 if int(pd.__version__.split('.')[0]) < 3:
     pd.options.mode.copy_on_write = True

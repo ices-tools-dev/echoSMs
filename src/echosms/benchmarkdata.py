@@ -1,6 +1,7 @@
 """Provide ready access to the benchmark data."""
 
 from pathlib import Path
+
 import pandas as pd
 
 

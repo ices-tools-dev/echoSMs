@@ -1,9 +1,11 @@
 """The phase-tracking distorted-wave Born approximation model."""
 
 from collections.abc import Iterable
+
 import numpy as np
 from scipy import ndimage
 from scipy.spatial.transform import Rotation as R
+
 from .scattermodelbase import ScatterModelBase
 from .utils import boundary_type as bt
 
@@ -27,13 +29,13 @@ class PTDWBAModel(ScatterModelBase):
         See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for
         calling details.
         """
-        # TODO - complete this function...
+        # TODO: - complete this function...
         # p = as_dict(params)
 
     def calculate_ts_single(self, volume: np.ndarray[int], theta: float, phi: float,
                             f: float, voxel_size: Iterable[float],
                             rho: Iterable[float], c: Iterable[float],
-                            validate_parameters: bool=True, **kwargs: dict) -> float:
+                            validate_parameters: bool = True, **kwargs: dict) -> float:
         """Phase-tracking distorted-wave Born approximation scattering model.
 
         Implements the phase-tracking distorted-wave Born approximation
@@ -114,10 +116,10 @@ class PTDWBAModel(ScatterModelBase):
         dv = voxel_size.prod()
 
         # input parameter checks
-        if not len(volume.shape) == 3: # noqa: PLR2004
+        if not len(volume.shape) == 3:
             raise TypeError('The volume input variable must be 3-dimensional.')
 
-        if not voxel_size.shape[0] == 3: # noqa: PLR2004
+        if not voxel_size.shape[0] == 3:
             raise TypeError('The voxel_size input variable must contain 3 items.')
 
         if not np.any(voxel_size > 0):
@@ -126,10 +128,10 @@ class PTDWBAModel(ScatterModelBase):
         if f < 0.0:
             raise ValueError('The f input variable must contain only positive values.')
 
-        if (theta < -0.0) or (theta > 180.0): # noqa: PLR2004
+        if (theta < -0.0) or (theta > 180.0):
             raise ValueError('The theta (pitch) angle must be between -180.0 and +180.0')
 
-        if (phi < -180.0) or (phi > 180.0): # noqa: PLR2004
+        if (phi < -180.0) or (phi > 180.0):
             raise ValueError('The phi (roll) angle must be between -180.0 and +180.0')
 
         if volume.min() != 0:

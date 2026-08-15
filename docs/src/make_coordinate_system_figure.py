@@ -8,10 +8,11 @@
 
 # %%
 """Create the coordinate system figure for the documentation."""
-import pyvista as pv
-import numpy as np
-from pathlib import Path
 import xml.etree.ElementTree as ET
+from pathlib import Path
+
+import numpy as np
+import pyvista as pv
 
 # These two functions came from https://github.com/pyvista/pyvista/discussions/5023 and are
 # used to create arced arrows.
@@ -24,16 +25,17 @@ def rotate_to(a, b):
     eps = 1e-3
     if np.absolute(theta) < eps:
         return np.eye(4)
-    elif np.absolute(np.pi - theta) < eps:  # Close to 180 degrees
+
+    if np.absolute(np.pi - theta) < eps:  # Close to 180 degrees
         # Choose the coordinate axis most orthogonal to A
         x = np.zeros(3)
         x[np.argmin(np.absolute(a))] = 1.0
         axis = np.cross(a, x)
         axis /= np.linalg.norm(axis)
         return pv.utilities.transformations.axis_angle_rotation(axis, theta, deg=False)
-    else:
-        axis = np.cross(a, b)
-        return pv.utilities.transformations.axis_angle_rotation(axis, theta, deg=False)
+
+    axis = np.cross(a, b)
+    return pv.utilities.transformations.axis_angle_rotation(axis, theta, deg=False)
 
 
 def semi_circular_arrow(
@@ -192,7 +194,7 @@ for t in [pv.themes.DocumentTheme(), pv.themes.DarkTheme()]:
     # p.close()
 
     # Modify the generate svg to make the labels properly italic
-    tree = ET.parse(savefile) # noqa: S314
+    tree = ET.parse(savefile)
     root = tree.getroot()
 
     for text in root.iter('{http://www.w3.org/2000/svg}text'):

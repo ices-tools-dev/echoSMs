@@ -1,9 +1,10 @@
 """Miscellaneous functions for the DWBA models."""
-import numpy as np
-from pathlib import Path
-from dataclasses import dataclass
-from scipy.interpolate import splprep, splev
 import tomllib
+from dataclasses import dataclass
+from pathlib import Path
+
+import numpy as np
+from scipy.interpolate import splev, splprep
 
 
 def create_dwba_spheroid(major_radius: float, minor_radius: float, spacing: float = 0.0001):

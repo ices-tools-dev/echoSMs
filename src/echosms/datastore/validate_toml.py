@@ -12,15 +12,17 @@
 # ]
 # ///
 
-import sys
-from pathlib import Path
-from datetime import datetime, UTC
-import glob
 import argparse
-import rtoml
-from rich import print as rprint
+import glob
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
 import jsonschema_rs
 import orjson
+import rtoml
+from rich import print as rprint
+
 from echosms import datastore_schema
 
 

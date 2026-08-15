@@ -12,9 +12,10 @@
 
 # Try with vedo to perhaps get a better 3D html output than pyvista.
 
-import vedo as vd
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import vedo as vd
 
 # This code generates the figure
 

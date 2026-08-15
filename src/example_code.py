@@ -15,14 +15,28 @@ import matplotlib.pyplot as plt
 import numpy as np
 import trimesh
 
-from echosms import MSSModel, PSMSModel, DCMModel, ESModel, PTDWBAModel, KAModel, DWBAModel
-from echosms import HPModel, KRMModel, BEMModel
-from echosms import BenchmarkData, JechEtAlData
-from echosms import ReferenceModels
-from echosms import as_dataframe, as_dataarray, boundary_type as bt
-from echosms import create_dwba_spheroid, create_dwba_cylinder
-from echosms import KRMdata
-from echosms import DWBAdata
+from echosms import (
+    BEMModel,
+    BenchmarkData,
+    DCMModel,
+    DWBAdata,
+    DWBAModel,
+    ESModel,
+    HPModel,
+    JechEtAlData,
+    KAModel,
+    KRMdata,
+    KRMModel,
+    MSSModel,
+    PSMSModel,
+    PTDWBAModel,
+    ReferenceModels,
+    as_dataarray,
+    as_dataframe,
+    create_dwba_cylinder,
+    create_dwba_spheroid,
+)
+from echosms import boundary_type as bt
 
 # Load the reference model definitions
 rm = ReferenceModels()
@@ -37,7 +51,7 @@ def plot_compare_freq(f1, ts1, label1, f2, ts2, label2, title):
     """Plot together two ts(f) result sets."""
     jech_index = np.nanmean(np.abs(np.array(ts1) - np.array(ts2)))
     # Plot the mss model and benchmark results
-    fig, axs = plt.subplots(2, 1, sharex=True)
+    _fig, axs = plt.subplots(2, 1, sharex=True)
     axs[0].plot(f1/1e3, ts1, label=label1)
     axs[0].plot(f2/1e3, ts2, '+', label=label2)
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
@@ -58,7 +72,7 @@ def plot_compare_angle(theta1, ts1, label1, theta2, ts2, label2, title):
     jech_index = np.nanmean(np.abs(np.array(ts1) - np.array(ts2)))
 
     # Plot the mss model and benchmark results
-    fig, axs = plt.subplots(2, 1, sharex=True)
+    _fig, axs = plt.subplots(2, 1, sharex=True)
     axs[0].plot(theta1, ts1, label=label1)
     axs[0].plot(theta2, ts2, '+', label=label2)
     axs[0].set_ylabel('TS re 1 m$^2$ [dB]')
@@ -178,8 +192,8 @@ for name in models:
 
 # %% ##################################################
 # Test the BEMModel against some of the benchmarks
-model_names = ['pressure release sphere', 'pressure release prolate spheroid']
-               # 'pressure release finite cylinder']
+model_names = ['pressure release sphere', 'pressure release prolate spheroid',]
+# 'pressure release finite cylinder']
 
 # exclude the cylinder as the results are odd. not sure why...
 
@@ -199,7 +213,8 @@ for name in model_names:
             # rotate it to lie along the x axis
             mesh = trimesh.creation.cylinder(radius=m['a'], height=m['b'],
                     sections=10,
-                    transform=trimesh.transformations.rotation_matrix(np.pi/2, [0, 1, 0], [0, 0, 0]))
+                    transform=trimesh.transformations.rotation_matrix(np.pi/2,
+                                                                    [0, 1, 0], [0, 0, 0]))
             # mesh = mesh.subdivide().subdivide()  # for better accuracy at higher frequencies
 
     # Benchmark model for comparison

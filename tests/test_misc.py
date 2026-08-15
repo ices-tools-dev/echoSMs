@@ -1,8 +1,9 @@
 """Functions to test that models check their input parameters."""
-import pytest
-import echosms
-from echosms import ReferenceModels, BenchmarkData, theoretical_Sa
 import pandas as pd
+import pytest
+
+import echosms
+from echosms import BenchmarkData, ReferenceModels, theoretical_Sa
 
 
 @pytest.fixture

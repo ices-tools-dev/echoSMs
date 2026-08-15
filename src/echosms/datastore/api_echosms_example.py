@@ -9,13 +9,14 @@
 # ]
 # ///
 
-import echosms
-import requests
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import requests
+
+import echosms
 
 # The current location of the echoSMs datastore server
-baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/' # noqa: N816
+baseURI = 'https://echosms-data-store-app-ogogm.ondigitalocean.app/'
 
 # Create an instance of the echoSMs KRM model for use below
 m = echosms.KRMModel()
@@ -53,4 +54,4 @@ plt.legend(title='Specimens')
 plt.title('Dataset ' + s['dataset_name'])
 plt.xlabel('Frequency [kHz]')
 plt.ylabel('TS [dB re 1 m$^2$]')
-plt.show(block=False) # block is so that this script can be run in testing code
+plt.show(block=False)  # block is so that this script can be run in testing code

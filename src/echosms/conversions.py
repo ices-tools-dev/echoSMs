@@ -2,14 +2,15 @@
 
 from pathlib import Path
 from statistics import fmean
+
 import numpy as np
-import trimesh
-from trimesh.path.polygons import projected
-from trimesh.creation import triangulate_polygon, Trimesh
-import pymeshlab
 import numpy.typing as npt
+import pymeshlab
+import trimesh
 from scipy.spatial.transform import Rotation as R
-from shapely import intersection, LineString, Polygon
+from shapely import LineString, Polygon, intersection
+from trimesh.creation import Trimesh, triangulate_polygon
+from trimesh.path.polygons import projected
 
 
 def mesh_from_surface(shapes: list[dict]) -> list[trimesh.Trimesh]:
@@ -155,7 +156,7 @@ def volume_from_datastore(voxels: list):
         A numpy 3D array.
 
     """
-    return np.array(voxels)  # TODO - check ordering is correct!
+    return np.array(voxels)  # TODO: - check ordering is correct!
 
 
 def surface_from_stl(stl_file: str | Path,

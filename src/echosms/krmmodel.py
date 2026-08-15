@@ -1,12 +1,15 @@
 """A class that implements the Kirchhoff ray mode scattering model."""
 
-from math import log10, pi, sqrt, cos, sin, radians
 from cmath import exp
+from math import cos, log10, pi, radians, sin, sqrt
+
 import numpy as np
-from scipy.special import j0, y0, jvp, yvp
-from .utils import wavenumber, as_dict, boundary_type as bt
+from scipy.special import j0, jvp, y0, yvp
+
+from .krmdata import KRMorganism, KRMshape
 from .scattermodelbase import ScatterModelBase
-from .krmdata import KRMshape, KRMorganism
+from .utils import as_dict, wavenumber
+from .utils import boundary_type as bt
 
 
 def _u(x: float, z: float, theta: float) -> float:
@@ -36,8 +39,8 @@ class KRMModel(ScatterModelBase):
         self.shapes = ['closed surfaces']
         self.max_ka = 20  # [1]
         self.no_expand_parameters = ['bodies']
-        self.theta_min = 65 # [deg]
-        self.theta_max = 115 # [deg]
+        self.theta_min = 65  # [deg]
+        self.theta_max = 115  # [deg]
 
     def validate_parameters(self, params):
         """Validate the model parameters.
@@ -58,9 +61,9 @@ class KRMModel(ScatterModelBase):
         #     warnings.warn('Some ka_s is below the limit.')
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, theta: float,
-                            f: float, organism: KRMorganism, high_ka_medium: str='body',
-                            low_ka_medium: str='body',
-                            validate_parameters: bool=True, **kwargs: dict) -> float:
+                            f: float, organism: KRMorganism, high_ka_medium: str = 'body',
+                            low_ka_medium: str = 'body',
+                            validate_parameters: bool = True, **kwargs: dict) -> float:
         """Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
 
         Warning
@@ -165,7 +168,7 @@ class KRMModel(ScatterModelBase):
             a_e = sqrt(incl.volume() / (pi * incl.length()))
 
             # Choose which modelling approach to use
-            if k*a_e < 0.15:  # Do the mode solution for the inclusion # noqa: PLR2004
+            if k*a_e < 0.15:  # Do the mode solution for the inclusion
                 if low_ka_medium != 'body':
                     gp = incl.rho / medium_rho
                     hp = incl.c / medium_c
@@ -184,7 +187,7 @@ class KRMModel(ScatterModelBase):
 
         return 20*log10(abs(body_sl + sum(sl)))
 
-    def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float, # noqa: N803
+    def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float,
                        theta: float) -> float:
         """Backscatter from a soft shape at low ka.
 
@@ -229,8 +232,8 @@ class KRMModel(ScatterModelBase):
 
         return (exp(1j*(chi - pi/4)) * L_e)/pi * sin(delta)/delta * b_0  # Eqn (15)
 
-    def _soft_KA(self, shape: KRMshape, k: float, k_b: float, R_bc: float, # noqa: N803
-                 TwbTbw: float, theta: float) -> float: # noqa: N803
+    def _soft_KA(self, shape: KRMshape, k: float, k_b: float, R_bc: float,
+                 TwbTbw: float, theta: float) -> float:
         """Backscatter from a soft object using the Kirchhoff approximation.
 
         Parameters
@@ -276,8 +279,8 @@ class KRMModel(ScatterModelBase):
             * np.sum(A_sb * (np.sqrt((k_b*a+1)*sin(theta))
                              * np.exp(-1j*(2*k_b*v+psi_p))*deltau))
 
-    def _fluid_KA(self, shape: KRMshape, k: float, k_b: float, R_wb: float, # noqa: N803
-                  TwbTbw: float, theta: float) -> float: # noqa: N803
+    def _fluid_KA(self, shape: KRMshape, k: float, k_b: float, R_wb: float,
+                  TwbTbw: float, theta: float) -> float:
         """Backscatter from a fluid object using the Kirchhoff approximation.
 
         Parameters

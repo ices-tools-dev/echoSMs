@@ -1,6 +1,7 @@
 """Functions to test that models produce the correct results."""
-import pytest
 import numpy as np
+import pytest
+
 import echosms
 
 

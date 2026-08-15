@@ -1,18 +1,19 @@
 """Miscellaneous utility functions."""
 import sys
+from collections import namedtuple
 from collections.abc import Iterable
-from pathlib import Path
-import numpy as np
+from enum import StrEnum
+from functools import cache
 from math import pi
+from pathlib import Path
+
+import numpy as np
 import orjson
-import xarray as xr
 import pandas as pd
 import requests
-from functools import cache
+import xarray as xr
 from scipy.special import spherical_jn, spherical_yn
-from collections import namedtuple
 from spheroidalwavefunctions import prolate_swf
-from enum import StrEnum
 
 SCHEMA_URL = ('https://raw.githubusercontent.com/ices-tools-dev/echoSMs/refs/'
                      'heads/main/data_store/schema/v1/anatomical_data_store.json')
@@ -56,6 +57,7 @@ class boundary_type(StrEnum):
 
     none = 'none'
     """Used for testing."""
+
 
 def theoretical_Sa(ts: float | np.ndarray, eba: float, r: float, nautical=False)\
                    -> float | np.ndarray:
@@ -246,7 +248,7 @@ def split_dict(d: dict, s: list) -> tuple[dict, dict]:
     return ncontains, contains
 
 
-def as_dataarray(params: dict, no_expand: list|None = None) -> xr.DataArray:
+def as_dataarray(params: dict, no_expand: list | None = None) -> xr.DataArray:
     """Convert model parameters from dict form to a Xarray DataArray.
 
     Parameters
@@ -278,13 +280,13 @@ def as_dataarray(params: dict, no_expand: list|None = None) -> xr.DataArray:
         if not isinstance(v, Iterable) or isinstance(v, str):
             expand[k] = [v]
 
-    sz = [len(v) for k, v in expand.items()]
+    sz = [len(v) for v in expand.values()]
     return xr.DataArray(data=np.full(sz, np.nan), coords=expand, name='ts',
                         attrs={'units': 'dB', 'dB_reference': '1 m^2',
                                'parameters': nexpand})
 
 
-def as_dataframe(params: dict, no_expand: list|None = None) -> pd.DataFrame:
+def as_dataframe(params: dict, no_expand: list | None = None) -> pd.DataFrame:
     """Convert model parameters from dict form to a Pandas DataFrame.
 
     Parameters
@@ -528,7 +530,7 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     if xi < 1.0:
         raise ValueError('The xi parameter must be greater than or equal to 1')
 
-    ioprad = 1 if xi-1.0 < 1e-10 else 2 # noqa: PLR2004
+    ioprad = 1 if xi-1.0 < 1e-10 else 2
 
     # Add +2 to lnum instead of +1 as it exposes a bug in the Fortran code - if n = 0, zeros
     # are returned instead of the correct value.
@@ -544,6 +546,7 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
         sp = p.r2dc * np.float_power(10.0, p.ir2de)
 
     return s[n-m], sp[n-m]
+
 
 @cache
 def names_from_aphia_id(aphia_id: int) -> dict:
@@ -569,7 +572,6 @@ def names_from_aphia_id(aphia_id: int) -> dict:
     if not aphia_id:
         return {}
 
-
     WORMS_URL = 'https://www.marinespecies.org/rest/'
 
     names = {}
@@ -586,6 +588,7 @@ def names_from_aphia_id(aphia_id: int) -> dict:
                 names['vernacular_names'].append(vname['vernacular'])
 
     return names
+
 
 @cache
 def datastore_schema(schema_file: Path | None = None) -> dict:

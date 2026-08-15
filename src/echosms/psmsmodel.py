@@ -1,9 +1,11 @@
 """A class that provides the prolate spheroidal modal series scattering model."""
 
 import numpy as np
-from .scattermodelbase import ScatterModelBase
 from scipy import integrate
-from .utils import pro_rad1, pro_rad2, pro_ang1, wavenumber, Neumann, as_dict, boundary_type as bt
+
+from .scattermodelbase import ScatterModelBase
+from .utils import Neumann, as_dict, pro_ang1, pro_rad1, pro_rad2, wavenumber
+from .utils import boundary_type as bt
 
 
 class PSMSModel(ScatterModelBase):

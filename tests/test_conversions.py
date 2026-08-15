@@ -1,8 +1,10 @@
 """Functions to test the functions in the conversions.py file."""
-import pytest
-from pathlib import Path
-import echosms
 import tomllib
+from pathlib import Path
+
+import pytest
+
+import echosms
 
 
 @pytest.fixture

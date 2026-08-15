@@ -27,4 +27,5 @@ repos:
     rev: v0.16.2
     hooks:
       - id: ruff-check
+        args: ["--color", "always"]
       # - id: ruff-format

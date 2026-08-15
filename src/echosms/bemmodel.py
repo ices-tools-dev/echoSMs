@@ -1,13 +1,14 @@
 """Implements the classical boundary element method for pressure release targets."""
 
 from typing import Any
-from .scattermodelbase import ScatterModelBase
-from .utils import as_dict, boundary_type as bt, wavenumber
 
-from numpy import pi, exp, sin, cos, array, log10
+from numpy import array, cos, errstate, exp, fill_diagonal, log10, pi, sin
 from scipy.linalg import solve
-from numpy import errstate, fill_diagonal
 from scipy.spatial.distance import pdist, squareform
+
+from .scattermodelbase import ScatterModelBase
+from .utils import as_dict, wavenumber
+from .utils import boundary_type as bt
 
 
 class BEMModel(ScatterModelBase):

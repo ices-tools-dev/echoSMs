@@ -1,10 +1,12 @@
 """Functions to create plots of specimens."""
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import colors, colormaps
 from math import floor
-from .utils import boundary_type as bt
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import colormaps, colors
+
 from .conversions import mesh_from_geometric
+from .utils import boundary_type as bt
 
 
 def plot_specimen(specimen: dict, dataset_label: str = '', title: str = '',

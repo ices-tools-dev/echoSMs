@@ -115,47 +115,15 @@ directory = "coverage_report"
 
 [tool.ruff]
 line-length = 100
-extend-exclude = ["src/otherCode"]
+# exclude the viewer and ipynb notebooks temporarily
+extend-exclude = ["src/otherCode", "src/echosms/viewer", "*.ipynb"]
 preview = true
 
 [tool.ruff.lint]
-# select = ["E", "W", "F", "S", "D"]
-# select = ['ALL']
 ignore = [
-    "D103", # missing docstring in public function
-    "D100", # missing docstring in public module
-    "D102", # missing docstring in public method
-    "D101", # missing docstring in public class
-    "D104", # missing docstring in public package
-    "D107", # missing docstring in __init__
-    "D203", # blank line before class
-    "D213", # mulitline summary second line
-    "Q000", # single quotes found but double quotes preferred
-    "COM812", # trailing comma missing
     "E226", # missing whitespace around arthmetic operator
-    # These are temporary ignores when select = ["ALL"]
-    "EM102",
-    "FBT001",
-    "FBT002",
-    "ANN001",
-    "ANN201",
-    "PLC0415",
-    "PT011",
-    "I001",
-    "N806",
-    "N802",
-    "T201",
-    "CPY001",
-    "INP001",
-    "EM101",
-    "TRY003",
-    "ERA001",
-    "PLR0912", # too many branches
-    "C901", # too complex
-    "PLR0917", # too many positional arguments
-    "PLR0913", # too many arguments in function definition
-    "PLR0915", # too many statements
-
+    "TD002", # missing todo author
+    "TD003", # missing todo link
 ]
 
 extend-select = [

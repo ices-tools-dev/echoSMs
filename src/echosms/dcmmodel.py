@@ -1,10 +1,13 @@
 """A class that provides the model series deformed cylinder scattering model."""
 
-from math import sin, cos, nan, pi, log10
-from scipy.special import jv, hankel1, jvp, h1vp, yv, yvp
+from math import cos, log10, nan, pi, sin
+
 import numpy as np
-from .utils import Neumann, wavenumber, as_dict, boundary_type as bt
+from scipy.special import h1vp, hankel1, jv, jvp, yv, yvp
+
 from .scattermodelbase import ScatterModelBase
+from .utils import Neumann, as_dict, wavenumber
+from .utils import boundary_type as bt
 
 
 class DCMModel(ScatterModelBase):
@@ -103,7 +106,7 @@ class DCMModel(ScatterModelBase):
         K = wavenumber(medium_c, f) * sin(theta_rad)
         Ka = K*a
 
-        m = range(30)  # TODO this needs to vary with f
+        m = range(30)  # TODO: this needs to vary with f
 
         match boundary_type:
             case bt.fixed_rigid:

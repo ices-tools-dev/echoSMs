@@ -1,10 +1,12 @@
 """Base class for scatter model classes."""
 
 import abc
+
+import numpy as np
 import pandas as pd
 import xarray as xr
-import numpy as np
 from tqdm import tqdm
+
 from .utils import as_dataframe
 
 
@@ -127,8 +129,8 @@ class ScatterModelBase(abc.ABC):
 
         self.validate_parameters(data_df)
 
-        # Get the non-expandable model parameters
-        p = data_df.attrs['parameters'] if 'parameters' in data_df.attrs else {}
+        # Get the non-expandable model parameters (if any)
+        p = data_df.attrs.get('parameters', {})
 
         # Note: the args argument in the apply call below requires a tuple. data_df.attrs is a
         # dict and the default behaviour is to make a tuple using the dict keys. The trailing comma
