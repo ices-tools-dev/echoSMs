@@ -34,7 +34,6 @@ class ESModel(ScatterModelBase):
         calling details.
         """
         p = as_dict(params)
-        super()._present_and_in(p, ['boundary_type'], self.boundary_types)
         super()._present_and_positive(p, ['medium_rho', 'medium_c', 'a', 'f',
                                           'target_longitudinal_c',
                                           'target_transverse_c', 'target_rho'])

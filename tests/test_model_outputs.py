@@ -1,5 +1,5 @@
 """Functions to test that models produce the correct results."""
-import copy
+from math import isnan
 
 import numpy as np
 import pytest
@@ -60,6 +60,15 @@ def test_dcmmodel(rm, reference_model, f, theta, ts):
 
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
 
+    # Test the validate_parameters option
+    mod.calculate_ts_single(**m, validate_parameters=True)
+
+    assert isnan(mod.calculate_ts_single(**(m | {'theta': 0.0})))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(m | {'boundary_type': echosms.boundary_type.none}),
+                                validate_parameters=False)
+
 
 ###########################################################
 # PSMSModel
@@ -94,6 +103,8 @@ def test_esmodel(rm, reference_model, f, ts):
     m['f'] = f
 
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
+
+    mod.calculate_ts_single(**m, validate_parameters=True)
 
 
 ###########################################################
