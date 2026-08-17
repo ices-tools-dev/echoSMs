@@ -2,6 +2,8 @@
 
 from math import cos, exp, log10, pi, radians, sin
 
+import pandas as pd
+
 from .scattermodelbase import ScatterModelBase
 from .utils import as_dict, wavenumber
 from .utils import boundary_type as bt
@@ -26,12 +28,13 @@ class HPModel(ScatterModelBase):
         calling details.
         """
         p = as_dict(params)
+        print(p['shape'])
         super()._present_and_positive(p, ['medium_c', 'a', 'f'])
 
-        if not p['shape'].isin(self.shapes).all():
+        if not pd.Series(p['shape']).isin(self.shapes).all():
             raise ValueError('The shape parameter must be one of: ' + ', '.join(self.shapes))
 
-        if not p['boundary_type'].isin(self.boundary_types).all():
+        if not pd.Series(p['boundary_type']).isin(self.boundary_types).all():
             raise ValueError('The boundary_type parameter must be one of: ' +
                              ', '.join(self.boundary_types))
 
@@ -79,7 +82,7 @@ class HPModel(ScatterModelBase):
             bent cylinder shape.
         irregular :
             Set to `True` if the modelled object is not exactly a sphere, prolate spheroid,
-            straight or uniformly beny cylinder.
+            straight or uniformly bent cylinder.
         validate_parameters :
             Whether to validate the model parameters.
         kwargs :
@@ -125,6 +128,8 @@ class HPModel(ScatterModelBase):
             g = target_rho/medium_rho
             h = target_c/medium_c
 
+        R = (g*h-1)/(g*h+1)
+
         k = wavenumber(medium_c, f)
 
         G = 1.0
@@ -136,7 +141,6 @@ class HPModel(ScatterModelBase):
         match shape:
             case 'sphere':
                 alpha_pis = (1-g*h*h)/(3*g*h*h) + (1-g)/(1+2*g)
-                R = (g*h-1)/(g*h+1)
                 if irregular:
                     match boundary_type:
                         case bt.fluid_filled:

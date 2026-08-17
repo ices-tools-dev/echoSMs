@@ -1,4 +1,6 @@
 """Functions to test that models produce the correct results."""
+import copy
+
 import numpy as np
 import pytest
 
@@ -151,13 +153,59 @@ def test_bemmodel(rm):
 
 ###########################################################
 # HPModel
-@pytest.mark.parametrize(('model', 'f', 'ts'),
-                         [('fixed-rigid', 38e3, -46.2576),
-                          ('elastic', 38e3, -58.1926),
-                          ('fluid-filled', 38e3, -94.4968)])
-def test_hpmodel(model, f, ts):
+@pytest.mark.parametrize(('model', 'shape', 'irregular', 'f', 'ts'),
+                         [
+                            ('fixed-rigid', 'sphere', False, 38e3, -46.2576),
+                            ('elastic', 'sphere', False, 38e3, -58.1926),
+                            ('fluid-filled', 'sphere', False, 38e3, -94.4968),
+
+                            ('fixed-rigid', 'sphere', True, 38e3, -39.3916),
+                            ('elastic', 'sphere', True, 38e3, -50.8903),
+                            ('fluid-filled', 'sphere', True, 38e3, -82.9587),
+
+                            ('fixed-rigid', 'prolate spheroid', False, 38e3, -38.2277),
+                            ('elastic', 'prolate spheroid', False, 38e3, -50.2251),
+                            ('fluid-filled', 'prolate spheroid', False, 38e3, -86.5380),
+
+                            ('fixed-rigid', 'prolate spheroid', True, 38e3, -36.5623),
+                            ('elastic', 'prolate spheroid', True, 38e3, -48.5390),
+                            ('fluid-filled', 'prolate spheroid', True, 38e3, -80.7479),
+
+                            ('fixed-rigid', 'cylinder', False, 38e3, -37.1074),
+                            ('elastic', 'cylinder', False, 38e3, -49.1234),
+                            ('fluid-filled', 'cylinder', False, 38e3, -85.4477),
+
+                            ('fixed-rigid', 'cylinder', True, 38e3, -33.7963),
+                            ('elastic', 'cylinder', True, 38e3, -45.7834),
+                            ('fluid-filled', 'cylinder', True, 38e3, -82.7810),
+
+                            ('fixed-rigid', 'bent cylinder', False, 38e3, -36.1392),
+                            ('elastic', 'bent cylinder', False, 38e3, -48.1489),
+                            ('fluid-filled', 'bent cylinder', False, 38e3, -84.4694),
+
+                            ('fixed-rigid', 'bent cylinder', True, 38e3, -34.2448),
+                            ('elastic', 'bent cylinder', True, 38e3, -46.2373),
+                            ('fluid-filled', 'bent cylinder', True, 38e3, -81.8426),
+                          ])
+def test_hpmodel(model, shape, irregular, f, ts):
     mod = echosms.HPModel()
-    p = {'boundary_type': model, 'shape': 'sphere', 'medium_c': 1500, 'a': 0.01, 'f': f}
+
+    p = {'boundary_type': model, 'shape': shape, 'irregular': irregular,
+            'medium_c': 1500, 'a': 0.01, 'f': f}
+
+    if shape in ['prolate spheroid', 'cylinder', 'bent cylinder']:
+        p |= {'L': 0.05, 'target_rho': 1050, 'target_c': 1000, 'medium_rho': 1024}
+
+    if shape == 'cylinder':
+        p |= {'theta': 90.0}
+
+    if shape == 'bent cylinder':
+        p |= {'rho_c': 0.10}
+
+    # Test the validate_parameters path
+    if model == echosms.boundary_type.fixed_rigid:
+        _ = mod.calculate_ts_single(**p, validate_parameters=True)
+
     match model:
         case 'fixed-rigid':
             assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
@@ -167,6 +215,12 @@ def test_hpmodel(model, f, ts):
         case 'fluid-filled':
             p |= {'medium_rho': 1024, 'target_c': 1510, 'target_rho': 1025}
             assert np.allclose(mod.calculate_ts(p), ts, atol=0.0001), "Incorrect TS value"
+
+    with pytest.raises(ValueError):
+        mod.validate_parameters(p | {'boundary_type': 'none'})
+
+    with pytest.raises(ValueError):
+        mod.validate_parameters(p | {'shape': 'test shape'})
 
 
 ###########################################################
@@ -193,7 +247,6 @@ def test_ptdwbamodel(rm):
          if k not in ['boundary_type', 'a', 'medium_rho', 'medium_c', 'target_rho', 'target_c']}
 
     mod = echosms.PTDWBAModel()
-    print(mod.calculate_ts(p))
     assert np.allclose(mod.calculate_ts(p), -94.0733, atol=0.0001), "Incorrect TS value"
 
 
@@ -220,6 +273,29 @@ def test_dwbamodel(rm, reference_model, f, theta, ts):
     mod = echosms.DWBAModel()
 
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
+
+    mod.calculate_ts_single(**m, validate=True)
+
+    # min rho limit
+    with pytest.warns(UserWarning):
+        mod.validate_parameters(m | {'medium_rho': mod.g_range[0] * 0.99 * m['target_rho']})
+
+    # max rho limit
+    with pytest.warns(UserWarning):
+        mod.validate_parameters(m | {'medium_rho': mod.g_range[1] * 1.01 * m['target_rho']})
+
+    # min c limit
+    with pytest.warns(UserWarning):
+        mod.validate_parameters(m | {'medium_c': mod.h_range[0] * 0.99 * m['target_c']})
+
+    # max c limit
+    with pytest.warns(UserWarning):
+        mod.validate_parameters(m | {'medium_c': mod.h_range[1] * 1.01 * m['target_c']})
+
+    # all elements in rv_tan must have the same number of elements (3)
+    m['rv_tan'][0] = [0, 0]
+    with pytest.raises(ValueError):
+        mod.validate_parameters(m)
 
 
 ###########################################################
