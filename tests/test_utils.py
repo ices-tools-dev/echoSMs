@@ -1,5 +1,6 @@
 """Test functions in the utils.py file."""
 
+import numpy as np
 import pandas as pd
 import pytest
 import xarray
@@ -7,6 +8,7 @@ import xarray
 import echosms
 
 
+@pytest.mark.internet
 def test_datastore_schema():
     s = echosms.datastore_schema()
     assert isinstance(s, dict)
@@ -21,12 +23,29 @@ def test_names_from_aphia_id():
     assert isinstance(s, dict)
     assert s['species'] == 'Gadus morhua'
 
+    assert echosms.names_from_aphia_id(0) == {}
+
 
 def test_pro_rad2():
     """Test prolate spheroid radial type 2 function and derivative."""
     v = echosms.pro_rad2(m=0, n=1, c=0.5, xi=1.1)
     assert v[0] == pytest.approx(-8.743654662343038)
     assert v[1] == pytest.approx(45.545658684546964)
+
+    v = echosms.pro_rad2(m=0, n=1, c=0.5, xi=1+1e-11)
+    assert np.isinf(v[0])
+    assert np.isinf(v[1])
+
+    with pytest.raises(ValueError):
+        # m < 0
+        echosms.pro_rad2(m=-1, n=1, c=0.5, xi=1.1)
+
+    with pytest.raises(ValueError):
+        # n < m
+        echosms.pro_rad2(m=2, n=1, c=0.5, xi=1.1)
+
+    with pytest.raises(ValueError):
+        echosms.pro_rad2(m=0, n=1, c=0.5, xi=0.9)
 
 
 def test_pro_rad1():
@@ -35,12 +54,34 @@ def test_pro_rad1():
     assert v[0] == pytest.approx(0.17965812547973625)
     assert v[1] == pytest.approx(0.15338687455029776)
 
+    with pytest.raises(ValueError):
+        # m < 0
+        echosms.pro_rad1(m=-1, n=1, c=0.5, xi=1.1)
 
-def test_ang1():
+    with pytest.raises(ValueError):
+        # n < m
+        echosms.pro_rad1(m=2, n=1, c=0.5, xi=1.1)
+
+    with pytest.raises(ValueError):
+        echosms.pro_rad1(m=0, n=1, c=0.5, xi=0.9)
+
+
+def test_pro_ang1():
     """Test prolate spheroid angular or first kind and derivative."""
     v = echosms.pro_ang1(m=0, n=1, c=0.5, eta=0.5)
     assert v[0] == pytest.approx(0.5043763082172239)
     assert v[1] == pytest.approx(0.9961569362510381)
+
+    with pytest.raises(ValueError):
+        # m < 0
+        echosms.pro_ang1(m=-1, n=1, c=0.5, eta=0.5)
+
+    with pytest.raises(ValueError):
+        # n < m
+        echosms.pro_ang1(m=2, n=1, c=0.5, eta=0.5)
+
+    with pytest.raises(ValueError):
+        echosms.pro_ang1(m=0, n=1, c=0.5, eta=1.1)
 
 
 def test_spherical_jnpp():
@@ -59,12 +100,31 @@ def test_h1():
     assert v.real == pytest.approx(-0.1625370306360667)
     assert v.imag == pytest.approx(4.469181324769897)
 
+    with pytest.raises(ValueError):
+        echosms.h1(-1, 0.5)
+
 
 def test_theoretical_Sa():
     """Test calculation of Sa from TS."""
     v = echosms.theoretical_Sa(-42.4, -20.5, 15.0)
-    print(v)
+
     assert v == pytest.approx(-45.421825181113626)
+
+    with pytest.raises(ValueError):
+        echosms.theoretical_Sa(-42.4, -20.5, -1.0)
+
+    with pytest.raises(ValueError):
+        echosms.theoretical_Sa(-42.4, 20.5, -1.0)
+
+
+def test_wavenumber():
+    """Test calculation of wavenumber."""
+    assert echosms.wavenumber(1500, 38e3) == pytest.approx(159.17403)
+
+
+def test_wavelength():
+    """Test calculation of wavelength."""
+    assert echosms.wavelength(1500, 38e3) == pytest.approx(0.0394737)
 
 
 def test_boundary_type():
@@ -110,3 +170,7 @@ def test_as_dict():
 
     assert isinstance(echosms.as_dict(da), dict)
     assert isinstance(echosms.as_dict(df), dict)
+    assert isinstance(echosms.as_dict(p), dict)
+
+    with pytest.raises(TypeError):
+        echosms.as_dict([1, 2, 3])

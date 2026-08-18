@@ -345,13 +345,14 @@ def as_dict(params: dict | pd.DataFrame | xr.DataArray) -> dict:
     if isinstance(params, dict):
         return params
 
-    # Get the non-expandable model parameters
-    p = params.attrs.get('parameters', {})
-
     if isinstance(params, xr.DataArray):
+        # Get the non-expandable model parameters
+        p = params.attrs.get('parameters', {})
         return dict(zip(params.coords, params.indexes.values(), strict=True)) | p
 
     if isinstance(params, pd.DataFrame):
+        # Get the non-expandable model parameters
+        p = params.attrs.get('parameters', {})
         # params.attrs = {}  # otherwise to_dict() exposes a bug in pandas?
         return params.to_dict(orient='series') | p
 
@@ -539,11 +540,10 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     p = swf_t._make(a)
 
     if ioprad == 1:
-        s = np.inf
-        sp = np.inf
-    else:
-        s = p.r2c * np.float_power(10.0, p.ir2e)
-        sp = p.r2dc * np.float_power(10.0, p.ir2de)
+        return np.inf, np.inf
+
+    s = p.r2c * np.float_power(10.0, p.ir2e)
+    sp = p.r2dc * np.float_power(10.0, p.ir2de)
 
     return s[n-m], sp[n-m]
 
@@ -616,4 +616,4 @@ def datastore_schema(schema_file: Path | None = None) -> dict:
             json_bytes = f.read()
             return orjson.loads(json_bytes)
 
-    return ''
+    return {}

@@ -184,7 +184,7 @@ def main():
 
                     dataset.append(data)
 
-            # If there is a 'data' directory, copy the contents to a sub directory 
+            # If there is a 'data' directory, copy the contents to a sub directory
             # in the staging directory
             data_dir = path / 'data'
             if not error_msgs and data_dir.is_dir():
