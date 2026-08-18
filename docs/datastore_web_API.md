@@ -33,8 +33,6 @@ Some example API calls are:
 - A specimen with a shape type of [voxels]({{ds_uri("v2/specimen/bf6cffd4-c796-48da-bc38-28f5af215356/image")}}) (and the [metadata]({{ds_uri("v2/specimens?uuid=bf6cffd4-c796-48da-bc38-28f5af215356")}}) about that specimen)
 - A specimen with a shape type of [surface]({{ds_uri("v2/specimen/977a6387-cbc7-4205-9bb3-4633f5253b62/image")}}) (and the [metadata]({{ds_uri("v2/specimens?uuid=977a6387-cbc7-4205-9bb3-4633f5253b62")}}))
 
-The API call to get the full raw data is not yet implemented.
-
 ## Use with spreadsheets
 
 Microsoft Excel and Google Sheets can load data directly from the datastore API. For Excel navigate to the `Data` tab and choose `Get data->From Other Sources->From Web`, enter the specimens endpoint (`{{ds_uri("v2/specimens")}}`) and then use the Power Query Editor to select columns before loading into Excel. For Google Sheets use one of the many API/Data Connector add-ons (e.g. `API Connector`).

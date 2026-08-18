@@ -6,7 +6,7 @@
 """
 
 # /// script
-# requires-python = ">=3.12"
+# requires-python = ">=3.14"
 # dependencies = [
 #     'orjson',
 #     'rtoml',
@@ -183,6 +183,15 @@ def main():
                     print()
 
                     dataset.append(data)
+
+            # If there is a 'data' directory, copy the contents to a sub directory 
+            # in the staging directory
+            data_dir = path / 'data'
+            if not error_msgs and data_dir.is_dir():
+                if 'dataset_uuid' in data:
+                    data_dir.copy(temp_path/data['dataset_uuid'])
+                else:
+                    rprint('[red] Raw dataset data present, but no dataset_uuid present.')
 
     if error_count:
         rprint(f'[red]{error_count} datasets failed the validation')
