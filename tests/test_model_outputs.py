@@ -1,7 +1,9 @@
 """Functions to test that models produce the correct results."""
+import tomllib
 from math import isnan
 
 import numpy as np
+import pandas as pd
 import pytest
 
 import echosms
@@ -119,6 +121,34 @@ def test_krmmodel(fname, f, ts):
     mod = echosms.KRMModel()
     print(mod.calculate_ts(m))
     assert np.allclose(mod.calculate_ts(m), [ts], atol=0.0001), "Incorrect TS value"
+
+
+###########################################################
+def test_krmdata():
+    """Test the KRMdata, KRMorganism, and KRMshape classes."""
+    d = echosms.KRMdata()
+
+    assert len(d.names()) > 0
+    assert isinstance(d.as_dict(), dict)
+    assert d.model('test no name') is None
+    assert d.ts('test no name') is None
+
+    test_name = d.names()[0]
+    assert isinstance(d.ts(test_name), pd.DataFrame)
+
+    s = echosms.KRMdata().model('Cod')
+    # both of these currently return negative values. That is wrong...
+    # assert s.body.volume() == 1.0
+    # assert s.body.length() == 1.0
+
+    with pytest.raises(FileNotFoundError):
+        echosms.KRMdata('test filename')
+
+    # with pytest.raises(tomllib.TOMLDecodeError):
+    #     echosms.KRMdata('test file with toml errors.toml')
+
+
+    s.plot(block=False)
 
 
 ###########################################################

@@ -97,7 +97,7 @@ class KRMorganism:
     length: float = 0.0
     vernacular_name: str = ''
 
-    def plot(self):
+    def plot(self, block=True):
         """Plot of organism shape."""
         import matplotlib.pyplot as plt
 
@@ -115,15 +115,21 @@ class KRMorganism:
         plt.gca().set_aspect('equal')
         plt.gca().xaxis.set_inverted(True)
         plt.title(self.name)
-        plt.show()
+        plt.show(block=block)
 
 
 class KRMdata:
     """Example datasets for the KRM model."""
 
-    def __init__(self) -> None:
-        # Load in the NOAA KRM shapes data
-        self.file = Path(__file__).parent/Path('resources')/Path('KRM_shapes.toml')
+    def __init__(self, file='KRM_shapes.toml') -> None:
+        """Create the NOAA KRM shapes dataset.
+
+        Parameters
+        ----------
+        file :
+            The name of the TOML file containing the KRM shapes.
+        """
+        self.file = Path(__file__).parent/'resources'/file
         with Path.open(self.file, 'rb') as f:
             try:
                 shapes = tomllib.load(f)
@@ -186,7 +192,7 @@ class KRMdata:
             return None
 
     @staticmethod
-    def ts(name: str) -> np.ndarray:
+    def ts(name: str) -> pd.DataFrame:
         """KRM model TS from model `name`.
 
         Parameters

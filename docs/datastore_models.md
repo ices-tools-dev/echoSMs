@@ -65,7 +65,7 @@ plt.ylabel('TS [dB re 1 m$^2$]')
 plt.show()
 ```
 
-## Converting between from echoSMs shapes
+## Converting between shape formats
 
 ### Surface to outline
 
