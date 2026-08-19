@@ -89,6 +89,6 @@ def define_env(env):
         # Having a height larger than the expanded contents means that a separate scrollbar
         # is not generated for the iframe (which is confusing)
         return (
-            f'<iframe src="../{html_filename}" '
+            f'<iframe src="{html_filename}" '
             'width="100%" height="30000px" style="border-width: 0"></iframe>'
         )
