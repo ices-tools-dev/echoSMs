@@ -54,15 +54,13 @@ Every commit to the echoSMs repository will generate a development package being
 
 ## Documentation
 
-The echoSMs documentation is produced using [`mkdocs`](https://www.mkdocs.org/) and [`mkdocstrings`](https://mkdocstrings.github.io/). The documentation pages are hosted by github and are regenerated after every commit to the repository using a github [action](https://github.com/ices-tools-dev/echoSMs/actions/workflows/build-docs.yml).
+The echoSMs documentation is produced using [`zensical`](https://zensical.org/) with [`mkdocstrings`](https://mkdocstrings.github.io/). The documentation pages are hosted by github and are regenerated after every commit to the repository using a github [action](https://github.com/ices-tools-dev/echoSMs/actions/workflows/build-docs.yml).
 
 Documentation edits can be tested locally by running:
 
-    uv run mkdocs serve
-
-in the top level of the echoSMs repository. The documentation is then available at <http://127.0.0.1:8000>. A migration to [zensical](https://zensical.org/) is in progress and can be tested using:
-
     uv run zensical serve
+
+in the top level of the echoSMs repository. The documentation is then available at <http://127.0.0.1:8000>.
 
 ## Tests
 
