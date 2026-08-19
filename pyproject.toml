@@ -66,10 +66,6 @@ Repository = 'https://github.com/ices-tools-dev/echoSMs'
 [dependency-groups]
 dev = [
     "json-schema-for-humans>=1.5.1",
-    "mkdocs>=1.6.1, <2",
-    "mkdocs-glightbox>=0.5.2",
-    "mkdocs-macros-plugin>=1.5.0",
-    "mkdocs-material>=9.7.6, <10",
     "mkdocstrings-python>=2.0.3",
     "pre-commit>=4.6.0",
     "pytest>=9.0.3",
