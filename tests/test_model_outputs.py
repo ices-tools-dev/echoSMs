@@ -1,5 +1,4 @@
 """Functions to test that models produce the correct results."""
-import tomllib
 from math import isnan
 
 import numpy as np
@@ -147,7 +146,6 @@ def test_krmdata():
     # with pytest.raises(tomllib.TOMLDecodeError):
     #     echosms.KRMdata('test file with toml errors.toml')
 
-
     s.plot(block=False)
 
 
@@ -289,6 +287,50 @@ def test_ptdwbamodel(rm):
 
     mod = echosms.PTDWBAModel()
     assert np.allclose(mod.calculate_ts(p), -94.0733, atol=0.0001), "Incorrect TS value"
+
+    # Non-zero phi test
+    assert np.allclose(
+        mod.calculate_ts(p | {'phi': 5}), -94.0780, atol=0.0001
+        ), "Incorrect TS value"
+
+    mod.calculate_ts_single(**p, validate_parameters=True)
+
+    with pytest.raises(TypeError):
+        mod.calculate_ts_single(**(p | {'volume': np.array([0, 0])}))
+
+    with pytest.raises(TypeError):
+        mod.calculate_ts_single(**(p | {'voxel_size': np.array([1, 1])}))
+
+    # with pytest.raises(ValueError):
+    #    mod.calculate_ts_single(**(p | {'voxel_size': np.array([-1, 1, 1])}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'volume': np.array([[[1], [2]], [[1], [2]]])}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'f': -1.0}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'theta': -1.0}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'theta': 181.0}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'phi': -181.0}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'phi': 181.0}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'rho': [1]}))
+
+    with pytest.raises(ValueError):
+        mod.calculate_ts_single(**(p | {'c': [1]}))
+
+    # with pytest.raises(ValueError):
+    #     p['volume'][0][0][0] = 10
+    #     mod.calculate_ts_single(**p)
 
 
 ###########################################################

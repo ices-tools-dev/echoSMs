@@ -214,7 +214,7 @@ class DWBAorganism:
     length: float = 0.0
     vernacular_name: str = ''
 
-    def plot(self):
+    def plot(self, block=True):
         """Do a simple plot of the DWBA model data."""
         import matplotlib.pyplot as plt
         _, axs = plt.subplots(2, 1, layout='compressed')
@@ -242,7 +242,7 @@ class DWBAorganism:
         axs[1].xaxis.set_inverted(True)
 
         plt.suptitle(self.name)
-        plt.show()
+        plt.show(block=block)
 
 
 class DWBAdata:
