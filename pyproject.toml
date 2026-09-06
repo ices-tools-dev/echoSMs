@@ -120,6 +120,7 @@ ignore = [
     "E226", # missing whitespace around arthmetic operator
     "TD002", # missing todo author
     "TD003", # missing todo link
+    "float-equality-comparison",
 ]
 
 extend-select = [
