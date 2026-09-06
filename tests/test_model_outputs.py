@@ -90,6 +90,8 @@ def test_psmsmodel(rm, reference_model, f, theta, ts):
 
     with pytest.raises(ValueError):
         m['boundary_type'] = echosms.boundary_type.none
+
+    with pytest.raises(ValueError):
         mod.calculate_ts_single(**m, validate_parameters=False)
 
 
@@ -171,6 +173,8 @@ def test_kamodel(rm):
     # check the invalid boundary type code
     with pytest.raises(ValueError):
         p['boundary_type'] = echosms.boundary_type.none
+
+    with pytest.raises(ValueError):
         mod.calculate_ts_single(**p, validate_parameters=False)
 
 
