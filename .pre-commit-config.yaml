@@ -25,7 +25,7 @@ repos:
     rev: 59e7b26529dc6f15c43063064b8b06ded60d0910 # v2.29.4
     hooks:
       - id: pyproject-fmt
-        args: ["--keep-full-version"]
+        args: ["--keep-full-version", "--no-generate-python-version-classifiers"]
 
   - repo: https://github.com/codespell-project/codespell
     rev: 57b21406f092110c18776e39b0bda50d37c945c8 # v2.4.3
