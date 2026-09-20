@@ -28,7 +28,7 @@ We want echoSMs to be a software package that is easy to maintain, understand, u
 
 Pre-commit checks can be manually run with:
 
-    uv run pre-commit run --all-files
+    uv run prek run --all-files
 
 The pre-commit checks are configured in the `.pre-commit-config.yaml` file and the `pyproject.toml` file for the `ruff` checks.
 
