@@ -1,145 +1,127 @@
 [build-system]
-requires = ["hatchling", 'hatch-vcs']
 build-backend = "hatchling.build"
+requires = [ "hatch-vcs", "hatchling" ]
 
 [project]
-name = 'echosms'
-import-names = ["echosms"]
-license = "MIT"
-license-files = ["LICENSE",]
-keywords = ["acoustic", "backscatter", "model"]
-authors = [
-  { name="Mike Jech"},
-  { name="Gavin Macaulay"}
-]
-description = 'Acoustic backscattering models used in aquatic ecosystem research'
+name = "echosms"
+import-names = [ "echosms" ]
+description = "Acoustic backscattering models used in aquatic ecosystem research"
 readme = "README.md"
+keywords = [ "acoustic", "backscatter", "model" ]
+license = "MIT"
+license-files = [ "LICENSE" ]
+authors = [
+  { name = "Mike Jech" },
+  { name = "Gavin Macaulay" },
+]
 requires-python = ">=3.12"
-dependencies = [
-	"numpy>=2.2.0",
-	"scipy>=1.15.0",
-	"pandas>=2.3.0",
-	"xarray>=2024.10.0",
-	"trimesh>=4.4.4",
-    "pymeshlab>=2023.12.post2",
-	"shapely>=2.0.6",
-	"mapbox_earcut>=1.0.2",
-	"spheroidalwavefunctions>=0.0.1",
-	"tqdm>=4.66.5",
-	"mapply>=0.1.27",
-	"requests>=2.32.4",
-	"rtoml>=0.12.0",
-	"urllib3>=1.26.20",
-	"matplotlib>=3.10.0",
-	"rich>=13.8.0",
-	"jsonschema-rs>=0.18.1",
-	"orjson>=3.10.7",
-	"manifold3d>=3.0.0",
-]
 classifiers = [
-    'Development Status :: 4 - Beta',
-    'Environment :: Console',
-    'Intended Audience :: Science/Research',
-    'Operating System :: OS Independent',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
-    'Programming Language :: Python :: 3.14',
-    'Topic :: Scientific/Engineering',
-    'Topic :: Scientific/Engineering :: Physics',
-    'Topic :: Scientific/Engineering :: Oceanography',
-    'Natural Language :: English',
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Science/Research",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Oceanography",
+  "Topic :: Scientific/Engineering :: Physics",
 ]
-dynamic = [ 'version']
-
-[project.scripts]
-echosms-view = "echosms.viewer.app:main"
-validate-toml = "echosms.datastore.validate_toml:main"
-process-for-datastore = "echosms.datastore.process_for_datastore:main"
-
-[project.urls]
-Homepage = 'https://github.com/ices-tools-dev/echoSMs'
-Issues = 'https://github.com/ices-tools-dev/echoSMs/issues'
-Documentation = 'https://ices-tools-dev.github.io/echoSMs'
-Repository = 'https://github.com/ices-tools-dev/echoSMs'
+dynamic = [ "version" ]
+dependencies = [
+  "jsonschema-rs>=0.18.1",
+  "manifold3d>=3.0.0",
+  "mapbox-earcut>=1.0.2",
+  "mapply>=0.1.27",
+  "matplotlib>=3.10.0",
+  "numpy>=2.2.0",
+  "orjson>=3.10.7",
+  "pandas>=2.3.0",
+  "pymeshlab>=2023.12.post2",
+  "requests>=2.32.4",
+  "rich>=13.8.0",
+  "rtoml>=0.12.0",
+  "scipy>=1.15.0",
+  "shapely>=2.0.6",
+  "spheroidalwavefunctions>=0.0.1",
+  "tqdm>=4.66.5",
+  "trimesh>=4.4.4",
+  "urllib3>=1.26.20",
+  "xarray>=2024.10.0",
+]
+urls.Documentation = "https://ices-tools-dev.github.io/echoSMs"
+urls.Homepage = "https://github.com/ices-tools-dev/echoSMs"
+urls.Issues = "https://github.com/ices-tools-dev/echoSMs/issues"
+urls.Repository = "https://github.com/ices-tools-dev/echoSMs"
+scripts.echosms-view = "echosms.viewer.app:main"
+scripts.process-for-datastore = "echosms.datastore.process_for_datastore:main"
+scripts.validate-toml = "echosms.datastore.validate_toml:main"
 
 [dependency-groups]
 dev = [
-    "json-schema-for-humans>=1.5.1",
-    "mkdocstrings-python>=2.0.3",
-    "pre-commit>=4.6.0",
-    "pytest>=9.0.3",
-    "pytest-cov>=7.1.0",
-    "pytest-xdist>=3.8.0",
-    "ruff>=0.15.22",
-    "spyder-kernels>=3.1.4",
-    "zensical>=0.0.38",
+  "json-schema-for-humans>=1.5.1",
+  "mkdocstrings-python>=2.0.3",
+  "pre-commit>=4.6.0",
+  "pytest>=9.0.3",
+  "pytest-cov>=7.1.0",
+  "pytest-xdist>=3.8.0",
+  "ruff>=0.15.22",
+  "spyder-kernels>=3.1.4",
+  "zensical>=0.0.38",
 ]
 
-[tool.hatch.version]
-source = 'vcs'
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/echosms"]
-
-[tool.hatch.version.raw-options]
-local_scheme = "no-local-version"  # otherwise the non-tagged version is not accepted by testpypi
+[tool.hatch]
+version.source = "vcs"
+version.raw-options.local_scheme = "no-local-version"  # otherwise the non-tagged version is not accepted by testpypi
+build.targets.wheel.packages = [ "src/echosms" ]
 
 [tool.uv]
 exclude-newer = "7 days"
 exclude-newer-package = { zensical = "1 day" }
-audit = {'malware-check' = true}
-preview-features = ["audit-command", "malware-check"]  # silences the preview features warnings
-
-[tool.pytest.ini_options]
-testpaths = ['tests',]
-addopts = ["--import-mode=importlib", "--cov=echosms", "--cov-report=html", "--cov-report=term"]
-markers = [
-    "internet: tests that require internet access (mostly to the echoSMs datastore)",
-]
-
-[tool.coverage.run]
-omit = ["src/echosms/viewer/*.py",]
-parallel = true
-
-[tool.coverage.report]
-show_missing = true
-sort = "cover"
-
-[tool.coverage.html]
-directory = "coverage_report"
+audit = { malware-check = true }
+preview-features = [ "audit-command", "malware-check" ]  # silences the preview features warnings
 
 [tool.ruff]
 line-length = 100
-# exclude the viewer and ipynb notebooks temporarily
-extend-exclude = ["src/otherCode", "src/echosms/viewer", "*.ipynb"]
+# exclude the viewer and ipynb notebooks temporarily (lots of things flagged in there!)
+extend-exclude = [ "*.ipynb", "src/echosms/viewer", "src/otherCode" ]
 preview = true
-
-[tool.ruff.lint]
-ignore = [
-    "E226", # missing whitespace around arthmetic operator
-    "TD002", # missing todo author
-    "TD003", # missing todo link
-    "float-equality-comparison",
+lint.extend-select = [
+  "B006", # do not use mutable structures for argument defaults
+  "C4",   # Catch incorrect use of comprehensions, dict, list, etc
+  "FA",   # Enforce from __future__ import annotations
+  "FURB", # Suggest more idiomatic Python patterns
+  "I",    # Sort imports properly
+  "ICN",  # Use common import conventions
+  "ISC",  # Good use of string concatenation
+  "NPY",  # Some numpy-specific things
+  "PTH",  # Use pathlib instead of os.path
+  "RET",  # Good return practices
+  "SIM",  # Common simplification rules
+  "TC",   # Enforce importing certain types in a TYPE_CHECKING block
+  "TD",   # Be diligent with TODO comments
+  "TID",  # Some good import practices
+  "W",    # PyCodeStyle warnings
 ]
-
-extend-select = [
-    "B006",     # do not use mutable structures for argument defaults
-    "W",        # PyCodeStyle warnings
-    "I",        # Sort imports properly
-    "C4",       # Catch incorrect use of comprehensions, dict, list, etc
-    "FA",       # Enforce from __future__ import annotations
-    "ISC",      # Good use of string concatenation
-    "ICN",      # Use common import conventions
-    "RET",      # Good return practices
-    "SIM",      # Common simplification rules
-    "TID",      # Some good import practices
-    "TC",       # Enforce importing certain types in a TYPE_CHECKING block
-    "PTH",      # Use pathlib instead of os.path
-    "TD",       # Be diligent with TODO comments
-    "NPY",      # Some numpy-specific things
-    "FURB",     # Suggest more idiomatic Python patterns
+lint.ignore = [
+  "E226",                      # missing whitespace around arthmetic operator
+  "float-equality-comparison",
+  "TD002",                     # missing todo author
+  "TD003",                     # missing todo link
 ]
+lint.per-file-ignores."tests/**/*.py" = [ "S101" ]  # disables assert warnings in test code
 
-[tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101"] # disables assert warnings in test code
+[tool.pytest]
+ini_options.testpaths = [ "tests" ]
+ini_options.addopts = [ "--import-mode=importlib", "--cov=echosms", "--cov-report=html", "--cov-report=term" ]
+ini_options.markers = [ "internet: tests that require internet access (mostly to the echoSMs datastore)" ]
+
+[tool.coverage]
+run.omit = [ "src/echosms/viewer/*.py" ]
+run.parallel = true
+report.show_missing = true
+report.sort = "cover"
+html.directory = "coverage_report"
