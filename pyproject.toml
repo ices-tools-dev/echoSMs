@@ -39,7 +39,6 @@ dependencies = [
   "numpy>=2.2.0",
   "orjson>=3.10.7",
   "pandas>=2.3.0",
-  "pymeshlab>=2023.12.post2",
   "requests>=2.32.4",
   "rich>=13.8.0",
   "rtoml>=0.12.0",

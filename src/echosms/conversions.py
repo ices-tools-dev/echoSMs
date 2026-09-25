@@ -5,7 +5,6 @@ from statistics import fmean
 
 import numpy as np
 import numpy.typing as npt
-import pymeshlab
 import trimesh
 from scipy.spatial.transform import Rotation as R
 from shapely import LineString, Polygon, intersection
@@ -349,9 +348,12 @@ def outline_to_surface(outline: dict, num_pts: int = 20, mesh_len: float = 2.0) 
     faces.extend(endcap1_faces)
     faces.extend(endcap2_faces)
 
+    # TODO: the code below didn't quite work correctly, so is not used for the moment.
     # Tidy the mesh using pymeshlab
-    ms = pymeshlab.MeshSet()
-    ms.add_mesh(pymeshlab.Mesh(pts, faces))
+    # ms = pymeshlab.MeshSet()
+    # ms.add_mesh(pymeshlab.Mesh(pts, faces))
+
+    # Debugging/development code:
     # ms.save_current_mesh('test_before.stl')
     # ms.meshing_merge_close_vertices()
     # ms.meshing_remove_t_vertices()
@@ -361,10 +363,12 @@ def outline_to_surface(outline: dict, num_pts: int = 20, mesh_len: float = 2.0) 
     # ms.meshing_isotropic_explicit_remeshing(targetlen=pymeshlab.PercentageValue(mesh_len),
     #                                        adaptive=True)
     # ms.save_current_mesh('test_after.stl')
-    m = ms.current_mesh()
 
     # Put into trimesh to get the face normals and do some checks
-    mesh = Trimesh(vertices=m.vertex_matrix(), faces=m.face_matrix())
+    # m = ms.current_mesh()
+    # mesh = Trimesh(vertices=m.vertex_matrix(), faces=m.face_matrix())
+
+    mesh = Trimesh(vertices=pts, faces=faces)
 
     errors = []
     if not mesh.is_watertight:
