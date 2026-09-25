@@ -2,8 +2,11 @@ name: Build and publish echoSMs
 
 on: push
 
+permissions: {}
+
 jobs:
   test:
+    name: Run the pytest tests
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -13,6 +16,9 @@ jobs:
     steps:
       - name: Checkout echoSMs
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -32,6 +38,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
     - name: Set up Python
       uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
       with:
@@ -105,7 +113,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       run: >-
         gh release create
-        '${{ github.ref_name }}'
+        '${GITHUB_REF_NAME}'
         --repo '${{ github.repository }}'
         --notes ""
     - name: Upload artifact signatures to GitHub Release
@@ -116,7 +124,7 @@ jobs:
       # sigstore-produced signatures and certificates.
       run: >-
         gh release upload
-        '${{ github.ref_name }}' dist/**
+        '${GITHUB_REF_NAME}' dist/**
         --repo '${{ github.repository }}'
 
   publish-to-testpypi:

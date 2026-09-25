@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   update:
+    name: update dependency minimum versions
     runs-on: ubuntu-latest
     steps:
       - uses: scientific-python/spec0-action@7c875bc60508e9aab2bdb851e99bfcc53b283e94 # v1.6
