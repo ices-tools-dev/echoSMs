@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - main
-permissions: {}
 
+permissions: {}
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
@@ -12,9 +12,9 @@ concurrency:
 jobs:
   deploy:
     permissions:
-      contents: read  # to checkout the repo
-      pages: write  # to deploy to Pages
-      id-token: write  # to verify the deployment originats from an appropriate source
+      contents: read # to checkout the repo
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originats from an appropriate source
 
     name: Deploy documentation to github pages
     environment:

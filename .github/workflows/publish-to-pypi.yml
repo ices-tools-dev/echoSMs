@@ -3,11 +3,9 @@ name: Build and publish echoSMs
 on: push
 
 permissions: {}
-
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
-
 
 jobs:
   test:
@@ -73,8 +71,7 @@ jobs:
         path: dist/
 
   publish-to-pypi:
-    name: >-
-      Publish echoSMs to PyPI
+    name: Publish echoSMs to PyPI
     if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
     needs:
     - build
@@ -83,7 +80,7 @@ jobs:
       name: pypi
       url: https://pypi.org/p/echosms
     permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
+      id-token: write  # needed for trusted publishing
 
     steps:
     - name: Download all the dists
@@ -95,16 +92,14 @@ jobs:
       uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
 
   github-release:
-    name: >-
-      Sign the Python distribution with Sigstore
-      and upload them to GitHub Release
+    name: Sign the Python distribution with Sigstore and upload them to GitHub Release
     needs:
     - publish-to-pypi
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # IMPORTANT: mandatory for making GitHub Releases
-      id-token: write  # IMPORTANT: mandatory for sigstore
+      contents: write  # needed for making GitHub Releases
+      id-token: write  # needed for sigstore
 
     steps:
     - name: Download all the dists
@@ -122,11 +117,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_REPO: ${{ github.repository }}
-      run: >-
-        gh release create
-        '${GITHUB_REF_NAME}'
-        --repo '${GITHUB_REPO}'
-        --notes ""
+      run: gh release create '${GITHUB_REF_NAME}' --repo '${GITHUB_REPO}' --notes ""
     - name: Upload artifact signatures to GitHub Release
       env:
         GITHUB_TOKEN: ${{ github.token }}
@@ -134,10 +125,7 @@ jobs:
       # Upload to GitHub Release using the `gh` CLI.
       # `dist/` contains the built packages, and the
       # sigstore-produced signatures and certificates.
-      run: >-
-        gh release upload
-        '${GITHUB_REF_NAME}' dist/**
-        --repo '${GITHUB_REPO}'
+      run: gh release upload '${GITHUB_REF_NAME}' dist/** --repo '${GITHUB_REPO}'
 
   publish-to-testpypi:
     name: Publish echoSMs to TestPyPI
