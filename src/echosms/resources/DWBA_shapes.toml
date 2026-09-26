@@ -12,7 +12,7 @@
 
 
 # This is commented out because the radius values (a) are sometimes negative. The source paper
-# says that the shape is a prolate spheroid, but the shape in the data obtained from the 
+# says that the shape is a prolate spheroid, but the shape in the data obtained from the
 # SDWBA.jl github repository has these negative values which makes the shape undetermined (or
 # if the absolute value is taken, there are little 'tabs' and send end of the shape.
 # [[shape]]
@@ -94,7 +94,7 @@ g = [1.0357,1.0357,1.0357,1.0357,1.0357,1.0357,1.0357,1.0357,1.0357,1.0357,1.035
 # and the echoSMs data store structure can't currently work without a species for a shape.
 # [[shape]]
 # name = "Nauplius"
-# aphiaid = 1 
+# aphiaid = 1
 # vernacular = ""
 # data_format = "echosms_dwba"
 # source = "https://doi.org/10.1006/jmsc.1999.0517"
