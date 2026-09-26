@@ -3,13 +3,20 @@ on:
   push:
     branches:
       - main
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
-    name: deploy documentation to github pages
+    permissions:
+      contents: read  # to checkout the repo
+      pages: write  # to deploy to Pages
+      id-token: write  # to verify the deployment originats from an appropriate source
+
+    name: Deploy documentation to github pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

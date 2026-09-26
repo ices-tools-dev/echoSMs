@@ -6,9 +6,7 @@ on:
     - cron: "24 1 3 1,4,7,10 *"
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}
@@ -16,6 +14,9 @@ concurrency:
 
 jobs:
   update:
+    permissions:
+      contents: write # this actions pushes commits so needs write permission
+      pull-requests: write # this action creates a pull request if dependency versions need updating
     name: update dependency minimum versions
     runs-on: ubuntu-latest
     steps:

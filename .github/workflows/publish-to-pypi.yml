@@ -4,8 +4,16 @@ on: push
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+
 jobs:
   test:
+    permissions:
+      contents: read
+
     name: Run the pytest tests
     strategy:
       matrix:
@@ -35,6 +43,8 @@ jobs:
     name: Build distribution
     runs-on: ubuntu-latest
     needs: test
+    permissions:
+      contents: read
 
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -111,21 +121,23 @@ jobs:
     - name: Create GitHub Release
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_REPO: ${{ github.repository }}
       run: >-
         gh release create
         '${GITHUB_REF_NAME}'
-        --repo '${{ github.repository }}'
+        --repo '${GITHUB_REPO}'
         --notes ""
     - name: Upload artifact signatures to GitHub Release
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_REPO: ${{ github.repository }}
       # Upload to GitHub Release using the `gh` CLI.
       # `dist/` contains the built packages, and the
       # sigstore-produced signatures and certificates.
       run: >-
         gh release upload
         '${GITHUB_REF_NAME}' dist/**
-        --repo '${{ github.repository }}'
+        --repo '${GITHUB_REPO}'
 
   publish-to-testpypi:
     name: Publish echoSMs to TestPyPI
