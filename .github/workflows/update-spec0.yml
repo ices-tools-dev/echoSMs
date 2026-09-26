@@ -1,4 +1,4 @@
-name: Update dependency versions to meet SPEC 0
+name: Update dependencies to meet SPEC 0
 
 on:
   schedule:
@@ -15,8 +15,8 @@ concurrency:
 jobs:
   update:
     permissions:
-      contents: write # this actions pushes commits so needs write permission
-      pull-requests: write # this action creates a pull request if dependency versions need updating
+      contents: write # to push commits
+      pull-requests: write # to create pull requests
     name: update dependency minimum versions
     runs-on: ubuntu-latest
     steps:
