@@ -12,11 +12,6 @@ def create_dwba_spheroid(major_radius: float, minor_radius: float, spacing: floa
 
     The shape descriptions are essentially a set of discs and their orientation.
 
-    Notes
-    -----
-    Currently only supports prolate spheroids and spheres (set `major_radius` and `minor_radius`
-    to the same value to get a sphere).
-
     Parameters
     ----------
     major_radius :
@@ -39,6 +34,10 @@ def create_dwba_spheroid(major_radius: float, minor_radius: float, spacing: floa
     a : iterable
         The radii [m] of the discs that define the spheroid.
 
+    Notes
+    -----
+    Currently only supports prolate spheroids and spheres (set `major_radius` and `minor_radius`
+    to the same value to get a sphere).
     """
     v = np.linspace(0, np.pi, round(2*major_radius/spacing))
     a = minor_radius*np.sin(v)  # radius at points along the spheroid

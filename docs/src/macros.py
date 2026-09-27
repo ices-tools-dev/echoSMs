@@ -1,3 +1,4 @@
+"""Macros for use in zensical markdown documents."""
 import importlib.util
 import sys
 import tomllib
@@ -25,6 +26,7 @@ spec.loader.exec_module(module)
 
 
 def define_env(env):
+    """Define macros use in documentation .md files."""
     env.variables['datastore_uri'] = module.DATASTORE_URI
 
     @env.macro

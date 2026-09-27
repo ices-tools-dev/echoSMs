@@ -88,29 +88,35 @@ line-length = 100
 extend-exclude = [ "*.ipynb", "src/echosms/viewer", "src/otherCode" ]
 preview = true
 lint.extend-select = [
-  "B006", # do not use mutable structures for argument defaults
-  "C4",   # Catch incorrect use of comprehensions, dict, list, etc
-  "FA",   # Enforce from __future__ import annotations
-  "FURB", # Suggest more idiomatic Python patterns
-  "I",    # Sort imports properly
-  "ICN",  # Use common import conventions
-  "ISC",  # Good use of string concatenation
-  "NPY",  # Some numpy-specific things
-  "PTH",  # Use pathlib instead of os.path
-  "RET",  # Good return practices
-  "SIM",  # Common simplification rules
-  "TC",   # Enforce importing certain types in a TYPE_CHECKING block
-  "TD",   # Be diligent with TODO comments
-  "TID",  # Some good import practices
-  "W",    # PyCodeStyle warnings
+  "C4",                       # Catch incorrect use of comprehensions, dict, list, etc
+  "D",                        # pydocstyle strings
+  "FA",                       # Enforce from __future__ import annotations
+  "FURB",                     # Suggest more idiomatic Python patterns
+  "I",                        # Sort imports properly
+  "ICN",                      # Use common import conventions
+  "ISC",                      # Good use of string concatenation
+  "mutable-argument-default", # do not use mutable structures for argument defaults
+  "NPY",                      # Some numpy-specific things
+  "PTH",                      # Use pathlib instead of os.path
+  "RET",                      # Good return practices
+  "SIM",                      # Common simplification rules
+  "TC",                       # Enforce importing certain types in a TYPE_CHECKING block
+  "TD",                       # Be diligent with TODO comments
+  "TID",                      # Some good import practices
+  "W",                        # PyCodeStyle warnings
 ]
 lint.ignore = [
-  "E226",                      # missing whitespace around arthmetic operator
   "float-equality-comparison",
-  "TD002",                     # missing todo author
-  "TD003",                     # missing todo link
+  "missing-todo-author",
+  "missing-todo-link",
+  "missing-whitespace-around-arithmetic-operator",
 ]
-lint.per-file-ignores."tests/**/*.py" = [ "S101" ]  # disables assert warnings in test code
+lint.per-file-ignores."tests/**/*.py" = [
+  "assert",
+  "undocumented-public-function",
+  "undocumented-public-module",
+]
+lint.pydocstyle.convention = "numpy"
 
 [tool.pytest]
 ini_options.testpaths = [ "tests" ]

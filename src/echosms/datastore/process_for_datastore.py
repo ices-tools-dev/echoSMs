@@ -36,6 +36,7 @@ from echosms import datastore_schema, names_from_aphia_id, plot_specimen
 
 
 def main():
+    """CLI main function for this utility."""
     parser = argparse.ArgumentParser(prog='process_for_datastore',
         description='Converts datastore TOML files into an upload for the echoSMs datastore.')
 

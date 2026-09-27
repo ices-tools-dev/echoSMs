@@ -331,15 +331,15 @@ def as_dict(params: dict | pd.DataFrame | xr.DataArray) -> dict:
     params:
         The model parameters
 
-    Raises
-    ------
-    TypeError:
-        If the input data type is not supported.
-
     Returns
     -------
     :
         A dict containing the model parameters.
+
+    Raises
+    ------
+    TypeError:
+        If the input data type is not supported.
 
     """
     if isinstance(params, dict):
