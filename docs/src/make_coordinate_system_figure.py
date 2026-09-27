@@ -19,7 +19,7 @@ import pyvista as pv
 
 
 def rotate_to(a, b):
-    """Return a rotation matrix taking the vector A to B."""
+    """Return a rotation matrix taking the vector A to B."""  # ruff: ignore[docstring-missing-returns]
     # Naive approach is unstable if a and b are near parallel
     theta = np.arccos(np.dot(a, b))
     eps = 1e-3
@@ -50,7 +50,7 @@ def semi_circular_arrow(
         head_radius_frac=1.5,
         normal=None,
         center=None):
-    """Create a semi circular arrow."""
+    """Create a semi circular arrow."""  # ruff: ignore[docstring-missing-returns]
     t = np.linspace(0, circ_frac * 2 * np.pi, body_axial_res) + start_angle
     x = circ_radius * np.cos(t)
     y = circ_radius * np.sin(t)

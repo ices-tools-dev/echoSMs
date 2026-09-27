@@ -111,6 +111,10 @@ class BenchmarkData:
         :
             Tuple containing the frequencies (Hz) and TS (dB) for the requested benchmark model.
 
+        Raises
+        ------
+        ValueError
+            If the input name is not in the benchmark dataset.
         """
         if name not in self.freq_names():
             raise ValueError(f'The requested model ({name}) '
@@ -130,6 +134,10 @@ class BenchmarkData:
         :
             Tuple containing the angles (°) and TS (dB) for the requested benchmark model.
 
+        Raises
+        ------
+        ValueError
+            If the the input name is not in the benchmark dataset.
         """
         if name not in self.angle_names():
             raise ValueError(f'The requested model ({name}) is not in the angle benchmark dataset.')

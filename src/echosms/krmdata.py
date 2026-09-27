@@ -128,6 +128,11 @@ class KRMdata:
         ----------
         file :
             The name of the TOML file containing the KRM shapes.
+
+        Raises
+        ------
+        SyntaxError
+            If the TOML file is invalid.
         """
         self.file = Path(__file__).parent/'resources'/file
         with Path.open(self.file, 'rb') as f:
@@ -157,7 +162,13 @@ class KRMdata:
                                                      s['vernacular'])
 
     def names(self):
-        """Available KRM model names."""
+        """Available KRM model names.
+
+        Returns
+        -------
+        :
+            The KRM model names.
+        """
         return [*self.krm_models]
 
     def as_dict(self) -> dict:

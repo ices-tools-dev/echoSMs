@@ -73,7 +73,13 @@ def main():
     upload_zip_file = output_dir / upload_filename
 
     def large_shape(row) -> bool:
-        """Identify large shape datasets."""
+        """Identify large shape datasets.
+
+        Returns
+        -------
+        :
+            Whether the shape data is considered to be large or not.
+        """
         if row['shape_type'] == 'voxels' and np.array(row['shapes'][0]['mass_density']).size > 1e3:
             return True
 

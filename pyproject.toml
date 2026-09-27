@@ -90,6 +90,7 @@ preview = true
 lint.extend-select = [
   "C4",                       # Catch incorrect use of comprehensions, dict, list, etc
   "D",                        # pydocstyle strings
+  "DOC",                      # pydoclint checks
   "FA",                       # Enforce from __future__ import annotations
   "FURB",                     # Suggest more idiomatic Python patterns
   "I",                        # Sort imports properly
@@ -113,6 +114,7 @@ lint.ignore = [
 ]
 lint.per-file-ignores."tests/**/*.py" = [
   "assert",
+  "DOC",
   "undocumented-public-function",
   "undocumented-public-module",
 ]

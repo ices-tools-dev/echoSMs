@@ -82,6 +82,11 @@ class DCMModel(ScatterModelBase):
         :
             The target strength (re 1 m²) of the target [dB].
 
+        Raises
+        ------
+        ValueError
+            On invalid input parameters.
+
         Notes
         -----
         The class implements the code in Section B.1 of Jech et al. (2015).

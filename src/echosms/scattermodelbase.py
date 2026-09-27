@@ -53,11 +53,11 @@ class ScatterModelBase(abc.ABC):
         self.no_expand_parameters = []
 
     def __repr__(self) -> str:
-        """Return a representation of the object."""
+        """Return a representation of the object."""  # ruff: ignore[docstring-missing-returns]
         return 'Name: ' + self.__class__.__name__ + ', vars: ' + str(vars(self))
 
     def __str__(self) -> str:
-        """Return user-friendly representation of the object."""
+        """Return user-friendly representation of the object."""  # ruff: ignore[docstring-missing-returns]
         s = self.__class__.__name__ + " class with attributes of:\n"
         s += '\n'.join(['\t' + str(k) + ' = ' + str(v) for k, v in vars(self).items()])
         return s
@@ -113,6 +113,12 @@ class ScatterModelBase(abc.ABC):
             - DataFrame input and `inplace=True` modifies `data` and returns `None`.
             - DataArray input always modifies `data` and returns `None`.
 
+        Raises
+        ------
+        ValueError
+            On unsupported input data types
+        AssertionError
+            On unsupported input data types
         """
         match data:
             case dict():
@@ -166,7 +172,7 @@ class ScatterModelBase(abc.ABC):
                                      f'type of {type(data)}.')
 
     def __ts_helper(self, *args: dict) -> float:
-        """Convert function arguments and call calculate_ts_single()."""
+        """Convert function arguments and call calculate_ts_single()."""  # ruff: ignore[docstring-missing-returns]
         p = args[0].to_dict()  # so we can use it for keyword arguments
         p |= args[1]  # merge in the dict of non-expandable model parameters
         return self.calculate_ts_single(**p, validate_parameters=False)

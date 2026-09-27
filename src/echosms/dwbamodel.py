@@ -42,6 +42,11 @@ class DWBAModel(ScatterModelBase):
 
         See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for
         calling details.
+
+        Raises
+        ------
+        ValueError
+            On invalid input parameters.
         """
         p = as_dict(params)
         super()._present_and_positive(p, ['medium_rho', 'medium_c', 'target_rho', 'target_c', 'f'])

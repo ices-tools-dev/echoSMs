@@ -80,6 +80,11 @@ class PSMSModel(ScatterModelBase):
         :
             The target strength (re 1 m²) of the target [dB].
 
+        Raises
+        ------
+        ValueError
+            On unsupported input parameters values.
+
         Notes
         -----
         The backscattered target strength of a pressure release or fluid-filled prolate spheroid
@@ -187,7 +192,7 @@ class PSMSModel(ScatterModelBase):
     @staticmethod
     def _fluidfilled_Emn(m: int, n: int, ell: float, hm: float, ht: float,
                          xim: float, g: float) -> tuple[float, float]:
-        """Calculate Emn_i values where i = 1 and 3."""
+        """Calculate Emn_i values where i = 1 and 3."""  # ruff: ignore[docstring-missing-returns]
         R1mn_w, dR1mn_w = pro_rad1(m, n, hm, xim)
         R2mn_w, dR2mn_w = pro_rad2(m, n, hm, xim)
         R1ml_t, dR1ml_t = pro_rad1(m, ell, ht, xim)
@@ -203,7 +208,7 @@ class PSMSModel(ScatterModelBase):
     @staticmethod
     def _fluidfilled(m: int, n_max: int, hm: float, ht: float, xim: float,
                      g: float, theta_inc: float) -> float:
-        """Calculate Amn for fluid filled prolate spheroids."""
+        """Calculate Amn for fluid filled prolate spheroids."""  # ruff: ignore[docstring-missing-returns]
         # Rather than implement eqn (4) in Furusawa (1988), use an alternative form that
         # I found easier to understand. This is eqns 5, 6, 7, and 8 in:
         #
@@ -238,5 +243,5 @@ class PSMSModel(ScatterModelBase):
 
         The denominator in eqn (8) is not necessary because of the norm=True
         option in the pro_ang1 calls.
-        """
+        """  # ruff: ignore[docstring-missing-returns]
         return pro_ang1(m, n, hm, eta, norm=True)[0] * pro_ang1(m, ell, ht, eta, norm=True)[0]

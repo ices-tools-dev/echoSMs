@@ -27,7 +27,13 @@ from echosms import datastore_schema
 
 
 def validate_one(schema: dict, specimen: dict, file_label: str) -> bool:
-    """Validate a single TOML file."""
+    """Validate a single echoSMs datastore structure.
+
+    Returns
+    -------
+    :
+        Whether the datastore structure validates against the schema or not.
+    """
     # Add in attributes that the datastore loading process would normally provide
     if 'version_time' in specimen and specimen['version_time'] == '':
         specimen['version_time'] = datetime.now(UTC).isoformat()
@@ -66,7 +72,13 @@ def validate_one(schema: dict, specimen: dict, file_label: str) -> bool:
 
 
 def main():
-    """Validate TOML files."""
+    """Validate TOML files.
+
+    Returns
+    -------
+    :
+        Whether all TOML files validate against the schema or not.
+    """
     parser = argparse.ArgumentParser(prog='validate',
                                      description=('Validates an echoSMs datastore TOML file'
                                         ' against the schema.'),

@@ -99,6 +99,11 @@ class MSSModel(ScatterModelBase):
         :
             The target strength (re 1 m²) of the target [dB].
 
+        Raises
+        ------
+        ValueError
+            On unsupported input parameters.
+
         Notes
         -----
         The class implements the code in Section A.1 of Jech et al. (2015).
@@ -185,7 +190,7 @@ class MSSModel(ScatterModelBase):
         """Variables in eqn 9 of Jech et al, 2015.
 
         Applies to a fluid interior shell.
-        """
+        """  # ruff: ignore[docstring-missing-returns]
         (b1, b2, a11, a21) = MSSModel.__eqn9_10_common(n, k1a, g21, h21)
         # a31 = 0.0
         a12 = spherical_jn(n, k2a)
@@ -205,7 +210,7 @@ class MSSModel(ScatterModelBase):
         """Variables in eqn 10 of Jech et al, 2015.
 
         Applies to a pressure release interior shell.
-        """
+        """  # ruff: ignore[docstring-missing-returns]
         (b1, b2, a11, a21) = MSSModel.__eqn9_10_common(n, k1a, g21, h21)
         d1 = spherical_jn(n, ksa)*spherical_yn(n, k2b) - spherical_jn(n, k2b)*spherical_yn(n, k2a)
         d2 = spherical_jn(n, ksa, derivative=True)*spherical_yn(n, k2b)\
@@ -215,7 +220,7 @@ class MSSModel(ScatterModelBase):
 
     @staticmethod
     def __eqn9_10_common(n: int, k1a: float, g21: float, h21: float) -> float:
-        """Variables common to eqn 9 and 10 of Jech et al, 2015."""
+        """Variables common to eqn 9 and 10 of Jech et al, 2015."""  # ruff: ignore[docstring-missing-returns]
         b1 = spherical_jn(n, k1a)
         b2 = g21*h21 * spherical_jn(n, k1a, derivative=True)
         a11 = -h1(n, k1a)

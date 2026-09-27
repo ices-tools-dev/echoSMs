@@ -77,6 +77,11 @@ class KAModel(ScatterModelBase):
         :
             The target strength (re 1 m²) of the target [dB].
 
+        Raises
+        ------
+        ValueError
+            On an unsupported model boundary type.
+
         Notes
         -----
         The class implements the code in Foote (1985).

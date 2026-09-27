@@ -26,7 +26,7 @@ class HPModel(ScatterModelBase):
 
         See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for
         calling details.
-        """
+        """  # ruff: ignore[docstring-missing-exception]
         p = as_dict(params)
         print(p['shape'])
         super()._present_and_positive(p, ['medium_c', 'a', 'f'])

@@ -13,17 +13,17 @@ from .utils import boundary_type as bt
 
 
 def _u(x: float, z: float, theta: float) -> float:
-    """KRM coordinate transform from x to u."""
+    """KRM coordinate transform from x to u."""  # ruff: ignore[docstring-missing-returns]
     return np.array(x*sin(theta) - z*cos(theta))  # Eqn (4)
 
 
 def _v(x: float, z: float, theta: float) -> float:
-    """KRM coordinate transform from x to v."""
+    """KRM coordinate transform from x to v."""  # ruff: ignore[docstring-missing-returns]
     return np.array(x*cos(theta) + z*sin(theta))  # Eqn (5)
 
 
 def _deltau(x: float, theta: float) -> float:
-    """KRM projection of delta x onto u."""
+    """KRM projection of delta x onto u."""  # ruff: ignore[docstring-missing-returns]
     return np.diff(x)*sin(theta)  # Eqn (6)
 
 
@@ -47,6 +47,11 @@ class KRMModel(ScatterModelBase):
 
         See [here][echosms.scattermodelbase.ScatterModelBase.validate_parameters] for
         calling details.
+
+        Raises
+        ------
+        KeyError
+            If the incidence angles are outside the valid bounds.
         """
         p = as_dict(params)
         super()._present_and_positive(p, ['medium_c', 'f'])
@@ -109,6 +114,11 @@ class KRMModel(ScatterModelBase):
         -------
         :
             The target strength (re 1 m²) of the target [dB].
+
+        Raises
+        ------
+        ValueError
+            On invalid input parameters.
 
         Notes
         -----
@@ -213,7 +223,7 @@ class KRMModel(ScatterModelBase):
         :
             The scattering length [m].
 
-        """
+        """  # ruff: ignore[docstring-missing-exception]
         # Note: equation references in this function are to Clay (1992)
         if h == 0.0:
             raise ValueError('Ratio of sound speeds (h) cannot be zero for low ka solution.')

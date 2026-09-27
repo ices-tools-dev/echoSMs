@@ -277,7 +277,13 @@ class DWBAdata:
             self.dwba_models[s['name']] = organism
 
     def names(self):
-        """Available DWBA model names."""
+        """Available DWBA model names.
+
+        Returns
+        -------
+        :
+            The DWBA names
+        """
         return [*self.dwba_models]
 
     def as_dict(self) -> dict:

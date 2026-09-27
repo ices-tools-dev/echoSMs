@@ -28,7 +28,13 @@ def mesh_from_surface(shapes: list[dict]) -> list[trimesh.Trimesh]:
     """
 
     def _to_trimesh(s: dict) -> trimesh.Trimesh:
-        """Put echoSMs datstore shape into a trimesh instance."""
+        """Put echoSMs datstore shape into a trimesh instance.
+
+        Returns
+        -------
+        :
+            The mesh.
+        """
         faces = list(zip(s['facets_0'], s['facets_1'], s['facets_2']))
         vertices = list(zip(s['x'], s['y'], s['z']))
 
@@ -104,7 +110,7 @@ def krmorganism_from_datastore(shapes: list[dict]) -> list:
     from echosms import KRMorganism, KRMshape  # here to avoid a circular import
 
     def _to_KRMshape(s: dict) -> KRMshape:
-        """Convert echoSMs datstore shape into a KRMshape."""
+        """Convert echoSMs datstore shape into a KRMshape."""  # ruff: ignore[docstring-missing-returns]
         # Take mean of sound speed and density in case there is more than one value.
         if 'sound_speed_compressional' in s:
             if isinstance(s['sound_speed_compressional'], (int, float)):
@@ -296,6 +302,12 @@ def outline_to_surface(outline: dict, num_pts: int = 20, mesh_len: float = 2.0) 
     -------
     : dict[str, list]
         An echoSMs surface shape with shape metadata as per the input shape.
+
+    Raises
+    ------
+    ValueError
+        When the generated mesh is inconsistent.
+
 
     Notes
     -----
@@ -500,6 +512,11 @@ def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
     :
         The mesh resulting from the merging of the input shapes.
 
+    Raises
+    ------
+    ValueError
+        When the geometric shape is not supported.
+
     """
     meshes = []
 
@@ -520,7 +537,7 @@ def mesh_from_geometric(shapes: list[dict]) -> trimesh.Trimesh:
 def _spheroid_mesh(equatorial_radius: float, polar_radius: float,
                    centroid_location: tuple[float] | None = None,
                    pitch: float = 0.0, roll: float = 0.0, yaw: float = 0.0, **kwargs: dict):
-    """Create a triangulated mesh of a spheroid as per the size and orientation."""
+    """Create a triangulated mesh of a spheroid as per the size and orientation."""  # ruff: ignore[docstring-missing-returns]
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)
 
@@ -533,7 +550,7 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
                   pitch: float = 0.0, roll: float = 0.0, yaw: float = 0.0,
                   bend_radius: float | None = None, bend_direction: str = 'down',
                   **kwargs: dict):
-    """Create a triangulated mesh of a cylinder as per the size and orientation."""
+    """Create a triangulated mesh of a cylinder as per the size and orientation."""  # ruff: ignore[docstring-missing-exception, docstring-missing-returns]
     if centroid_location is None:
         centroid_location = (0.0, 0.0, 0.0)
 
@@ -588,7 +605,7 @@ def _cylinder_mesh(radius: float, length: float, centroid_location: tuple[float]
 
 
 def _transform(pitch: float, roll: float, yaw: float, o: tuple[float]):
-    """Calculate a rotation and translation matrix."""
+    """Calculate a rotation and translation matrix."""  # ruff: ignore[docstring-missing-returns]
     rotation = R.from_euler('ZYX', (yaw, pitch-90, -roll), degrees=True)
     transform = np.eye(4)
     transform[:3, :3] = rotation.as_matrix()

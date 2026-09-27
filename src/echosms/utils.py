@@ -338,7 +338,7 @@ def as_dict(params: dict | pd.DataFrame | xr.DataArray) -> dict:
 
     Raises
     ------
-    TypeError:
+    TypeError
         If the input data type is not supported.
 
     """
@@ -385,6 +385,11 @@ def pro_ang1(m: int, n: int, c: float, eta: float, norm=False) -> tuple[float, f
     -------
     :
         The value of the prolate spheroidal angular function and its' derivative.
+
+    Raises
+    ------
+    ValueError
+        If an input parameters is out of bounds.
 
     Notes
     -----
@@ -449,6 +454,11 @@ def pro_rad1(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     :
         The value of the prolate spheroidal radial function and its' derivative.
 
+    Raises
+    ------
+    ValueError
+        If an input parameter is out of bounds.
+
     Notes
     -----
     This method uses the prolate spheroidal wave function code for non complex
@@ -504,6 +514,11 @@ def pro_rad2(m: int, n: int, c: float, xi: float) -> tuple[float, float]:
     -------
     :
         The value of the prolate spheroidal radial function and its' derivative.
+
+    Raises
+    ------
+    ValueError
+        If an input parameter is out of bounds.
 
     Notes
     -----

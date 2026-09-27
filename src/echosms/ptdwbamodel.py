@@ -87,6 +87,13 @@ class PTDWBAModel(ScatterModelBase):
         : float
             The target strength (re 1 m²) [dB] of the target.
 
+        Raises
+        ------
+        TypeError
+            On invalid input types.
+        ValueError
+            On invalid input parameters.
+
         Notes
         -----
         This class implements the method presented in Jones et. al. (2009). The code is

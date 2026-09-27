@@ -29,6 +29,10 @@ def plot_specimen(specimen: dict, dataset_label: str = '', title: str = '',
     dpi :
         The resolution of the figure in dots per inch.
 
+    Raises
+    ------
+    ValueError
+        On unsupported specimen shapes.
     """
     labels = ['Dorsal', 'Lateral']
     t = title or dataset_label + ' ' + specimen['specimen_name']
