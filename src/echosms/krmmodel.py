@@ -60,21 +60,11 @@ class KRMModel(ScatterModelBase):
              np.any(np.atleast_1d(p['theta']) > self.theta_max):
             raise KeyError('Incidence angle(s) (theta) are outside 65 to 115°')
 
-        # k = wavenumber(p['medium_c'], p['f'])
-        # a = np.array((swimbladder.w[0:-1] + swimbladder.w[1:])/4)  # Eqn (12)
-        # if np.any(ka_s <= 0.15):
-        #     warnings.warn('Some ka_s is below the limit.')
-
     def calculate_ts_single(self, medium_c: float, medium_rho: float, theta: float,
                             f: float, organism: KRMorganism, high_ka_medium: str = 'body',
                             low_ka_medium: str = 'body',
                             validate_parameters: bool = True, **kwargs: dict) -> float:
         """Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
-
-        Warning
-        --------
-        The mode solution (low _ka_) part of this model has not yet been verified to give
-        correct results.
 
         Parameters
         ----------
