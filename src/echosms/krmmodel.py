@@ -200,15 +200,15 @@ class KRMModel(ScatterModelBase):
         return 20*log10(abs(body_sl + sum(sl)))
 
     def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float,
-                       theta: float) -> float:
-        """Backscatter from a soft shape at low ka.
+                       theta: float) -> complex:
+        """Backscatter from a centred equivalent gas cylinder at low ka.
 
         Parameters
         ----------
         g :
-            Ratio of medium density over shape density.
+            Ratio of shape density over surrounding medium density.
         h :
-            Ratio of medium sound speed over shape sound speed.
+            Ratio of shape sound speed over surrounding medium sound speed.
         k :
             The wavenumber in the medium surrounding the shape.
         a :
@@ -218,7 +218,7 @@ class KRMModel(ScatterModelBase):
         theta :
             Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            conventions/#coordinate-systems) [rad].
 
         Returns
         -------
