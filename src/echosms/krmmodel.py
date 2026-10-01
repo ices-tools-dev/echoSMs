@@ -54,7 +54,7 @@ class KRMModel(ScatterModelBase):
             If the incidence angles are outside the valid bounds.
         """
         p = as_dict(params)
-        super()._present_and_positive(p, ['medium_c', 'f'])
+        super()._present_and_positive(p, ['medium_c', 'medium_rho', 'f'])
 
         if np.any(np.atleast_1d(p['theta']) < self.theta_min) or\
              np.any(np.atleast_1d(p['theta']) > self.theta_max):
