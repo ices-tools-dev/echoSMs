@@ -65,7 +65,7 @@ class KRMshape:
             setattr(self, name, a[order])
 
     def volume(self) -> float:
-        """Volume of the shape.
+        """Volume of elliptical sections with linearly interpolated widths and heights.
 
         Returns
         -------
