@@ -90,10 +90,12 @@ class KRMModel(ScatterModelBase):
         organism :
             The shapes that make up the model. This is typically a shape for the body and zero or
             more enclosed shapes that represent internal parts of the organism.
+            Surface coordinates must be relative to the fish reference axis in Clay & Horne
+            (1994), Fig. 3. The empirical body correction uses these coordinates directly.
         high_ka_medium :
-            If set to `body` the sound speed and density of the organism body is used for
-            the fluid surrounding any inclusions. If set to anything else (e.g., `water`)
-            the sound speed and density given by `medium_c` and `medium_rho` are used.
+            If set to `body`, use the body wavenumber for inclusions. If set to anything else
+            (e.g., `water`), use the water wavenumber. The body/inclusion reflection coefficient
+            remains that of Eqn (9).
             This parameter applies to the Kirchhoff approximation part of
             the model (i.e., high _ka_) and corresponds to the use (or not) of the
             approximation given in Clay & Horne (1994) on the line immediately below Eqn (13):
