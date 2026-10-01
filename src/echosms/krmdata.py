@@ -42,6 +42,28 @@ class KRMshape:
     c: float
     rho: float
 
+    def __post_init__(self):
+        """Check geometry and store cross-sections in increasing x order.
+
+        Raises
+        ------
+        ValueError
+            If the cross-section arrays are invalid or x contains duplicate coordinates.
+        """
+        names = ['x', 'w', 'z_U', 'z_L']
+        arrays = [np.asarray(getattr(self, name), dtype=float) for name in names]
+        if any(a.ndim != 1 or a.size < 2 or not np.all(np.isfinite(a)) for a in arrays)\
+                or any(a.shape != arrays[0].shape for a in arrays):
+            raise ValueError('KRM geometry requires matching finite arrays of at least two sections.')
+        x, w, z_U, z_L = arrays
+        if np.any(w < 0) or np.any(z_U < z_L):
+            raise ValueError('KRM widths and heights must be non-negative.')
+        order = np.argsort(x)
+        if np.any(np.diff(x[order]) == 0):
+            raise ValueError('KRM x coordinates must be unique.')
+        for name, a in zip(names, arrays):
+            setattr(self, name, a[order])
+
     def volume(self) -> float:
         """Volume of the shape.
 
