@@ -19,13 +19,14 @@ class KRMshape:
     boundary : bt
         The shape boundary condition - either `pressure_release` or `fluid_filled`.
     x :
-        The _x_-axis coordinates [m].
+        The _x_-axis coordinates of the cross-sections [m]. Cross-sections may be supplied
+        in any order, with all geometry arrays are sorted together by increasing x.
     w :
         Width of the shape [m].
     z_U :
-        Distance from the axis to the upper surface of the shape [m].
+        The upper surface coordinates relative to the fish reference axis [m].
     z_L :
-        Distance from the axis to the lower surface of the shape [m].
+        The lower surface coordinates relative to the fish reference axis [m].
     c :
         Sound speed in the shape [m/s].
     rho :
