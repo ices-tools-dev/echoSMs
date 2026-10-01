@@ -150,10 +150,48 @@ class KRMModel(ScatterModelBase):
         constraints of rather high frequencies. ICES Journal of Marine Science, 56 (2), 184-199.
         <https://doi.org/10.1006/jmsc.1998.0432>
 
-        """
+        """  # ruff: ignore[docstring-extraneous-exception]
         if validate_parameters:
             self.validate_parameters(locals())
 
+        sl = self._scattering_length(medium_c, medium_rho, theta, f, organism,
+                                     high_ka_medium, low_ka_medium)
+        return 20*np.log10(abs(sl)) if sl != 0 else -np.inf
+
+    def _scattering_length(self, medium_c, medium_rho, theta, f, organism,
+                           high_ka_medium='body', low_ka_medium='body'):
+        """Calculate the complex scattering length.
+
+        Parameters
+        ----------
+        medium_c : float
+            Sound speed in the fluid surrounding the organism [m/s].
+        medium_rho : float
+            Density of the fluid surrounding the organism [kg/m³].
+        theta : float
+            Pitch angle in the echoSMs coordinate system [°].
+        f : float
+            Frequency [Hz].
+        organism : KRMorganism
+            The body and its inclusions.
+        high_ka_medium : str
+            Use the body wavenumber for inclusions if set to `body`; otherwise use the
+            external fluid wavenumber. The reflection coefficient is for the body/inclusion
+            interface.
+        low_ka_medium : str
+            Use the body as the surrounding medium for the modal calculation if set to
+            `body`; otherwise use the external fluid.
+
+        Returns
+        -------
+        complex
+            The sum of the body and inclusion scattering lengths [m].
+
+        Raises
+        ------
+        ValueError
+            If an inclusion has an unsupported boundary condition.
+        """
         theta = radians(theta)
 
         body = organism.body
@@ -168,6 +206,8 @@ class KRMModel(ScatterModelBase):
 
         sl = []  # scattering lengths for inclusions
         for incl in organism.inclusions:
+            if incl.boundary not in [bt.pressure_release, bt.fluid_filled]:
+                raise ValueError(f'Unsupported boundary of "{incl.boundary}" for KRM inclusion')
             # Reflection coefficient between body and inclusion
             # The paper gives R_bc in terms of g & h, but it can also be done in the
             # same manner as R_wb above.
@@ -178,26 +218,27 @@ class KRMModel(ScatterModelBase):
 
             # Equivalent radius of inclusion (as per Part A of paper)
             a_e = sqrt(incl.volume() / (pi * incl.length()))
+            if a_e == 0:
+                continue
 
             # Choose which modelling approach to use
-            if k*a_e < 0.15:  # Do the mode solution for the inclusion
+            kk = k_b if low_ka_medium == 'body' else k
+            if kk*a_e < 0.15:  # Do the mode solution for the inclusion
                 if low_ka_medium != 'body':
                     gp = incl.rho / medium_rho
                     hp = incl.c / medium_c
-                sl.append(self._mode_solution(1/gp, 1/hp, k, a_e, incl.length(), theta))
+                sl.append(self._mode_solution(gp, hp, kk, a_e, incl.length(), theta))
             elif incl.boundary == bt.pressure_release:
                 kk = k_b if high_ka_medium == 'body' else k
                 sl.append(self._soft_KA(incl, k, kk, R_bc, TwbTbw, theta))
             elif incl.boundary == bt.fluid_filled:
                 kk = k_b if high_ka_medium == 'body' else k
                 sl.append(self._fluid_KA(incl, k, kk, R_bc, TwbTbw, theta))
-            else:
-                raise ValueError(f'Unsupported boundary of "{incl.boundary}" for KRM inclusion')
 
         # Do the Kirchhoff-ray approximation for the body. This is always done as a fluid.
         body_sl = self._fluid_KA(body, k, k_b, R_wb, TwbTbw, theta)
 
-        return 20*log10(abs(body_sl + sum(sl)))
+        return body_sl + sum(sl)
 
     def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float,
                        theta: float) -> complex:
