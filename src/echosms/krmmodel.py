@@ -319,7 +319,7 @@ class KRMModel(ScatterModelBase):
         """
         a = (shape.w[0:-1] + shape.w[1:])/4  # Eqn (12)
 
-        # This isn't stated in the paper but seems approrpiate - is in the NOAA KRM code
+        # Upper-surface coordinate relative to the fish reference axis, Eqn (15).
         z_U = (shape.z_U[0:-1] + shape.z_U[1:])/2
 
         psi_b = -pi*k_b*z_U / (2*(k_b*z_U + 0.4))  # Eqn (15)
