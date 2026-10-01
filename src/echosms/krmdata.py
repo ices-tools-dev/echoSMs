@@ -51,7 +51,7 @@ class KRMshape:
 
         """
         thickness = np.diff(self.x)
-        thickness = np.append(thickness, thickness[1])
+        width = np.append(thickness, thickness[1])
         return np.sum(np.pi * (self.z_U - self.z_L) * self.w * thickness)
 
     def length(self) -> float:
