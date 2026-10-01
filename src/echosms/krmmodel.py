@@ -1,7 +1,6 @@
 """A class that implements the Kirchhoff ray mode scattering model."""
 
-from cmath import exp
-from math import cos, log10, pi, radians, sin, sqrt
+from math import cos, pi, radians, sin, sqrt
 
 import numpy as np
 from scipy.special import j0, jvp, y0, yvp
