@@ -50,9 +50,12 @@ class KRMshape:
             The volume of the shape [m³].
 
         """
-        thickness = np.diff(self.x)
-        width = np.append(thickness, thickness[1])
-        return np.sum(np.pi * (self.z_U - self.z_L) * self.w * thickness)
+        height = self.z_U - self.z_L
+        width = self.w
+        # Integrate pi*width*height/4 with both dimensions linear between cross-sections.
+        return np.sum(np.pi/24 * np.diff(self.x)
+                      * (2*width[:-1]*height[:-1] + width[:-1]*height[1:]
+                         + width[1:]*height[:-1] + 2*width[1:]*height[1:]))
 
     def length(self) -> float:
         """Length of the shape.
