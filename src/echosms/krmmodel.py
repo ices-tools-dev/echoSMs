@@ -230,19 +230,17 @@ class KRMModel(ScatterModelBase):
         if h == 0.0:
             raise ValueError('Ratio of sound speeds (h) cannot be zero for low ka solution.')
 
-        # Chi is approximately this. More accurate equations are in Appendix B of Clay (1992)
-        chi = -pi/4  # Eqn (B10) and paragraph below that equation
-
         ka = k*a
         kca = ka/h
 
-        C_0 = (jvp(0, kca)*y0(ka) - g*h*yvp(0, ka)*j0(kca))\
-            / (jvp(0, kca)*j0(ka) - g*h*jvp(0, ka)*j0(kca))  # Eqn (A1) with m=0
-        b_0 = -1 / (1+1j*C_0)  # Also Eqn (A1)
+        # Avoid division by zero in C_0 for acoustically matched materials.
+        N = jvp(0, kca)*y0(ka) - g*h*yvp(0, ka)*j0(kca)
+        D = jvp(0, kca)*j0(ka) - g*h*jvp(0, ka)*j0(kca)
+        b_0 = -D / (D+1j*N)  # Eqn (A1), m=0
 
         delta = k*L_e*cos(theta)  # Eqn (4)
 
-        return (exp(1j*(chi - pi/4)) * L_e)/pi * sin(delta)/delta * b_0  # Eqn (15)
+        return -1j*L_e/pi * np.sinc(delta/pi) * b_0  # Eqn (15), chi = -pi/4
 
     def _soft_KA(self, shape: KRMshape, k: float, k_b: float, R_bc: float,
                  TwbTbw: float, theta: float) -> float:
