@@ -1,7 +1,6 @@
 """A class that implements the Kirchhoff ray mode scattering model."""
 
-from cmath import exp
-from math import cos, log10, pi, radians, sin, sqrt
+from math import cos, pi, radians, sin, sqrt
 
 import numpy as np
 from scipy.special import j0, jvp, y0, yvp
@@ -54,27 +53,17 @@ class KRMModel(ScatterModelBase):
             If the incidence angles are outside the valid bounds.
         """
         p = as_dict(params)
-        super()._present_and_positive(p, ['medium_c', 'f'])
+        super()._present_and_positive(p, ['medium_c', 'medium_rho', 'f'])
 
         if np.any(np.atleast_1d(p['theta']) < self.theta_min) or\
              np.any(np.atleast_1d(p['theta']) > self.theta_max):
             raise KeyError('Incidence angle(s) (theta) are outside 65 to 115°')
-
-        # k = wavenumber(p['medium_c'], p['f'])
-        # a = np.array((swimbladder.w[0:-1] + swimbladder.w[1:])/4)  # Eqn (12)
-        # if np.any(ka_s <= 0.15):
-        #     warnings.warn('Some ka_s is below the limit.')
 
     def calculate_ts_single(self, medium_c: float, medium_rho: float, theta: float,
                             f: float, organism: KRMorganism, high_ka_medium: str = 'body',
                             low_ka_medium: str = 'body',
                             validate_parameters: bool = True, **kwargs: dict) -> float:
         """Calculate the scatter using the Kirchhoff ray mode model for one set of parameters.
-
-        Warning
-        --------
-        The mode solution (low _ka_) part of this model has not yet been verified to give
-        correct results.
 
         Parameters
         ----------
@@ -90,10 +79,12 @@ class KRMModel(ScatterModelBase):
         organism :
             The shapes that make up the model. This is typically a shape for the body and zero or
             more enclosed shapes that represent internal parts of the organism.
+            Surface coordinates must be relative to the fish reference axis in Clay & Horne
+            (1994), Fig. 3. The empirical body correction uses these coordinates directly.
         high_ka_medium :
-            If set to `body` the sound speed and density of the organism body is used for
-            the fluid surrounding any inclusions. If set to anything else (e.g., `water`)
-            the sound speed and density given by `medium_c` and `medium_rho` are used.
+            If set to `body`, use the body wavenumber for inclusions. If set to anything else
+            (e.g., `water`), use the water wavenumber. The body/inclusion reflection coefficient
+            remains that of Eqn (9).
             This parameter applies to the Kirchhoff approximation part of
             the model (i.e., high _ka_) and corresponds to the use (or not) of the
             approximation given in Clay & Horne (1994) on the line immediately below Eqn (13):
@@ -148,10 +139,48 @@ class KRMModel(ScatterModelBase):
         constraints of rather high frequencies. ICES Journal of Marine Science, 56 (2), 184-199.
         <https://doi.org/10.1006/jmsc.1998.0432>
 
-        """
+        """  # ruff: ignore[docstring-extraneous-exception]
         if validate_parameters:
             self.validate_parameters(locals())
 
+        sl = self._scattering_length(medium_c, medium_rho, theta, f, organism,
+                                     high_ka_medium, low_ka_medium)
+        return 20*np.log10(abs(sl)) if sl != 0 else -np.inf
+
+    def _scattering_length(self, medium_c, medium_rho, theta, f, organism,
+                           high_ka_medium='body', low_ka_medium='body'):
+        """Calculate the complex scattering length.
+
+        Parameters
+        ----------
+        medium_c : float
+            Sound speed in the fluid surrounding the organism [m/s].
+        medium_rho : float
+            Density of the fluid surrounding the organism [kg/m³].
+        theta : float
+            Pitch angle in the echoSMs coordinate system [°].
+        f : float
+            Frequency [Hz].
+        organism : KRMorganism
+            The body and its inclusions.
+        high_ka_medium : str
+            Use the body wavenumber for inclusions if set to `body`; otherwise use the
+            external fluid wavenumber. The reflection coefficient is for the body/inclusion
+            interface.
+        low_ka_medium : str
+            Use the body as the surrounding medium for the modal calculation if set to
+            `body`; otherwise use the external fluid.
+
+        Returns
+        -------
+        complex
+            The sum of the body and inclusion scattering lengths [m].
+
+        Raises
+        ------
+        ValueError
+            If an inclusion has an unsupported boundary condition.
+        """
         theta = radians(theta)
 
         body = organism.body
@@ -166,6 +195,8 @@ class KRMModel(ScatterModelBase):
 
         sl = []  # scattering lengths for inclusions
         for incl in organism.inclusions:
+            if incl.boundary not in [bt.pressure_release, bt.fluid_filled]:
+                raise ValueError(f'Unsupported boundary of "{incl.boundary}" for KRM inclusion')
             # Reflection coefficient between body and inclusion
             # The paper gives R_bc in terms of g & h, but it can also be done in the
             # same manner as R_wb above.
@@ -176,37 +207,38 @@ class KRMModel(ScatterModelBase):
 
             # Equivalent radius of inclusion (as per Part A of paper)
             a_e = sqrt(incl.volume() / (pi * incl.length()))
+            if a_e == 0:
+                continue
 
             # Choose which modelling approach to use
-            if k*a_e < 0.15:  # Do the mode solution for the inclusion
+            kk = k_b if low_ka_medium == 'body' else k
+            if kk*a_e < 0.15:  # Do the mode solution for the inclusion
                 if low_ka_medium != 'body':
                     gp = incl.rho / medium_rho
                     hp = incl.c / medium_c
-                sl.append(self._mode_solution(1/gp, 1/hp, k, a_e, incl.length(), theta))
+                sl.append(self._mode_solution(gp, hp, kk, a_e, incl.length(), theta))
             elif incl.boundary == bt.pressure_release:
                 kk = k_b if high_ka_medium == 'body' else k
                 sl.append(self._soft_KA(incl, k, kk, R_bc, TwbTbw, theta))
             elif incl.boundary == bt.fluid_filled:
                 kk = k_b if high_ka_medium == 'body' else k
                 sl.append(self._fluid_KA(incl, k, kk, R_bc, TwbTbw, theta))
-            else:
-                raise ValueError(f'Unsupported boundary of "{incl.boundary}" for KRM inclusion')
 
         # Do the Kirchhoff-ray approximation for the body. This is always done as a fluid.
         body_sl = self._fluid_KA(body, k, k_b, R_wb, TwbTbw, theta)
 
-        return 20*log10(abs(body_sl + sum(sl)))
+        return body_sl + sum(sl)
 
     def _mode_solution(self, g: float, h: float, k: float, a: float, L_e: float,
-                       theta: float) -> float:
-        """Backscatter from a soft shape at low ka.
+                       theta: float) -> complex:
+        """Backscatter from a centred equivalent gas cylinder at low ka.
 
         Parameters
         ----------
         g :
-            Ratio of medium density over shape density.
+            Ratio of shape density over surrounding medium density.
         h :
-            Ratio of medium sound speed over shape sound speed.
+            Ratio of shape sound speed over surrounding medium sound speed.
         k :
             The wavenumber in the medium surrounding the shape.
         a :
@@ -216,7 +248,7 @@ class KRMModel(ScatterModelBase):
         theta :
             Pitch angle to calculate the scattering at, as per the echoSMs
             [coordinate system](https://ices-tools-dev.github.io/echoSMs/
-            conventions/#coordinate-systems) [°].
+            conventions/#coordinate-systems) [rad].
 
         Returns
         -------
@@ -228,19 +260,17 @@ class KRMModel(ScatterModelBase):
         if h == 0.0:
             raise ValueError('Ratio of sound speeds (h) cannot be zero for low ka solution.')
 
-        # Chi is approximately this. More accurate equations are in Appendix B of Clay (1992)
-        chi = -pi/4  # Eqn (B10) and paragraph below that equation
-
         ka = k*a
         kca = ka/h
 
-        C_0 = (jvp(0, kca)*y0(ka) - g*h*yvp(0, ka)*j0(kca))\
-            / (jvp(0, kca)*j0(ka) - g*h*jvp(0, ka)*j0(kca))  # Eqn (A1) with m=0
-        b_0 = -1 / (1+1j*C_0)  # Also Eqn (A1)
+        # Avoid division by zero in C_0 for acoustically matched materials.
+        N = jvp(0, kca)*y0(ka) - g*h*yvp(0, ka)*j0(kca)
+        D = jvp(0, kca)*j0(ka) - g*h*jvp(0, ka)*j0(kca)
+        b_0 = -D / (D+1j*N)  # Eqn (A1), m=0
 
         delta = k*L_e*cos(theta)  # Eqn (4)
 
-        return (exp(1j*(chi - pi/4)) * L_e)/pi * sin(delta)/delta * b_0  # Eqn (15)
+        return -1j*L_e/pi * np.sinc(delta/pi) * b_0  # Eqn (15), chi = -pi/4
 
     def _soft_KA(self, shape: KRMshape, k: float, k_b: float, R_bc: float,
                  TwbTbw: float, theta: float) -> float:
@@ -319,7 +349,7 @@ class KRMModel(ScatterModelBase):
         """
         a = (shape.w[0:-1] + shape.w[1:])/4  # Eqn (12)
 
-        # This isn't stated in the paper but seems approrpiate - is in the NOAA KRM code
+        # Upper-surface coordinate relative to the fish reference axis, Eqn (15).
         z_U = (shape.z_U[0:-1] + shape.z_U[1:])/2
 
         psi_b = -pi*k_b*z_U / (2*(k_b*z_U + 0.4))  # Eqn (15)
