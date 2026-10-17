@@ -1,18 +1,21 @@
 # Set update schedule for GitHub Actions
 
 version: 2
-updates:
+multi-ecosystem-groups:
+  dependencies:
+    schedule:
+      interval: "weekly"
+    patterns:
+      - "*"
 
+updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
-    groups:
-      dependencies:
-        patterns:
-          - "*"
+    multi-ecosystem-group: "dependencies"
 
   - package-ecosystem: "pre-commit"
     directory: "/"
@@ -20,7 +23,4 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
-    groups:
-      dependencies:
-        patterns:
-          - "*"
+    multi-ecosystem-group: "dependencies"
