@@ -136,9 +136,8 @@ def test_krmdata():
     assert isinstance(d.ts(test_name), pd.DataFrame)
 
     s = echosms.KRMdata().model('Cod')
-    # both of these currently return negative values. That is wrong...
-    # assert s.body.volume() == 1.0
-    # assert s.body.length() == 1.0
+    assert s.body.volume() > 0
+    assert s.body.length() == pytest.approx(.39)
 
     with pytest.raises(FileNotFoundError):
         echosms.KRMdata('test filename')
