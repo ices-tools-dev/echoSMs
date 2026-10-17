@@ -9,6 +9,10 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
+    groups:
+      dependencies:
+        patterns:
+          - "*"
 
   - package-ecosystem: "pre-commit"
     directory: "/"
@@ -16,3 +20,7 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
+    groups:
+      dependencies:
+        patterns:
+          - "*"
