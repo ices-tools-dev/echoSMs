@@ -23,7 +23,7 @@ repos:
 
   # Format pyproject.toml file
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: 831e544b60ed0c00a8dc7932528790dc8b410fac # v2.30.0
+    rev: a50cac6c12a15246feeaa12a6637908744fdb5ea # v2.30.2
     hooks:
       - id: pyproject-fmt
         name: check pyproject.toml formatting
