@@ -9,8 +9,6 @@ multi-ecosystem-groups:
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
-    schedule:
-      interval: "weekly"
     cooldown:
       default-days: 7
     patterns:
@@ -19,8 +17,6 @@ updates:
 
   - package-ecosystem: "pre-commit"
     directory: "/"
-    schedule:
-      interval: "weekly"
     cooldown:
       default-days: 7
     patterns:
