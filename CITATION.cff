@@ -1,0 +1,9 @@
+@software{echoSMs},
+  author       = {Mike Jech, Gavin Macaulay},
+  title        = {{echoSMs}},
+  month        = {8},
+  year         = {2026},
+  publisher    = {GitHub},
+  version      = {0.26.0},
+  url          = {https://github.com/ices-tools-dev/echoSMs}
+}
