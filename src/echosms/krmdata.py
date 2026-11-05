@@ -19,13 +19,14 @@ class KRMshape:
     boundary : bt
         The shape boundary condition - either `pressure_release` or `fluid_filled`.
     x :
-        The _x_-axis coordinates [m].
+        The _x_-axis coordinates of the cross-sections [m]. Cross-sections may be supplied
+        in any order, with all geometry arrays are sorted together by increasing x.
     w :
         Width of the shape [m].
     z_U :
-        Distance from the axis to the upper surface of the shape [m].
+        The upper surface coordinates relative to the fish reference axis [m].
     z_L :
-        Distance from the axis to the lower surface of the shape [m].
+        The lower surface coordinates relative to the fish reference axis [m].
     c :
         Sound speed in the shape [m/s].
     rho :
@@ -41,8 +42,30 @@ class KRMshape:
     c: float
     rho: float
 
+    def __post_init__(self):
+        """Check geometry and store cross-sections in increasing x order.
+
+        Raises
+        ------
+        ValueError
+            If the cross-section arrays are invalid or x contains duplicate coordinates.
+        """
+        names = ['x', 'w', 'z_U', 'z_L']
+        arrays = [np.asarray(getattr(self, name), dtype=float) for name in names]
+        if any(a.ndim != 1 or a.size < 2 or not np.all(np.isfinite(a)) for a in arrays)\
+                or any(a.shape != arrays[0].shape for a in arrays):
+            raise ValueError('KRM geometry requires matching finite arrays of at least two sections.')
+        x, w, z_U, z_L = arrays
+        if np.any(w < 0) or np.any(z_U < z_L):
+            raise ValueError('KRM widths and heights must be non-negative.')
+        order = np.argsort(x)
+        if np.any(np.diff(x[order]) == 0):
+            raise ValueError('KRM x coordinates must be unique.')
+        for name, a in zip(names, arrays):
+            setattr(self, name, a[order])
+
     def volume(self) -> float:
-        """Volume of the shape.
+        """Volume of elliptical sections with linearly interpolated widths and heights.
 
         Returns
         -------
@@ -50,9 +73,12 @@ class KRMshape:
             The volume of the shape [m³].
 
         """
-        thickness = np.diff(self.x)
-        thickness = np.append(thickness, thickness[1])
-        return np.sum(np.pi * (self.z_U - self.z_L) * self.w * thickness)
+        height = self.z_U - self.z_L
+        width = self.w
+        # Integrate pi*width*height/4 with both dimensions linear between cross-sections.
+        return np.sum(np.pi/24 * np.diff(self.x)
+                      * (2*width[:-1]*height[:-1] + width[:-1]*height[1:]
+                         + width[1:]*height[:-1] + 2*width[1:]*height[1:]))
 
     def length(self) -> float:
         """Length of the shape.
