@@ -1,9 +1,17 @@
-@software{echoSMs},
-  author       = {Mike Jech, Gavin Macaulay},
-  title        = {{echoSMs}},
-  month        = {8},
-  year         = {2026},
-  publisher    = {GitHub},
-  version      = {0.26.0},
-  url          = {https://github.com/ices-tools-dev/echoSMs}
-}
+cff-version: 1.2.0
+title: echoSMs
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Mike
+    family-names: Jech
+  - given-names: Gavin
+    family-names: Macaulay
+identifiers:
+  - type: url
+    value: 'https://ices-tools-dev.github.io/echoSMs/'
+repository-code: 'https://github.com/ices-tools-dev/echoSMs'
+version: 0.26.0
+date-released: '2026-08-05'
